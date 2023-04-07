@@ -1,11 +1,17 @@
 import Fastify, {FastifyInstance} from 'fastify';
+import routes from "./routes/index.js";
+import fastifySwagger from "@fastify/swagger";
+import fastifySwaggerUi from "@fastify/swagger-ui";
+import {swaggerConfig, swaggerUiConfig} from "./config/swagger.js";
 
-const server: FastifyInstance = Fastify({})
+const server: FastifyInstance = Fastify({
+    logger: true,
+})
 
+await server.register(fastifySwagger, swaggerConfig);
+await server.register(fastifySwaggerUi, swaggerUiConfig);
 
-server.get('/ping', async () => {
-    return 'hellosdfsdf';
-});
+server.register(routes);
 
 const start = async () => {
     try {
