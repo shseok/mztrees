@@ -1,0 +1,19 @@
+{
+  "name": "mz-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.3"
+  },
+  "dependencies": {
+    "fastify": "^4.15.0"
+  },
+  "scripts": {
+    "start": "ts-node-esm --transpileOnly ./src/main.ts",
+    "start:dev": "nodemon --watch ./src --exec \"ts-node-esm ./src/main.ts\" -e -ts"
+  }
+}
