@@ -1,3 +1,4 @@
+import AppError from '../lib/AppError.js'
 import db from '../lib/db.js'
 import bcrypt from 'bcrypt'
 
@@ -25,7 +26,7 @@ class UserService {
     })
 
     if (exists) {
-      throw new Error('User already exist')
+      throw new AppError('UserExistsError')
     }
     const hash = await bcrypt.hash(password, SAULT_ROUNDS)
     console.log(hash)

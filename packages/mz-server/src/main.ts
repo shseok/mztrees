@@ -3,6 +3,7 @@ import routes from './routes/index.js'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
 import { swaggerConfig, swaggerUiConfig } from './config/swagger.js'
+import AppError from './lib/AppError.js'
 
 const server: FastifyInstance = Fastify({
   logger: true,
@@ -10,6 +11,19 @@ const server: FastifyInstance = Fastify({
 
 await server.register(fastifySwagger, swaggerConfig)
 await server.register(fastifySwaggerUi, swaggerUiConfig)
+
+server.setErrorHandler((error, request, reply) => {
+  // reply.statusCode는 기본적으로 200이기 때문
+  reply.statusCode = error.statusCode ?? 500
+  if (error instanceof AppError) {
+    return {
+      name: error.name,
+      message: error.message,
+      statusCode: error.statusCode,
+    }
+  }
+  return error
+})
 
 server.register(routes)
 
