@@ -29,6 +29,10 @@ export default class AppError extends Error {
   }
 }
 
+export function isAppError(error: any): error is AppError {
+  return error instanceof AppError
+}
+
 export const appErrorSchema = {
   type: 'object',
   properties: {

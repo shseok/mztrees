@@ -57,12 +57,12 @@ export const loginSchema: FastifySchema = {
   body: authBodySchema,
   response: {
     200: authResultSchema,
-    409: {
+    401: {
       ...appErrorSchema,
       example: {
-        name: 'UserExistsError',
-        message: 'User already exists',
-        statusCode: 409,
+        name: 'AuthenticationEror',
+        message: 'Invalid username or password',
+        statusCode: 401,
       },
     },
   },
