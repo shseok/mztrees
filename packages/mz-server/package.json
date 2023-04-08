@@ -6,6 +6,7 @@
   "type": "module",
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "^18.15.11",
     "nodemon": "^2.0.22",
     "pino-pretty": "^10.0.0",
@@ -18,7 +19,9 @@
     "@fastify/swagger-ui": "^1.7.0",
     "@prisma/client": "^4.12.0",
     "bcrypt": "^5.1.0",
-    "fastify": "^4.15.0"
+    "dotenv": "^16.0.3",
+    "fastify": "^4.15.0",
+    "jsonwebtoken": "^9.0.0"
   },
   "scripts": {
     "start": "ts-node-esm --transpileOnly ./src/main.ts | pino-pretty",
