@@ -16,9 +16,11 @@
    - API 문서 시각화(API 가독성을 위함)
    - [version migration](https://github.com/fastify/fastify-swagger/blob/master/MIGRATION.md)
    - http://localhost:4000/documentation
-8. 프리즈마 설치
+8. 프리즈마 설치 & 디비 연동
    - 스키마에 등록된 프로퍼티들의 타입을 지원해줌. (index.d.ts)
-9. bcrypt 비밀번호 복화화
+   - 디비 (DBeaver - sqlite)
+     - 추후 PostgreSQL
+9. bcrypt 비밀번호 복호화
 
 # directory structure
 
