@@ -1,8 +1,9 @@
-import fastify, { FastifyPluginAsync } from 'fastify'
+// 인증 연동하기 위한 플러그인
+
+import { FastifyPluginAsync } from 'fastify'
 import fp from 'fastify-plugin'
 import { AccessTokenPayload, validateToken } from '../lib/token.js'
 import jwt from 'jsonwebtoken'
-import AppError from '../lib/AppError.js'
 
 const { JsonWebTokenError } = jwt
 
@@ -10,11 +11,6 @@ const authPluginAsync: FastifyPluginAsync = async (fastify) => {
   fastify.decorateRequest('user', null)
   fastify.decorateRequest('isExpiredToken', false)
   fastify.addHook('preHandler', async (request) => {
-    // if (!authorization || !authorization.includes('Bearer')) {
-    //   return
-    // }
-    // const token = authorization.split('Bearer ')[1]
-
     const token =
       request.headers.authorization?.split('Bearer ')[1] ??
       request.cookies.access_token
