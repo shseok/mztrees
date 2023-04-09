@@ -27,6 +27,7 @@ const authBodySchema = {
     username: { type: 'string' },
     password: { type: 'string' },
   },
+  required: ['username', 'password'],
 }
 
 export const registerSchema: FastifySchema = {
@@ -50,5 +51,14 @@ export const loginSchema: FastifySchema = {
       message: 'Invalid username or password',
       statusCode: 401,
     }),
+  },
+}
+
+export const refreshTokenSchema: FastifySchema = {
+  body: {
+    type: 'object',
+    properties: {
+      refreshToken: { type: 'string' },
+    },
   },
 }
