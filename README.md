@@ -4,6 +4,6 @@
 
 # File structure
 
-- package
-  - mz-server
-  - mz-client(web ✔ / mobile)
+- packages
+  - mz-server 🏃‍♂️
+  - mz-client(web 🏃‍♂️ / mobile)
