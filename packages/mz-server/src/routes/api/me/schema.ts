@@ -6,10 +6,23 @@ export const getMeSchema: FastifySchema = {
   // get은 body x
   response: {
     200: userSchema,
-    401: createAppErrorSchema({
-      name: 'UnauthorizedError',
-      message: 'Unauthorized error',
-      statusCode: 401,
-    }),
+    401: createAppErrorSchema(
+      {
+        name: 'UnauthorizedError',
+        message: 'Unauthorized error',
+        statusCode: 401,
+        payload: {
+          isExpiredToken: true,
+        },
+      },
+      {
+        type: 'object',
+        properties: {
+          isExpiredToken: {
+            type: 'boolean',
+          },
+        },
+      },
+    ),
   },
 }
