@@ -15,6 +15,7 @@
     "typescript": "^5.0.3"
   },
   "dependencies": {
+    "@fastify/cookie": "^8.3.0",
     "@fastify/swagger": "^8.3.1",
     "@fastify/swagger-ui": "^1.7.0",
     "@prisma/client": "^4.12.0",

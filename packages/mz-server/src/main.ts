@@ -6,6 +6,7 @@ import { swaggerConfig, swaggerUiConfig } from './config/swagger.js'
 import AppError from './lib/AppError.js'
 import 'dotenv/config'
 import { authPlugin } from './plugins/authPlugin.js'
+import fastifyCookie from '@fastify/cookie'
 
 const server: FastifyInstance = Fastify({
   logger: true,
@@ -13,6 +14,8 @@ const server: FastifyInstance = Fastify({
 
 await server.register(fastifySwagger, swaggerConfig)
 await server.register(fastifySwaggerUi, swaggerUiConfig)
+
+server.register(fastifyCookie)
 
 server.setErrorHandler((error, request, reply) => {
   // reply.statusCode는 기본적으로 200이기 때문
