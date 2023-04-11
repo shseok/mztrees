@@ -1,19 +1,18 @@
 import React from 'react';
 import Header from '~/components/Header';
 import HeaderBackButton from '~/components/HeaderBackButton';
-import styled from 'styled-components';
 import { useGoBack } from '~/hooks/useGoback';
 import AuthForm from '~/components/AuthForm';
+import FullHeightPage from '~/components/FullHeightPage';
 
 const Login = () => {
   const goBack = useGoBack();
   return (
-    <Page>
+    <FullHeightPage>
       <Header title='로그인' headerLeft={<HeaderBackButton onClick={goBack} />} />
       <AuthForm mode='login' />
-    </Page>
+    </FullHeightPage>
   );
 };
-const Page = styled.div``;
 
 export default Login;

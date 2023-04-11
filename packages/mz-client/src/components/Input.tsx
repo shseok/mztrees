@@ -4,10 +4,9 @@ import { colors } from '~/lib/colors';
 
 export interface Props extends React.InputHTMLAttributes<HTMLInputElement> {}
 
-const Input = (props: Props) => {
-  // return <StyledInput {...props} />;
-  return <StyledInput />;
-};
+const Input = React.forwardRef<HTMLInputElement, Props>(({ ...rest }: Props, ref) => {
+  return <StyledInput ref={ref} {...rest} />;
+});
 const StyledInput = styled.input`
   height: 48px;
   border-radius: 4px;
@@ -19,6 +18,10 @@ const StyledInput = styled.input`
 
   &:focus {
     border: 1px solid ${colors.primary};
+  }
+
+  &::placeholder {
+    color: ${colors.gray2};
   }
 `;
 
