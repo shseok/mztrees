@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import LabelInput from '~/components/LabelInput';
 import Button from '~/components/Button';
 import QuestionLink from '~/components/QuestionLink';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 interface Props {
   mode: 'login' | 'register';
@@ -27,25 +28,61 @@ const authDescription = {
   },
 };
 
+type Inputs = {
+  username: string;
+  password: string;
+};
+
 const AuthForm = ({ mode }: Props) => {
   const { usernamePlaceholder, passwordPlaceholder, question, actionLink, buttonText, actionText } =
     authDescription[mode];
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const rs = await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(data);
+      }, 2000);
+    });
+    console.log(rs);
+  };
+  // console.log(watch('username')); // username이 등록된 컴포넌트에 값을 입력시 매번 확인기능
 
   return (
-    <Block>
+    <Block onSubmit={handleSubmit(onSubmit)}>
       <InputGroup>
-        <LabelInput label='아이디' placeholder={usernamePlaceholder} />
-        <LabelInput label='비밀번호' placeholder={passwordPlaceholder} />
+        <LabelInput
+          label='아이디'
+          {...register('username', { required: true, minLength: 5, maxLength: 20 })}
+          placeholder={usernamePlaceholder}
+          disabled={isSubmitting}
+        />
+        {errors.username && <span>This field is required</span>}
+        <LabelInput
+          label='비밀번호'
+          {...register('password', { required: true, minLength: 8, maxLength: 20 })}
+          placeholder={passwordPlaceholder}
+          disabled={isSubmitting}
+        />
+        {errors.password && <span>This field is required</span>}
       </InputGroup>
+
       <ActionsBox>
-        <Button layoutMode='fullWidth'>{buttonText}</Button>
+        <Button layoutMode='fullWidth' type='submit' disabled={isSubmitting}>
+          {buttonText}
+        </Button>
         <QuestionLink question={question} name={actionText} to={actionLink} />
       </ActionsBox>
     </Block>
   );
 };
 
-const Block = styled.div`
+const Block = styled.form`
   display: flex;
   flex-direction: column;
   padding: 16px;

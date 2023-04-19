@@ -23,6 +23,11 @@ const StyledInput = styled.input`
   &::placeholder {
     color: ${colors.gray2};
   }
+
+  &:disabled {
+    background-color: ${colors.gray0};
+    color: ${colors.gray3};
+  }
 `;
 
 export default Input;
