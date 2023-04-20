@@ -24,7 +24,7 @@ await server.register(fastifySwaggerUi, swaggerUiConfig)
 
 server.register(fastifyCookie)
 
-server.setErrorHandler((error, request, reply) => {
+server.setErrorHandler(async (error, request, reply) => {
   // reply.statusCode는 기본적으로 200이기 때문
   reply.statusCode = error.statusCode ?? 500
   if (error instanceof AppError) {
