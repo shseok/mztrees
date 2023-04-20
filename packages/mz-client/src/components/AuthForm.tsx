@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import LabelInput from '~/components/LabelInput';
 import Button from '~/components/Button';
 import QuestionLink from '~/components/QuestionLink';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { userLogin, userRegister } from '~/lib/api/auth';
+import { AppError, extractError } from '~/lib/error';
 
 interface Props {
   mode: 'login' | 'register';
@@ -39,19 +41,28 @@ const AuthForm = ({ mode }: Props) => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const rs = await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(data);
-      }, 2000);
-    });
-    console.log(rs);
+  const [error, setError] = useState<AppError | undefined>();
+
+  const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
+    try {
+      const { result, headers } =
+        mode === 'register' ? await userRegister(data) : await userLogin(data);
+      console.log(result, headers);
+    } catch (e) {
+      const error = extractError(e);
+      setError(error);
+    }
   };
   // console.log(watch('username')); // username이 등록된 컴포넌트에 값을 입력시 매번 확인기능
+  // console.log(errors.username, errors.password, errors);
+  // const usernameErrorMessage = () => {};
+
+  if (error) {
+    return <h1>{error.message}</h1>;
+  }
 
   return (
     <Block onSubmit={handleSubmit(onSubmit)}>

@@ -23,8 +23,9 @@ const authRoute: FastifyPluginAsync = async (fastify) => {
   fastify.post<{ Body: AuthBody }>(
     '/register',
     { schema: registerSchema },
-    async (request) => {
+    async (request, reply) => {
       const authResult = await userService.register(request.body)
+      setTokenCookie(reply, authResult.tokens)
       return authResult
     },
   )

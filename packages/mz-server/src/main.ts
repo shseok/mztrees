@@ -7,9 +7,16 @@ import AppError from './lib/AppError.js'
 import 'dotenv/config'
 import { authPlugin } from './plugins/authPlugin.js'
 import fastifyCookie from '@fastify/cookie'
+import cors from '@fastify/cors'
 
 const server: FastifyInstance = Fastify({
   logger: true,
+})
+
+server.register(cors, {
+  origin: ['http://localhost:4000', 'http://127.0.0.1:5173'],
+  allowedHeaders: ['Cookie', 'Content-Type', 'Set-Cookie', 'set-cookie'],
+  credentials: true,
 })
 
 await server.register(fastifySwagger, swaggerConfig)
