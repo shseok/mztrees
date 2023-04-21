@@ -6,6 +6,7 @@ import QuestionLink from '~/components/QuestionLink';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { userLogin, userRegister } from '~/lib/api/auth';
 import { AppError, extractError } from '~/lib/error';
+import { validate } from '~/lib/validate';
 
 interface Props {
   mode: 'login' | 'register';
@@ -42,7 +43,9 @@ const AuthForm = ({ mode }: Props) => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<Inputs>();
+  } = useForm<Inputs>({
+    mode: 'all',
+  });
 
   const [error, setError] = useState<AppError | undefined>();
 
@@ -57,50 +60,83 @@ const AuthForm = ({ mode }: Props) => {
     }
   };
   // console.log(watch('username')); // username이 등록된 컴포넌트에 값을 입력시 매번 확인기능
-  // console.log(errors.username, errors.password, errors);
   const usernameErrorMessage = useMemo(() => {
+    if (errors.username) {
+      if (errors.username.type === 'minLength' || 'maxLength') {
+        return '5~20자 사이의 글자를 입력해주세요.';
+      } else if (errors.username.type === 'validate') {
+        return '영문 소문자 또는 숫자를 입력해주세요.';
+      }
+    }
     if (error?.name === 'UserExistsError') {
       return '이미 존재하는 계정입니다.';
     }
     return undefined;
-  }, [error]);
+  }, [error, errors.username]);
+
+  const passwordErrorMessage = useMemo(() => {
+    if (errors.password) {
+      if (errors.password.type === 'minLength' || 'maxLength') {
+        return '8~20자 사이의 글자를 입력해주세요.';
+      } else if (errors.password.type === 'validate') {
+        return '영문/숫자/특수문자 1가지 이상 입력해주세요.';
+      }
+    }
+    return undefined;
+  }, [errors.password]);
 
   // if (error) {
   //   return <h1>{error.message}</h1>;
   // }
+  console.log(error);
+  // console.log(errors.username, errors.password, errors);
 
   return (
-    <Block onSubmit={handleSubmit(onSubmit)}>
+    <StyledForm method='post' onSubmit={handleSubmit(onSubmit)}>
       <InputGroup>
         <LabelInput
           label='아이디'
-          {...register('username', { required: true, minLength: 5, maxLength: 20 })}
+          {...register('username', {
+            required: true,
+            minLength: 5,
+            maxLength: 20,
+            validate: validate.username,
+          })}
           placeholder={usernamePlaceholder}
           disabled={isSubmitting}
           errorMessage={usernameErrorMessage}
           // errorMessage={error?.name === 'UserExistsError' ? 'hgh': undefined}
         />
-        {errors.username && <span>This field is required</span>}
+        {/*{errors.username && <span>This field is required</span>}*/}
         <LabelInput
           label='비밀번호'
-          {...register('password', { required: true, minLength: 8, maxLength: 20 })}
+          {...register('password', {
+            required: true,
+            minLength: 8,
+            maxLength: 20,
+            validate: validate.password,
+          })}
           placeholder={passwordPlaceholder}
           disabled={isSubmitting}
+          errorMessage={passwordErrorMessage}
         />
-        {errors.password && <span>This field is required</span>}
+        {/*{errors.password && <span>This field is required</span>}*/}
       </InputGroup>
 
       <ActionsBox>
+        {error?.name === 'AuthenticationError' && (
+          <ActionErrorMessage>잘못된 계정 정보입니다.</ActionErrorMessage>
+        )}
         <Button layoutMode='fullWidth' type='submit' disabled={isSubmitting}>
           {buttonText}
         </Button>
         <QuestionLink question={question} name={actionText} to={actionLink} />
       </ActionsBox>
-    </Block>
+    </StyledForm>
   );
 };
 
-const Block = styled.form`
+const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   padding: 16px;
@@ -120,6 +156,12 @@ const ActionsBox = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 24px;
+`;
+
+const ActionErrorMessage = styled.div`
+  text-align: center;
+  color: red;
+  font-size: 14px;
 `;
 
 export default AuthForm;

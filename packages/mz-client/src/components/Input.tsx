@@ -10,7 +10,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(({ errorMessage, ...rest
   return (
     <>
       <StyledInput ref={ref} {...rest} />
-      {errorMessage && <Message>{errorMessage}</Message>}
+      {errorMessage ? <Message>{errorMessage}</Message> : null}
     </>
   );
 });
