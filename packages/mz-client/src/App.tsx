@@ -3,8 +3,9 @@ import Home from '~/pages/Home';
 import Error from '~/pages/Error';
 import Register from '~/pages/Register';
 import Header from '~/components/Header';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Login from '~/pages/Login';
+import { getMyAccount } from '~/lib/api/auth';
 
 const Layout = () => {
   return (
@@ -45,6 +46,20 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  // const cookieState = useCookieState();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      // const cookie = cookieState;
+      // if (!cookie) return;
+      // setClientCookie(cookie);
+      const me = await getMyAccount();
+      console.log('hhhh', me);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className='app'>
       <RouterProvider router={router} />
