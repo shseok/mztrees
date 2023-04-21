@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import LabelInput from '~/components/LabelInput';
 import Button from '~/components/Button';
@@ -58,11 +58,16 @@ const AuthForm = ({ mode }: Props) => {
   };
   // console.log(watch('username')); // username이 등록된 컴포넌트에 값을 입력시 매번 확인기능
   // console.log(errors.username, errors.password, errors);
-  // const usernameErrorMessage = () => {};
+  const usernameErrorMessage = useMemo(() => {
+    if (error?.name === 'UserExistsError') {
+      return '이미 존재하는 계정입니다.';
+    }
+    return undefined;
+  }, [error]);
 
-  if (error) {
-    return <h1>{error.message}</h1>;
-  }
+  // if (error) {
+  //   return <h1>{error.message}</h1>;
+  // }
 
   return (
     <Block onSubmit={handleSubmit(onSubmit)}>
@@ -72,6 +77,8 @@ const AuthForm = ({ mode }: Props) => {
           {...register('username', { required: true, minLength: 5, maxLength: 20 })}
           placeholder={usernamePlaceholder}
           disabled={isSubmitting}
+          errorMessage={usernameErrorMessage}
+          // errorMessage={error?.name === 'UserExistsError' ? 'hgh': undefined}
         />
         {errors.username && <span>This field is required</span>}
         <LabelInput

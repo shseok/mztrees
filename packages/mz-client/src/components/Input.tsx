@@ -2,11 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 import { colors } from '~/lib/colors';
 
-export interface Props extends React.InputHTMLAttributes<HTMLInputElement> {}
+export interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
+  errorMessage?: string;
+}
 
-const Input = React.forwardRef<HTMLInputElement, Props>(({ ...rest }: Props, ref) => {
-  return <StyledInput ref={ref} {...rest} />;
+const Input = React.forwardRef<HTMLInputElement, Props>(({ errorMessage, ...rest }: Props, ref) => {
+  return (
+    <>
+      <StyledInput ref={ref} {...rest} />
+      {errorMessage && <Message>{errorMessage}</Message>}
+    </>
+  );
 });
+
 const StyledInput = styled.input`
   height: 48px;
   border-radius: 4px;
@@ -28,6 +36,12 @@ const StyledInput = styled.input`
     background-color: ${colors.gray0};
     color: ${colors.gray3};
   }
+`;
+
+const Message = styled.div`
+  color: red;
+  font-size: 14px;
+  margin-top: 4px;
 `;
 
 export default Input;

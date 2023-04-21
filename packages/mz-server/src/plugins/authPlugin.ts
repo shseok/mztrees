@@ -15,6 +15,12 @@ const authPluginAsync: FastifyPluginAsync = async (fastify) => {
       request.headers.authorization?.split('Bearer ')[1] ??
       request.cookies.access_token
 
+    // 쿠키 또한 시간이 지나면 없어지므로 access token은 존재하지 않고 refresh token만 존재하는 경우
+    if (request.cookies.refresh_token && !token) {
+      request.isExpiredToken = true
+      return
+    }
+
     if (!token) return
 
     try {
