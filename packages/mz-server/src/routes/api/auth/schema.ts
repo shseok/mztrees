@@ -47,7 +47,7 @@ export const loginSchema: FastifySchema = {
   response: {
     200: authResultSchema,
     401: createAppErrorSchema({
-      name: 'AuthenticationEror',
+      name: 'AuthenticationError',
       message: 'Invalid username or password',
       statusCode: 401,
     }),

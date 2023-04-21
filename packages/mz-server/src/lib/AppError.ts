@@ -1,6 +1,6 @@
 type ErrorName =
   | 'UserExistsError'
-  | 'AuthenticationEror'
+  | 'AuthenticationError'
   | 'UnknownError'
   | 'UnauthorizedError'
   | 'BadRequestError'
@@ -13,7 +13,7 @@ type ErrorInfo = {
 
 interface ErrorPayloads {
   UserExistsError: undefined
-  AuthenticationEror: undefined
+  AuthenticationError: undefined
   UnknownError: undefined
   BadRequestError: undefined
   RefreshTokenError: undefined
@@ -27,7 +27,7 @@ const statusCodeMap: Record<ErrorName, ErrorInfo> = {
     message: 'User already exists',
     statusCode: 409,
   },
-  AuthenticationEror: {
+  AuthenticationError: {
     message: 'Invalid username or password',
     statusCode: 401,
   },

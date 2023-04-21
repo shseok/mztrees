@@ -89,13 +89,13 @@ class UserService {
 
     if (!user) {
       // 유저가 존재하지 않는다는 에러는 결국 디비의 존재유무를 알려주는것. > 그저 인증실패로 에러 표현
-      throw new AppError('AuthenticationEror')
+      throw new AppError('AuthenticationError')
     }
 
     try {
       const result = await bcrypt.compare(password, user.passwordHash)
       if (!result) {
-        throw new AppError('AuthenticationEror')
+        throw new AppError('AuthenticationError')
       }
     } catch (e) {
       if (isAppError(e)) {
