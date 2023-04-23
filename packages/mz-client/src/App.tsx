@@ -2,20 +2,20 @@ import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import Home from '~/pages/Home';
 import Error from '~/pages/Error';
 import Register from '~/pages/Register';
-import Header from '~/components/Header';
-import React, { useEffect } from 'react';
+import Header from '~/components/base/Header';
+import React from 'react';
 import Login from '~/pages/Login';
-import { getMyAccount } from '~/lib/api/auth';
+import Footer from '~/components/base/Footer';
+import FullHeightPage from '~/components/system/FullHeightPage';
+import Search from '~/pages/Search';
 
 const Layout = () => {
   return (
-    <>
+    <FullHeightPage>
       <Header />
-      <div className='layout'>
-        <Outlet />
-      </div>
-      {/*<Footer />*/}
-    </>
+      <Outlet />
+      <Footer />
+    </FullHeightPage>
   );
 };
 
@@ -27,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Home />,
+      },
+      {
+        path: '/search',
+        element: <Search />,
       },
     ],
     errorElement: <Error />,
@@ -46,19 +50,17 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  // const cookieState = useCookieState();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      // const cookie = cookieState;
-      // if (!cookie) return;
-      // setClientCookie(cookie);
-      const me = await getMyAccount();
-      console.log('hhhh', me);
-    };
-
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     // const cookie = cookieState;
+  //     // if (!cookie) return;
+  //     // setClientCookie(cookie);
+  //     const me = await getMyAccount();
+  //     console.log('hhhh', me);
+  //   };
+  //
+  //   fetchData();
+  // }, []);
 
   return (
     <div className='app'>
