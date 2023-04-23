@@ -1,9 +1,9 @@
 import React from 'react';
-import HeaderBackButton from '~/components/HeaderBackButton';
-import Header from '~/components/Header';
+import HeaderBackButton from '~/components/base/HeaderBackButton';
+import Header from '~/components/base/Header';
 import { useGoBack } from '~/hooks/useGoback';
-import FullHeightPage from '~/components/FullHeightPage';
-import AuthForm from '~/components/AuthForm';
+import FullHeightPage from '~/components/system/FullHeightPage';
+import AuthForm from '~/components/auth/AuthForm';
 
 const Register = () => {
   const goBack = useGoBack();

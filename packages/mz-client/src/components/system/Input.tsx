@@ -41,7 +41,7 @@ const StyledInput = styled.input`
 const Message = styled.div`
   color: red;
   font-size: 14px;
-  margin-top: 4px;
+  margin-top: 8px;
 `;
 
 export default Input;
