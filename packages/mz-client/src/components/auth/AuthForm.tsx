@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
-import LabelInput from '~/components/LabelInput';
-import Button from '~/components/Button';
-import QuestionLink from '~/components/QuestionLink';
+import LabelInput from '~/components/system/LabelInput';
+import Button from '~/components/system/Button';
+import QuestionLink from '~/components/auth/QuestionLink';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { userLogin, userRegister } from '~/lib/api/auth';
 import { AppError, extractError } from '~/lib/error';
@@ -59,8 +59,8 @@ const AuthForm = ({ mode }: Props) => {
       setError(error);
     }
   };
-  // console.log(watch('username')); // username이 등록된 컴포넌트에 값을 입력시 매번 확인기능
   const usernameErrorMessage = useMemo(() => {
+    if (mode !== 'register') return undefined;
     if (errors.username) {
       if (errors.username.type === 'minLength' || 'maxLength') {
         return '5~20자 사이의 글자를 입력해주세요.';
@@ -75,6 +75,7 @@ const AuthForm = ({ mode }: Props) => {
   }, [error, errors.username]);
 
   const passwordErrorMessage = useMemo(() => {
+    if (mode !== 'register') return undefined;
     if (errors.password) {
       if (errors.password.type === 'minLength' || 'maxLength') {
         return '8~20자 사이의 글자를 입력해주세요.';
@@ -91,6 +92,7 @@ const AuthForm = ({ mode }: Props) => {
   console.log(error);
   // console.log(errors.username, errors.password, errors);
 
+  // handleSubmit > e.preventDefault() 를 기본으로 적용된다.
   return (
     <StyledForm method='post' onSubmit={handleSubmit(onSubmit)}>
       <InputGroup>
