@@ -1,28 +1,18 @@
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from '~/pages/Home';
 import Error from '~/pages/Error';
 import Register from '~/pages/Register';
-import Header from '~/components/base/Header';
 import React from 'react';
 import Login from '~/pages/Login';
-import Footer from '~/components/base/Footer';
-import FullHeightPage from '~/components/system/FullHeightPage';
 import Search from '~/pages/Search';
-
-const Layout = () => {
-  return (
-    <FullHeightPage>
-      <Header />
-      <Outlet />
-      <Footer />
-    </FullHeightPage>
-  );
-};
+import BookMarks from '~/pages/BookMarks';
+import Setting from '~/pages/Setting';
+import TapLayout from '~/components/layout/TapLayout';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Layout />,
+    element: <TapLayout />,
     children: [
       {
         path: '/',
@@ -31,6 +21,14 @@ const router = createBrowserRouter([
       {
         path: '/search',
         element: <Search />,
+      },
+      {
+        path: '/bookmarks',
+        element: <BookMarks />,
+      },
+      {
+        path: '/setting',
+        element: <Setting />,
       },
     ],
     errorElement: <Error />,
