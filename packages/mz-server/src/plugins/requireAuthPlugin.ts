@@ -6,6 +6,8 @@ import AppError from '../lib/AppError.js'
 
 const requireAuthPluginAsync: FastifyPluginAsync = async (fastify) => {
   fastify.addHook('preHandler', async (request, reply) => {
+    // console.log(request.user, request.isExpiredToken, request.cookies)
+    // console.log(request)
     // 토큰 만료시 리뉴 작업을 클라에서 요청하도록 로직 구성하기
     if (request.isExpiredToken) {
       throw new AppError('UnauthorizedError', {

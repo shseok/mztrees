@@ -51,9 +51,8 @@ const AuthForm = ({ mode }: Props) => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
     try {
-      const { result, headers } =
-        mode === 'register' ? await userRegister(data) : await userLogin(data);
-      console.log(result, headers);
+      const result = mode === 'register' ? await userRegister(data) : await userLogin(data);
+      console.log(result);
     } catch (e) {
       const error = extractError(e);
       setError(error);

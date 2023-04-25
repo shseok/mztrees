@@ -18,22 +18,19 @@ const IconMap = {
 
 interface Props {
   icon: keyof typeof IconMap;
-  to?: string;
+  to: string;
 }
 
 const FooterTabItem = ({ icon, to }: Props) => {
   const iconEl = React.createElement(IconMap[icon]);
-  if (to) {
-    return (
-      <LinkItem
-        to={to}
-        className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
-      >
-        {iconEl}
-      </LinkItem>
-    );
-  }
-  return <ButtonItem>{iconEl}</ButtonItem>;
+  return (
+    <LinkItem
+      to={to}
+      className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
+    >
+      {iconEl}
+    </LinkItem>
+  );
 };
 
 const CommonStyle = css`
@@ -54,14 +51,6 @@ const CommonStyle = css`
 `;
 
 const LinkItem = styled(NavLink)`
-  ${CommonStyle}
-`;
-
-const ButtonItem = styled.button`
-  background: transparent;
-  outline: none;
-  border: none;
-
   ${CommonStyle}
 `;
 
