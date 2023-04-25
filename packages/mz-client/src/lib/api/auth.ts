@@ -18,7 +18,7 @@ export async function getMyAccount() {
   // const data = await response.json();
   // return data;
   try {
-    const response = await axios.get('/base/api/me', {
+    const response = await axios.get<User>('/base/api/me', {
       headers: { 'Content-Type': 'application/json' },
       withCredentials: true,
     });
@@ -27,6 +27,14 @@ export async function getMyAccount() {
     console.log(e);
     return null;
   }
+}
+
+let getMyAccountPromise: Promise<User> | null = null;
+export async function getMemorizedMyAccount() {
+  if (getMyAccountPromise === null) {
+    getMyAccountPromise = getMyAccount();
+  }
+  return getMyAccountPromise;
 }
 
 interface AuthParams {
