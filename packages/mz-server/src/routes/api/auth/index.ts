@@ -1,12 +1,17 @@
 import { FastifyPluginAsync, FastifyReply } from 'fastify'
 import UserService from '../../../services/UserService.js'
-import { loginSchema, refreshTokenSchema, registerSchema } from './schema.js'
-import { AuthBody } from './types.js'
+import {
+  loginSchema,
+  refreshTokenSchema,
+  registerSchema,
+  AuthBody,
+  AuthBodyType,
+} from './schema.js'
 import AppError from '../../../lib/AppError.js'
 
 const authRoute: FastifyPluginAsync = async (fastify) => {
   const userService = UserService.getInstance()
-  fastify.post<{ Body: AuthBody }>(
+  fastify.post<{ Body: AuthBodyType }>(
     '/login',
     {
       schema: loginSchema,
@@ -20,7 +25,7 @@ const authRoute: FastifyPluginAsync = async (fastify) => {
     },
   )
 
-  fastify.post<{ Body: AuthBody }>(
+  fastify.post<{ Body: AuthBodyType }>(
     '/register',
     { schema: registerSchema },
     async (request, reply) => {

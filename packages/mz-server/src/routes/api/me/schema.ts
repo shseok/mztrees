@@ -1,11 +1,11 @@
 import { FastifySchema } from 'fastify'
-import { userSchema } from '../../../schema/UserSchema.js'
-import { appErrorSchema, createAppErrorSchema } from '../../../lib/AppError.js'
+import { UserSchema } from '../../../schema/UserSchema.js'
+import { createAppErrorSchema } from '../../../lib/AppError.js'
 
 export const getMeSchema: FastifySchema = {
   // get은 body x
   response: {
-    200: userSchema,
+    200: UserSchema,
     401: createAppErrorSchema(
       {
         name: 'UnauthorizedError',
