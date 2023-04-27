@@ -4,7 +4,6 @@ import {
   loginSchema,
   refreshTokenSchema,
   registerSchema,
-  AuthBody,
   AuthBodyType,
 } from './schema.js'
 import AppError from '../../../lib/AppError.js'
