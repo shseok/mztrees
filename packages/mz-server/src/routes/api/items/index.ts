@@ -1,9 +1,16 @@
 import { FastifyPluginAsync } from 'fastify'
-import { WriteItemRoute, writeItemSchema } from './schema.js'
+import {
+  GetItemRoute,
+  GetItemSchema,
+  GetItemsRoute,
+  WriteItemRoute,
+  WriteItemSchema,
+} from './schema.js'
 import { createAuthorizedRoute } from '../../../plugins/requireAuthPlugin.js'
 import ItemService from '../../../services/ItemService.js'
 
 export const itemsRoute: FastifyPluginAsync = async (fastify) => {
+  const itemService = ItemService.getInstance()
   // fastify.register(async (fastify) => {
   //   fastify.register(requireAuthPlugin)
   //   fastify.post<WriteItemRoute>(
@@ -14,21 +21,42 @@ export const itemsRoute: FastifyPluginAsync = async (fastify) => {
   //     },
   //   )
   // })
-  fastify.register(authorizedItemRoute) // refactoring above code
 
-  fastify.get('/', async () => {
-    return { hello: 'world' }
+  fastify.register(authorizedItemRoute(itemService)) // refactoring above code
+  fastify.get<GetItemRoute>(
+    '/:id',
+    { schema: GetItemSchema },
+    async (request) => {
+      const { id } = request.params
+      const item = await itemService.getItem(id)
+      if (item) {
+        return item
+      }
+      return null
+    },
+  )
+
+  fastify.get<GetItemsRoute>('/', async (request) => {
+    const { cursor } = request.query
+    return itemService.getPulicItems({
+      mode: 'recent',
+      cursor: cursor ? parseInt(cursor, 10) : null,
+    })
   })
 }
 
-const authorizedItemRoute = createAuthorizedRoute(async (fastify) => {
-  const itemService = ItemService.getInstance()
-  fastify.post<WriteItemRoute>(
-    '/',
-    { schema: writeItemSchema },
-    async (request) => {
-      const item = await itemService.createItem(request.user!.id, request.body)
-      return item
-    },
-  )
-})
+const authorizedItemRoute = (itemService: ItemService) =>
+  createAuthorizedRoute(async (fastify) => {
+    // const itemService = ItemService.getInstance()
+    fastify.post<WriteItemRoute>(
+      '/',
+      { schema: WriteItemSchema },
+      async (request) => {
+        const item = await itemService.createItem(
+          request.user!.id,
+          request.body,
+        )
+        return item
+      },
+    )
+  })
