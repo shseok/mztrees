@@ -2,6 +2,7 @@ import { Static, Type } from '@sinclair/typebox'
 import { FastifySchema } from 'fastify'
 import { Nullable } from '../../../lib/typebox.js'
 import { UserSchema } from '../../../schema/UserSchema.js'
+import { PaginationSchema } from '../../../lib/pagination.js'
 
 // createItems
 
@@ -59,16 +60,16 @@ const ReadItemParamsSchema = Type.Object({
 
 type ReadItemParamsType = Static<typeof ReadItemParamsSchema>
 
+export interface GetItemRoute {
+  Params: ReadItemParamsType
+}
+
 export const GetItemSchema: FastifySchema = {
   tags: ['item'],
   params: ReadItemParamsSchema,
   response: {
     200: ItemSchema,
   },
-}
-
-export interface GetItemRoute {
-  Params: ReadItemParamsType
 }
 
 // getItems
@@ -81,4 +82,10 @@ type ReadItemsParamsType = Static<typeof ReadItemsParamsSchema>
 
 export interface GetItemsRoute {
   Querystring: ReadItemsParamsType
+}
+
+export const GetItemsSchema: FastifySchema = {
+  response: {
+    200: PaginationSchema(ItemSchema),
+  },
 }
