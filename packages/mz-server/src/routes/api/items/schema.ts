@@ -54,19 +54,19 @@ export interface WriteItemRoute {
 
 // getItem
 
-const ReadItemParamsSchema = Type.Object({
+const ItemParamsSchema = Type.Object({
   id: Type.Number(),
 })
 
-type ReadItemParamsType = Static<typeof ReadItemParamsSchema>
+type ItemParamsType = Static<typeof ItemParamsSchema>
 
 export interface GetItemRoute {
-  Params: ReadItemParamsType
+  Params: ItemParamsType
 }
 
 export const GetItemSchema: FastifySchema = {
   tags: ['item'],
-  params: ReadItemParamsSchema,
+  params: ItemParamsSchema,
   response: {
     200: ItemSchema,
   },
@@ -74,18 +74,42 @@ export const GetItemSchema: FastifySchema = {
 
 // getItems
 
-const ReadItemsParamsSchema = Type.Object({
+const ItemsParamsSchema = Type.Object({
   cursor: Type.Optional(Type.String()),
 })
 
-type ReadItemsParamsType = Static<typeof ReadItemsParamsSchema>
+type ItemsParamsType = Static<typeof ItemsParamsSchema>
 
 export interface GetItemsRoute {
-  Querystring: ReadItemsParamsType
+  Querystring: ItemsParamsType
 }
 
 export const GetItemsSchema: FastifySchema = {
+  tags: ['item'],
   response: {
     200: PaginationSchema(ItemSchema),
+  },
+}
+
+// updateItem
+const UpdateItemBodySchema = Type.Object({
+  title: Type.String(),
+  body: Type.String(),
+  tags: Type.Array(Type.String()),
+})
+
+type UpdateItemBodyType = Static<typeof UpdateItemBodySchema>
+
+export interface UpdateItemRoute {
+  Params: ItemParamsType
+  Body: UpdateItemBodyType
+}
+
+export const UpdateItemSchema: FastifySchema = {
+  tags: ['item'],
+  params: ItemParamsSchema,
+  body: UpdateItemBodySchema,
+  response: {
+    200: ItemSchema,
   },
 }

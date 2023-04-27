@@ -4,6 +4,8 @@ import {
   GetItemSchema,
   GetItemsRoute,
   GetItemsSchema,
+  UpdateItemRoute,
+  UpdateItemSchema,
   WriteItemRoute,
   WriteItemSchema,
 } from './schema.js'
@@ -58,10 +60,21 @@ const authorizedItemRoute = (itemService: ItemService) =>
       { schema: WriteItemSchema },
       async (request) => {
         const item = await itemService.createItem(
-          request.user!.id,
+          request.user!.id, // authorizedItemRoute때문에 무조건 존재 => !
           request.body,
         )
         return item
+      },
+    )
+
+    fastify.patch<UpdateItemRoute>(
+      '/:id',
+      { schema: UpdateItemSchema },
+      async (request) => {
+        const { id: itemId } = request.params
+        const userId = request.user!.id
+        const { title, body } = request.body
+        return itemService.updateItem({ userId, itemId, title, body })
       },
     )
   })

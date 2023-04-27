@@ -89,9 +89,36 @@ class ItemService {
 
     return []
   }
+
+  async updateItem({ itemId, userId, title, body }: UpdateItemParams) {
+    const item = await this.getItem(itemId)
+    if (item.userId !== userId) {
+      throw new AppError('ForbiddenError')
+    }
+    const updatedItem = await db.item.update({
+      where: {
+        id: itemId,
+      },
+      data: {
+        title,
+        body,
+      },
+      include: {
+        user: true,
+      },
+    })
+    return updatedItem
+  }
 }
 export default ItemService
 
 type GetPublicItemsParams =
   | { mode: 'trending' | 'recent' }
   | { mode: 'past'; date: string }
+
+interface UpdateItemParams {
+  itemId: number
+  userId: number
+  title: string
+  body: string
+}
