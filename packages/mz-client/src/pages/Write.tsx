@@ -1,23 +1,20 @@
-import React, { useState } from 'react';
-import WriteIntroForm from '~/components/write/WriteIntroForm';
-import WriteLinkForm from '~/components/write/WriteLinkForm';
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import { WriteProvider } from '~/context/WriteContext';
 import { useProtectedRoute } from '~/hooks/useProtectedRoute';
 
-type Step = 'link' | 'intro';
-
 const Write = () => {
-  const [step, setStep] = useState<Step>('link');
   const hasPermission = useProtectedRoute();
   if (!hasPermission) {
+    // 인가 관련 에러처리해주기 (react-tostify)
     return null;
   }
 
-  const stepRenderer = {
-    link: () => <WriteLinkForm onProceed={() => setStep('intro')} />,
-    intro: () => <WriteIntroForm />,
-  };
-
-  return stepRenderer[step]();
+  return (
+    <WriteProvider>
+      <Outlet />
+    </WriteProvider>
+  );
 };
 
 export default Write;

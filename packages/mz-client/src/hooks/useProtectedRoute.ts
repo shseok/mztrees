@@ -1,16 +1,21 @@
-import { useUser } from '~/context/UserContext';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { getMemorizedMyAccount } from '~/lib/api/auth';
 
 export const useProtectedRoute = () => {
-  const user = useUser();
   const navigate = useNavigate();
+  const [hasUser, setHasUser] = useState(false);
 
   useEffect(() => {
-    if (!user) {
-      navigate('/login?redirect=/write');
-    }
-  }, [user, navigate]);
-
-  return !!user;
+    const fetchData = async () => {
+      const result = await getMemorizedMyAccount();
+      if (result) {
+        setHasUser(true);
+      } else {
+        navigate('/login?redirect=/write');
+      }
+    };
+    fetchData();
+  }, [hasUser, navigate]);
+  return hasUser;
 };

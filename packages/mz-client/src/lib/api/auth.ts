@@ -29,7 +29,7 @@ export async function getMyAccount() {
   }
 }
 
-let getMyAccountPromise: Promise<User> | null = null;
+let getMyAccountPromise: Promise<User | null> | null = null;
 export async function getMemorizedMyAccount() {
   if (getMyAccountPromise === null) {
     getMyAccountPromise = getMyAccount();

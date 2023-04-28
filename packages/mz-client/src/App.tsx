@@ -2,15 +2,14 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from '~/pages/Home';
 import Error from '~/pages/Error';
 import Register from '~/pages/Register';
-import React, { useEffect, useState } from 'react';
 import Login from '~/pages/Login';
 import Search from '~/pages/Search';
 import BookMarks from '~/pages/BookMarks';
 import Setting from '~/pages/Setting';
 import TapLayout from '~/components/layout/TapLayout';
+import WriteIntro from '~/pages/write/WriteIntro';
+import WriteLink from '~/pages/write/WriteLink';
 import Write from '~/pages/Write';
-import { UserContext } from '~/context/UserContext';
-import { getMemorizedMyAccount, User } from '~/lib/api/auth';
 
 const router = createBrowserRouter([
   {
@@ -47,6 +46,20 @@ const router = createBrowserRouter([
   {
     path: '/write',
     element: <Write />,
+    children: [
+      {
+        path: '/write',
+        element: <WriteLink />,
+      },
+      {
+        path: '/write/intro',
+        element: <WriteIntro />,
+      },
+      {
+        path: '/write/link',
+        element: <WriteLink />,
+      },
+    ],
   },
   // {
   //   path: '/error',
@@ -55,24 +68,9 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  const [data, setData] = useState<User | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      // const cookie = cookieState;
-      // if (!cookie) return;
-      // setClientCookie(cookie);
-      const result = await getMemorizedMyAccount();
-      setData(result);
-    };
-    fetchData();
-  }, []);
-  console.log(data);
   return (
     <div className='app'>
-      <UserContext.Provider value={data}>
-        <RouterProvider router={router} />
-      </UserContext.Provider>
+      <RouterProvider router={router} />
     </div>
   );
 }

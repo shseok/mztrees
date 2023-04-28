@@ -23,6 +23,7 @@ const StyledInput = styled.input`
   font-size: 16px;
   padding: 0 16px;
   color: ${colors.gray5};
+  transition: all 0.25s ease-in-out;
 
   &:focus {
     border: 1px solid ${colors.primary};

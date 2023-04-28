@@ -36,6 +36,7 @@ const Label = styled.label<{ focused?: boolean }>`
   font-weight: 600;
   line-height: 1.5;
   margin-bottom: 8px;
+  transition: all 0.25s ease-in-out;
 
   ${(props: { focused?: boolean }) =>
     props.focused &&

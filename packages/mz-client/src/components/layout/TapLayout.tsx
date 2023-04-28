@@ -5,16 +5,12 @@ import Footer from '~/components/base/Footer';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
-interface Props {
-  children?: React.ReactNode;
-}
-
-const TapLayout = ({ children }: Props) => {
+const TapLayout = () => {
   return (
     <FullHeightPage>
       <Header />
       <Content>
-        <Outlet>{children}</Outlet>
+        <Outlet />
       </Content>
       <Footer />
     </FullHeightPage>
