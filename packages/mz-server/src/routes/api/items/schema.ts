@@ -113,3 +113,16 @@ export const UpdateItemSchema: FastifySchema = {
     200: ItemSchema,
   },
 }
+
+// delete Item
+export const DeleteItemSchema: FastifySchema = {
+  tags: ['item'],
+  params: ItemParamsSchema,
+  response: {
+    204: Type.Null(),
+  },
+}
+
+export interface DeleteItemRoute {
+  Params: ItemParamsType
+}

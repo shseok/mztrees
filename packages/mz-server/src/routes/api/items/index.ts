@@ -1,5 +1,7 @@
 import { FastifyPluginAsync } from 'fastify'
 import {
+  DeleteItemRoute,
+  DeleteItemSchema,
   GetItemRoute,
   GetItemSchema,
   GetItemsRoute,
@@ -75,6 +77,17 @@ const authorizedItemRoute = (itemService: ItemService) =>
         const userId = request.user!.id
         const { title, body } = request.body
         return itemService.updateItem({ userId, itemId, title, body })
+      },
+    )
+
+    fastify.delete<DeleteItemRoute>(
+      '/:id',
+      { schema: DeleteItemSchema },
+      async (request, reply) => {
+        const { id: itemId } = request.params
+        const userId = request.user!.id
+        await itemService.deleteItem({ userId, itemId })
+        reply.status(204)
       },
     )
   })

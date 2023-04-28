@@ -109,6 +109,18 @@ class ItemService {
     })
     return updatedItem
   }
+
+  async deleteItem({ itemId, userId }: DeleteItemParams) {
+    const item = await this.getItem(itemId)
+    if (item.userId !== userId) {
+      throw new AppError('ForbiddenError')
+    }
+    await db.item.delete({
+      where: {
+        id: itemId,
+      },
+    })
+  }
 }
 export default ItemService
 
@@ -121,4 +133,9 @@ interface UpdateItemParams {
   userId: number
   title: string
   body: string
+}
+
+interface DeleteItemParams {
+  itemId: number
+  userId: number
 }

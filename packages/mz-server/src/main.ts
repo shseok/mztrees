@@ -30,7 +30,7 @@ await server.register(fastifySwaggerUi, swaggerUiConfig)
 server.register(fastifyCookie)
 
 server.setErrorHandler(async (error, request, reply) => {
-  // reply.statusCode는 기본적으로 200이기 때문
+  // Fastify에서는 기본적으로 HTTP 응답 코드로 200 (OK)을 사용하므로
   reply.statusCode = error.statusCode ?? 500
   if (error instanceof AppError) {
     return {
