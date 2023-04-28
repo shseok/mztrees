@@ -111,6 +111,7 @@ const AuthForm = ({ mode }: Props) => {
         {/*{errors.username && <span>This field is required</span>}*/}
         <LabelInput
           label='비밀번호'
+          type='password'
           {...register('password', {
             required: true,
             minLength: 8,

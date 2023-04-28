@@ -9,9 +9,10 @@ interface Props {
   hasBackButton: boolean;
   title: string;
   children?: React.ReactNode;
+  onGoback?(): void;
 }
 
-const BasicLayout = ({ hasBackButton, title, children }: Props) => {
+const BasicLayout = ({ hasBackButton, title, children, onGoback }: Props) => {
   const goBack = useGoBack();
 
   return (
@@ -19,7 +20,7 @@ const BasicLayout = ({ hasBackButton, title, children }: Props) => {
       <Content>
         <Header
           title={title}
-          headerLeft={hasBackButton ? <HeaderBackButton onClick={goBack} /> : undefined}
+          headerLeft={hasBackButton ? <HeaderBackButton onClick={onGoback ?? goBack} /> : undefined}
         />
         {children}
       </Content>

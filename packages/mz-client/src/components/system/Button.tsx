@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { colors } from '~/lib/colors';
 
 interface ButtonProps {
-  layoutMode: 'inline' | 'fullWidth';
+  layoutMode?: 'inline' | 'fullWidth';
 }
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement>, ButtonProps {}
 
