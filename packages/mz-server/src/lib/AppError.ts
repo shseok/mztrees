@@ -1,3 +1,5 @@
+/* @todo: replace AppError to nextError */
+
 type ErrorName =
   | 'UserExistsError'
   | 'AuthenticationError'
