@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { User } from './types';
 
 export async function userRegister(params: AuthParams) {
   const response = await axios.post<AuthResult>('/base/api/auth/register', params);
@@ -50,9 +51,4 @@ export interface AuthResult {
 export interface Tokens {
   accessToken: string;
   refreshToken: string;
-}
-
-export interface User {
-  id: string;
-  username: string;
 }

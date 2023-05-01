@@ -7,6 +7,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { userLogin, userRegister } from '~/lib/api/auth';
 import { AppError, extractError } from '~/lib/error';
 import { validate } from '~/lib/validate';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   mode: 'login' | 'register';
@@ -46,6 +47,7 @@ const AuthForm = ({ mode }: Props) => {
   } = useForm<Inputs>({
     mode: 'all',
   });
+  const navigate = useNavigate();
 
   const [error, setError] = useState<AppError | undefined>();
 
@@ -53,6 +55,7 @@ const AuthForm = ({ mode }: Props) => {
     try {
       const result = mode === 'register' ? await userRegister(data) : await userLogin(data);
       console.log(result);
+      navigate('/');
     } catch (e) {
       const error = extractError(e);
       setError(error);

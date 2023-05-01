@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BasicLayout from '~/components/layout/BasicLayout';
 import LabelInput from '~/components/system/LabelInput';
@@ -8,6 +8,7 @@ import { useWriteContext } from '~/context/WriteContext';
 const WriteLink = () => {
   const navigation = useNavigate();
   const { state, actions } = useWriteContext();
+  const [link, setLink] = useState(state.link);
 
   return (
     <BasicLayout title='링크 입력' hasBackButton>
@@ -16,16 +17,16 @@ const WriteLink = () => {
         buttonText='다음'
         onSubmit={(e) => {
           e.preventDefault();
-          actions.setUrl(e.currentTarget.url.value);
-          // navigation을 하면 e.prevent.. 를 안해줘도 되네??
+          actions.setLink(link);
           navigation('/write/intro');
         }}
       >
         <LabelInput
           label='url'
           placeholder='https://example.com'
-          name='url'
-          defaultValue={state.url}
+          // defaultValue={state.url}
+          onChange={(e) => setLink(e.target.value)}
+          value={link}
         />
       </WriteFormTemplate>
     </BasicLayout>

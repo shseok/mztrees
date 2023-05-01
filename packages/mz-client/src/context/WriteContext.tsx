@@ -1,11 +1,11 @@
 import { createContext, useContext, useMemo, useState } from 'react';
 
 interface WriteContextState {
-  url: string;
+  link: string;
 }
 
 interface WriteContextActions {
-  setUrl(url: string): void;
+  setLink(link: string): void;
   reset(): void;
 }
 
@@ -22,20 +22,20 @@ interface Props {
 
 export const WriteProvider = ({ children }: Props) => {
   const [state, setState] = useState<WriteContextState>({
-    url: '',
+    link: '',
   });
 
   const actions = useMemo(() => {
     return {
-      setUrl(url: string) {
+      setLink(link: string) {
         setState((prev) => ({
           ...prev,
-          url,
+          link,
         }));
       },
       reset() {
         setState({
-          url: '',
+          link: '',
         });
       },
     };
