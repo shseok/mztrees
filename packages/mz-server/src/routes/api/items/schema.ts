@@ -20,6 +20,7 @@ const ItemSchema = Type.Object({
   title: Type.String(),
   body: Type.String(),
   link: Type.String(),
+  author: Type.String(),
   thumbnail: Nullable(Type.String()),
   createdAt: Type.String(),
   updatedAt: Type.String(),
@@ -32,6 +33,7 @@ ItemSchema.example = {
   body: 'string',
   link: 'https://string',
   thumbnail: null,
+  author: 'Kerala Taylor',
   createdAt: '2023-04-26T08:28:12.443Z',
   updatedAt: '2023-04-26T08:28:12.443Z',
   user: {

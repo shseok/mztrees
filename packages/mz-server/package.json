@@ -22,10 +22,16 @@
     "@fastify/type-provider-typebox": "^3.1.0",
     "@prisma/client": "^4.12.0",
     "@sinclair/typebox": "^0.28.6",
+    "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "dotenv": "^16.0.3",
     "fastify": "^4.15.0",
-    "jsonwebtoken": "^9.0.0"
+    "jsonwebtoken": "^9.0.0",
+    "metascraper": "^5.34.3",
+    "metascraper-author": "^5.34.3",
+    "metascraper-image": "^5.34.3",
+    "metascraper-logo-favicon": "^5.34.3",
+    "metascraper-publisher": "^5.34.3"
   },
   "scripts": {
     "start": "ts-node-esm --transpileOnly ./src/main.ts | pino-pretty",
