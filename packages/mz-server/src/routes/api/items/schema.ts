@@ -25,6 +25,12 @@ const ItemSchema = Type.Object({
   createdAt: Type.String(),
   updatedAt: Type.String(),
   user: UserSchema,
+  publisher: Type.Object({
+    id: Type.Number(),
+    name: Type.String(),
+    domain: Type.String(),
+    favicon: Nullable(Type.String()),
+  }),
 })
 
 ItemSchema.example = {
@@ -39,6 +45,13 @@ ItemSchema.example = {
   user: {
     id: 35,
     username: 'gigigi3',
+  },
+  publisher: {
+    id: 4,
+    name: 'Medium',
+    domain: 'keralataylor.medium.com',
+    favicon:
+      'https://cdn-static-1.medium.com/_/fp/icons/Medium-Avatar-500x500.svg',
   },
 }
 

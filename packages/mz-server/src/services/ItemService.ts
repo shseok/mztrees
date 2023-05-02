@@ -12,7 +12,7 @@ class ItemService {
     }
     return ItemService.instance
   }
-  private async getPublisher({ domain, name, favicon }: GetSiteInfooParams) {
+  private async getPublisher({ domain, name, favicon }: GetPublisherfooParams) {
     const exists = await db.publisher.findUnique({
       where: {
         domain,
@@ -21,7 +21,7 @@ class ItemService {
     if (exists) {
       return exists
     }
-    const siteInfo = await db.publisher.create({
+    const publisher = await db.publisher.create({
       data: {
         domain,
         name,
@@ -29,7 +29,7 @@ class ItemService {
       },
     })
 
-    return siteInfo
+    return publisher
   }
 
   async createItem(
@@ -54,6 +54,7 @@ class ItemService {
       },
       include: {
         user: true,
+        publisher: true,
       },
     })
 
@@ -67,6 +68,7 @@ class ItemService {
       },
       include: {
         user: true,
+        publisher: true,
       },
     })
     if (!item) {
@@ -95,6 +97,7 @@ class ItemService {
           },
           include: {
             user: true,
+            publisher: true,
           },
           take: limit,
         }),
@@ -169,7 +172,7 @@ interface DeleteItemParams {
   userId: number
 }
 
-interface GetSiteInfooParams {
+interface GetPublisherfooParams {
   domain: string
   name: string
   favicon: string | null
