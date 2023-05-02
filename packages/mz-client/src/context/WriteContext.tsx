@@ -1,12 +1,19 @@
 import { createContext, useContext, useMemo, useState } from 'react';
+import { AppError } from '~/lib/error';
 
 interface WriteContextState {
-  link: string;
+  form: {
+    link: string;
+    title: string;
+    body: string;
+  };
+  error?: AppError;
 }
 
 interface WriteContextActions {
-  setLink(link: string): void;
+  change(key: keyof WriteContextState['form'], value: string): void;
   reset(): void;
+  setError(error?: AppError): void;
 }
 
 interface WriteContextType {
@@ -20,23 +27,37 @@ interface Props {
   children: React.ReactNode;
 }
 
-export const WriteProvider = ({ children }: Props) => {
-  const [state, setState] = useState<WriteContextState>({
+const initialState = {
+  form: {
     link: '',
-  });
+    title: '',
+    body: '',
+  },
+  error: undefined,
+};
 
-  const actions = useMemo(() => {
+export const WriteProvider = ({ children }: Props) => {
+  const [state, setState] = useState<WriteContextState>(initialState);
+  // change > immer를 써도되지만, 일단 킵
+  const actions: WriteContextActions = useMemo(() => {
     return {
-      setLink(link: string) {
+      change(key, value) {
         setState((prev) => ({
           ...prev,
-          link,
+          form: {
+            ...prev.form,
+            [key]: value,
+          },
         }));
       },
       reset() {
-        setState({
-          link: '',
-        });
+        setState(initialState);
+      },
+      setError(error) {
+        setState((prev) => ({
+          ...prev,
+          error,
+        }));
       },
     };
   }, []);

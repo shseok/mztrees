@@ -8,7 +8,6 @@ import { useWriteContext } from '~/context/WriteContext';
 const WriteLink = () => {
   const navigation = useNavigate();
   const { state, actions } = useWriteContext();
-  const [link, setLink] = useState(state.link);
 
   return (
     <BasicLayout title='링크 입력' hasBackButton>
@@ -17,7 +16,6 @@ const WriteLink = () => {
         buttonText='다음'
         onSubmit={(e) => {
           e.preventDefault();
-          actions.setLink(link);
           navigation('/write/intro');
         }}
       >
@@ -25,8 +23,11 @@ const WriteLink = () => {
           label='url'
           placeholder='https://example.com'
           // defaultValue={state.url}
-          onChange={(e) => setLink(e.target.value)}
-          value={link}
+          onChange={(e) => {
+            actions.change('link', e.target.value);
+          }}
+          value={state.form.link}
+          errorMessage={state.error?.statusCode === 422 ? '유효하지 않은 URL입니다.' : undefined}
         />
       </WriteFormTemplate>
     </BasicLayout>
