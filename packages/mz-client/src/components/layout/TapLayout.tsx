@@ -5,11 +5,16 @@ import Footer from '~/components/base/Footer';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
-const TapLayout = () => {
+interface Props {
+  className?: string;
+}
+
+const TabLayout = ({ className }: Props) => {
+  console.log(className);
   return (
     <FullHeightPage>
       <Header />
-      <Content>
+      <Content className={className}>
         <Outlet />
       </Content>
       <Footer />
@@ -23,4 +28,4 @@ const Content = styled.div`
   flex: 1;
 `;
 
-export default TapLayout;
+export default TabLayout;

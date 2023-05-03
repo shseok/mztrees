@@ -6,15 +6,20 @@ import Login from '~/pages/Login';
 import Search from '~/pages/Search';
 import BookMarks from '~/pages/BookMarks';
 import Setting from '~/pages/Setting';
-import TapLayout from '~/components/layout/TapLayout';
+import TabLayout from '~/components/layout/TapLayout';
 import WriteIntro from '~/pages/write/WriteIntro';
 import WriteLink from '~/pages/write/WriteLink';
 import Write from '~/pages/Write';
+import styled from 'styled-components';
+
+const StyledTabLayout = styled(TabLayout)`
+  padding: 16px 16px 0 16px;
+`;
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <TapLayout />,
+    element: <StyledTabLayout />,
     children: [
       {
         path: '/',
