@@ -8,7 +8,7 @@ export function useDateDistance(date: string | Date) {
   useEffect(() => {
     const interval = setInterval(() => {
       rerender();
-      console.log(value);
+      // console.log(value);
     }, 60 * 1000);
     return () => clearInterval(interval);
   }, []);
@@ -16,7 +16,7 @@ export function useDateDistance(date: string | Date) {
   const formatted = useMemo(() => {
     const d = date instanceof Date ? date : new Date(date);
     const diff = Date.now() - d.getTime();
-    console.log(d, value);
+    // console.log(d, value);
     if (diff < 60 * 1000) {
       return '방금 전';
     }

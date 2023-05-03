@@ -28,6 +28,6 @@ export interface User {
   username: string;
 }
 export interface PageInfo {
-  endCursor: number;
+  endCursor: number | null;
   hasNextPage: boolean;
 }

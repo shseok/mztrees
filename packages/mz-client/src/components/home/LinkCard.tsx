@@ -12,6 +12,7 @@ interface Props {
 
 const LinkCard = ({ item }: Props) => {
   const {
+    id,
     thumbnail,
     title,
     body,
@@ -28,7 +29,7 @@ const LinkCard = ({ item }: Props) => {
       <Publisher>
         {favicon ? <img src={favicon} alt='favicon' /> : <Globe />}
         {author ? `${author} · ` : ''}
-        {name}
+        {name}-{id}
       </Publisher>
       <h3>{item.title}</h3>
       <p>{body}</p>
