@@ -21,7 +21,7 @@ const Header = ({ title = <Logo />, headerLeft, headerRight }: HeaderProps) => {
 
 const Block = styled.header`
   position: relative;
-  height: 56px;
+  min-height: 56px;
   border-bottom: 1px solid ${colors.gray0};
   padding: 0 16px;
   display: flex;

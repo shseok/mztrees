@@ -4,6 +4,7 @@ import { Item } from '~/lib/api/types';
 import { colors } from '~/lib/colors';
 import { ReactComponent as Globe } from '~/assets/globe.svg';
 import { ReactComponent as LikeOutline } from '~/assets/like-outline.svg';
+import { useDateDistance } from '~/hooks/useDateDistance';
 
 interface Props {
   item: Item;
@@ -15,9 +16,12 @@ const LinkCard = ({ item }: Props) => {
     title,
     body,
     author,
+    createdAt,
     user: { username },
     publisher: { favicon, name },
   } = item;
+
+  const dateDistance = useDateDistance(createdAt);
   return (
     <Block>
       {thumbnail ? <Thumbnail src={thumbnail} alt={title} /> : null}
@@ -31,7 +35,7 @@ const LinkCard = ({ item }: Props) => {
       <Footer>
         <StyeldLikeOutline />
         <UserInfo>
-          by <b>{username}</b> · 1시간 전{' '}
+          by <b>{username}</b> · {dateDistance}
         </UserInfo>
       </Footer>
     </Block>

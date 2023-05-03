@@ -10,7 +10,6 @@ interface Props {
 }
 
 const TabLayout = ({ className }: Props) => {
-  console.log(className);
   return (
     <FullHeightPage>
       <Header />

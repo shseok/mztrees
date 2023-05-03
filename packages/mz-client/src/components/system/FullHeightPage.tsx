@@ -3,7 +3,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 // fullheight 트리거용(로그인 / 회원가입...)
 
 const GlobalFullHeight = createGlobalStyle`
-html, body, #root{
+html, body, #root, .app{
   height: 100%
 }`;
 
