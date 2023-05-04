@@ -5,6 +5,7 @@ import { colors } from '~/lib/colors';
 import { ReactComponent as Globe } from '~/assets/globe.svg';
 import { ReactComponent as LikeOutline } from '~/assets/like-outline.svg';
 import { useDateDistance } from '~/hooks/useDateDistance';
+import { likeItem } from '~/lib/api/items';
 
 interface Props {
   item: Item;
@@ -29,12 +30,12 @@ const LinkCard = ({ item }: Props) => {
       <Publisher>
         {favicon ? <img src={favicon} alt='favicon' /> : <Globe />}
         {author ? `${author} · ` : ''}
-        {name}-{id}
+        {name}
       </Publisher>
       <h3>{item.title}</h3>
       <p>{body}</p>
       <Footer>
-        <StyeldLikeOutline />
+        <StyeldLikeOutline onClick={() => likeItem(id)} />
         <UserInfo>
           by <b>{username}</b> · {dateDistance}
         </UserInfo>
