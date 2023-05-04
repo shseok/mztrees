@@ -174,7 +174,7 @@ class ItemService {
   }
 
   async updateItemLikes({ itemId, likes }: UpdateItemLikesParams) {
-    await db.itemStats.update({
+    return db.itemStats.update({
       data: {
         likes,
       },
@@ -204,8 +204,8 @@ class ItemService {
       } catch (e) {}
     }
     const likes = await this.countLikes(itemId)
-    await this.updateItemLikes({ itemId, likes })
-    return likes
+    const itemStats = await this.updateItemLikes({ itemId, likes })
+    return itemStats
   }
   async unlikeItem({ itemId, userId }: ItemActionParams) {
     await db.itemLike.delete({
@@ -217,8 +217,8 @@ class ItemService {
       },
     })
     const likes = await this.countLikes(itemId)
-    await this.updateItemLikes({ itemId, likes })
-    return likes
+    const itemStats = await this.updateItemLikes({ itemId, likes })
+    return itemStats
   }
 }
 

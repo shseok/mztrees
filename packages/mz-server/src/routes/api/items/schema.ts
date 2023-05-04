@@ -15,6 +15,15 @@ const CreateItemSchema = Type.Object({
 
 export type CreateItemBodyType = Static<typeof CreateItemSchema>
 
+const ItemStatsSchema = Type.Object({
+  id: Type.Integer(),
+  likes: Type.Integer(),
+})
+
+ItemStatsSchema.example = {
+  id: 1,
+  likes: 10,
+}
 const ItemSchema = Type.Object({
   id: Type.Number(),
   title: Type.String(),
@@ -31,10 +40,7 @@ const ItemSchema = Type.Object({
     domain: Type.String(),
     favicon: Nullable(Type.String()),
   }),
-  itemStats: Type.Object({
-    id: Type.Integer(),
-    likes: Type.Integer(),
-  }),
+  itemStats: ItemStatsSchema,
 })
 
 ItemSchema.example = {
@@ -56,6 +62,10 @@ ItemSchema.example = {
     domain: 'keralataylor.medium.com',
     favicon:
       'https://cdn-static-1.medium.com/_/fp/icons/Medium-Avatar-500x500.svg',
+  },
+  itemStats: {
+    id: 1,
+    likes: 1,
   },
 }
 
@@ -149,12 +159,15 @@ export interface DeleteItemRoute {
 // like Item
 const ItemLikeSchema = Type.Object({
   id: Type.Integer(),
-  likes: Type.Integer(),
+  itemStats: ItemStatsSchema,
 })
 
 ItemLikeSchema.example = {
   id: 1,
-  likes: 10,
+  itemStats: {
+    id: 1,
+    likes: 1,
+  },
 }
 
 export const LikeItemSchema: FastifySchema = {
