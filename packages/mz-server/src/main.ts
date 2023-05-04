@@ -13,16 +13,18 @@ const server: FastifyInstance = Fastify({
   logger: true,
 })
 
-server.register(cors, {
-  origin: [
-    'http://localhost:4000',
-    'http://127.0.0.1:5173',
-    'http://localhost:5173',
-  ],
-  credentials: true,
-  allowedHeaders: ['Cookie', 'Content-Type'],
-  // exposedHeaders: ['Set-Cookie'],
-})
+if (process.env.NODE_ENV === 'development') {
+  server.register(cors, {
+    origin: [
+      'http://localhost:4000',
+      'http://127.0.0.1:5173',
+      'http://localhost:5173',
+    ],
+    credentials: true,
+    allowedHeaders: ['Cookie'],
+    // exposedHeaders: ['Set-Cookie'],
+  })
+}
 
 await server.register(fastifySwagger, swaggerConfig)
 await server.register(fastifySwaggerUi, swaggerUiConfig)

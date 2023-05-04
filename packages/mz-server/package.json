@@ -34,7 +34,7 @@
     "metascraper-publisher": "^5.34.3"
   },
   "scripts": {
-    "start": "ts-node-esm --transpileOnly ./src/main.ts | pino-pretty",
-    "start:dev": "nodemon --watch ./src --exec \"ts-node-esm ./src/main.ts | pino-pretty\" -e -ts"
+    "start": "cross-env NODE_ENV=development ts-node-esm --transpileOnly ./src/main.ts | pino-pretty",
+    "start:dev": "cross-env NODE_ENV=development nodemon --watch ./src --exec \"yarn start\" -e ts"
   }
 }
