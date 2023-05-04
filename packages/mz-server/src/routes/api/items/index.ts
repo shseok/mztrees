@@ -6,6 +6,10 @@ import {
   GetItemSchema,
   GetItemsRoute,
   GetItemsSchema,
+  LikeItemRoute,
+  LikeItemSchema,
+  UnlikeItemRoute,
+  UnlikeItemSchema,
   UpdateItemRoute,
   UpdateItemSchema,
   WriteItemRoute,
@@ -88,6 +92,28 @@ const authorizedItemRoute = (itemService: ItemService) =>
         const userId = request.user!.id
         await itemService.deleteItem({ userId, itemId })
         reply.status(204)
+      },
+    )
+
+    fastify.post<LikeItemRoute>(
+      '/:id/likes',
+      { schema: LikeItemSchema },
+      async (request) => {
+        const { id: itemId } = request.params
+        const userId = request.user!.id
+        const likes = await itemService.likeItem({ userId, itemId })
+        return { id: itemId, likes }
+      },
+    )
+
+    fastify.delete<UnlikeItemRoute>(
+      '/:id/likes',
+      { schema: UnlikeItemSchema },
+      async (request) => {
+        const { id: itemId } = request.params
+        const userId = request.user!.id
+        const likes = await itemService.unlikeItem({ userId, itemId })
+        return { id: itemId, likes }
       },
     )
   })

@@ -57,8 +57,13 @@ class ItemService {
         publisher: true,
       },
     })
+    const itemStats = await db.itemStats.create({
+      data: {
+        itemId: item.id,
+      },
+    })
 
-    return item
+    return { ...item, itemStats }
   }
 
   async getItem(id: number) {
@@ -142,7 +147,7 @@ class ItemService {
     return updatedItem
   }
 
-  async deleteItem({ itemId, userId }: DeleteItemParams) {
+  async deleteItem({ itemId, userId }: ItemActionParams) {
     const item = await this.getItem(itemId)
     if (item.userId !== userId) {
       throw new AppError('ForbiddenError')
@@ -153,7 +158,50 @@ class ItemService {
       },
     })
   }
+
+  async countLikes(itemId: number) {
+    const count = await db.itemLike.count({
+      where: {
+        itemId,
+      },
+    })
+
+    return count
+  }
+  async likeItem({ itemId, userId }: ItemActionParams) {
+    const alreadyLiked = await db.itemLike.findUnique({
+      where: {
+        itemId_userId: {
+          itemId,
+          userId,
+        },
+      },
+    })
+    if (!alreadyLiked) {
+      try {
+        await db.itemLike.create({
+          data: {
+            itemId,
+            userId,
+          },
+        })
+      } catch (e) {}
+    }
+    return this.countLikes(itemId)
+  }
+  async unlikeItem({ itemId, userId }: ItemActionParams) {
+    await db.itemLike.delete({
+      where: {
+        itemId_userId: {
+          itemId,
+          userId,
+        },
+      },
+    })
+    return this.countLikes(itemId)
+  }
 }
+
 export default ItemService
 
 type GetPublicItemsParams =
@@ -167,7 +215,7 @@ interface UpdateItemParams {
   body: string
 }
 
-interface DeleteItemParams {
+interface ItemActionParams {
   itemId: number
   userId: number
 }

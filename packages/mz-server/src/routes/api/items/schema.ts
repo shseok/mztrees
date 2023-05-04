@@ -141,3 +141,36 @@ export const DeleteItemSchema: FastifySchema = {
 export interface DeleteItemRoute {
   Params: ItemParamsType
 }
+
+// like Item
+const ItemLikeSchema = Type.Object({
+  id: Type.Integer(),
+  likes: Type.Integer(),
+})
+
+ItemLikeSchema.example = {
+  id: 1,
+  likes: 10,
+}
+
+export const LikeItemSchema: FastifySchema = {
+  params: ItemParamsSchema,
+  response: {
+    200: ItemLikeSchema,
+  },
+}
+
+export interface LikeItemRoute {
+  Params: ItemParamsType
+}
+
+// unlike Item
+export const UnlikeItemSchema: FastifySchema = {
+  params: ItemParamsSchema,
+  response: {
+    200: ItemLikeSchema,
+  },
+}
+export interface UnlikeItemRoute {
+  Params: ItemParamsType
+}
