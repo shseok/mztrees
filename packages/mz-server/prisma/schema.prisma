@@ -48,7 +48,7 @@ model Item {
   publisherId Int
 
   itemsTags ItemsTags[]
-  ItemStats ItemStats?
+  itemStats ItemStats?
 
   @@index([createdAt(sort: Desc)])
 }
