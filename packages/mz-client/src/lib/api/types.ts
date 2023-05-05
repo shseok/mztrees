@@ -33,9 +33,10 @@ export interface PageInfo {
   hasNextPage: boolean;
 }
 
-interface ItemStats {
+export interface ItemStats {
   id: number;
   likes: number;
+  isLiked: boolean;
 }
 
 export interface LikeItemResult {

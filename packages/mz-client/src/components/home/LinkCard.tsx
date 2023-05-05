@@ -6,6 +6,7 @@ import { ReactComponent as Globe } from '~/assets/globe.svg';
 import { ReactComponent as LikeOutline } from '~/assets/like-outline.svg';
 import { useDateDistance } from '~/hooks/useDateDistance';
 import { likeItem } from '~/lib/api/items';
+import { useLikeManager } from '~/hooks/useLikeManager';
 
 interface Props {
   item: Item;
@@ -22,7 +23,8 @@ const LinkCard = ({ item }: Props) => {
     user: { username },
     publisher: { favicon, name },
   } = item;
-
+  const { like, unlike } = useLikeManager();
+  const toggleLike = () => {};
   const dateDistance = useDateDistance(createdAt);
   return (
     <Block>

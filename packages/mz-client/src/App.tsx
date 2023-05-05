@@ -11,6 +11,7 @@ import WriteIntro from '~/pages/write/WriteIntro';
 import WriteLink from '~/pages/write/WriteLink';
 import Write from '~/pages/Write';
 import styled from 'styled-components';
+import { ItemStatsProvider } from './context/ItemStatsContext';
 
 const StyledTabLayout = styled(TabLayout)`
   padding: 16px 16px 0 16px;
@@ -75,7 +76,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div className='app'>
-      <RouterProvider router={router} />
+      <ItemStatsProvider>
+        <RouterProvider router={router} />
+      </ItemStatsProvider>
     </div>
   );
 }
