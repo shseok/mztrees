@@ -1,3 +1,4 @@
+import { Item, ItemLike, ItemStats } from '@prisma/client'
 import AppError from '../lib/AppError.js'
 import db from '../lib/db.js'
 import { extractPageInfo } from '../lib/extractPageInfo.js'
@@ -12,7 +13,7 @@ class ItemService {
     }
     return ItemService.instance
   }
-  private async getPublisher({ domain, name, favicon }: GetPublisherfooParams) {
+  private async getPublisher({ domain, name, favicon }: GetPublisherParams) {
     const exists = await db.publisher.findUnique({
       where: {
         domain,
@@ -63,10 +64,15 @@ class ItemService {
       },
     })
 
-    return { ...item, itemStats }
+    const itemWithItemStats = { ...item, itemStats }
+    const itemLikedMap = userId
+      ? await this.getItemLikedMap({ userId, itemIds: [item.id] })
+      : null
+
+    return this.mergeItemLike(itemWithItemStats, itemLikedMap?.[item.id])
   }
 
-  async getItem(id: number) {
+  async getItem(id: number, userId: number | null = null) {
     const item = await db.item.findUnique({
       where: {
         id,
@@ -80,11 +86,26 @@ class ItemService {
     if (!item) {
       throw new AppError('NotFoundError')
     }
-    return item
+    const itemLikedMap = userId
+      ? await this.getItemLikedMap({ userId, itemIds: [id] })
+      : null
+
+    return this.mergeItemLike(item, itemLikedMap?.[id])
+  }
+
+  private mergeItemLike<T extends Item & { itemStats: ItemStats | null }>(
+    item: T,
+    itemLike?: ItemLike,
+  ) {
+    return {
+      ...item,
+      itemStats: { ...item.itemStats, isLiked: !!itemLike ?? false },
+    }
   }
 
   async getPulicItems(
-    params: GetPublicItemsParams & PaginationOptionType = { mode: 'recent' },
+    params: GetPublicItemsParams &
+      PaginationOptionType & { userId?: number } = { mode: 'recent' },
   ) {
     const limit = params.limit ?? 20
     if (params.mode === 'recent') {
@@ -109,6 +130,15 @@ class ItemService {
           take: limit,
         }),
       ])
+      const itemLikedMap = params.userId
+        ? await this.getItemLikedMap({
+            userId: params.userId,
+            itemIds: list.map((item) => item.id),
+          })
+        : null
+      const listWithLiked = list.map((item) =>
+        this.mergeItemLike(item, itemLikedMap?.[item.id]),
+      )
       const endCursor = list.at(-1)?.id ?? null
       const hasNextPage = endCursor
         ? (await db.item.count({
@@ -117,7 +147,7 @@ class ItemService {
           })) > 0
         : false
       return createPagination({
-        list,
+        list: listWithLiked,
         totalCount,
         pageInfo: {
           endCursor,
@@ -148,7 +178,11 @@ class ItemService {
         itemStats: true,
       },
     })
-    return updatedItem
+    const itemLikedMap = userId
+      ? await this.getItemLikedMap({ userId, itemIds: [itemId] })
+      : null
+
+    return this.mergeItemLike(updatedItem, itemLikedMap?.[itemId])
   }
 
   async deleteItem({ itemId, userId }: ItemActionParams) {
@@ -205,7 +239,7 @@ class ItemService {
     }
     const likes = await this.countLikes(itemId)
     const itemStats = await this.updateItemLikes({ itemId, likes })
-    return itemStats
+    return { ...itemStats, isLiked: true }
   }
   async unlikeItem({ itemId, userId }: ItemActionParams) {
     await db.itemLike.delete({
@@ -218,7 +252,23 @@ class ItemService {
     })
     const likes = await this.countLikes(itemId)
     const itemStats = await this.updateItemLikes({ itemId, likes })
-    return itemStats
+    return { ...itemStats, isLiked: false }
+  }
+
+  private async getItemLikedMap(params: GetItemLikedParams) {
+    const { userId, itemIds } = params
+    const list = await db.itemLike.findMany({
+      where: {
+        userId,
+        itemId: {
+          in: itemIds,
+        },
+      },
+    })
+    return list.reduce((acc, cur) => {
+      acc[cur.itemId] = cur
+      return acc
+    }, {} as Record<number, ItemLike>)
   }
 }
 
@@ -240,7 +290,7 @@ interface ItemActionParams {
   userId: number
 }
 
-interface GetPublisherfooParams {
+interface GetPublisherParams {
   domain: string
   name: string
   favicon: string | null
@@ -249,4 +299,9 @@ interface GetPublisherfooParams {
 interface UpdateItemLikesParams {
   itemId: number
   likes: number
+}
+
+interface GetItemLikedParams {
+  userId: number
+  itemIds: number[]
 }
