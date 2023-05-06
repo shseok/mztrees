@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import { Item } from '~/lib/api/types';
 import { colors } from '~/lib/colors';
 import { ReactComponent as Globe } from '~/assets/globe.svg';
-import { ReactComponent as LikeOutline } from '~/assets/like-outline.svg';
 import { useDateDistance } from '~/hooks/useDateDistance';
-import { likeItem } from '~/lib/api/items';
 import { useLikeManager } from '~/hooks/useLikeManager';
+import LikeButton from '../system/LikeButton';
+import { useItemOverrideById } from '~/context/ItemOverrideContext';
 
 interface Props {
   item: Item;
@@ -22,10 +22,22 @@ const LinkCard = ({ item }: Props) => {
     createdAt,
     user: { username },
     publisher: { favicon, name },
+    itemStats,
   } = item;
-  const { like, unlike } = useLikeManager();
-  const toggleLike = () => {};
+  const itemOverride = useItemOverrideById(id);
   const dateDistance = useDateDistance(createdAt);
+  const { like, unlike } = useLikeManager();
+
+  const isLiked = itemOverride?.isLiked ?? item.isLiked;
+  const likes = itemOverride?.itemStats.likes ?? itemStats.likes;
+  /**@todo: 연타로 누르면 기존의 것이 잘 취소되어야함 */
+  const toggleLike = () => {
+    if (isLiked) {
+      unlike(id, itemStats);
+    } else {
+      like(id, itemStats);
+    }
+  };
   return (
     <Block>
       {thumbnail ? <Thumbnail src={thumbnail} alt={title} /> : null}
@@ -36,8 +48,9 @@ const LinkCard = ({ item }: Props) => {
       </Publisher>
       <h3>{item.title}</h3>
       <p>{body}</p>
+      {likes === 0 ? null : <LikesCount>좋아요 {likes.toLocaleString()}개</LikesCount>}
       <Footer>
-        <StyeldLikeOutline onClick={() => likeItem(id)} />
+        <LikeButton onClick={toggleLike} isLiked={isLiked} />
         <UserInfo>
           by <b>{username}</b> · {dateDistance}
         </UserInfo>
@@ -94,10 +107,13 @@ const Publisher = styled.div`
   }
 `;
 
-const StyeldLikeOutline = styled(LikeOutline)`
-  color: ${colors.gray3};
+const LikesCount = styled.div`
+  font-size: 12px;
+  font-weight: 600;
+  color: ${colors.gray4};
+  line-height: 1.5;
+  margin-bottom: 8px;
 `;
-
 const Footer = styled.div`
   display: flex;
   align-items: center;

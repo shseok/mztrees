@@ -11,7 +11,7 @@ import WriteIntro from '~/pages/write/WriteIntro';
 import WriteLink from '~/pages/write/WriteLink';
 import Write from '~/pages/Write';
 import styled from 'styled-components';
-import { ItemOverrideProvider } from './context/ItemStatsContext';
+import { ItemOverrideProvider } from './context/ItemOverrideContext';
 
 const StyledTabLayout = styled(TabLayout)`
   padding: 16px 16px 0 16px;
