@@ -16,6 +16,7 @@ export const useLikeManager = () => {
         console.log(result.id);
         actions.set(id, { itemStats: result.itemStats, isLiked: true }); // 한번더??
       } catch (e) {
+        /** @todo : fail api -> handle error (rollback state) */
         console.error(e);
       }
     },
@@ -33,6 +34,7 @@ export const useLikeManager = () => {
         console.log(result.id);
         actions.set(id, { itemStats: result.itemStats, isLiked: false }); // 한번더??
       } catch (e) {
+        /** @todo : fail api -> handle error (rollback state) */
         console.error(e);
       }
     },
