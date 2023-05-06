@@ -103,7 +103,7 @@ const authorizedItemRoute = (itemService: ItemService) =>
         const { id: itemId } = request.params
         const userId = request.user!.id
         const itemStats = await itemService.likeItem({ userId, itemId })
-        return { id: itemId, itemStats }
+        return { id: itemId, itemStats, isLiked: true }
       },
     )
 
@@ -114,7 +114,7 @@ const authorizedItemRoute = (itemService: ItemService) =>
         const { id: itemId } = request.params
         const userId = request.user!.id
         const itemStats = await itemService.unlikeItem({ userId, itemId })
-        return { id: itemId, itemStats }
+        return { id: itemId, itemStats, isLiked: false }
       },
     )
   })

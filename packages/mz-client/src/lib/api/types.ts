@@ -16,6 +16,7 @@ export interface Item {
   user: User;
   publisher: Publisher;
   itemStats: ItemStats;
+  isLiked: boolean;
 }
 export interface Publisher {
   id: number;
@@ -42,6 +43,7 @@ export interface ItemStats {
 export interface LikeItemResult {
   id: number;
   itemStats: ItemStats;
+  isLiked: boolean;
 }
 
 export type UnlikeItemResult = LikeItemResult;
