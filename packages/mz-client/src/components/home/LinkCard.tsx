@@ -22,9 +22,9 @@ const LinkCard = ({ item }: Props) => {
     createdAt,
     user: { username },
     publisher: { favicon, name },
-    itemStats,
   } = item;
   const itemOverride = useItemOverrideById(id);
+  const itemStats = itemOverride?.itemStats ?? item.itemStats;
   const dateDistance = useDateDistance(createdAt);
   const { like, unlike } = useLikeManager();
 
