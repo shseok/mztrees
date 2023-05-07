@@ -60,7 +60,7 @@ const AuthForm = ({ mode }: Props) => {
       } else {
         await userLogin(data);
         const from = location.state?.from?.pathname || '/';
-        navigate(from);
+        navigate(from, { replace: true });
       }
     } catch (e) {
       const error = extractError(e);

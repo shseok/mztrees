@@ -15,7 +15,7 @@ const Footer = () => {
 };
 
 const StyledFooter = styled.footer`
-  height: 56px;
+  min-height: 56px;
   border-top: 1px solid ${colors.gray0};
   display: flex;
 `;
