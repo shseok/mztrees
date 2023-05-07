@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === 'development') {
       'http://localhost:5173',
     ],
     credentials: true,
-    allowedHeaders: ['Cookie'],
+    allowedHeaders: ['Cookie', 'Content-Type'],
     // exposedHeaders: ['Set-Cookie'],
   })
 }

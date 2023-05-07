@@ -20,7 +20,7 @@ export const useLikeManager = () => {
         });
         const controller = new AbortController();
         abortControllers.set(id, controller);
-        const result = await likeItem(id);
+        const result = await likeItem(id, controller);
         abortControllers.delete(id);
         // for latest server state update
         actions.set(id, { itemStats: result.itemStats, isLiked: true });
@@ -43,7 +43,7 @@ export const useLikeManager = () => {
         });
         const controller = new AbortController();
         abortControllers.set(id, controller);
-        const result = await unlikeItem(id);
+        const result = await unlikeItem(id, controller);
         abortControllers.delete(id);
         // for latest server state update
         actions.set(id, { itemStats: result.itemStats, isLiked: false });
