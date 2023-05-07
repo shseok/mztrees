@@ -15,13 +15,19 @@ export async function getItems(cursor?: number) {
   return resonse.data;
 }
 
-export async function likeItem(itemId: number) {
-  const response = await axios.post<LikeItemResult>(`/base/api/items/${itemId}/likes`);
+export async function likeItem(itemId: number, controller?: AbortController) {
+  const response = await axios.post<LikeItemResult>(
+    `/base/api/items/${itemId}/likes`,
+    {},
+    { signal: controller?.signal },
+  );
   return response.data;
 }
 
-export async function unlikeItem(itemId: number) {
-  const response = await axios.delete<LikeItemResult>(`/base/api/items/${itemId}/likes`);
+export async function unlikeItem(itemId: number, controller?: AbortController) {
+  const response = await axios.delete<LikeItemResult>(`/base/api/items/${itemId}/likes`, {
+    signal: controller?.signal,
+  });
   return response.data;
 }
 
