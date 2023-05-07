@@ -12,7 +12,7 @@ export const useProtectedRoute = () => {
       if (result) {
         setHasUser(true);
       } else {
-        navigate('/login?redirect=/write');
+        navigate('/login');
       }
     };
     fetchData();

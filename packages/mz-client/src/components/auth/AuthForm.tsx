@@ -109,6 +109,7 @@ const AuthForm = ({ mode }: Props) => {
           placeholder={usernamePlaceholder}
           disabled={isSubmitting}
           errorMessage={usernameErrorMessage}
+          autoComplete='on'
           // errorMessage={error?.name === 'UserExistsError' ? 'hgh': undefined}
         />
         {/*{errors.username && <span>This field is required</span>}*/}
@@ -124,6 +125,7 @@ const AuthForm = ({ mode }: Props) => {
           placeholder={passwordPlaceholder}
           disabled={isSubmitting}
           errorMessage={passwordErrorMessage}
+          autoComplete='on'
         />
         {/*{errors.password && <span>This field is required</span>}*/}
       </InputGroup>
