@@ -25,17 +25,10 @@ export async function getMyAccount() {
     });
     return response.data;
   } catch (e) {
-    console.log(e);
+    // 로그인되어 있지 않은 상태에서 인가를 요구하는 페이지로 이동할 경우 여기를 거침. 문제는 login 후 navigate가 정상적으로 작동을 안함.. 왜? 아니었음..
+    // console.error(e);
     return null;
   }
-}
-
-let getMyAccountPromise: Promise<User | null> | null = null;
-export async function getMemorizedMyAccount() {
-  if (getMyAccountPromise === null) {
-    getMyAccountPromise = getMyAccount();
-  }
-  return getMyAccountPromise;
 }
 
 interface AuthParams {
