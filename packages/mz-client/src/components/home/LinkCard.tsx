@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { getMyAccount } from '~/lib/api/auth';
 import { useDialog } from '~/context/DialogContext';
 import { useNavigate } from 'react-router-dom';
+import { useOpenLoginDialog } from '~/hooks/useOpenLoginDialog';
 
 interface Props {
   item: Item;
@@ -35,21 +36,11 @@ const LinkCard = ({ item }: Props) => {
   const isLiked = itemOverride?.isLiked ?? item.isLiked;
   const likes = itemOverride?.itemStats.likes ?? itemStats.likes;
   /**@todo: 연타로 누르면 기존의 것이 잘 취소되어야함 */
-
-  // const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const { open } = useDialog();
-  const navigate = useNavigate();
-
+  const openLoginDialog = useOpenLoginDialog();
   const toggleLike = async () => {
     const currentUser = await getMyAccount();
     if (!currentUser) {
-      open({
-        title: '하이',
-        description: '?????????',
-        onConfirm() {
-          navigate('/login');
-        },
-      });
+      openLoginDialog('like');
       return;
     }
     if (isLiked) {
