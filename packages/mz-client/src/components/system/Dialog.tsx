@@ -1,0 +1,59 @@
+import React from 'react';
+import Modal from './Modal';
+import styled from 'styled-components';
+import { colors } from '~/lib/colors';
+import Button from './Button';
+
+interface Props {
+  visible: boolean;
+  title: string;
+  description: string;
+  onClose(): void;
+  onConfirm(): void;
+}
+
+const Dialog = ({ visible, title, description, onClose, onConfirm }: Props) => {
+  return (
+    <StyledModal visible={visible}>
+      <Title>{title}</Title>
+      <Description>{description}</Description>
+      <Footer>
+        <Button onClick={onClose} variant='secondary'>
+          닫기
+        </Button>
+        <Button onClick={onConfirm}>로그인</Button>
+      </Footer>
+    </StyledModal>
+  );
+};
+
+const StyledModal = styled(Modal)`
+  width: 375px;
+  max-width: calc(100vw - 32px);
+  padding: 24px 16px 24px 16px;
+`;
+
+const Title = styled.h3`
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.5;
+  color: ${colors.gray5};
+`;
+const Description = styled.p`
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: ${colors.gray5};
+`;
+
+const Footer = styled.section`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 8px;
+`;
+
+export default Dialog;

@@ -4,18 +4,30 @@ import { colors } from '~/lib/colors';
 
 interface ButtonProps {
   layoutMode?: 'inline' | 'fullWidth';
+  variant?: 'primary' | 'secondary';
 }
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement>, ButtonProps {}
 
-const Button = forwardRef<HTMLButtonElement, Props>(({ layoutMode, ...rest }: Props, ref) => {
-  return <StyledButton ref={ref as any} layoutMode={layoutMode} {...rest} />;
-});
+const Button = forwardRef<HTMLButtonElement, Props>(
+  ({ layoutMode = 'inline', variant = 'primary', ...rest }: Props, ref) => {
+    return <StyledButton ref={ref as any} layoutMode={layoutMode} variant={variant} {...rest} />;
+  },
+);
+
+const variantStyled = {
+  primary: css`
+    color: white;
+    background: ${colors.primary};
+  `,
+  secondary: css`
+    color: ${colors.primary};
+    background: ${colors.secondary};
+  `,
+};
 
 const StyledButton = styled.button<ButtonProps>`
-  background: ${colors.primary};
+  ${(props) => variantStyled[props.variant!]}
   height: 48px;
-  //color: ${colors.gray0};
-  color: white;
   border: none;
   font-size: 16px;
   font-weight: 600;
