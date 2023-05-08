@@ -12,6 +12,7 @@ import WriteLink from '~/pages/write/WriteLink';
 import Write from '~/pages/Write';
 import styled from 'styled-components';
 import { ItemOverrideProvider } from './context/ItemOverrideContext';
+import { DialogProvider } from './context/DialogContext';
 
 const StyledTabLayout = styled(TabLayout)`
   padding: 16px 16px 0 16px;
@@ -76,9 +77,11 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div className='app'>
-      <ItemOverrideProvider>
-        <RouterProvider router={router} />
-      </ItemOverrideProvider>
+      <DialogProvider>
+        <ItemOverrideProvider>
+          <RouterProvider router={router} />
+        </ItemOverrideProvider>
+      </DialogProvider>
     </div>
   );
 }

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Item } from '~/lib/api/types';
+import { Item, User } from '~/lib/api/types';
 import { colors } from '~/lib/colors';
 import { ReactComponent as Globe } from '~/assets/globe.svg';
 import { useDateDistance } from '~/hooks/useDateDistance';
@@ -8,6 +8,9 @@ import { useLikeManager } from '~/hooks/useLikeManager';
 import LikeButton from '../system/LikeButton';
 import { useItemOverrideById } from '~/context/ItemOverrideContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getMyAccount } from '~/lib/api/auth';
+import { useDialog } from '~/context/DialogContext';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   item: Item;
@@ -32,7 +35,23 @@ const LinkCard = ({ item }: Props) => {
   const isLiked = itemOverride?.isLiked ?? item.isLiked;
   const likes = itemOverride?.itemStats.likes ?? itemStats.likes;
   /**@todo: 연타로 누르면 기존의 것이 잘 취소되어야함 */
-  const toggleLike = () => {
+
+  // const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const { open } = useDialog();
+  const navigate = useNavigate();
+
+  const toggleLike = async () => {
+    const currentUser = await getMyAccount();
+    if (!currentUser) {
+      open({
+        title: '하이',
+        description: '?????????',
+        onConfirm() {
+          navigate('/login');
+        },
+      });
+      return;
+    }
     if (isLiked) {
       unlike(id, itemStats);
     } else {
