@@ -16,6 +16,7 @@ export const useOpenLoginDialog = () => {
       open({
         title: '로그인 후 이용해 주세요.',
         description,
+        // confirmText: '로그인',
         onConfirm: () => {
           navigate('/login');
         },

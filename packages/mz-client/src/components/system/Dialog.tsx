@@ -8,11 +8,12 @@ interface Props {
   visible: boolean;
   title: string;
   description: string;
+  confirmText: string;
   onClose(): void;
   onConfirm(): void;
 }
 
-const Dialog = ({ visible, title, description, onClose, onConfirm }: Props) => {
+const Dialog = ({ visible, title, description, onClose, onConfirm, confirmText }: Props) => {
   return (
     <StyledModal visible={visible}>
       <Title>{title}</Title>
@@ -21,7 +22,7 @@ const Dialog = ({ visible, title, description, onClose, onConfirm }: Props) => {
         <Button onClick={onClose} variant='secondary'>
           닫기
         </Button>
-        <Button onClick={onConfirm}>로그인</Button>
+        <Button onClick={onConfirm}>{confirmText}</Button>
       </Footer>
     </StyledModal>
   );

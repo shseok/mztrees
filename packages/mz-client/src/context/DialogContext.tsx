@@ -9,6 +9,7 @@ interface DialogContextValue {
 interface DialogConfig {
   title: string;
   description: string;
+  confirmText?: string;
   onClose?(): void;
   onConfirm(): void;
 }
@@ -43,6 +44,7 @@ export function DialogProvider({ children }: Props) {
         visible={visible}
         title={config?.title ?? ''}
         description={config?.description ?? ''}
+        confirmText={config?.confirmText ?? '확인'}
         onClose={close}
         onConfirm={confirm}
       />
