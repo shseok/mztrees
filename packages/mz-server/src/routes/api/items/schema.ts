@@ -24,8 +24,8 @@ ItemStatsSchema.example = {
   id: 1,
   likes: 10,
 }
-const ItemSchema = Type.Object({
-  id: Type.Number(),
+export const ItemSchema = Type.Object({
+  id: Type.Integer(),
   title: Type.String(),
   body: Type.String(),
   link: Type.String(),
@@ -35,7 +35,7 @@ const ItemSchema = Type.Object({
   updatedAt: Type.String(),
   user: UserSchema,
   publisher: Type.Object({
-    id: Type.Number(),
+    id: Type.Integer(),
     name: Type.String(),
     domain: Type.String(),
     favicon: Nullable(Type.String()),
@@ -85,11 +85,11 @@ export interface WriteItemRoute {
 
 // getItem
 
-const ItemParamsSchema = Type.Object({
-  id: Type.Number(),
+export const ItemParamsSchema = Type.Object({
+  id: Type.Integer(),
 })
 
-type ItemParamsType = Static<typeof ItemParamsSchema>
+export type ItemParamsType = Static<typeof ItemParamsSchema>
 
 export interface GetItemRoute {
   Params: ItemParamsType
