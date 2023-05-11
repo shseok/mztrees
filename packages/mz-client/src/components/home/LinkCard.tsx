@@ -9,9 +9,8 @@ import LikeButton from '../system/LikeButton';
 import { useItemOverrideById } from '~/context/ItemOverrideContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getMyAccount } from '~/lib/api/auth';
-import { useDialog } from '~/context/DialogContext';
-import { useNavigate } from 'react-router-dom';
 import { useOpenLoginDialog } from '~/hooks/useOpenLoginDialog';
+import { Link } from 'react-router-dom';
 
 interface Props {
   item: Item;
@@ -49,16 +48,21 @@ const LinkCard = ({ item }: Props) => {
       like(id, itemStats);
     }
   };
+
+  const link = `/items/${item.id}`;
+
   return (
     <Block>
-      {thumbnail ? <Thumbnail src={thumbnail} alt={title} /> : null}
-      <Publisher>
-        {favicon ? <img src={favicon} alt='favicon' /> : <Globe />}
-        {author ? `${author} · ` : ''}
-        {name}
-      </Publisher>
-      <h3>{item.title}</h3>
-      <p>{body}</p>
+      <StyledLink to={link}>
+        {thumbnail ? <Thumbnail src={thumbnail} alt={title} /> : null}
+        <Publisher>
+          {favicon ? <img src={favicon} alt='favicon' /> : <Globe />}
+          {author ? `${author} · ` : ''}
+          {name}
+        </Publisher>
+        <h3>{item.title}</h3>
+        <p>{body}</p>
+      </StyledLink>
       <AnimatePresence initial={false}>
         {likes === 0 ? null : (
           <LikesCount
@@ -79,6 +83,12 @@ const LinkCard = ({ item }: Props) => {
     </Block>
   );
 };
+
+const StyledLink = styled(Link)`
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+`;
 
 const Block = styled.div`
   display: flex;

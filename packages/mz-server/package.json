@@ -35,6 +35,6 @@
   },
   "scripts": {
     "start": "cross-env NODE_ENV=development ts-node-esm --transpileOnly ./src/main.ts | pino-pretty",
-    "start:dev": "cross-env NODE_ENV=development nodemon --watch ./src --exec \"yarn start\" -e ts"
+    "dev": "cross-env NODE_ENV=development nodemon --watch ./src --exec \"yarn start\" -e ts"
   }
 }

@@ -10,7 +10,7 @@ export interface Item {
   body: string;
   link: string;
   author: string;
-  thumbnail: string;
+  thumbnail: string | null;
   createdAt: string;
   updatedAt: string;
   user: User;
@@ -37,7 +37,7 @@ export interface PageInfo {
 export interface ItemStats {
   id: number;
   likes: number;
-  isLiked: boolean;
+  commentsCount: number;
 }
 
 export interface LikeItemResult {

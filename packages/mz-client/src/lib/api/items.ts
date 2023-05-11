@@ -15,6 +15,11 @@ export async function getItems(cursor?: number) {
   return resonse.data;
 }
 
+export async function getItem(itemId: number) {
+  const response = await axios.get<Item>(`/base/api/items/${itemId}`);
+  return response.data;
+}
+
 export async function likeItem(itemId: number, controller?: AbortController) {
   const response = await axios.post<LikeItemResult>(
     `/base/api/items/${itemId}/likes`,

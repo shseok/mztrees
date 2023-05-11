@@ -13,6 +13,7 @@ import Write from '~/pages/Write';
 import styled from 'styled-components';
 import { ItemOverrideProvider } from './context/ItemOverrideContext';
 import { DialogProvider } from './context/DialogContext';
+import Items from './pages/Items';
 
 const StyledTabLayout = styled(TabLayout)`
   padding: 16px 16px 0 16px;
@@ -67,6 +68,10 @@ const router = createBrowserRouter([
         element: <WriteLink />,
       },
     ],
+  },
+  {
+    path: '/items/:itemId',
+    element: <Items />,
   },
   // {
   //   path: '/error',

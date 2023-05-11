@@ -7,7 +7,7 @@ import Header from '~/components/base/Header';
 
 interface Props {
   hasBackButton: boolean;
-  title: string;
+  title?: React.ReactNode;
   children?: React.ReactNode;
   onGoback?(): void;
 }

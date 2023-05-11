@@ -143,7 +143,9 @@ class CommentService {
         },
       })
     }
-    return { comment, subcomments: [] }
+    await this.countAndSyncComments(itemId)
+
+    return { ...comment, subcomments: [] }
   }
   async likeComment({ commentId, userId }: CommentParams) {
     try {
@@ -177,13 +179,40 @@ class CommentService {
   }
 
   async countAndSyncCommentLikes(commentId: number) {
-    const count = db.commentLike.count({
+    const count = await db.commentLike.count({
       where: {
         commentId,
       },
     })
+    await db.comment.update({
+      where: {
+        id: commentId,
+      },
+      data: {
+        likesCount: count,
+      },
+    })
     return count
   }
+
+  async countAndSyncComments(itemId: number) {
+    const count = await db.comment.count({
+      where: {
+        itemId,
+      },
+    })
+
+    await db.itemStats.update({
+      where: {
+        id: itemId,
+      },
+      data: {
+        commentsCount: count,
+      },
+    })
+    return count
+  }
+
   async deleteComment({ commentId, userId }: CommentParams) {
     const comment = await this.getComment(commentId)
     if (comment.userId !== userId) {
