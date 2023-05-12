@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import CommentList from '~/components/items/CommentList';
 import ItemViewer from '~/components/items/ItemViewer';
 import BasicLayout from '~/components/layout/BasicLayout';
 import useFetch from '~/hooks/useFetch';
@@ -27,6 +28,7 @@ const Items = () => {
         {/* {error && navigate('/error', { state: { error: error } })} */}
         {error && <div>에러</div>}
         {item && <ItemViewer item={item} />}
+        <CommentList />
       </>
     </BasicLayout>
   );

@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDialog } from '~/context/DialogContext';
 
 const messageMap = {
@@ -8,6 +8,7 @@ const messageMap = {
 
 export const useOpenLoginDialog = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { open } = useDialog();
 
   const openLoginDialog = useCallback(
@@ -16,9 +17,10 @@ export const useOpenLoginDialog = () => {
       open({
         title: '로그인 후 이용해 주세요.',
         description,
-        // confirmText: '로그인',
+        confirmText: '로그인',
         onConfirm: () => {
-          navigate('/login');
+          /**@todos refactor like useProtectedRoute or use useProtectedRoute */
+          navigate('/login', { state: { from: location, redirect: '/' }, replace: true });
         },
       });
     },

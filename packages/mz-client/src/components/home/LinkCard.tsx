@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Item, User } from '~/lib/api/types';
+import { Item } from '~/lib/api/types';
 import { colors } from '~/lib/colors';
 import { ReactComponent as Globe } from '~/assets/globe.svg';
 import { useDateDistance } from '~/hooks/useDateDistance';
@@ -36,6 +35,7 @@ const LinkCard = ({ item }: Props) => {
   const likes = itemOverride?.itemStats.likes ?? itemStats.likes;
   /**@todo: 연타로 누르면 기존의 것이 잘 취소되어야함 */
   const openLoginDialog = useOpenLoginDialog();
+  /**@todo: move to hooks */
   const toggleLike = async () => {
     const currentUser = await getMyAccount();
     if (!currentUser) {
