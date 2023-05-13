@@ -204,7 +204,7 @@ class CommentService {
 
     await db.itemStats.update({
       where: {
-        id: itemId,
+        itemId,
       },
       data: {
         commentsCount: count,

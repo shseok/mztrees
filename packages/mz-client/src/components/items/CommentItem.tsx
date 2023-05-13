@@ -4,6 +4,7 @@ import { Comment } from '~/lib/api/types';
 import { colors } from '~/lib/colors';
 import SubCommentList from './SubCommentList';
 
+/**@todo isSubcomment 굳이 필요한가에 대한 고민 */
 interface Props {
   comment: Comment;
   isSubcomment?: boolean;
