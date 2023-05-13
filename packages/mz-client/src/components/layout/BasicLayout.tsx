@@ -17,13 +17,11 @@ const BasicLayout = ({ hasBackButton, title, children, onGoback }: Props) => {
 
   return (
     <FullHeightPage>
-      <Content>
-        <Header
-          title={title}
-          headerLeft={hasBackButton ? <HeaderBackButton onClick={onGoback ?? goBack} /> : undefined}
-        />
-        {children}
-      </Content>
+      <Header
+        title={title}
+        headerLeft={hasBackButton ? <HeaderBackButton onClick={onGoback ?? goBack} /> : undefined}
+      />
+      <Content>{children}</Content>
     </FullHeightPage>
   );
 };
@@ -32,6 +30,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
+  overflow: scroll;
 `;
 
 export default BasicLayout;

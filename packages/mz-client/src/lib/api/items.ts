@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { GetItemsResult, Item } from './types';
+import { Comment, GetItemsResult, Item, LikeItemResult } from './types';
 import qs from 'qs';
-import { LikeItemResult } from './types';
 
 export async function createItem(params: CreateItemParams) {
   const response = await axios.post<Item>('/base/api/items', params);
@@ -40,4 +39,9 @@ interface CreateItemParams {
   title: string;
   body: string;
   link: string;
+}
+
+export async function getComments(itemId: number) {
+  const response = await axios.get<Comment[]>(`/base/api/items/${itemId}/comments`);
+  return response.data;
 }
