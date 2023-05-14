@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import { useDateDistance } from '~/hooks/useDateDistance';
 import { Comment } from '~/lib/api/types';
 import { colors } from '~/lib/colors';
-import SubCommentList from './SubCommentList';
+import SubCommentList from './SubcommentList';
+import LikeButton from '../system/LikeButton';
 
 /**@todo isSubcomment 굳이 필요한가에 대한 고민 */
 interface Props {
@@ -16,6 +17,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
     text,
     createdAt,
     subcomments,
+    likesCount,
   } = comment;
   console.log(subcomments);
   const distance = useDateDistance(createdAt);
@@ -26,6 +28,10 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
         <Time>{distance}</Time>
       </CommentHead>
       <Text>{text}</Text>
+      <CommentFooter>
+        <LikeButton size='small' isLiked onClick={() => {}} />
+        <div>{likesCount}</div>
+      </CommentFooter>
       {!isSubcomment && subcomments && <SubCommentList comments={subcomments} />}
     </Block>
   );
@@ -64,4 +70,13 @@ const Text = styled.p`
   font-size: 14px;
   word-break: keep-all;
 `;
+
+const CommentFooter = styled.div`
+  font-size: 12px;
+  display: flex;
+  color: ${colors.gray3};
+  line-height: 1.5;
+`;
+
+const LikeBlock = styled.div``;
 export default CommentItem;
