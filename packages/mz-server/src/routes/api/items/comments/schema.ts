@@ -41,6 +41,7 @@ CommentSchema = Type.Object({
   user: UserSchema,
   mentionUser: Type.Optional(Nullable(UserSchema)),
   subcomments: Type.Optional(Type.Array(CommentSchema)),
+  isDeleted: Type.Boolean(),
 })
 
 const CommentLikeSchema = Type.Object({

@@ -59,4 +59,5 @@ export interface Comment {
   subcomments?: Comment[];
   user: User;
   mentionUser: User | null;
+  isDeleted: boolean;
 }

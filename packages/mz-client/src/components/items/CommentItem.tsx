@@ -19,9 +19,20 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
     subcomments,
     likesCount,
     mentionUser,
+    isDeleted,
   } = comment;
-  console.log(subcomments);
+  // console.log(subcomments);
   const distance = useDateDistance(createdAt);
+
+  if (isDeleted) {
+    return (
+      <Block>
+        <DeletedText>삭제된 댓글입니다.</DeletedText>
+        {!isSubcomment && subcomments && <SubCommentList comments={subcomments} />}
+      </Block>
+    );
+  }
+
   return (
     <Block>
       <CommentHead>
@@ -108,5 +119,10 @@ const ReplyButton = styled.button`
 const Mention = styled.span`
   color: ${colors.primary};
   margin-right: 4px;
+`;
+
+const DeletedText = styled(Text)`
+  color: ${colors.gray2};
+  margin: 0;
 `;
 export default CommentItem;
