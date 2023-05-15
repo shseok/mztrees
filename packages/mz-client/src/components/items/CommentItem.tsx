@@ -18,6 +18,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
     createdAt,
     subcomments,
     likesCount,
+    mentionUser,
   } = comment;
   console.log(subcomments);
   const distance = useDateDistance(createdAt);
@@ -27,7 +28,10 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
         <UserName>{username}</UserName>
         <Time>{distance}</Time>
       </CommentHead>
-      <Text>{text}</Text>
+      <Text>
+        {mentionUser && <Mention>@{mentionUser.username}</Mention>}
+        {text}
+      </Text>
       <CommentFooter>
         <LikeBlock>
           <LikeButton size='small' isLiked onClick={() => {}} />
@@ -66,7 +70,7 @@ const Time = styled.div`
 
 const Text = styled.p`
   margin-top: 4px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   color: ${colors.gray5};
   line-height: 1.5;
   white-space: pre-wrap;
@@ -99,5 +103,10 @@ const ReplyButton = styled.button`
   align-items: center;
   color: ${colors.gray3};
   line-height: 1.5;
+`;
+
+const Mention = styled.span`
+  color: ${colors.primary};
+  margin-right: 4px;
 `;
 export default CommentItem;

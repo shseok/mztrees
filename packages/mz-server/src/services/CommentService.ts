@@ -21,6 +21,7 @@ class CommentService {
       },
       include: {
         user: true,
+        mentionUser: true,
       },
     })
     return this.groupSubComments(this.redact(comments))
@@ -113,6 +114,9 @@ class CommentService {
       : null
     const rootParentCommentId = parentComment?.parentCommentId
     const targetParentCommentId = rootParentCommentId ?? parentCommentId
+    // 대대댓글이면서 자신이 쓴 글이 아닌 다른 유저의 글을 멘션한 경우
+    const shouldMention =
+      !!rootParentCommentId && userId !== parentComment?.userId
     /** handle mention user id */
     const comment = await db.comment.create({
       data: {
@@ -120,7 +124,7 @@ class CommentService {
         text,
         userId,
         parentCommentId: targetParentCommentId,
-        mentionUserId: parentComment?.userId,
+        mentionUserId: shouldMention ? parentComment?.userId : null,
       },
       include: {
         user: true,
