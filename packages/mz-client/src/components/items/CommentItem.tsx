@@ -29,8 +29,11 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
       </CommentHead>
       <Text>{text}</Text>
       <CommentFooter>
-        <LikeButton size='small' isLiked onClick={() => {}} />
-        <div>{likesCount}</div>
+        <LikeBlock>
+          <LikeButton size='small' isLiked onClick={() => {}} />
+          <LikeCount>{likesCount === 0 ? '' : likesCount.toLocaleString()}</LikeCount>
+        </LikeBlock>
+        <ReplyButton>답글 달기</ReplyButton>
       </CommentFooter>
       {!isSubcomment && subcomments && <SubCommentList comments={subcomments} />}
     </Block>
@@ -78,5 +81,23 @@ const CommentFooter = styled.div`
   line-height: 1.5;
 `;
 
-const LikeBlock = styled.div``;
+const LikeBlock = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const LikeCount = styled.span`
+  margin-left: 4px;
+  min-width: 24px;
+`;
+
+const ReplyButton = styled.button`
+  background: none;
+  border: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  color: ${colors.gray3};
+  line-height: 1.5;
+`;
 export default CommentItem;

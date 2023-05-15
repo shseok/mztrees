@@ -41,7 +41,7 @@ const StyledButton = styled.button<{ size: Size }>`
   border: none;
   outline: none;
   background: none;
-  display: inline-flex;
+  display: flex;
   ${(props) =>
     props.size === 'medium' &&
     css`
