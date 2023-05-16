@@ -5,14 +5,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface Props {
   visible: boolean;
   // 당장은 필요 x
-  onClose?: void;
+  onClose?: () => void;
 }
 
-const Overlay = ({ visible }: Props) => {
+const Overlay = ({ visible, onClose }: Props) => {
   return (
     <AnimatePresence initial={false}>
       {visible && (
-        <Fill initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}></Fill>
+        <Fill
+          onClick={onClose}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        ></Fill>
       )}
     </AnimatePresence>
   );

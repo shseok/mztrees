@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import CommentInputOverlay from '~/components/items/CommentInputOverlay';
 import CommentList from '~/components/items/CommentList';
 import ItemViewer from '~/components/items/ItemViewer';
 import BasicLayout from '~/components/layout/BasicLayout';
+import { useItemAndCommentsQuery } from '~/hooks/query/useCommentsQuery';
 import { getComments, getItem } from '~/lib/api/items';
 import { Comment, Item } from '~/lib/api/types';
 
@@ -19,41 +21,46 @@ const Items = () => {
   //   getDataFunc: getItem,
   //   id: parseInt(itemId!, 10),
   // });
-  const [data, setData] = useState<Item | null>(null);
-  const [comments, setComments] = useState<Comment[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  // const [data, setData] = useState<Item | null>(null);
+  // const [comments, setComments] = useState<Comment[] | null>(null);
+  // const [error, setError] = useState<string | null>(null);
+  // const [loading, setLoading] = useState<boolean>(true);
   const itemIntId = parseInt(itemId!, 10);
-  const fetchData = useCallback(async (): Promise<void> => {
-    try {
-      const [res, comments] = await Promise.all([getItem(itemIntId), getComments(itemIntId)]);
-      setData(res);
-      setComments(comments);
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Unknown error occurred');
-      }
+  // const fetchData = useCallback(async (): Promise<void> => {
+  //   try {
+  //     const [res, comments] = await Promise.all([getItem(itemIntId), getComments(itemIntId)]);
+  //     setData(res);
+  //     setComments(comments);
+  //   } catch (err) {
+  //     if (err instanceof Error) {
+  //       setError(err.message);
+  //     } else {
+  //       setError('Unknown error occurred');
+  //     }
 
-      setLoading(false); // 중복?
-    } finally {
-      setLoading(false);
-    }
-  }, [itemId, getItem, getComments]);
+  //     setLoading(false); // 중복?
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }, [itemId, getItem, getComments]);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  // useEffect(() => {
+  //   fetchData();
+  // }, [fetchData]);
 
-  console.log(data, comments);
+  const result = useItemAndCommentsQuery(itemIntId);
+  const loading = result.some((result) => result.isLoading);
+  const error = result.some((result) => result.isError);
+  console.log(result, loading, error);
+  const [item, comments] = [result[0].data, result[1].data];
   return (
     <BasicLayout hasBackButton title={null}>
       {loading && <div>로딩중..</div>}
       {/* {error && navigate('/error', { state: { error: error } })} */}
       {error && <div>에러</div>}
-      {data && <ItemViewer item={data} />}
+      {item && <ItemViewer item={item} />}
       {comments && <CommentList comments={comments} />}
+      <CommentInputOverlay visible />
     </BasicLayout>
   );
 };

@@ -45,3 +45,19 @@ export async function getComments(itemId: number) {
   const response = await axios.get<Comment[]>(`/base/api/items/${itemId}/comments`);
   return response.data;
 }
+
+export async function createComment({
+  itemId,
+  text,
+  parentCommentId,
+}: {
+  itemId: number;
+  text: string;
+  parentCommentId?: number;
+}) {
+  const response = await axios.post<Comment>(`base/api/items/${itemId}/comments`, {
+    text,
+    parentCommentId,
+  });
+  return response.data;
+}
