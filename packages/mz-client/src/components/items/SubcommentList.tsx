@@ -21,7 +21,7 @@ const SubCommentList = ({ comments }: Props) => {
 const List = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
   padding-left: 24px;
   padding-top: 12px;
 `;

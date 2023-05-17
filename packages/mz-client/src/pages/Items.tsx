@@ -1,12 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CommentInputOverlay from '~/components/items/CommentInputOverlay';
 import CommentList from '~/components/items/CommentList';
 import ItemViewer from '~/components/items/ItemViewer';
 import BasicLayout from '~/components/layout/BasicLayout';
 import { useItemAndCommentsQuery } from '~/hooks/query/useCommentsQuery';
-import { getComments, getItem } from '~/lib/api/items';
-import { Comment, Item } from '~/lib/api/types';
 
 /** @todos validate itemId */
 /** @todos handle 404 */
