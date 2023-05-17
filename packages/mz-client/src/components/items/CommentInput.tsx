@@ -4,8 +4,8 @@ import { useCommentInputStore } from '~/hooks/store/useCommentInputStore';
 import { colors } from '~/lib/colors';
 
 const CommentInput = () => {
-  const toggle = useCommentInputStore((state) => state.toggle);
-  return <DummyInput onClick={toggle}>댓글을 입력하세요.</DummyInput>;
+  const open = useCommentInputStore((state) => state.open);
+  return <DummyInput onClick={open}>댓글을 입력하세요.</DummyInput>;
 };
 
 const DummyInput = styled.div`

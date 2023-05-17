@@ -4,17 +4,13 @@ import styled from 'styled-components';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCommentInputStore } from '~/hooks/store/useCommentInputStore';
 
-interface Props {
-  visible: boolean;
-}
-
 const CommentInputOverlay = () => {
   const visible = useCommentInputStore((state) => state.visible);
-  const toggle = useCommentInputStore((state) => state.toggle);
+  // const toggle = useCommentInputStore((state) => state.toggle);
   console.log(visible);
   return (
     <>
-      <Overlay visible={visible} onClose={toggle} />
+      <Overlay visible={visible} />
       <AnimatePresence initial={false}>
         {visible && (
           <Footer

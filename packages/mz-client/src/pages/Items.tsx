@@ -60,7 +60,7 @@ const Items = () => {
       {error && <div>에러</div>}
       {item && <ItemViewer item={item} />}
       {comments && <CommentList comments={comments} />}
-      <CommentInputOverlay visible />
+      <CommentInputOverlay />
     </BasicLayout>
   );
 };
