@@ -4,9 +4,9 @@ import { devtools } from 'zustand/middleware';
 interface CommentInputStore {
   visible: boolean;
   parentCommentId: number | null;
-  open: () => void;
-  // close: () => void;
-  // toggle: () => void;
+  open: (parentCommentId?: number | null) => void;
+  close: () => void;
+  // toggle(): void;
 }
 
 export const useCommentInputStore = create<
@@ -20,6 +20,6 @@ export const useCommentInputStore = create<
     //   set((state) => ({ parentCommentId, visible: !state.visible })),
     open: (parentCommentId: number | null = null) =>
       set((state) => ({ ...state, parentCommentId, visible: true })),
-    // close: () => set(() => ({ visible: false })),
+    close: () => set(() => ({ visible: false })),
   })),
 );

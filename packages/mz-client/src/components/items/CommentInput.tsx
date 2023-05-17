@@ -1,11 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useCommentInputStore } from '~/hooks/store/useCommentInputStore';
+import { useOpenLoginDialog } from '~/hooks/useOpenLoginDialog';
+import { getMyAccount } from '~/lib/api/auth';
 import { colors } from '~/lib/colors';
 
 const CommentInput = () => {
   const open = useCommentInputStore((state) => state.open);
-  return <DummyInput onClick={open}>댓글을 입력하세요.</DummyInput>;
+  const openLoginDialog = useOpenLoginDialog();
+  const onClick = async () => {
+    const currentUser = await getMyAccount();
+    if (!currentUser) {
+      openLoginDialog('comment');
+      return;
+    }
+    open();
+  };
+  return <DummyInput onClick={onClick}>댓글을 입력하세요.</DummyInput>;
 };
 
 const DummyInput = styled.div`

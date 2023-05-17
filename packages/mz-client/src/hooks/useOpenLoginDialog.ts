@@ -4,6 +4,7 @@ import { useDialog } from '~/context/DialogContext';
 
 const messageMap = {
   like: '이 글이 마음에 드시나요? 이 글을 다른 사람들에게도 추천하기 위해서 로그인을 해주세요.',
+  comment: '당신의 의견을 적고 싶으신가요? 로그인을 해주세요.',
 };
 
 export const useOpenLoginDialog = () => {
