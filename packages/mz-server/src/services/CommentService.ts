@@ -26,7 +26,7 @@ class CommentService {
     })
     return this.groupSubComments(this.redact(comments))
   }
-
+  /** TODO: rename to serialize (정확히 x) */
   redact(comments: Comment[]) {
     return comments.map((comment) => {
       if (!comment.deletedAt) {
@@ -156,7 +156,7 @@ class CommentService {
     }
     await this.countAndSyncComments(itemId)
 
-    return { ...comment, subcomments: [] }
+    return { ...comment, isDeleted: false, subcomments: [] }
   }
   async likeComment({ commentId, userId }: CommentParams) {
     try {

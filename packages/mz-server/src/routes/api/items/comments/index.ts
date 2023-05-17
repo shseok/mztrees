@@ -44,7 +44,7 @@ const authorizedItemRoute = createAuthorizedRoute(async (fastify) => {
       const { parentCommentId, text } = request.body
       const { id } = request.params
       const userId = request.user!.id
-      return await commentService.createComment({
+      return commentService.createComment({
         itemId: id,
         text,
         parentCommentId: parentCommentId ?? undefined,

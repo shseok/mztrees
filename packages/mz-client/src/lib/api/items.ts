@@ -55,7 +55,7 @@ export async function createComment({
   text: string;
   parentCommentId?: number;
 }) {
-  const response = await axios.post<Comment>(`base/api/items/${itemId}/comments`, {
+  const response = await axios.post<Comment>(`/base/api/items/${itemId}/comments`, {
     text,
     parentCommentId,
   });
