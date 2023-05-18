@@ -4,6 +4,9 @@ import { Comment } from '~/lib/api/types';
 import { colors } from '~/lib/colors';
 import SubCommentList from './SubcommentList';
 import LikeButton from '../system/LikeButton';
+import { useCommentInputStore } from '~/hooks/store/useCommentInputStore';
+import { useOpenLoginDialog } from '~/hooks/useOpenLoginDialog';
+import { getMyAccount } from '~/lib/api/auth';
 
 /**@todo isSubcomment 굳이 필요한가에 대한 고민 */
 interface Props {
@@ -23,7 +26,17 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
   } = comment;
   // console.log(subcomments);
   const distance = useDateDistance(createdAt);
+  const { open } = useCommentInputStore();
+  const openLoginDialog = useOpenLoginDialog();
+  const onReply = async () => {
+    const currentUser = await getMyAccount();
+    if (!currentUser) {
+      openLoginDialog('comment');
+      return;
+    }
 
+    open(comment.id);
+  };
   if (isDeleted) {
     return (
       <Block>
@@ -48,7 +61,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
           <LikeButton size='small' isLiked onClick={() => {}} />
           <LikeCount>{likesCount === 0 ? '' : likesCount.toLocaleString()}</LikeCount>
         </LikeBlock>
-        <ReplyButton>답글 달기</ReplyButton>
+        <ReplyButton onClick={onReply}>답글 달기</ReplyButton>
       </CommentFooter>
       {!isSubcomment && subcomments && <SubCommentList comments={subcomments} />}
     </Block>

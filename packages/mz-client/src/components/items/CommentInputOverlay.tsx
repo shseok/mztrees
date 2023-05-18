@@ -11,10 +11,11 @@ import LoadingIndicator from '../system/LoadingIndicator';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCommentsQuery } from '~/hooks/query/useCommentsQuery';
 import { Comment } from '~/lib/api/types';
+import { produce } from 'immer';
 
 const CommentInputOverlay = () => {
-  const { visible, close } = useCommentInputStore(
-    ({ visible, close }) => ({ visible, close }),
+  const { visible, close, parentCommentId } = useCommentInputStore(
+    ({ visible, close, parentCommentId }) => ({ visible, close, parentCommentId }),
     shallow,
   );
   // manage text state
@@ -29,7 +30,7 @@ const CommentInputOverlay = () => {
     if (!commentElement) return;
     commentElement.scrollIntoView({
       behavior: 'smooth',
-      block: 'start',
+      block: 'end',
     });
     commentElement.focus();
   };
@@ -39,14 +40,27 @@ const CommentInputOverlay = () => {
       // TODO: do something with data
       if (!itemId) return;
       const queryKey = useCommentsQuery.extractKey(itemId);
-      queryClient.setQueryData(queryKey, (prevComments: Comment[] | undefined) =>
-        prevComments ? [...prevComments, data] : [data],
-      );
+      queryClient.setQueryData(queryKey, (prevComments: Comment[] | undefined) => {
+        if (!prevComments) return;
+        if (parentCommentId) {
+          // parentCommentId를 가진 comment에다가 data를 추가시켜줘야한다. > 가장 위에서 부터 존재하면 넣어주기
+          return produce(prevComments, (draft) => {
+            const rootComment =
+              draft.find((comment) => comment.id === parentCommentId) ?? // 첫번째에 발견된 0 level comments
+              draft.find((comment) =>
+                comment.subcomments?.find((subcomment) => subcomment.id === parentCommentId),
+              ); // 다음 subcomments에서 발견
+            rootComment?.subcomments?.push(data);
+          });
+        } else {
+          return [...prevComments, data];
+        }
+      });
       // queryClient.invalidateQueries(queryKey);
       setTimeout(() => {
         // 현재 코드 실행 블록이 완료된 다음에 호출되며, 이는 대개 현재의 이벤트 루프 주기가 종료된 후에 발생
         scrollToCommentId(data.id);
-      }, 50);
+      }, 0);
       close();
     },
   });
@@ -56,6 +70,7 @@ const CommentInputOverlay = () => {
     mutate({
       itemId,
       text,
+      parentCommentId: parentCommentId ?? undefined,
     });
   };
 
@@ -67,7 +82,7 @@ const CommentInputOverlay = () => {
 
   return (
     <>
-      <Overlay visible={visible} onClose={onClick} />
+      <Overlay visible={visible} onClose={close} />
       <AnimatePresence initial={false}>
         {visible && (
           <Footer

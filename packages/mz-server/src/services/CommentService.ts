@@ -1,5 +1,5 @@
 import { Comment } from '@prisma/client'
-import AppError from '../lib/AppError.js'
+import AppError from '../lib/NextAppError.js'
 import db from '../lib/db.js'
 
 class CommentService {
@@ -87,7 +87,7 @@ class CommentService {
       },
     })
     if (!comment || comment.deletedAt) {
-      throw new AppError('NotFoundError')
+      throw new AppError('NotFound')
     }
     if (withSubcomments) {
       const subcomments = await this.getSubcomments(commentId)
@@ -115,13 +115,19 @@ class CommentService {
     parentCommentId,
     userId,
   }: CreateCommentParams) {
+    if (text.length > 300 || text.length === 0) {
+      throw new AppError('BadRequest', {
+        message: 'comment length is invalid',
+      })
+    }
+
     /** parent comment is valid */
     const parentComment = parentCommentId
       ? await this.getComment(parentCommentId)
       : null
     const rootParentCommentId = parentComment?.parentCommentId
     const targetParentCommentId = rootParentCommentId ?? parentCommentId
-    // 대대댓글이면서 자신이 쓴 글이 아닌 다른 유저의 글을 멘션한 경우
+    // 대대댓글이면서 자신이 쓴 글이 아닌 다른 유저의 글을 멘션한 경우 (댓글의 경우 멘션 적용 x)
     const shouldMention =
       !!rootParentCommentId && userId !== parentComment?.userId
     /** handle mention user id */
@@ -227,7 +233,7 @@ class CommentService {
   async deleteComment({ commentId, userId }: CommentParams) {
     const comment = await this.getComment(commentId)
     if (comment.userId !== userId) {
-      throw new AppError('ForbiddenError')
+      throw new AppError('Forbidden')
     }
     // await db.comment.delete({
     //   where: {
@@ -246,7 +252,7 @@ class CommentService {
   async updateComment({ commentId, userId, text }: UpdateCommentParams) {
     const comment = await this.getComment(commentId)
     if (comment.userId !== userId) {
-      throw new AppError('ForbiddenError')
+      throw new AppError('Forbidden')
     }
     await db.comment.update({
       where: {
