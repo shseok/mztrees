@@ -26,7 +26,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
   } = comment;
   // console.log(subcomments);
   const distance = useDateDistance(createdAt);
-  const { open } = useCommentInputStore();
+  const open = useCommentInputStore((store) => store.open);
   const openLoginDialog = useOpenLoginDialog();
   const onReply = async () => {
     const currentUser = await getMyAccount();

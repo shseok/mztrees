@@ -8,7 +8,7 @@ import LikeButton from '../system/LikeButton';
 import { useLikeManager } from '~/hooks/useLikeManager';
 import { useOpenLoginDialog } from '~/hooks/useOpenLoginDialog';
 import { getMyAccount } from '~/lib/api/auth';
-import { useItemOverrideById } from '~/context/ItemOverrideContext';
+import { useItemOverrideById } from '~/hooks/store/ItemOverrideStore';
 import { useDateDistance } from '~/hooks/useDateDistance';
 
 interface Props {

@@ -23,6 +23,7 @@ export const useOpenLoginDialog = () => {
           /**@todos refactor like useProtectedRoute or use useProtectedRoute */
           navigate('/login', { state: { from: location, redirect: '/' }, replace: true });
         },
+        mode: 'confirm',
       });
     },
     [navigate, open],

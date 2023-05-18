@@ -1,12 +1,12 @@
 import { useCallback, useRef } from 'react';
-import { useItemOverride } from '~/context/ItemOverrideContext';
 import { likeItem, unlikeItem } from '~/lib/api/items';
 import { ItemStats } from '~/lib/api/types';
+import { useItemOverrideSetter } from './store/ItemOverrideStore';
 
 // like와 unlike 로직 내부에서는 state[id].itemStats는 변하지 않는다.
 // 결국, 컴포넌트에서 쓰일 때, 변한다.
 export const useLikeManager = () => {
-  const { actions } = useItemOverride();
+  const set = useItemOverrideSetter();
   const abortControllers = useRef(new Map<number, AbortController>()).current;
 
   const like = useCallback(
@@ -14,7 +14,7 @@ export const useLikeManager = () => {
       const prevController = abortControllers.get(id);
       try {
         prevController?.abort();
-        actions.set(id, {
+        set(id, {
           itemStats: { ...initialStats, likes: initialStats.likes + 1 },
           isLiked: true,
         });
@@ -23,13 +23,13 @@ export const useLikeManager = () => {
         const result = await likeItem(id, controller);
         abortControllers.delete(id);
         // for latest server state update
-        actions.set(id, { itemStats: result.itemStats, isLiked: true });
+        set(id, { itemStats: result.itemStats, isLiked: true });
       } catch (e) {
         /** @todo : fail api -> handle error (rollback state) */
         console.error(e);
       }
     },
-    [actions, abortControllers],
+    [set, abortControllers],
   );
 
   const unlike = useCallback(
@@ -37,7 +37,7 @@ export const useLikeManager = () => {
       const prevController = abortControllers.get(id);
       try {
         prevController?.abort();
-        actions.set(id, {
+        set(id, {
           itemStats: { ...initialStats, likes: initialStats.likes - 1 },
           isLiked: false,
         });
@@ -46,13 +46,13 @@ export const useLikeManager = () => {
         const result = await unlikeItem(id, controller);
         abortControllers.delete(id);
         // for latest server state update
-        actions.set(id, { itemStats: result.itemStats, isLiked: false });
+        set(id, { itemStats: result.itemStats, isLiked: false });
       } catch (e) {
         /** @todo : fail api -> handle error (rollback state) */
         console.error(e);
       }
     },
-    [actions, abortControllers],
+    [set, abortControllers],
   );
   return { like, unlike };
 };

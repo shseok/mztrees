@@ -11,17 +11,28 @@ interface Props {
   confirmText: string;
   onClose(): void;
   onConfirm(): void;
+  mode?: 'alert' | 'confirm';
 }
 
-const Dialog = ({ visible, title, description, onClose, onConfirm, confirmText }: Props) => {
+const Dialog = ({
+  visible,
+  title,
+  description,
+  onClose,
+  onConfirm,
+  confirmText,
+  mode = 'alert',
+}: Props) => {
   return (
     <StyledModal visible={visible}>
       <Title>{title}</Title>
       <Description>{description}</Description>
       <Footer>
-        <Button onClick={onClose} variant='secondary'>
-          닫기
-        </Button>
+        {mode === 'confirm' && (
+          <Button onClick={onClose} variant='secondary'>
+            닫기
+          </Button>
+        )}
         <Button onClick={onConfirm}>{confirmText}</Button>
       </Footer>
     </StyledModal>

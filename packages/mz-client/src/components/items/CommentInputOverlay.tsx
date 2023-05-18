@@ -12,6 +12,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useCommentsQuery } from '~/hooks/query/useCommentsQuery';
 import { Comment } from '~/lib/api/types';
 import { produce } from 'immer';
+import { useDialog } from '~/context/DialogContext';
 
 const CommentInputOverlay = () => {
   const { visible, close, parentCommentId } = useCommentInputStore(
@@ -34,6 +35,7 @@ const CommentInputOverlay = () => {
     });
     commentElement.focus();
   };
+  const { open } = useDialog();
 
   const { mutate, isLoading } = useCreateCommentMutation({
     onSuccess: (data) => {
@@ -63,10 +65,23 @@ const CommentInputOverlay = () => {
       }, 0);
       close();
     },
+    onError: () => {
+      open({
+        title: '오류',
+        description: '댓글 작성 실패',
+      });
+    },
   });
 
   const onClick = () => {
     if (!itemId) return;
+    if (text.length === 0) {
+      open({
+        title: '오류',
+        description: '댓글을 입력하지 않으셨습니다.',
+      });
+      return;
+    }
     mutate({
       itemId,
       text,

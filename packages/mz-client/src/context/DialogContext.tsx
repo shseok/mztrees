@@ -11,7 +11,8 @@ interface DialogConfig {
   description: string;
   confirmText?: string;
   onClose?(): void;
-  onConfirm(): void;
+  onConfirm?(): void;
+  mode?: 'alert' | 'confirm';
 }
 
 const DiaLogContext = createContext<DialogContextValue | null>(null);
@@ -33,7 +34,7 @@ export function DialogProvider({ children }: Props) {
     setVisible(false);
   }, [config]);
   const confirm = useCallback(() => {
-    config?.onConfirm();
+    config?.onConfirm?.();
     setVisible(false);
   }, [config]);
   const value = { open };
@@ -47,6 +48,7 @@ export function DialogProvider({ children }: Props) {
         confirmText={config?.confirmText ?? '확인'}
         onClose={close}
         onConfirm={confirm}
+        mode={config?.mode ?? 'alert'}
       />
     </DiaLogContext.Provider>
   );

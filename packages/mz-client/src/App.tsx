@@ -12,7 +12,6 @@ import WriteIntro from '~/pages/write/WriteIntro';
 import WriteLink from '~/pages/write/WriteLink';
 import Write from '~/pages/Write';
 import styled from 'styled-components';
-import { ItemOverrideProvider } from './context/ItemOverrideContext';
 import { DialogProvider } from './context/DialogContext';
 import Items from './pages/Items';
 
@@ -87,9 +86,7 @@ function App() {
     <div className='app'>
       <QueryClientProvider client={queryClient}>
         <DialogProvider>
-          <ItemOverrideProvider>
-            <RouterProvider router={router} />
-          </ItemOverrideProvider>
+          <RouterProvider router={router} />
         </DialogProvider>
       </QueryClientProvider>
     </div>
