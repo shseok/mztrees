@@ -42,8 +42,9 @@ const CommentInputOverlay = () => {
       queryClient.setQueryData(queryKey, (prevComments: Comment[] | undefined) =>
         prevComments ? [...prevComments, data] : [data],
       );
-      queryClient.invalidateQueries(queryKey);
+      // queryClient.invalidateQueries(queryKey);
       setTimeout(() => {
+        // 현재 코드 실행 블록이 완료된 다음에 호출되며, 이는 대개 현재의 이벤트 루프 주기가 종료된 후에 발생
         scrollToCommentId(data.id);
       }, 50);
       close();
