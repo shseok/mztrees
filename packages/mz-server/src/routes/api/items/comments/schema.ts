@@ -25,10 +25,12 @@ export let CommentSchema = Type.Object({
   text: Type.String(),
   createdAt: Type.String(),
   updatedAt: Type.String(),
-  likesCount: Type.Integer(),
+  likes: Type.Integer(),
   subcommentsCount: Type.Integer(),
   user: UserSchema,
   mentionUser: Type.Optional(Nullable(UserSchema)),
+  isDeleted: Type.Boolean(),
+  isLiked: Type.Boolean(),
 })
 //CreateComment response에도 쓰이므로 subcomments는 optional
 CommentSchema = Type.Object({
@@ -36,12 +38,13 @@ CommentSchema = Type.Object({
   text: Type.String(),
   createdAt: Type.String(),
   updatedAt: Type.String(),
-  likesCount: Type.Integer(),
+  likes: Type.Integer(),
   subcommentsCount: Type.Integer(),
   user: UserSchema,
   mentionUser: Type.Optional(Nullable(UserSchema)),
-  subcomments: Type.Optional(Type.Array(CommentSchema)),
   isDeleted: Type.Boolean(),
+  isLiked: Type.Boolean(),
+  subcomments: Type.Optional(Type.Array(CommentSchema)),
 })
 
 const CommentLikeSchema = Type.Object({

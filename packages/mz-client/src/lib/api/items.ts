@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { Comment, GetItemsResult, Item, LikeItemResult } from './types';
+import {
+  Comment,
+  GetItemsResult,
+  Item,
+  LikeCommentResult,
+  LikeItemResult,
+  UnlikeCommentResult,
+} from './types';
 import qs from 'qs';
 
 export async function createItem(params: CreateItemParams) {
@@ -59,5 +66,19 @@ export async function createComment({
     text,
     parentCommentId,
   });
+  return response.data;
+}
+
+export async function likeComment({ itemId, commentId }: { itemId: number; commentId: number }) {
+  const response = await axios.post<LikeCommentResult>(
+    `/base/api/items/${itemId}/comments/${commentId}/likes`,
+  );
+  return response.data;
+}
+
+export async function unlikeComment({ itemId, commentId }: { itemId: number; commentId: number }) {
+  const response = await axios.delete<UnlikeCommentResult>(
+    `/base/api/items/${itemId}/comments/${commentId}/likes`,
+  );
   return response.data;
 }

@@ -264,6 +264,7 @@ class ItemService {
         },
       },
     })
+    // for find easelly with itemId
     return list.reduce((acc, cur) => {
       acc[cur.itemId] = cur
       return acc

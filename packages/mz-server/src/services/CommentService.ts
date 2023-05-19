@@ -1,4 +1,4 @@
-import { Comment } from '@prisma/client'
+import { Comment, CommentLike } from '@prisma/client'
 import AppError from '../lib/NextAppError.js'
 import db from '../lib/db.js'
 
@@ -11,7 +11,13 @@ class CommentService {
     return CommentService.instance
   }
 
-  async getComments(itemId: number) {
+  async getComments({
+    itemId,
+    userId = null,
+  }: {
+    itemId: number
+    userId?: number | null
+  }) {
     const comments = await db.comment.findMany({
       where: {
         itemId,
@@ -24,7 +30,19 @@ class CommentService {
         mentionUser: true,
       },
     })
-    return this.groupSubComments(this.redact(comments))
+    // TODO: refactor
+    const commentLikedMap = userId
+      ? await this.getCommentLikedMap({
+          commentIds: comments.map((c) => c.id),
+          userId,
+        })
+      : {}
+
+    const commentsWithIsLiked = comments.map((comment) => ({
+      ...comment,
+      isLiked: !!commentLikedMap[comment.id],
+    }))
+    return this.groupSubComments(this.redact(commentsWithIsLiked))
   }
   /** TODO: rename to serialize (정확히 x) */
   redact(comments: Comment[]) {
@@ -35,7 +53,7 @@ class CommentService {
       const someDate = new Date(0)
       return {
         ...comment,
-        likesCount: 0,
+        likes: 0,
         createdAt: someDate,
         updatedAt: someDate,
         subcommentsCount: 0,
@@ -51,11 +69,11 @@ class CommentService {
     })
   }
 
-  async groupSubComments(comments: Comment[]) {
+  async groupSubComments<T extends Comment>(comments: T[]) {
     const rootComments = comments.filter(
       (comment) => comment.parentCommentId === null,
     )
-    const subcommentsMap = new Map<number, Comment[]>()
+    const subcommentsMap = new Map<number, T[]>()
     comments.forEach((comment) => {
       if (!comment.parentCommentId) return
       if (comment.deletedAt !== null) return
@@ -76,7 +94,15 @@ class CommentService {
   /* commentId, withSubcomments(deafult=false)
    * 데이터가 없을 경우 오류작업을 위함
    */
-  async getComment(commentId: number, withSubcomments: boolean = false) {
+  async getComment({
+    commentId,
+    withSubcomments = false,
+    userId = null,
+  }: {
+    commentId: number
+    withSubcomments?: boolean
+    userId?: number | null
+  }) {
     const comment = await db.comment.findUnique({
       where: {
         id: commentId,
@@ -86,19 +112,42 @@ class CommentService {
         mentionUser: true,
       },
     })
+    const commentLike = userId
+      ? await db.commentLike.findUnique({
+          where: {
+            commentId_userId: {
+              commentId,
+              userId,
+            },
+          },
+        })
+      : null
+
     if (!comment || comment.deletedAt) {
       throw new AppError('NotFound')
     }
     if (withSubcomments) {
-      const subcomments = await this.getSubcomments(commentId)
-      return { ...comment, subcomments }
+      const subcomments = await this.getSubcomments({ commentId, userId })
+      return {
+        ...comment,
+        isLiked: !!commentLike,
+        subcomments,
+        isDeleted: false,
+      }
     }
-    return comment
+    return { ...comment, isLiked: !!commentLike, isDeleted: false }
   }
-  async getSubcomments(commentId: number) {
-    return db.comment.findMany({
+  async getSubcomments({
+    commentId,
+    userId = null,
+  }: {
+    commentId: number
+    userId?: number | null
+  }) {
+    const subcomments = await db.comment.findMany({
       where: {
         parentCommentId: commentId,
+        deletedAt: null,
       },
       orderBy: {
         id: 'asc',
@@ -108,6 +157,19 @@ class CommentService {
         mentionUser: true,
       },
     })
+
+    const subcommentLikedMap = userId
+      ? await this.getCommentLikedMap({
+          commentIds: subcomments.map((sc) => sc.id),
+          userId,
+        })
+      : {}
+
+    return subcomments.map((sc) => ({
+      ...sc,
+      isLiked: !!subcommentLikedMap[sc.id],
+      isDeleted: false,
+    }))
   }
   async createComment({
     itemId,
@@ -123,7 +185,7 @@ class CommentService {
 
     /** parent comment is valid */
     const parentComment = parentCommentId
-      ? await this.getComment(parentCommentId)
+      ? await this.getComment({ commentId: parentCommentId })
       : null
     const rootParentCommentId = parentComment?.parentCommentId
     const targetParentCommentId = rootParentCommentId ?? parentCommentId
@@ -162,7 +224,7 @@ class CommentService {
     }
     await this.countAndSyncComments(itemId)
 
-    return { ...comment, isDeleted: false, subcomments: [] }
+    return { ...comment, isDeleted: false, subcomments: [], isLiked: false }
   }
   async likeComment({ commentId, userId }: CommentParams) {
     try {
@@ -206,7 +268,7 @@ class CommentService {
         id: commentId,
       },
       data: {
-        likesCount: count,
+        likes: count,
       },
     })
     return count
@@ -231,7 +293,7 @@ class CommentService {
   }
 
   async deleteComment({ commentId, userId }: CommentParams) {
-    const comment = await this.getComment(commentId)
+    const comment = await this.getComment({ commentId })
     if (comment.userId !== userId) {
       throw new AppError('Forbidden')
     }
@@ -250,7 +312,7 @@ class CommentService {
     })
   }
   async updateComment({ commentId, userId, text }: UpdateCommentParams) {
-    const comment = await this.getComment(commentId)
+    const comment = await this.getComment({ commentId })
     if (comment.userId !== userId) {
       throw new AppError('Forbidden')
     }
@@ -265,7 +327,28 @@ class CommentService {
         user: true,
       },
     })
-    return this.getComment(commentId, true)
+    return this.getComment({ commentId, withSubcomments: true })
+  }
+  async getCommentLikedMap({
+    commentIds,
+    userId,
+  }: {
+    commentIds: number[]
+    userId: number
+  }) {
+    const list = await db.commentLike.findMany({
+      where: {
+        userId,
+        commentId: {
+          in: commentIds,
+        },
+      },
+    })
+    // for find easelly with commentId
+    return list.reduce((acc, cur) => {
+      acc[cur.commentId] = cur
+      return acc
+    }, {} as Record<number, CommentLike>)
   }
 }
 

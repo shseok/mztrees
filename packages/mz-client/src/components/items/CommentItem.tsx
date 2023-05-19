@@ -20,7 +20,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
     text,
     createdAt,
     subcomments,
-    likesCount,
+    likes,
     mentionUser,
     isDeleted,
   } = comment;
@@ -59,7 +59,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
       <CommentFooter>
         <LikeBlock>
           <LikeButton size='small' isLiked onClick={() => {}} />
-          <LikeCount>{likesCount === 0 ? '' : likesCount.toLocaleString()}</LikeCount>
+          <LikeCount>{likes === 0 ? '' : likes.toLocaleString()}</LikeCount>
         </LikeBlock>
         <ReplyButton onClick={onReply}>답글 달기</ReplyButton>
       </CommentFooter>

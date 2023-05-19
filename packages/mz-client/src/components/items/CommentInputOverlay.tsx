@@ -66,6 +66,7 @@ const CommentInputOverlay = () => {
       close();
     },
     onError: () => {
+      // 서버가 죽지 않는 이상 에러는 발생하지 않을 것
       open({
         title: '오류',
         description: '댓글 작성 실패',

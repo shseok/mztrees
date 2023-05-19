@@ -54,10 +54,18 @@ export interface Comment {
   text: string;
   createdAt: string;
   updatedAt: string;
-  likesCount: number;
+  likes: number;
   subcommentsCount: number;
   subcomments?: Comment[];
   user: User;
   mentionUser: User | null;
   isDeleted: boolean;
+  isLiked: boolean;
 }
+
+export interface LikeCommentResult {
+  id: number;
+  likes: number;
+}
+
+export type UnlikeCommentResult = LikeCommentResult;
