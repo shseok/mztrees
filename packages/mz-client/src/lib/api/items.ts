@@ -69,16 +69,35 @@ export async function createComment({
   return response.data;
 }
 
-export async function likeComment({ itemId, commentId }: { itemId: number; commentId: number }) {
+export async function likeComment({
+  itemId,
+  commentId,
+  controller,
+}: {
+  itemId: number;
+  commentId: number;
+  controller?: AbortController;
+}) {
   const response = await axios.post<LikeCommentResult>(
     `/base/api/items/${itemId}/comments/${commentId}/likes`,
+    {},
+    { signal: controller?.signal },
   );
   return response.data;
 }
 
-export async function unlikeComment({ itemId, commentId }: { itemId: number; commentId: number }) {
+export async function unlikeComment({
+  itemId,
+  commentId,
+  controller,
+}: {
+  itemId: number;
+  commentId: number;
+  controller?: AbortController;
+}) {
   const response = await axios.delete<UnlikeCommentResult>(
     `/base/api/items/${itemId}/comments/${commentId}/likes`,
+    { signal: controller?.signal },
   );
   return response.data;
 }

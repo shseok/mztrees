@@ -39,7 +39,7 @@ const LinkCard = ({ item }: Props) => {
   const toggleLike = async () => {
     const currentUser = await getMyAccount();
     if (!currentUser) {
-      openLoginDialog('like');
+      openLoginDialog('itemLike');
       return;
     }
     if (isLiked) {
