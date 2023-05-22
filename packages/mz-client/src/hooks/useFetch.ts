@@ -1,18 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
 
 interface FetchProps<T> {
-  getDataFunc: (id: number) => Promise<T>;
-  id: number;
+  getDataFunc: () => Promise<T>;
 }
 
-export const useFetch = <T>({ getDataFunc, id }: FetchProps<T>) => {
+export const useFetch = <T>({ getDataFunc }: FetchProps<T>) => {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchData = useCallback(async (): Promise<void> => {
     try {
-      const res = await getDataFunc(id);
+      const res = await getDataFunc();
       setData(res);
     } catch (err) {
       if (err instanceof Error) {
@@ -25,7 +24,7 @@ export const useFetch = <T>({ getDataFunc, id }: FetchProps<T>) => {
     } finally {
       setLoading(false);
     }
-  }, [id, getDataFunc]);
+  }, [getDataFunc]);
 
   useEffect(() => {
     fetchData();

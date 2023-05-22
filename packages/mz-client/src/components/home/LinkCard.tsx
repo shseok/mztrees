@@ -5,7 +5,7 @@ import { ReactComponent as Globe } from '~/assets/globe.svg';
 import { useDateDistance } from '~/hooks/useDateDistance';
 import { useLikeManager } from '~/hooks/useLikeManager';
 import LikeButton from '../system/LikeButton';
-import { useItemOverrideById } from '~/hooks/store/ItemOverrideStore';
+import { useItemOverrideById } from '~/hooks/stores/ItemOverrideStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getMyAccount } from '~/lib/api/auth';
 import { useOpenLoginDialog } from '~/hooks/useOpenLoginDialog';
@@ -60,8 +60,8 @@ const LinkCard = ({ item }: Props) => {
           {author ? `${author} · ` : ''}
           {name}
         </Publisher>
-        <h3>{item.title}</h3>
-        <p>{body}</p>
+        <Title>{item.title}</Title>
+        <Body>{body}</Body>
       </StyledLink>
       <AnimatePresence initial={false}>
         {likes === 0 ? null : (
@@ -93,22 +93,6 @@ const StyledLink = styled(Link)`
 const Block = styled.div`
   display: flex;
   flex-direction: column;
-
-  h3 {
-    margin-top: 0;
-    margin-bottom: 16px;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 1.5;
-    color: ${colors.gray5};
-  }
-  p {
-    line-height: 1.5;
-    font-size: 14px;
-    margin-top: 0;
-    margin-bottom: 16px;
-    color: ${colors.gray4};
-  
 `;
 
 const Thumbnail = styled.img`
@@ -138,6 +122,22 @@ const Publisher = styled.div`
   }
 `;
 
+const Title = styled.h3`
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: ${colors.gray5};
+`;
+const Body = styled.p`
+  line-height: 1.5;
+  font-size: 14px;
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: ${colors.gray4};
+`;
+
 // 12*1.5+8(height: font-size*line-height+padding-bottom)
 const LikesCount = styled(motion.div)`
   font-size: 12px;
@@ -157,6 +157,8 @@ const Footer = styled.div`
 const UserInfo = styled.p`
   color: ${colors.gray2};
   font-size: 14px;
+  margin-top: 0px;
+  margin-bottom: 0px;
 `;
 
 export default LinkCard;

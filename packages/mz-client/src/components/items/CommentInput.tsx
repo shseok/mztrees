@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useCommentInputStore } from '~/hooks/store/useCommentInputStore';
+import { useCommentInputStore } from '~/hooks/stores/useCommentInputStore';
 import { useOpenLoginDialog } from '~/hooks/useOpenLoginDialog';
 import { getMyAccount } from '~/lib/api/auth';
 import { colors } from '~/lib/colors';

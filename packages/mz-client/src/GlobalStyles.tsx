@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-
+// TODO: Reset CSS > https://cssdeck.com/blog/scripts/eric-meyer-reset-css/
 const GlobalStyle = createGlobalStyle`
   html{
     box-sizing: border-box;
@@ -13,6 +13,12 @@ const GlobalStyle = createGlobalStyle`
   }
   button, input{
     font-family: inherit;
+  }
+  button {
+    background: none;
+    border: none;
+    outline: none;
+    padding: 0;
   }
 `;
 

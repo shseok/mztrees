@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Overlay from '../system/Overlay';
 import styled from 'styled-components';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useCommentInputStore } from '~/hooks/store/useCommentInputStore';
+import { useCommentInputStore } from '~/hooks/stores/useCommentInputStore';
 import { colors } from '~/lib/colors';
 import { shallow } from 'zustand/shallow';
 import { useItemId } from '~/hooks/useItemId';
@@ -152,9 +152,6 @@ const Input = styled.input`
 const TransparentButton = styled.button`
   width: 60px;
   height: 100%;
-  border: none;
-  outline: none;
-  background: none;
   color: ${colors.primary};
   font-size: 16px;
   font-weight: 600;

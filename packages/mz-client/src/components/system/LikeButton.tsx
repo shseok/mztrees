@@ -37,10 +37,6 @@ const LikeButton = ({ onClick, isLiked, size = 'medium' }: Props) => {
 };
 
 const StyledButton = styled.button<{ size: Size }>`
-  padding: 0;
-  border: none;
-  outline: none;
-  background: none;
   display: flex;
   ${(props) =>
     props.size === 'medium' &&

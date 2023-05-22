@@ -15,6 +15,7 @@
 //   return user;
 // };
 
+// 일단 보류
 import { ReactNode, createContext, useContext, useState } from 'react';
 import { User } from '~/lib/api/auth';
 /* 해당 컨텍스트에서 action이 필요하지 않을 것 같다.*/

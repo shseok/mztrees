@@ -14,6 +14,7 @@ import Write from '~/pages/Write';
 import styled from 'styled-components';
 import { DialogProvider } from './context/DialogContext';
 import Items from './pages/Items';
+import GlobalBottomSheetModal from './components/system/GlobalBottomSheetModal';
 
 const StyledTabLayout = styled(TabLayout)`
   padding: 16px 16px 0 16px;
@@ -88,6 +89,7 @@ function App() {
         <DialogProvider>
           <RouterProvider router={router} />
         </DialogProvider>
+        <GlobalBottomSheetModal />
       </QueryClientProvider>
     </div>
   );

@@ -69,6 +69,11 @@ export async function createComment({
   return response.data;
 }
 
+export async function deleteComment({ itemId, commentId }: { itemId: number; commentId: number }) {
+  const response = await axios.delete(`/base/api/items/${itemId}/comments/${commentId}`);
+  return response.data;
+}
+
 export async function likeComment({
   itemId,
   commentId,

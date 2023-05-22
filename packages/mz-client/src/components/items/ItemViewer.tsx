@@ -8,7 +8,7 @@ import LikeButton from '../system/LikeButton';
 import { useLikeManager } from '~/hooks/useLikeManager';
 import { useOpenLoginDialog } from '~/hooks/useOpenLoginDialog';
 import { getMyAccount } from '~/lib/api/auth';
-import { useItemOverrideById } from '~/hooks/store/ItemOverrideStore';
+import { useItemOverrideById } from '~/hooks/stores/ItemOverrideStore';
 import { useDateDistance } from '~/hooks/useDateDistance';
 
 interface Props {
@@ -149,6 +149,8 @@ const Footer = styled.div`
 const UserInfo = styled.p`
   color: ${colors.gray2};
   font-size: 14px;
+  margin-top: 0px;
+  margin-bottom: 0px;
 `;
 
 export default ItemViewer;

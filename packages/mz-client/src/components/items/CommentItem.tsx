@@ -1,23 +1,27 @@
 import styled from 'styled-components';
 import { useDateDistance } from '~/hooks/useDateDistance';
-import { Comment } from '~/lib/api/types';
+import { Comment, User } from '~/lib/api/types';
 import { colors } from '~/lib/colors';
 import SubCommentList from './SubcommentList';
 import LikeButton from '../system/LikeButton';
-import { useCommentInputStore } from '~/hooks/store/useCommentInputStore';
+import { useCommentInputStore } from '~/hooks/stores/useCommentInputStore';
 import { useOpenLoginDialog } from '~/hooks/useOpenLoginDialog';
 import { getMyAccount } from '~/lib/api/auth';
 import { useCommentLike } from '~/hooks/useCommentLike';
-import { useCommentLikeById } from '~/hooks/store/useCommentLikesStore';
+import { useCommentLikeById } from '~/hooks/stores/useCommentLikesStore';
 import { useItemId } from '~/hooks/useItemId';
+import { ReactComponent as MoreVert } from '~/assets/more-vert.svg';
+import { useBottomSheetModalStore } from '~/hooks/stores/useBottomSheetModalStore';
+import { useDeleteComment } from '~/hooks/useDeleteComment';
 
 /**@todo isSubcomment 굳이 필요한가에 대한 고민 */
 interface Props {
   comment: Comment;
   isSubcomment?: boolean;
+  user: User | null;
 }
 
-const CommentItem = ({ comment, isSubcomment }: Props) => {
+const CommentItem = ({ comment, isSubcomment, user }: Props) => {
   const {
     user: { username },
     text,
@@ -33,9 +37,26 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
   const open = useCommentInputStore((store) => store.open);
   const openLoginDialog = useOpenLoginDialog();
   const itemId = useItemId();
+  const isMyComment = comment.user.id === user?.id;
+  const openBottomSheetModal = useBottomSheetModalStore((store) => store.open);
 
   const likes = commentLike?.likes ?? comment.likes;
   const isLiked = commentLike?.isLiked ?? comment.isLiked;
+  const deleteComment = useDeleteComment();
+  const onClickMore = () => {
+    openBottomSheetModal([
+      {
+        name: '수정',
+        onClick: () => {},
+      },
+      {
+        name: '삭제',
+        onClick: () => {
+          deleteComment(comment.id);
+        },
+      },
+    ]);
+  };
 
   const toggleLike = async () => {
     if (!itemId) return;
@@ -72,8 +93,15 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
   return (
     <Block data-comment-id={comment.id}>
       <CommentHead>
-        <UserName>{username}</UserName>
-        <Time>{distance}</Time>
+        <LeftGroup>
+          <UserName>{username}</UserName>
+          <Time>{distance}</Time>
+        </LeftGroup>
+        {isMyComment && (
+          <MoreButton onClick={onClickMore}>
+            <MoreVert />
+          </MoreButton>
+        )}
       </CommentHead>
       <Text>
         {mentionUser && <Mention>@{mentionUser.username}</Mention>}
@@ -99,7 +127,26 @@ const Block = styled.div`
 const CommentHead = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+`;
+
+const LeftGroup = styled.div`
+  display: flex;
   align-items: flex-end;
+`;
+
+const MoreButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: ${colors.gray5};
+  svg {
+    display: block;
+    width: 20px;
+    height: 20px;
+  }
 `;
 
 const UserName = styled.div`
@@ -143,9 +190,6 @@ const LikeCount = styled.span`
 `;
 
 const ReplyButton = styled.button`
-  background: none;
-  border: none;
-  outline: none;
   display: flex;
   align-items: center;
   color: ${colors.gray3};

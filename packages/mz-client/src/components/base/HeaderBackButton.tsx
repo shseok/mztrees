@@ -15,9 +15,6 @@ const HeaderBackButton = ({ onClick }: Props) => {
 };
 
 const IconButton = styled.button`
-  border: none;
-  outline: none;
-  background: none;
   display: flex;
   align-items: center;
   justify-content: center;

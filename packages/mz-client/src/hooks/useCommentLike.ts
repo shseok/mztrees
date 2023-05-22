@@ -1,5 +1,5 @@
 import { likeComment, unlikeComment } from '~/lib/api/items';
-import { useCommentLikeSetter } from './store/useCommentLikesStore';
+import { useCommentLikeSetter } from './stores/useCommentLikesStore';
 import { useCallback } from 'react';
 
 export function useCommentLike() {

@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react';
 import { likeItem, unlikeItem } from '~/lib/api/items';
 import { ItemStats } from '~/lib/api/types';
-import { useItemOverrideSetter } from './store/ItemOverrideStore';
+import { useItemOverrideSetter } from './stores/ItemOverrideStore';
 
 // like와 unlike 로직 내부에서는 state[id].itemStats는 변하지 않는다.
 // 결국, 컴포넌트에서 쓰일 때, 변한다.
