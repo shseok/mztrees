@@ -1,9 +1,11 @@
 # How to run
 
-```
-$ yarn
-$ yarn dev
-```
+1. create ".env" file
+2. insert VITE_APP_TEST_URL={server listening address}
+3. ```
+   $ yarn
+   $ yarn dev
+   ```
 
 # Directory structure
 

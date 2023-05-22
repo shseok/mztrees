@@ -1,9 +1,11 @@
 # How to run
 
-```
-$ yarn
-$ yarn dev
-```
+1. create `.env` file
+2. insert `JWT_SECRET={any string value}`
+3. ```
+   $ yarn
+   $ yarn dev
+   ```
 
 # Directory structure
 
