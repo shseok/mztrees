@@ -13,15 +13,15 @@ import { useItemId } from '~/hooks/useItemId';
 import { ReactComponent as MoreVert } from '~/assets/more-vert.svg';
 import { useBottomSheetModalStore } from '~/hooks/stores/useBottomSheetModalStore';
 import { useDeleteComment } from '~/hooks/useDeleteComment';
+import { useUser } from '~/hooks/stores/userStore';
 
 /**@todo isSubcomment 굳이 필요한가에 대한 고민 */
 interface Props {
   comment: Comment;
   isSubcomment?: boolean;
-  user: User | null;
 }
 
-const CommentItem = ({ comment, isSubcomment, user }: Props) => {
+const CommentItem = ({ comment, isSubcomment }: Props) => {
   const {
     user: { username },
     text,
@@ -37,7 +37,8 @@ const CommentItem = ({ comment, isSubcomment, user }: Props) => {
   const open = useCommentInputStore((store) => store.open);
   const openLoginDialog = useOpenLoginDialog();
   const itemId = useItemId();
-  const isMyComment = comment.user.id === user?.id;
+  const currentUser = useUser();
+  const isMyComment = comment.user.id === currentUser?.id;
   const openBottomSheetModal = useBottomSheetModalStore((store) => store.open);
 
   const likes = commentLike?.likes ?? comment.likes;

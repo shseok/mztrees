@@ -1,9 +1,13 @@
+import { set } from 'date-fns';
+import { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CommentInputOverlay from '~/components/items/CommentInputOverlay';
 import CommentList from '~/components/items/CommentList';
 import ItemViewer from '~/components/items/ItemViewer';
 import BasicLayout from '~/components/layout/BasicLayout';
 import { useItemAndCommentsQuery } from '~/hooks/query/useCommentsQuery';
+import { setUser } from '~/hooks/stores/userStore';
+import { getMyAccount } from '~/lib/api/auth';
 
 /** @todos validate itemId */
 /** @todos handle 404 */
@@ -48,8 +52,17 @@ const Items = () => {
   const result = useItemAndCommentsQuery(itemIntId);
   const loading = result.some((result) => result.isLoading);
   const error = result.some((result) => result.isError);
-  console.log(result, loading, error);
+  // console.log(result, loading, error);
   const [item, comments] = [result[0].data, result[1].data];
+
+  const set = setUser();
+  const fetchData = useCallback(async () => {
+    const currentUser = await getMyAccount();
+    set(currentUser);
+  }, []);
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
   return (
     <BasicLayout hasBackButton title={null}>
       {loading && <div>로딩중..</div>}

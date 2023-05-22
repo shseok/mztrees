@@ -19,14 +19,18 @@ export const useDeleteComment = () => {
         if (!prevComments) return;
         // return prevComments.filter((comment: Comment) => comment.id !== commentId);
         return produce(prevComments, (draft) => {
-          const seletedComment =
-            draft.find((comment) => comment.id === commentId) ??
-            draft.find((comment) =>
-              comment.subcomments?.find((subcomment) => subcomment.id === commentId),
-            );
-          if (seletedComment) {
-            seletedComment.isDeleted = true;
+          const rootComment = draft.find((comment) => comment.id === commentId);
+          if (rootComment) {
+            rootComment.isDeleted = true;
           }
+          // childComment
+          draft.forEach((comment) => {
+            if (comment.subcomments) {
+              comment.subcomments = comment.subcomments.filter(
+                (subcomment) => subcomment.id !== commentId,
+              );
+            }
+          });
         });
       });
       // queryClient.invalidateQueries(useCommentsQuery.extractKey(itemId));
