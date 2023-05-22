@@ -99,6 +99,9 @@ export const CommentsRouteSchema = createRouteSchema({
   UpdateComment: {
     params: CommentsParamsSchema,
     body: UpdateCommentSchema,
+    response: {
+      200: CommentSchema,
+    },
   },
 })
 
