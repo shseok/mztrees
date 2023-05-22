@@ -69,6 +69,21 @@ export async function createComment({
   return response.data;
 }
 
+export async function editComment({
+  itemId,
+  commentId,
+  text,
+}: {
+  itemId: number;
+  commentId: number;
+  text: string;
+}) {
+  const response = await axios.patch<Comment>(`/base/api/items/${itemId}/comments/${commentId}`, {
+    text,
+  });
+  return response.data;
+}
+
 export async function deleteComment({ itemId, commentId }: { itemId: number; commentId: number }) {
   const response = await axios.delete(`/base/api/items/${itemId}/comments/${commentId}`);
   return response.data;

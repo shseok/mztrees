@@ -8,21 +8,29 @@ import { shallow } from 'zustand/shallow';
 import { useItemId } from '~/hooks/useItemId';
 import { useCreateCommentMutation } from '~/hooks/mutation/useCreateCommentMutations';
 import LoadingIndicator from '../system/LoadingIndicator';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCommentsQuery } from '~/hooks/query/useCommentsQuery';
 import { Comment } from '~/lib/api/types';
 import { produce } from 'immer';
 import { useDialog } from '~/context/DialogContext';
+import { editComment } from '~/lib/api/items';
 
 const CommentInputOverlay = () => {
-  const { visible, close, parentCommentId } = useCommentInputStore(
-    ({ visible, close, parentCommentId }) => ({ visible, close, parentCommentId }),
+  const { visible, close, parentCommentId, commentId, defaultText } = useCommentInputStore(
+    ({ visible, close, parentCommentId, commentId, defaultText }) => ({
+      visible,
+      close,
+      parentCommentId,
+      commentId,
+      defaultText,
+    }),
     shallow,
   );
   // manage text state
   const [text, setText] = useState('');
   const itemId = useItemId();
   const queryClient = useQueryClient();
+  const buttonText = commentId ? '수정' : '등록';
 
   const scrollToCommentId = (commentId: number) => {
     const commentElement = document.body.querySelector<HTMLDivElement>(
@@ -37,7 +45,7 @@ const CommentInputOverlay = () => {
   };
   const { open } = useDialog();
 
-  const { mutate, isLoading } = useCreateCommentMutation({
+  const { mutate: write, isLoading: isWriteLoading } = useCreateCommentMutation({
     onSuccess: (data) => {
       // TODO: do something with data
       if (!itemId) return;
@@ -74,6 +82,21 @@ const CommentInputOverlay = () => {
     },
   });
 
+  const { mutate: edit, isLoading: isEditLoading } = useMutation(editComment, {
+    onSuccess: () => {
+      if (!itemId) return;
+      // TODO: 추후 변경
+      queryClient.invalidateQueries(useCommentsQuery.extractKey(itemId));
+      close();
+    },
+    onError: () => {
+      open({
+        title: '오류',
+        description: '댓글 수정 실패',
+      });
+    },
+  });
+
   const onClick = () => {
     if (!itemId) return;
     if (text.length === 0) {
@@ -83,7 +106,16 @@ const CommentInputOverlay = () => {
       });
       return;
     }
-    mutate({
+    if (commentId) {
+      edit({
+        itemId,
+        commentId,
+        text,
+      });
+      return;
+    }
+
+    write({
       itemId,
       text,
       parentCommentId: parentCommentId ?? undefined,
@@ -96,6 +128,8 @@ const CommentInputOverlay = () => {
     }
   }, [visible]);
 
+  const isLoading = isWriteLoading || isEditLoading;
+  const defaultTextValue = text || defaultText;
   return (
     <>
       <Overlay visible={visible} onClose={close} />
@@ -112,11 +146,11 @@ const CommentInputOverlay = () => {
             <Input
               placeholder='댓글을 입력하세요.'
               onChange={(e) => setText(e.target.value)}
-              value={text}
+              value={defaultTextValue}
               autoFocus
             />
             <TransparentButton onClick={onClick} disabled={isLoading}>
-              {isLoading ? <LoadingIndicator /> : '등록'}
+              {isLoading ? <LoadingIndicator /> : buttonText}
             </TransparentButton>
           </Footer>
         )}

@@ -6,7 +6,7 @@ import { getMyAccount } from '~/lib/api/auth';
 import { colors } from '~/lib/colors';
 
 const CommentInput = () => {
-  const open = useCommentInputStore((state) => state.open);
+  const write = useCommentInputStore((state) => state.write);
   const openLoginDialog = useOpenLoginDialog();
   const onClick = async () => {
     const currentUser = await getMyAccount();
@@ -14,7 +14,7 @@ const CommentInput = () => {
       openLoginDialog('comment');
       return;
     }
-    open();
+    write();
   };
   return <DummyInput onClick={onClick}>댓글을 입력하세요.</DummyInput>;
 };

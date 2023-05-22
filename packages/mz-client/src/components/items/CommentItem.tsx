@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useDateDistance } from '~/hooks/useDateDistance';
-import { Comment, User } from '~/lib/api/types';
+import { Comment } from '~/lib/api/types';
 import { colors } from '~/lib/colors';
 import SubCommentList from './SubcommentList';
 import LikeButton from '../system/LikeButton';
@@ -12,7 +12,7 @@ import { useCommentLikeById } from '~/hooks/stores/useCommentLikesStore';
 import { useItemId } from '~/hooks/useItemId';
 import { ReactComponent as MoreVert } from '~/assets/more-vert.svg';
 import { useBottomSheetModalStore } from '~/hooks/stores/useBottomSheetModalStore';
-import { useDeleteComment } from '~/hooks/useDeleteComment';
+import { useCommentActions } from '~/hooks/useCommentActions';
 import { useUser } from '~/hooks/stores/userStore';
 
 /**@todo isSubcomment 굳이 필요한가에 대한 고민 */
@@ -34,7 +34,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
   const commentLike = useCommentLikeById(comment.id);
   const { like, unlike } = useCommentLike();
   const distance = useDateDistance(createdAt);
-  const open = useCommentInputStore((store) => store.open);
+  const { write, edit } = useCommentInputStore();
   const openLoginDialog = useOpenLoginDialog();
   const itemId = useItemId();
   const currentUser = useUser();
@@ -43,12 +43,14 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
 
   const likes = commentLike?.likes ?? comment.likes;
   const isLiked = commentLike?.isLiked ?? comment.isLiked;
-  const deleteComment = useDeleteComment();
+  const { useDeleteComment: deleteComment } = useCommentActions();
   const onClickMore = () => {
     openBottomSheetModal([
       {
         name: '수정',
-        onClick: () => {},
+        onClick: () => {
+          edit(comment.id, text);
+        },
       },
       {
         name: '삭제',
@@ -80,7 +82,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
       return;
     }
 
-    open(comment.id);
+    write(comment.id);
   };
   if (isDeleted) {
     return (
