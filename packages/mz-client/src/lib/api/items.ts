@@ -26,6 +26,10 @@ export async function getItem(itemId: number) {
   return response.data;
 }
 
+export async function deleteItem(itemId: number) {
+  return axios.delete(`/base/api/items/${itemId}`);
+}
+
 export async function likeItem(itemId: number, controller?: AbortController) {
   const response = await axios.post<LikeItemResult>(
     `/base/api/items/${itemId}/likes`,

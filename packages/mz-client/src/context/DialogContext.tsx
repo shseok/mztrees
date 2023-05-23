@@ -10,6 +10,7 @@ interface DialogConfig {
   title: string;
   description: string;
   confirmText?: string;
+  cancelText?: string;
   onClose?(): void;
   onConfirm?(): void;
   mode?: 'alert' | 'confirm';
@@ -21,7 +22,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-// 나주에 state 통합시키기(객체화)
+// TODO: 나중에 state 통합시키기(객체화)
 export function DialogProvider({ children }: Props) {
   const [visible, setVisible] = useState(false);
   const [config, setConfig] = useState<DialogConfig | null>(null);
@@ -46,6 +47,7 @@ export function DialogProvider({ children }: Props) {
         title={config?.title ?? ''}
         description={config?.description ?? ''}
         confirmText={config?.confirmText ?? '확인'}
+        cancelText={config?.cancelText ?? '닫기'}
         onClose={close}
         onConfirm={confirm}
         mode={config?.mode ?? 'alert'}

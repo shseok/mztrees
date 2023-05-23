@@ -1,12 +1,16 @@
 import { useCallback, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import MoreVertButton from '~/components/base/MoreVertButton';
 import CommentInputOverlay from '~/components/items/CommentInputOverlay';
 import CommentList from '~/components/items/CommentList';
 import ItemViewer from '~/components/items/ItemViewer';
 import BasicLayout from '~/components/layout/BasicLayout';
+import { useDialog } from '~/context/DialogContext';
 import { useItemAndCommentsQuery } from '~/hooks/query/useCommentsQuery';
-import { setUser } from '~/hooks/stores/userStore';
+import { useBottomSheetModalStore } from '~/hooks/stores/useBottomSheetModalStore';
+import { useUser, setUser } from '~/hooks/stores/userStore';
 import { getMyAccount } from '~/lib/api/auth';
+import { deleteItem } from '~/lib/api/items';
 
 /** @todos validate itemId */
 /** @todos handle 404 */
@@ -54,7 +58,10 @@ const Items = () => {
   // console.log(result, loading, error);
   const [item, comments] = [result[0].data, result[1].data];
 
+  const navigate = useNavigate();
   const set = setUser();
+  const openBottomSheetModal = useBottomSheetModalStore((store) => store.open);
+  const { open: openDialog } = useDialog();
   const fetchData = useCallback(async () => {
     const currentUser = await getMyAccount();
     set(currentUser);
@@ -62,8 +69,43 @@ const Items = () => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  const currentUser = useUser();
+  const isMyItem = currentUser?.id === item?.user.id;
+
+  const onClickMore = () => {
+    openBottomSheetModal([
+      {
+        name: '수정',
+        onClick: () => {},
+      },
+      {
+        name: '삭제',
+        onClick: () => {
+          openDialog({
+            title: '삭제',
+            description: '정말로 글을 삭제하시겠습니까?',
+            mode: 'confirm',
+            onConfirm: async () => {
+              /** TODO: show fullscreen spinner on loading */
+              if (!itemId) return;
+              await deleteItem(parseInt(itemId, 10));
+              navigate('/');
+            },
+            confirmText: '삭제',
+            cancelText: '취소',
+          });
+        },
+      },
+    ]);
+  };
+
   return (
-    <BasicLayout hasBackButton title={null}>
+    <BasicLayout
+      hasBackButton
+      title={null}
+      headerRight={isMyItem && <MoreVertButton onClick={onClickMore} />}
+    >
       {loading && <div>로딩중..</div>}
       {/* {error && navigate('/error', { state: { error: error } })} */}
       {error && <div>에러</div>}

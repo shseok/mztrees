@@ -40,7 +40,7 @@ export async function extractPageInfo(
     url: validatedUrl,
   })
   const domain = new URL(validatedUrl).hostname
-  console.log(data)
+  console.log(data, domain)
   return {
     url: validatedUrl,
     publisher: data.publisher ?? domain,

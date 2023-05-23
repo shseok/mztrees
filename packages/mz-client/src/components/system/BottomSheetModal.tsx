@@ -15,8 +15,8 @@ const BottomSheetModal = ({ visible, items, onClose }: Props) => {
   return (
     <>
       <Overlay visible={visible} onClose={onClose} />
-      {visible && (
-        <AnimatePresence>
+      <AnimatePresence>
+        {visible && (
           <Sheet
             initial={{ y: '100%' }}
             animate={{ y: '0%' }}
@@ -31,8 +31,8 @@ const BottomSheetModal = ({ visible, items, onClose }: Props) => {
               ))}
             </Items>
           </Sheet>
-        </AnimatePresence>
-      )}
+        )}
+      </AnimatePresence>
     </>
   );
 };

@@ -9,6 +9,7 @@ interface Props {
   title: string;
   description: string;
   confirmText: string;
+  cancelText: string;
   onClose(): void;
   onConfirm(): void;
   mode?: 'alert' | 'confirm';
@@ -21,6 +22,7 @@ const Dialog = ({
   onClose,
   onConfirm,
   confirmText,
+  cancelText,
   mode = 'alert',
 }: Props) => {
   return (
@@ -30,7 +32,7 @@ const Dialog = ({
       <Footer>
         {mode === 'confirm' && (
           <Button onClick={onClose} variant='secondary'>
-            닫기
+            {cancelText}
           </Button>
         )}
         <Button onClick={onConfirm}>{confirmText}</Button>

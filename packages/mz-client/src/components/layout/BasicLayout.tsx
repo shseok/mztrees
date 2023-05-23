@@ -7,12 +7,13 @@ import Header from '~/components/base/Header';
 
 interface Props {
   hasBackButton: boolean;
+  headerRight?: React.ReactNode;
   title?: React.ReactNode;
   children?: React.ReactNode;
   onGoback?(): void;
 }
 
-const BasicLayout = ({ hasBackButton, title, children, onGoback }: Props) => {
+const BasicLayout = ({ hasBackButton, headerRight, title, children, onGoback }: Props) => {
   const goBack = useGoBack();
 
   return (
@@ -20,6 +21,7 @@ const BasicLayout = ({ hasBackButton, title, children, onGoback }: Props) => {
       <Header
         title={title}
         headerLeft={hasBackButton ? <HeaderBackButton onClick={onGoback ?? goBack} /> : undefined}
+        headerRight={headerRight}
       />
       <Content>{children}</Content>
     </FullHeightPage>
