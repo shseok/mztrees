@@ -10,6 +10,7 @@ import { useOpenLoginDialog } from '~/hooks/useOpenLoginDialog';
 import { getMyAccount } from '~/lib/api/auth';
 import { useItemOverrideById } from '~/hooks/stores/ItemOverrideStore';
 import { useDateDistance } from '~/hooks/useDateDistance';
+import { Link } from 'react-router-dom';
 
 interface Props {
   item: Item;
@@ -50,15 +51,21 @@ const ItemViewer = ({ item }: Props) => {
   };
   return (
     <Block>
-      {thumbnail ? <Thumbnail src={thumbnail} /> : null}
+      {thumbnail ? (
+        <Link to={item.link}>
+          <Thumbnail src={thumbnail} />
+        </Link>
+      ) : null}
       <Content>
-        <Publisher>
-          {favicon ? <img src={favicon} alt='favicon' /> : <Globe />}
-          {author ? `${author} · ` : ''}
-          {name}
-        </Publisher>
-        <Title>{title}</Title>
-        <Body>{body}</Body>
+        <Link to={item.link}>
+          <Publisher>
+            {favicon ? <img src={favicon} alt='favicon' /> : <Globe />}
+            {author ? `${author} · ` : ''}
+            {name}
+          </Publisher>
+          <Title>{title}</Title>
+          <Body>{body}</Body>
+        </Link>
         <AnimatePresence initial={false}>
           {likes === 0 ? null : (
             <LikesCount
@@ -84,9 +91,20 @@ const ItemViewer = ({ item }: Props) => {
 const Content = styled.div`
   padding: 16px;
   border-bottom: 1px solid ${colors.gray0};
+  a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
 `;
 
-const Block = styled.div``;
+const Block = styled.div`
+  display: flex;
+  flex-direction: column;
+  a {
+    display: block;
+  }
+`;
 const Thumbnail = styled.img`
   width: 100%;
   height: auto;
