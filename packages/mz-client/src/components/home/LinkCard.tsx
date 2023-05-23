@@ -98,7 +98,8 @@ const Block = styled.div`
 const Thumbnail = styled.img`
   display: block;
   width: 100%;
-  aspect-ratio: 288/192;
+  // aspect-ratio: 288/192;
+  max-height: 40vh;
   object-fit: cover;
   flex: 1;
   border-radius: 12px;
