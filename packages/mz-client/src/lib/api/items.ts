@@ -30,6 +30,19 @@ export async function deleteItem(itemId: number) {
   return axios.delete(`/base/api/items/${itemId}`);
 }
 
+export async function updateItem({
+  itemId,
+  title,
+  body,
+}: {
+  itemId: number;
+  title: string;
+  body: string;
+}) {
+  const response = await axios.patch(`/base/api/items/${itemId}`, { title, body, tags: [] });
+  return response.data;
+}
+
 export async function likeItem(itemId: number, controller?: AbortController) {
   const response = await axios.post<LikeItemResult>(
     `/base/api/items/${itemId}/likes`,

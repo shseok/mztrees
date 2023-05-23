@@ -15,6 +15,7 @@ import styled from 'styled-components';
 import { DialogProvider } from './context/DialogContext';
 import Items from './pages/Items';
 import GlobalBottomSheetModal from './components/system/GlobalBottomSheetModal';
+import Edit from './pages/write/Edit';
 
 const StyledTabLayout = styled(TabLayout)`
   padding: 16px 16px 0 16px;
@@ -67,6 +68,10 @@ const router = createBrowserRouter([
       {
         path: '/write/link',
         element: <WriteLink />,
+      },
+      {
+        path: '/write/edit',
+        element: <Edit />,
       },
     ],
   },

@@ -77,7 +77,10 @@ const Items = () => {
     openBottomSheetModal([
       {
         name: '수정',
-        onClick: () => {},
+        onClick: () => {
+          if (!itemId) return;
+          navigate(`/write/edit?itemId=${itemId}`, { state: { item } });
+        },
       },
       {
         name: '삭제',
