@@ -12,7 +12,7 @@ import cors from '@fastify/cors'
 const server: FastifyInstance = Fastify({
   logger: true,
 })
-
+console.log(process.env.NODE_ENV)
 if (process.env.NODE_ENV === 'development') {
   server.register(cors, {
     origin: [
