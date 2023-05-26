@@ -7,8 +7,8 @@ export const searchRoute: FastifyPluginAsync = async (fastify) => {
     '/',
     { schema: SearchRouteSchema.Search },
     async (request) => {
-      const { q } = request.query
-      const hits = await algolia.search(q)
+      const { q, limit, offset } = request.query
+      const hits = await algolia.search(q, { hitsPerPage: limit, offset })
       return hits
     },
   )

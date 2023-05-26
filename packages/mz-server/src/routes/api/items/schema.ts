@@ -73,6 +73,8 @@ ItemSchema.example = {
   isLiked: true,
 }
 
+export type ItemType = Static<typeof ItemSchema>
+
 export const WriteItemSchema: FastifySchema = {
   tags: ['item'],
   body: CreateItemSchema,

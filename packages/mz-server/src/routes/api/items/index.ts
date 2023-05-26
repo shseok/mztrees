@@ -55,6 +55,7 @@ export const itemsRoute: FastifyPluginAsync = async (fastify) => {
         mode: 'recent',
         cursor: cursor ? parseInt(cursor, 10) : null,
         userId: request.user?.id,
+        limit: 1000,
       })
     },
   )
