@@ -16,7 +16,7 @@ export interface PaginationType<T> {
   list: T[]
   totalCount: number
   pageInfo: {
-    nextOffset?: number
+    nextOffset?: number | null
     endCursor?: number | null
     hasNextPage: boolean
   }

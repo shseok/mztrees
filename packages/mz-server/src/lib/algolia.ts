@@ -20,19 +20,21 @@ const index = client.initIndex('mz_items')
 const algolia = {
   search: async (
     query: string,
-    { offset = 0, hitsPerPage = 20 }: SearchOption = {},
+    { offset = 0, length = 20 }: SearchOption = {},
   ) => {
     const result = await index.search<ItemType>(query, {
-      hitsPerPage,
       offset,
+      length,
     })
+
+    const hasNextPage = offset + length < result.nbHits
 
     const pagination: PaginationType<(typeof result.hits)[0]> = {
       list: result.hits,
       totalCount: result.nbHits,
       pageInfo: {
-        nextOffset: offset + hitsPerPage,
-        hasNextPage: offset + hitsPerPage < result.nbHits,
+        nextOffset: hasNextPage ? offset + length : null,
+        hasNextPage,
       },
     }
     return pagination
@@ -41,7 +43,7 @@ const algolia = {
 
 interface SearchOption {
   offset?: number
-  hitsPerPage?: number
+  length?: number
 }
 
 export default algolia
