@@ -1,9 +1,10 @@
-import { Item, ItemLike, ItemStats } from '@prisma/client'
+import { Item, ItemLike } from '@prisma/client'
 import AppError from '../lib/AppError.js'
 import db from '../lib/db.js'
 import { extractPageInfo } from '../lib/extractPageInfo.js'
 import { PaginationOptionType, createPagination } from '../lib/pagination.js'
 import { CreateItemBodyType } from '../routes/api/items/schema.js'
+import algolia from '../lib/algolia.js'
 
 class ItemService {
   private static instance: ItemService
@@ -68,6 +69,19 @@ class ItemService {
     const itemLikedMap = userId
       ? await this.getItemLikedMap({ userId, itemIds: [item.id] })
       : null
+
+    algolia
+      .sync({
+        id: item.id,
+        title: item.title,
+        body: item.body,
+        author: item.author,
+        link: item.link,
+        thumbnail: item.thumbnail,
+        username: item.user.username,
+        publisher: item.publisher,
+      })
+      .catch(console.error)
 
     return this.mergeItemLike(itemWithItemStats, itemLikedMap?.[item.id])
   }
@@ -179,6 +193,19 @@ class ItemService {
       ? await this.getItemLikedMap({ userId, itemIds: [itemId] })
       : null
 
+    algolia
+      .update({
+        id: item.id,
+        title,
+        body,
+        author: item.author,
+        link: item.link,
+        thumbnail: item.thumbnail,
+        username: item.user.username,
+        publisher: item.publisher,
+      })
+      .catch(console.error)
+
     return this.mergeItemLike(updatedItem, itemLikedMap?.[itemId])
   }
 
@@ -192,6 +219,8 @@ class ItemService {
         id: itemId,
       },
     })
+
+    algolia.delete(itemId).catch(console.error)
   }
 
   async countLikes(itemId: number) {
