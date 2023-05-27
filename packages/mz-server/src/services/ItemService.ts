@@ -1,4 +1,4 @@
-import { Item, ItemLike } from '@prisma/client'
+import { Item, ItemLike, ItemStats, Publisher, User } from '@prisma/client'
 import AppError from '../lib/AppError.js'
 import db from '../lib/db.js'
 import { extractPageInfo } from '../lib/extractPageInfo.js'
@@ -168,6 +168,34 @@ class ItemService {
     }
 
     return []
+  }
+
+  async getItemsByIds(itemIds: number[]) {
+    const result = await db.item.findMany({
+      where: {
+        id: {
+          in: itemIds,
+        },
+      },
+      include: {
+        user: true,
+        publisher: true,
+        itemStats: true,
+      },
+    })
+
+    type FullItem = Item & {
+      user: User
+      publisher: Publisher
+      itemStats: ItemStats | null
+    }
+
+    const itemMap = result.reduce<Record<number, FullItem>>((acc, item) => {
+      acc[item.id] = item
+      return acc
+    }, {})
+
+    return itemMap
   }
 
   async updateItem({ itemId, userId, title, body }: UpdateItemParams) {

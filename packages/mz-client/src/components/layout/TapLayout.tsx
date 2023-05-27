@@ -7,15 +7,15 @@ import styled from 'styled-components';
 
 interface Props {
   className?: string;
+  children?: React.ReactNode;
+  header?: React.ReactNode;
 }
 
-const TabLayout = ({ className }: Props) => {
+const TabLayout = ({ className, children, header }: Props) => {
   return (
     <FullHeightPage>
-      <Header />
-      <Content className={className}>
-        <Outlet />
-      </Content>
+      {header ?? <Header />}
+      <Content className={className}>{children ?? <Outlet />}</Content>
       <Footer />
     </FullHeightPage>
   );

@@ -7,13 +7,14 @@ export interface HeaderProps {
   title?: React.ReactNode;
   headerLeft?: React.ReactNode;
   headerRight?: React.ReactNode;
+  className?: string;
 }
 
-const Header = ({ title = <Logo />, headerLeft, headerRight }: HeaderProps) => {
+const Header = ({ title = <Logo />, headerLeft, headerRight, className }: HeaderProps) => {
   return (
-    <Block>
+    <Block className={className}>
       {headerLeft && <HeaderSide position='left'>{headerLeft}</HeaderSide>}
-      <Title>{title}</Title>
+      <Title className='title'>{title}</Title>
       {headerRight && <HeaderSide position='right'>{headerRight}</HeaderSide>}
     </Block>
   );

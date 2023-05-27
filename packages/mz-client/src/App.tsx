@@ -31,10 +31,6 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: '/search',
-        element: <Search />,
-      },
-      {
         path: '/bookmarks',
         element: <BookMarks />,
       },
@@ -78,6 +74,10 @@ const router = createBrowserRouter([
   {
     path: '/items/:itemId',
     element: <Items />,
+  },
+  {
+    path: '/search',
+    element: <Search />,
   },
   // {
   //   path: '/error',
