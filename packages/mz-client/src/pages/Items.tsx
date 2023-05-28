@@ -17,14 +17,7 @@ import { deleteItem } from '~/lib/api/items';
 
 const Items = () => {
   const { itemId } = useParams();
-  // const {
-  //   data: item,
-  //   error,
-  //   loading,
-  // } = useFetch<Item>({
-  //   getDataFunc: getItem,
-  //   id: parseInt(itemId!, 10),
-  // });
+  // const { data, error, loading } = useFetch<Item>({ getDataFunc: () => getItem(parseInt(itemId!, 10)) });
   // const [data, setData] = useState<Item | null>(null);
   // const [comments, setComments] = useState<Comment[] | null>(null);
   // const [error, setError] = useState<string | null>(null);
