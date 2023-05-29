@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import LinkCardList from '~/components/home/LinkCardList';
-import { useInfinteScroll } from '~/hooks/useInfiniteScroll';
+import { useInfiniteScroll } from '~/hooks/useInfiniteScroll';
 import { getItems } from '~/lib/api/items';
 import { GetItemsResult } from '~/lib/api/types';
 const Home = () => {
@@ -28,7 +28,7 @@ const Home = () => {
   //   //
   //   fetchData();
   // }, []);
-  useInfinteScroll(observerTargetEl, fetchNext);
+  useInfiniteScroll(observerTargetEl, fetchNext);
 
   const items = pages ? pages.flatMap((page) => page.list) : null;
   // console.log('out', items);

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-export const useInfinteScroll = (ref: React.RefObject<HTMLDivElement>, fetchNext: () => void) => {
+export const useInfiniteScroll = (ref: React.RefObject<HTMLDivElement>, fetchNext: () => void) => {
   useEffect(() => {
     if (!ref.current) return;
     const observer = new IntersectionObserver(

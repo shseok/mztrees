@@ -21,6 +21,7 @@ const Block = styled.div`
   padding: 24px 16px;
   display: flex;
   flex-direction: column;
+  gap: 24px;
 `;
 
 export default SearchResultCardList;

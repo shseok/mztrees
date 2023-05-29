@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@svgr/rollup": "^7.0.0",
+    "@tanstack/react-query-devtools": "^4.29.11",
     "@types/node": "^18.15.11",
     "@types/qs": "^6.9.7",
     "@types/react": "^18.0.28",
