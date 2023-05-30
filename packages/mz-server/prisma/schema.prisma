@@ -45,7 +45,7 @@ model Item {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user        User @relation(fields: [userId], references: [id])
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
   publisherId Int
 
@@ -125,7 +125,7 @@ model Comment {
   text String
 
   item        Item  @relation(fields: [itemId], references: [id], onDelete: Cascade)
-  user        User  @relation("user", fields: [userId], references: [id])
+  user        User  @relation("user", fields: [userId], references: [id], onDelete: Cascade)
   mentionUser User? @relation("mentionUser", fields: [mentionUserId], references: [id])
 
   createdAt DateTime  @default(now())
