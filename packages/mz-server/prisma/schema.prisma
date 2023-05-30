@@ -109,13 +109,13 @@ model ItemLike {
 }
 
 model ItemStats {
-  id            Int  @id @default(autoincrement())
-  itemId        Int  @unique
-  likes         Int  @default(0)
-  clicks        Int  @default(0)
-  score         Int  @default(0)
-  commentsCount Int  @default(0)
-  item          Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  id            Int   @id @default(autoincrement())
+  itemId        Int   @unique
+  likes         Int   @default(0)
+  clicks        Int   @default(0)
+  score         Float @default(0)
+  commentsCount Int   @default(0)
+  item          Item  @relation(fields: [itemId], references: [id], onDelete: Cascade)
 
   updatedAt DateTime @default(now()) @updatedAt
 }

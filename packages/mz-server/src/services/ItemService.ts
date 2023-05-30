@@ -5,6 +5,7 @@ import { extractPageInfo } from '../lib/extractPageInfo.js'
 import { PaginationOptionType, createPagination } from '../lib/pagination.js'
 import { CreateItemBodyType } from '../routes/api/items/schema.js'
 import algolia from '../lib/algolia.js'
+import { calculateScore } from '../lib/ranking.js'
 
 class ItemService {
   private static instance: ItemService
@@ -293,8 +294,10 @@ class ItemService {
     }
     const likes = await this.countLikes(itemId)
     const itemStats = await this.updateItemLikes({ itemId, likes })
+    this.recalculateRanking(itemId, likes).catch(console.error)
     return itemStats
   }
+
   async unlikeItem({ itemId, userId }: ItemActionParams) {
     try {
       await db.itemLike.delete({
@@ -308,7 +311,32 @@ class ItemService {
     } catch (e) {}
     const likes = await this.countLikes(itemId)
     const itemStats = await this.updateItemLikes({ itemId, likes })
+    this.recalculateRanking(itemId, likes).catch(console.error)
     return itemStats
+  }
+
+  async recalculateRanking(itemId: number, likeCount?: number) {
+    const item = await db.item.findUnique({
+      where: {
+        id: itemId,
+      },
+    })
+    if (!item) return
+
+    const likes = likeCount ?? (await this.countLikes(itemId))
+    const curTime = new Date().getTime()
+    const pastIime = new Date(item.createdAt).getTime()
+    const hourAge = (curTime - pastIime) / 1000 / 60 / 60
+    const score = calculateScore(likes, hourAge)
+
+    await db.itemStats.update({
+      data: {
+        score,
+      },
+      where: {
+        itemId,
+      },
+    })
   }
 
   private async getItemLikedMap(params: GetItemLikedParams) {
