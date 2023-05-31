@@ -84,7 +84,7 @@ class ItemService {
       })
       .catch(console.error)
 
-    return this.mergeItemLike(itemWithItemStats, itemLikedMap?.[item.id])
+    return this.mergeItemLiked(itemWithItemStats, itemLikedMap?.[item.id])
   }
 
   async getItem(id: number, userId: number | null = null) {
@@ -105,17 +105,17 @@ class ItemService {
       ? await this.getItemLikedMap({ userId, itemIds: [id] })
       : null
 
-    return this.mergeItemLike(item, itemLikedMap?.[id])
+    return this.mergeItemLiked(item, itemLikedMap?.[id])
   }
 
-  private mergeItemLike<T extends Item>(item: T, itemLike?: ItemLike) {
+  private mergeItemLiked<T extends Item>(item: T, itemLike?: ItemLike) {
     return {
       ...item,
       isLiked: !!itemLike,
     }
   }
 
-  async getPulicItems(
+  async getPublicItems(
     params: GetPublicItemsParams &
       PaginationOptionType & { userId?: number } = { mode: 'recent' },
   ) {
@@ -125,7 +125,7 @@ class ItemService {
         db.item.count(),
         db.item.findMany({
           orderBy: {
-            createdAt: 'desc',
+            id: 'desc',
           },
           where: {
             id: params.cursor
@@ -149,13 +149,98 @@ class ItemService {
           })
         : null
       const listWithLiked = list.map((item) =>
-        this.mergeItemLike(item, itemLikedMap?.[item.id]),
+        this.mergeItemLiked(item, itemLikedMap?.[item.id]),
       )
       const endCursor = list.at(-1)?.id ?? null
       const hasNextPage = endCursor
         ? (await db.item.count({
             where: { id: { lte: endCursor } },
-            orderBy: { createdAt: 'desc' },
+            orderBy: { id: 'desc' },
+          })) > 0
+        : false
+      return createPagination({
+        list: listWithLiked,
+        totalCount,
+        pageInfo: {
+          endCursor,
+          hasNextPage,
+        },
+      })
+    } else if (params.mode === 'trending') {
+      // TODO: 당장 많은 데이터를 트렌딩으로 보여주는게 아니므로 몇 점이상 부터 노출시킬지는 나중에 정하자
+      // TODO: params.cursor 적용하기
+      const totalCount = await db.itemStats.count({
+        where: {
+          score: {
+            gte: 0.001,
+          },
+        },
+      })
+
+      const list = await db.item.findMany({
+        where: {
+          itemStats: {
+            score: {
+              gte: 0.001,
+            },
+          },
+        },
+        orderBy: [
+          {
+            itemStats: {
+              score: 'desc',
+            },
+          },
+          {
+            itemStats: {
+              itemId: 'desc',
+            },
+          },
+        ],
+        include: {
+          user: true,
+          publisher: true,
+          itemStats: true,
+        },
+        take: limit,
+      })
+      // TODO: require refactoring
+      const itemLikedMap = params.userId
+        ? await this.getItemLikedMap({
+            itemIds: list.map((item) => item.id),
+            userId: params.userId,
+          })
+        : null
+      const listWithLiked = list.map((item) =>
+        this.mergeItemLiked(item, itemLikedMap?.[item.id]),
+      )
+      const endCursor = list.at(-1)?.id ?? null
+
+      const hasNextPage = endCursor
+        ? (await db.item.count({
+            where: {
+              itemStats: {
+                itemId: {
+                  lt: endCursor,
+                },
+                score: {
+                  gte: 0.001,
+                  lte: list.at(-1)?.itemStats?.score,
+                },
+              },
+            },
+            orderBy: [
+              {
+                itemStats: {
+                  score: 'desc',
+                },
+              },
+              {
+                itemStats: {
+                  itemId: 'desc',
+                },
+              },
+            ],
           })) > 0
         : false
       return createPagination({
@@ -167,8 +252,6 @@ class ItemService {
         },
       })
     }
-
-    return []
   }
 
   async getItemsByIds(itemIds: number[]) {
@@ -235,7 +318,7 @@ class ItemService {
       })
       .catch(console.error)
 
-    return this.mergeItemLike(updatedItem, itemLikedMap?.[itemId])
+    return this.mergeItemLiked(updatedItem, itemLikedMap?.[itemId])
   }
 
   async deleteItem({ itemId, userId }: ItemActionParams) {

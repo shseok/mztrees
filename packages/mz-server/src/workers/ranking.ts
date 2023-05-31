@@ -51,5 +51,5 @@ export async function recalculate() {
   await queue.onIdle()
 }
 
-// register crons
+recalculate()
 cron.schedule('*/5 * * * *', recalculate)

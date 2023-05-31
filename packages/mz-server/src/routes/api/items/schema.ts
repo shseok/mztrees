@@ -116,7 +116,7 @@ const ItemsParamsSchema = Type.Object({
 type ItemsParamsType = Static<typeof ItemsParamsSchema>
 
 export interface GetItemsRoute {
-  Querystring: ItemsParamsType
+  Querystring: ItemsParamsType & { mode?: 'recent' | 'trending' }
 }
 
 export const GetItemsSchema: FastifySchema = {
