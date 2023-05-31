@@ -168,7 +168,6 @@ class ItemService {
       })
     } else if (params.mode === 'trending') {
       // TODO: 당장 많은 데이터를 트렌딩으로 보여주는게 아니므로 몇 점이상 부터 노출시킬지는 나중에 정하자
-      // TODO: params.cursor 적용하기
       const totalCount = await db.itemStats.count({
         where: {
           score: {
@@ -177,11 +176,34 @@ class ItemService {
         },
       })
 
+      const cursorItem = params.cursor
+        ? await db.item.findUnique({
+            where: {
+              id: params.cursor,
+            },
+            include: {
+              itemStats: true,
+            },
+          })
+        : null
+
+      // TODO: params.cursor보다 높은 id의 값은 고려를 아예안하더라
+      // itemId: 8> - score: 6 | itemId: 9 > - score: 5 | itemId: 7 > - score: 4 인 경우 itemId 7의 경우만 가져오는 현상
       const list = await db.item.findMany({
         where: {
+          ...(params.cursor
+            ? {
+                id: { lt: params.cursor },
+              }
+            : {}),
           itemStats: {
             score: {
               gte: 0.001,
+              ...(cursorItem
+                ? {
+                    lte: cursorItem.itemStats?.score,
+                  }
+                : {}),
             },
           },
         },
