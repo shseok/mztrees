@@ -115,165 +115,184 @@ class ItemService {
     }
   }
 
-  async getPublicItems(
-    params: GetPublicItemsParams &
-      PaginationOptionType & { userId?: number } = { mode: 'recent' },
-  ) {
-    const limit = params.limit ?? 20
-    if (params.mode === 'recent') {
-      const [totalCount, list] = await Promise.all([
-        db.item.count(),
-        db.item.findMany({
-          orderBy: {
-            id: 'desc',
-          },
-          where: {
-            id: params.cursor
-              ? {
-                  lt: params.cursor,
-                }
-              : undefined,
-          },
-          include: {
-            user: true,
-            publisher: true,
-            itemStats: true,
-          },
-          take: limit,
-        }),
-      ])
-      const itemLikedMap = params.userId
-        ? await this.getItemLikedMap({
-            userId: params.userId,
-            itemIds: list.map((item) => item.id),
-          })
-        : null
-      const listWithLiked = list.map((item) =>
-        this.mergeItemLiked(item, itemLikedMap?.[item.id]),
-      )
-      const endCursor = list.at(-1)?.id ?? null
-      const hasNextPage = endCursor
-        ? (await db.item.count({
-            where: { id: { lte: endCursor } },
-            orderBy: { id: 'desc' },
-          })) > 0
-        : false
-      return createPagination({
-        list: listWithLiked,
-        totalCount,
-        pageInfo: {
-          endCursor,
-          hasNextPage,
+  async getRecentItems({
+    limit,
+    cursor,
+  }: {
+    limit: number
+    cursor?: number | null
+  }) {
+    const [totalCount, list] = await Promise.all([
+      db.item.count(),
+      db.item.findMany({
+        orderBy: {
+          id: 'desc',
         },
-      })
-    } else if (params.mode === 'trending') {
-      // TODO: 당장 많은 데이터를 트렌딩으로 보여주는게 아니므로 몇 점이상 부터 노출시킬지는 나중에 정하자
-      const totalCount = await db.itemStats.count({
         where: {
-          score: {
-            gte: 0.001,
-          },
-        },
-      })
-
-      const cursorItem = params.cursor
-        ? await db.item.findUnique({
-            where: {
-              id: params.cursor,
-            },
-            include: {
-              itemStats: true,
-            },
-          })
-        : null
-
-      // TODO: params.cursor보다 높은 id의 값은 고려를 아예안하더라
-      // itemId: 8> - score: 6 | itemId: 9 > - score: 5 | itemId: 7 > - score: 4 인 경우 itemId 7의 경우만 가져오는 현상
-      const list = await db.item.findMany({
-        where: {
-          ...(params.cursor
+          id: cursor
             ? {
-                id: { lt: params.cursor },
+                lt: cursor,
               }
-            : {}),
-          itemStats: {
-            score: {
-              gte: 0.001,
-              ...(cursorItem
-                ? {
-                    lte: cursorItem.itemStats?.score,
-                  }
-                : {}),
-            },
-          },
+            : undefined,
         },
-        orderBy: [
-          {
-            itemStats: {
-              score: 'desc',
-            },
-          },
-          {
-            itemStats: {
-              itemId: 'desc',
-            },
-          },
-        ],
         include: {
           user: true,
           publisher: true,
           itemStats: true,
         },
         take: limit,
-      })
-      // TODO: require refactoring
-      const itemLikedMap = params.userId
-        ? await this.getItemLikedMap({
-            itemIds: list.map((item) => item.id),
-            userId: params.userId,
-          })
-        : null
-      const listWithLiked = list.map((item) =>
-        this.mergeItemLiked(item, itemLikedMap?.[item.id]),
-      )
-      const endCursor = list.at(-1)?.id ?? null
+      }),
+    ])
 
-      const hasNextPage = endCursor
-        ? (await db.item.count({
-            where: {
-              itemStats: {
-                itemId: {
-                  lt: endCursor,
-                },
-                score: {
-                  gte: 0.001,
-                  lte: list.at(-1)?.itemStats?.score,
-                },
+    const endCursor = list.at(-1)?.id ?? null
+    const hasNextPage = endCursor
+      ? (await db.item.count({
+          where: { id: { lte: endCursor } },
+          orderBy: { id: 'desc' },
+        })) > 0
+      : false
+
+    return { totalCount, endCursor, hasNextPage, list }
+  }
+
+  async getTrendingItems({
+    limit,
+    cursor,
+  }: {
+    limit: number
+    cursor?: number | null
+  }) {
+    // TODO: 당장 많은 데이터를 트렌딩으로 보여주는게 아니므로 몇 점이상 부터 노출시킬지는 나중에 정하자
+    const totalCount = await db.itemStats.count({
+      where: {
+        score: {
+          gte: 0.001,
+        },
+      },
+    })
+
+    const cursorItem = cursor
+      ? await db.item.findUnique({
+          where: {
+            id: cursor,
+          },
+          include: {
+            itemStats: true,
+          },
+        })
+      : null
+
+    // TODO: cursor보다 높은 id의 값은 고려를 아예안하더라
+    // itemId: 8> - score: 6 | itemId: 9 > - score: 5 | itemId: 7 > - score: 4 인 경우 itemId 7의 경우만 가져오는 현상
+    const list = await db.item.findMany({
+      where: {
+        ...(cursor
+          ? {
+              id: { lt: cursor },
+            }
+          : {}),
+        itemStats: {
+          score: {
+            gte: 0.001,
+            ...(cursorItem
+              ? {
+                  lte: cursorItem.itemStats?.score,
+                }
+              : {}),
+          },
+        },
+      },
+      orderBy: [
+        {
+          itemStats: {
+            score: 'desc',
+          },
+        },
+        {
+          itemStats: {
+            itemId: 'desc',
+          },
+        },
+      ],
+      include: {
+        user: true,
+        publisher: true,
+        itemStats: true,
+      },
+      take: limit,
+    })
+    const endCursor = list.at(-1)?.id ?? null
+
+    const hasNextPage = endCursor
+      ? (await db.item.count({
+          where: {
+            itemStats: {
+              itemId: {
+                lt: endCursor,
+              },
+              score: {
+                gte: 0.001,
+                lte: list.at(-1)?.itemStats?.score,
               },
             },
-            orderBy: [
-              {
-                itemStats: {
-                  score: 'desc',
-                },
+          },
+          orderBy: [
+            {
+              itemStats: {
+                score: 'desc',
               },
-              {
-                itemStats: {
-                  itemId: 'desc',
-                },
+            },
+            {
+              itemStats: {
+                itemId: 'desc',
               },
-            ],
-          })) > 0
-        : false
-      return createPagination({
-        list: listWithLiked,
-        totalCount,
-        pageInfo: {
-          endCursor,
-          hasNextPage,
-        },
-      })
-    }
+            },
+          ],
+        })) > 0
+      : false
+
+    return { totalCount, endCursor, hasNextPage, list }
+  }
+
+  async getItems(
+    {
+      mode,
+      cursor,
+      limit,
+      userId,
+    }: GetItemsParams & PaginationOptionType & { userId?: number } = {
+      mode: 'recent',
+    },
+  ) {
+    const { totalCount, endCursor, hasNextPage, list } = await (() => {
+      if (mode === 'recent') {
+        return this.getRecentItems({ limit: limit ?? 20, cursor })
+      }
+      if (mode === 'past') {
+      }
+
+      // mode === 'trending'
+      return this.getTrendingItems({ limit: limit ?? 20, cursor })
+    })()
+
+    const itemLikedMap = userId
+      ? await this.getItemLikedMap({
+          userId: userId,
+          itemIds: list.map((item) => item.id),
+        })
+      : null
+    const listWithLiked = list.map((item) =>
+      this.mergeItemLiked(item, itemLikedMap?.[item.id]),
+    )
+
+    return createPagination({
+      list: listWithLiked,
+      totalCount,
+      pageInfo: {
+        endCursor,
+        hasNextPage,
+      },
+    })
   }
 
   async getItemsByIds(itemIds: number[]) {
@@ -464,7 +483,7 @@ class ItemService {
 
 export default ItemService
 
-type GetPublicItemsParams =
+type GetItemsParams =
   | { mode: 'trending' | 'recent' }
   | { mode: 'past'; date: string }
 
