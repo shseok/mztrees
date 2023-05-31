@@ -1,11 +1,13 @@
 import { Item, ItemLike, ItemStats, Publisher, User } from '@prisma/client'
 import AppError from '../lib/AppError.js'
+import NextAppError from '../lib/NextAppError.js'
 import db from '../lib/db.js'
 import { extractPageInfo } from '../lib/extractPageInfo.js'
 import { PaginationOptionType, createPagination } from '../lib/pagination.js'
 import { CreateItemBodyType } from '../routes/api/items/schema.js'
 import algolia from '../lib/algolia.js'
 import { calculateScore } from '../lib/ranking.js'
+import { checkDateFormat, checkWeekRange } from '../lib/checkDate.js'
 
 class ItemService {
   private static instance: ItemService
@@ -155,6 +157,94 @@ class ItemService {
     return { totalCount, endCursor, hasNextPage, list }
   }
 
+  async getPastItems({
+    limit,
+    cursor,
+    startDate,
+    endDate,
+  }: {
+    limit: number
+    cursor?: number | null
+    startDate?: string
+    endDate?: string
+  }) {
+    if (!startDate || !endDate) {
+      throw new NextAppError('BadRequest', {
+        message: 'startDate and endDate are required',
+      })
+    }
+
+    checkDateFormat({ startDate, endDate })
+    checkWeekRange({ startDate, endDate })
+
+    const startedAt = new Date(`${startDate} 00:00:00`)
+    const endedAt = new Date(`${endDate} 23:59:59`)
+
+    const [totalCount, list] = await Promise.all([
+      db.item.count({
+        where: {
+          createdAt: {
+            gte: startedAt,
+            lte: endedAt,
+          },
+        },
+      }),
+      db.item.findMany({
+        orderBy: [
+          {
+            itemStats: {
+              likes: 'desc',
+            },
+          },
+          {
+            id: 'desc',
+          },
+        ],
+        where: {
+          id: cursor
+            ? {
+                lt: cursor,
+              }
+            : undefined,
+          createdAt: {
+            gte: startedAt,
+            lte: endedAt,
+          },
+        },
+        include: {
+          user: true,
+          publisher: true,
+          itemStats: true,
+        },
+        take: limit,
+      }),
+    ])
+    const endCursor = list.at(-1)?.id ?? null
+    const hasNextPage = endCursor
+      ? (await db.item.count({
+          where: {
+            id: { lte: endCursor },
+            createdAt: {
+              gte: startedAt,
+              lte: endedAt,
+            },
+          },
+          orderBy: [
+            {
+              itemStats: {
+                likes: 'desc',
+              },
+            },
+            {
+              id: 'desc',
+            },
+          ],
+        })) > 0
+      : false
+
+    return { totalCount, endCursor, hasNextPage, list }
+  }
+
   async getTrendingItems({
     limit,
     cursor,
@@ -260,19 +350,24 @@ class ItemService {
       cursor,
       limit,
       userId,
+      startDate,
+      endDate,
     }: GetItemsParams & PaginationOptionType & { userId?: number } = {
       mode: 'recent',
     },
   ) {
+    const _limit = limit ?? 20
+
     const { totalCount, endCursor, hasNextPage, list } = await (() => {
       if (mode === 'recent') {
-        return this.getRecentItems({ limit: limit ?? 20, cursor })
+        return this.getRecentItems({ limit: _limit, cursor })
       }
       if (mode === 'past') {
+        return this.getPastItems({ limit: _limit, cursor, startDate, endDate })
       }
 
       // mode === 'trending'
-      return this.getTrendingItems({ limit: limit ?? 20, cursor })
+      return this.getTrendingItems({ limit: _limit, cursor })
     })()
 
     const itemLikedMap = userId
@@ -483,9 +578,11 @@ class ItemService {
 
 export default ItemService
 
-type GetItemsParams =
-  | { mode: 'trending' | 'recent' }
-  | { mode: 'past'; date: string }
+type GetItemsParams = {
+  mode: 'trending' | 'recent' | 'past'
+  startDate?: string
+  endDate?: string
+}
 
 interface UpdateItemParams {
   itemId: number
