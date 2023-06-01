@@ -117,7 +117,7 @@ type ItemsParamsType = Static<typeof ItemsParamsSchema>
 
 export interface GetItemsRoute {
   Querystring: ItemsParamsType & {
-    mode?: 'recent' | 'trending'
+    mode?: 'recent' | 'trending' | 'past'
     startDate?: string
     endDate?: string
   }

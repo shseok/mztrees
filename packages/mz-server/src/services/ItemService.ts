@@ -180,6 +180,17 @@ class ItemService {
     const startedAt = new Date(`${startDate} 00:00:00`)
     const endedAt = new Date(`${endDate} 23:59:59`)
 
+    const cursorItem = cursor
+      ? await db.item.findUnique({
+          where: {
+            id: cursor,
+          },
+          include: {
+            itemStats: true,
+          },
+        })
+      : null
+
     const [totalCount, list] = await Promise.all([
       db.item.count({
         where: {
@@ -210,15 +221,23 @@ class ItemService {
             gte: startedAt,
             lte: endedAt,
           },
+          itemStats: cursorItem
+            ? {
+                likes: {
+                  lt: cursorItem.itemStats?.likes ?? 0,
+                },
+              }
+            : undefined,
         },
         include: {
           user: true,
           publisher: true,
           itemStats: true,
         },
-        take: limit,
+        // take: limit,
       }),
     ])
+    console.log(list.map((l) => [l.id, l.itemStats?.likes]))
     const endCursor = list.at(-1)?.id ?? null
     const hasNextPage = endCursor
       ? (await db.item.count({

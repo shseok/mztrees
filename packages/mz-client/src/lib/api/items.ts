@@ -5,6 +5,7 @@ import {
   Item,
   LikeCommentResult,
   LikeItemResult,
+  ListMode,
   UnlikeCommentResult,
 } from './types';
 import qs from 'qs';
@@ -14,9 +15,9 @@ export async function createItem(params: CreateItemParams) {
   return response.data;
 }
 
-export async function getItems(cursor?: number) {
+export async function getItems({ mode, cursor }: { cursor?: number; mode: ListMode }) {
   const resonse = await axios.get<GetItemsResult>(
-    '/base/api/items'.concat(qs.stringify({ cursor }, { addQueryPrefix: true })),
+    '/base/api/items'.concat(qs.stringify({ mode, cursor }, { addQueryPrefix: true })),
   );
   return resonse.data;
 }
