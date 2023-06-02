@@ -6,6 +6,9 @@ import { ReactComponent as TrendingOutline } from '~/assets/trendingOutline.svg'
 import { ReactComponent as Time } from '~/assets/time.svg';
 import { colors } from '~/lib/colors';
 
+const ModeWidth = 75;
+const ModeGap = 16;
+
 interface Props {
   mode: ListMode;
   onSelectMode: (mode: ListMode) => void;
@@ -34,16 +37,15 @@ const ListModeSelector = ({ mode, onSelectMode }: Props) => {
   );
   const currentIndex = modeInfos.findIndex((modeInfo) => modeInfo.mode === mode);
   const indicatorLeft = useMemo(() => {
-    const gaps = currentIndex * 16;
-    const sizes = 75;
-    console.log(gaps);
+    const gaps = currentIndex * ModeGap;
+    const sizes = ModeWidth;
     return gaps + currentIndex * sizes;
   }, [currentIndex]);
 
   return (
     <Block>
       <ModeContainer>
-        {modeInfos.map((modeInfo, index) => (
+        {modeInfos.map((modeInfo) => (
           <ListModeItem
             {...modeInfo}
             currentMode={mode}
@@ -87,7 +89,7 @@ const Mode = styled.div<{ isActive: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 75px;
+  width: ${ModeWidth}px;
   margin-bottom: 4px;
   font-size: 16px;
   line-height: 1.5;

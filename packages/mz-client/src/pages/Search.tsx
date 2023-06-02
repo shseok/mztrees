@@ -60,10 +60,11 @@ const Search = () => {
         (status === 'loading' ? (
           <div>Loading...</div>
         ) : status === 'error' ? (
+          // // TODO: define error type
           <div>Error: {(error as any).message}</div>
         ) : (
           <>
-            <SearchResultCardList items={infiniteData?.pages.flatMap((page) => page.list) ?? []} />
+            <SearchResultCardList items={infiniteData.pages.flatMap((page) => page.list) ?? []} />
             <div ref={observerTargetEl} />
           </>
         ))}
