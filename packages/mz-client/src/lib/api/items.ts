@@ -15,9 +15,21 @@ export async function createItem(params: CreateItemParams) {
   return response.data;
 }
 
-export async function getItems({ mode, cursor }: { cursor?: number; mode: ListMode }) {
+export async function getItems({
+  mode,
+  cursor,
+  startDate,
+  endDate,
+}: {
+  cursor?: number;
+  mode: ListMode;
+  startDate?: string;
+  endDate?: string;
+}) {
   const resonse = await axios.get<GetItemsResult>(
-    '/base/api/items'.concat(qs.stringify({ mode, cursor }, { addQueryPrefix: true })),
+    '/base/api/items'.concat(
+      qs.stringify({ mode, cursor, startDate, endDate }, { addQueryPrefix: true }),
+    ),
   );
   return resonse.data;
 }
