@@ -1,6 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import LinkCardList from '~/components/home/LinkCardList';
 import ListModeSelector from '~/components/home/ListModeSelector';
 import WeekSelector from '~/components/home/WeekSelector';
@@ -11,16 +12,14 @@ import { getWeekRangeFromDate } from '~/lib/week';
 const Home = () => {
   // const [pages, setPages] = useState<GetItemsResult[]>([]);
   const observerTargetEl = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const [searchText, setSearchText] = useState<ListMode>(
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [mode, setMode] = useState<ListMode>(
     (searchParams.get('mode') as ListMode | null) ?? 'trending',
   );
-  const [mode, setMode] = useState<ListMode>(searchText);
 
   const defaultDateRange = useMemo(() => getWeekRangeFromDate(new Date()), []);
-  const startDate = searchParams.get('startDate');
-  const endDate = searchParams.get('endDate');
+  const startDate = searchParams.get('start');
+  const endDate = searchParams.get('end');
   const [dateRange, setDateRange] = useState(
     startDate && endDate ? [startDate, endDate] : defaultDateRange,
   );
@@ -32,7 +31,7 @@ const Home = () => {
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery(
-    ['Items', mode],
+    ['Items', mode, mode === 'past' ? dateRange : undefined].filter((item) => !!item),
     ({ pageParam = undefined }) =>
       getItems({
         mode,
@@ -55,30 +54,37 @@ const Home = () => {
   // const { ref, inView, entry } = useInView();
   useInfiniteScroll(observerTargetEl, fetchNextData);
 
+  // useEffect(() => {
+  //   const nextUrl = mode === 'trending' ? '/' : `/?mode=${mode}`;
+  //   // render
+  //   setSearchText(mode);
+  //   navigate(nextUrl, { replace: true });
+  // }, [navigate, mode]);
+  const onselect = (mode: ListMode) => {
+    setSearchParams({ mode });
+    // console.log('render');
+  };
+
   useEffect(() => {
-    const nextUrl =
-      mode === 'trending'
-        ? '/'
-        : mode === 'past'
-        ? `/?mode=${mode}&startDate=${dateRange[0]}&endDate=${dateRange[1]}`
-        : `/?mode=${mode}`;
-    // render
-    setSearchText(mode);
-    navigate(nextUrl, { replace: true });
-  }, [navigate, mode]);
+    const nextMode = (searchParams.get('mode') as ListMode) ?? 'trending';
+    if (nextMode !== mode) {
+      setMode(nextMode);
+      // console.log('render');
+    }
+  }, [searchParams, mode]);
 
   useEffect(() => {
     if (mode === 'past') {
       setDateRange(startDate && endDate ? [startDate, endDate] : defaultDateRange);
+      // console.log('render');
     }
   }, [startDate, endDate, defaultDateRange, mode]);
-
-  console.log(searchText, mode);
   return (
     <>
       {/* render * 2 (init + after) > setMode */}
-      <ListModeSelector mode={mode} onSelectMode={setMode} />
+      <ListModeSelector mode={mode} onSelectMode={onselect} />
       {mode === 'past' && <WeekSelector dateRange={dateRange} />}
+      {/* TODO: make loading */}
       {status === 'loading' ? (
         <div>Loading...</div>
       ) : status === 'error' ? (
@@ -90,6 +96,7 @@ const Home = () => {
           <div ref={observerTargetEl} />
         </>
       )}
+      <ReactQueryDevtools position='top-right' />
     </>
   );
 };

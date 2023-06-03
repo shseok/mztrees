@@ -68,7 +68,7 @@ const Search = () => {
             <div ref={observerTargetEl} />
           </>
         ))}
-      <ReactQueryDevtools />
+      <ReactQueryDevtools position='top-right' />
     </TabLayout>
   );
 };
