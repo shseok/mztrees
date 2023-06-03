@@ -42,6 +42,8 @@ const ListModeSelector = ({ mode, onSelectMode }: Props) => {
     return gaps + currentIndex * sizes;
   }, [currentIndex]);
 
+  /** TODO: implements with link instead of onClick */
+
   return (
     <Block>
       <ModeContainer>

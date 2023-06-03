@@ -9,8 +9,8 @@ import { useInfiniteScroll } from '~/hooks/useInfiniteScroll';
 import { getItems } from '~/lib/api/items';
 import { ListMode } from '~/lib/api/types';
 import { getWeekRangeFromDate } from '~/lib/week';
+
 const Home = () => {
-  // const [pages, setPages] = useState<GetItemsResult[]>([]);
   const observerTargetEl = useRef<HTMLDivElement>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const [mode, setMode] = useState<ListMode>(
@@ -54,29 +54,20 @@ const Home = () => {
   // const { ref, inView, entry } = useInView();
   useInfiniteScroll(observerTargetEl, fetchNextData);
 
-  // useEffect(() => {
-  //   const nextUrl = mode === 'trending' ? '/' : `/?mode=${mode}`;
-  //   // render
-  //   setSearchText(mode);
-  //   navigate(nextUrl, { replace: true });
-  // }, [navigate, mode]);
   const onselect = (mode: ListMode) => {
     setSearchParams({ mode });
-    // console.log('render');
   };
 
   useEffect(() => {
     const nextMode = (searchParams.get('mode') as ListMode) ?? 'trending';
     if (nextMode !== mode) {
       setMode(nextMode);
-      // console.log('render');
     }
   }, [searchParams, mode]);
 
   useEffect(() => {
     if (mode === 'past') {
       setDateRange(startDate && endDate ? [startDate, endDate] : defaultDateRange);
-      // console.log('render');
     }
   }, [startDate, endDate, defaultDateRange, mode]);
   return (

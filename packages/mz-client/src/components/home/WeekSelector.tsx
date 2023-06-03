@@ -19,14 +19,16 @@ const WeekSelector = ({ dateRange }: Props) => {
     return [start, end];
   }, [dateRange]);
   const [, setSearchParams] = useSearchParams();
+
+  /** TODO: refactor to link */
   const onClickPrev = () => {
     const [start, end] = addWeekToRange(dateRange, -1);
-    setSearchParams((prev) => ({ mode: 'past', start, end }));
+    setSearchParams({ mode: 'past', start, end });
   };
 
   const onClickNext = () => {
     const [start, end] = addWeekToRange(dateRange, +1);
-    setSearchParams((prev) => ({ mode: 'past', start, end }));
+    setSearchParams({ mode: 'past', start, end });
   };
 
   // TODO: 끝 날짜의 00:59:59 가지의 시간으로 정정해주기(feat. 시작 날짜도 마찬가지)
