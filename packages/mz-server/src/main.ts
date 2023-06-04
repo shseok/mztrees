@@ -8,6 +8,7 @@ import 'dotenv/config'
 import { authPlugin } from './plugins/authPlugin.js'
 import fastifyCookie from '@fastify/cookie'
 import cors from '@fastify/cors'
+import { isNextAppError } from './lib/NextAppError.js'
 
 const server: FastifyInstance = Fastify({
   logger: true,
@@ -34,6 +35,13 @@ server.register(fastifyCookie)
 server.setErrorHandler(async (error, request, reply) => {
   // Fastify에서는 기본적으로 HTTP 응답 코드로 200 (OK)을 사용하므로
   reply.statusCode = error.statusCode ?? 500
+  if (isNextAppError(error)) {
+    return {
+      name: error.name,
+      message: error.message,
+      statusCode: error.statusCode,
+    }
+  }
   if (error instanceof AppError) {
     return {
       name: error.name,

@@ -13,14 +13,16 @@ datasource db {
 }
 
 model User {
-  id               Int       @id @default(autoincrement())
-  username         String    @unique
+  id               Int           @id @default(autoincrement())
+  username         String        @unique
   passwordHash     String
-  createdAt        DateTime  @default(now())
+  createdAt        DateTime      @default(now())
   Item             Item[]
   Token            Token[]
-  comments         Comment[] @relation("user")
-  mentionedComment Comment[] @relation("mentionUser")
+  comments         Comment[]     @relation("user")
+  mentionedComment Comment[]     @relation("mentionUser")
+  CommentLike      CommentLike[]
+  Bookmark         Bookmark[]
 }
 
 model Token {
@@ -53,6 +55,7 @@ model Item {
   itemStats ItemStats?
   comments  Comment[]
   itemLikes ItemLike[]
+  Bookmark  Bookmark[]
 
   @@index([createdAt(sort: Desc)])
 }
@@ -158,7 +161,23 @@ model CommentLike {
   updatedAt DateTime @default(now()) @updatedAt
 
   comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([commentId, userId])
   @@index(commentId)
+}
+
+model Bookmark {
+  id     Int @id @default(autoincrement())
+  userId Int
+  itemId Int
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  item Item @relation(fields: [itemId], references: [id])
+
+  @@unique([userId, itemId])
+  @@index(createdAt)
+  @@index(userId)
 }
