@@ -91,3 +91,4 @@ export interface Hightlight {
 export type SearchItemsResult = Pagination<SearchItemResult>;
 
 export type ListMode = 'recent' | 'trending' | 'past';
+export type Size = 'small' | 'medium' | 'large';
