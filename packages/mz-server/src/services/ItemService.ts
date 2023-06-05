@@ -1,4 +1,11 @@
-import { Item, ItemLike, ItemStats, Publisher, User } from '@prisma/client'
+import {
+  Bookmark,
+  Item,
+  ItemLike,
+  ItemStats,
+  Publisher,
+  User,
+} from '@prisma/client'
 import AppError from '../lib/AppError.js'
 import NextAppError from '../lib/NextAppError.js'
 import db from '../lib/db.js'
@@ -67,11 +74,7 @@ class ItemService {
         itemId: item.id,
       },
     })
-
     const itemWithItemStats = { ...item, itemStats }
-    const itemLikedMap = userId
-      ? await this.getItemLikedMap({ userId, itemIds: [item.id] })
-      : null
 
     algolia
       .sync({
@@ -86,7 +89,7 @@ class ItemService {
       })
       .catch(console.error)
 
-    return this.mergeItemLiked(itemWithItemStats, itemLikedMap?.[item.id])
+    return this.serialize(itemWithItemStats)
   }
 
   async getItem(id: number, userId: number | null = null) {
@@ -98,31 +101,58 @@ class ItemService {
         user: true,
         publisher: true,
         itemStats: true,
+        itemLikes: userId ? { where: { userId } } : false,
+        bookmarks: userId ? { where: { userId } } : false,
       },
     })
     if (!item) {
       throw new AppError('NotFoundError')
     }
-    const itemLikedMap = userId
-      ? await this.getItemLikedMap({ userId, itemIds: [id] })
-      : null
-
-    return this.mergeItemLiked(item, itemLikedMap?.[id])
+    return this.serialize(item)
   }
 
-  private mergeItemLiked<T extends Item>(item: T, itemLike?: ItemLike) {
+  /**
+   *Item & {
+    publisher: Publisher;
+    user: User;
+    itemStats: ItemStats | null;
+}
+
+  id: number
+  title: string
+  body: string
+  author: string
+  link: string | null
+  thumbnail: string | null
+  createdAt: Date
+  updatedAt: Date
+  userId: number
+  publisherId: number
+
+    id: number
+  name: string
+  favicon: string | null
+  domain: string
+   */
+  serialize<
+    T extends Item & { itemLikes?: ItemLike[]; bookmarks?: Bookmark[] },
+  >(item: T) {
+    console.log(item)
     return {
       ...item,
-      isLiked: !!itemLike,
+      isLiked: !!item.itemLikes?.length,
+      isBookmarked: !!item.bookmarks?.length,
     }
   }
 
   async getRecentItems({
     limit,
     cursor,
+    userId,
   }: {
     limit: number
     cursor?: number | null
+    userId?: number
   }) {
     const [totalCount, list] = await Promise.all([
       db.item.count(),
@@ -141,6 +171,8 @@ class ItemService {
           user: true,
           publisher: true,
           itemStats: true,
+          itemLikes: userId ? { where: { userId } } : false,
+          bookmarks: userId ? { where: { userId } } : false,
         },
         take: limit,
       }),
@@ -162,11 +194,13 @@ class ItemService {
     cursor,
     startDate,
     endDate,
+    userId,
   }: {
     limit: number
     cursor?: number | null
     startDate?: string
     endDate?: string
+    userId?: number
   }) {
     if (!startDate || !endDate) {
       throw new NextAppError('BadRequest', {
@@ -233,8 +267,10 @@ class ItemService {
           user: true,
           publisher: true,
           itemStats: true,
+          itemLikes: userId ? { where: { userId } } : false,
+          bookmarks: userId ? { where: { userId } } : false,
         },
-        // take: limit,
+        take: limit,
       }),
     ])
     console.log(list.map((l) => [l.id, l.itemStats?.likes]))
@@ -267,9 +303,11 @@ class ItemService {
   async getTrendingItems({
     limit,
     cursor,
+    userId,
   }: {
     limit: number
     cursor?: number | null
+    userId?: number
   }) {
     // TODO: 당장 많은 데이터를 트렌딩으로 보여주는게 아니므로 몇 점이상 부터 노출시킬지는 나중에 정하자
     const totalCount = await db.itemStats.count({
@@ -327,6 +365,8 @@ class ItemService {
         user: true,
         publisher: true,
         itemStats: true,
+        itemLikes: userId ? { where: { userId } } : false,
+        bookmarks: userId ? { where: { userId } } : false,
       },
       take: limit,
     })
@@ -379,28 +419,26 @@ class ItemService {
 
     const { totalCount, endCursor, hasNextPage, list } = await (() => {
       if (mode === 'recent') {
-        return this.getRecentItems({ limit: _limit, cursor })
+        return this.getRecentItems({ limit: _limit, cursor, userId })
       }
       if (mode === 'past') {
-        return this.getPastItems({ limit: _limit, cursor, startDate, endDate })
+        return this.getPastItems({
+          limit: _limit,
+          cursor,
+          startDate,
+          endDate,
+          userId,
+        })
       }
 
       // mode === 'trending'
-      return this.getTrendingItems({ limit: _limit, cursor })
+      return this.getTrendingItems({ limit: _limit, cursor, userId })
     })()
 
-    const itemLikedMap = userId
-      ? await this.getItemLikedMap({
-          userId: userId,
-          itemIds: list.map((item) => item.id),
-        })
-      : null
-    const listWithLiked = list.map((item) =>
-      this.mergeItemLiked(item, itemLikedMap?.[item.id]),
-    )
+    const serializedList = list.map(this.serialize)
 
     return createPagination({
-      list: listWithLiked,
+      list: serializedList,
       totalCount,
       pageInfo: {
         endCursor,
@@ -409,7 +447,7 @@ class ItemService {
     })
   }
 
-  async getItemsByIds(itemIds: number[]) {
+  async getItemsByIds(itemIds: number[], userId?: number) {
     const result = await db.item.findMany({
       where: {
         id: {
@@ -420,6 +458,8 @@ class ItemService {
         user: true,
         publisher: true,
         itemStats: true,
+        itemLikes: userId ? { where: { userId } } : false,
+        bookmarks: userId ? { where: { userId } } : false,
       },
     })
 
@@ -430,7 +470,7 @@ class ItemService {
     }
 
     const itemMap = result.reduce<Record<number, FullItem>>((acc, item) => {
-      acc[item.id] = item
+      acc[item.id] = this.serialize(item)
       return acc
     }, {})
 
@@ -454,11 +494,10 @@ class ItemService {
         user: true,
         publisher: true,
         itemStats: true,
+        itemLikes: userId ? { where: { userId } } : false,
+        bookmarks: userId ? { where: { userId } } : false,
       },
     })
-    const itemLikedMap = userId
-      ? await this.getItemLikedMap({ userId, itemIds: [itemId] })
-      : null
 
     algolia
       .update({
@@ -473,7 +512,7 @@ class ItemService {
       })
       .catch(console.error)
 
-    return this.mergeItemLiked(updatedItem, itemLikedMap?.[itemId])
+    return this.serialize(updatedItem)
   }
 
   async deleteItem({ itemId, userId }: ItemActionParams) {
@@ -575,24 +614,6 @@ class ItemService {
         itemId,
       },
     })
-  }
-
-  /** Item liked by user with formatting to Map */
-  async getItemLikedMap(params: GetItemLikedParams) {
-    const { userId, itemIds } = params
-    const list = await db.itemLike.findMany({
-      where: {
-        userId,
-        itemId: {
-          in: itemIds,
-        },
-      },
-    })
-    // for find easelly with itemId
-    return list.reduce((acc, cur) => {
-      acc[cur.itemId] = cur
-      return acc
-    }, {} as Record<number, ItemLike>)
   }
 }
 

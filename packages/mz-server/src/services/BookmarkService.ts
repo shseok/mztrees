@@ -30,7 +30,7 @@ class BookmarkService {
           },
         },
       })
-      return { ...bookmark, Item: { ...bookmark.item, isLiked: false } }
+      return { ...bookmark, item: { ...bookmark.item, isLiked: false } }
     } catch (e) {
       if ((e as any)?.message?.includes('Unique constraint failed')) {
         throw new AppError('AlreadyExists')
@@ -84,16 +84,9 @@ class BookmarkService {
     })
 
     const itemService = ItemService.getInstance()
-    const itemLikedMap = await itemService.getItemLikedMap({
-      userId,
-      itemIds: bookmarks.map((b) => b.itemId),
-    })
     const list = bookmarks.map((b) => ({
       ...b,
-      item: {
-        ...b.item,
-        isLiked: !!itemLikedMap[b.itemId],
-      },
+      item: itemService.serialize(b.item),
     }))
 
     const endCursor = list.at(-1)?.id ?? null
