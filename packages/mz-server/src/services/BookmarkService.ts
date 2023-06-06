@@ -26,11 +26,16 @@ class BookmarkService {
               user: true,
               publisher: true,
               itemStats: true,
+              itemLikes: { where: { userId } },
             },
           },
         },
       })
-      return { ...bookmark, item: { ...bookmark.item, isLiked: false } }
+      const itemService = ItemService.getInstance()
+      return {
+        ...bookmark,
+        item: { ...itemService.serialize(bookmark.item), isBookmarked: true },
+      }
     } catch (e) {
       if ((e as any)?.message?.includes('Unique constraint failed')) {
         throw new AppError('AlreadyExists')
@@ -77,6 +82,7 @@ class BookmarkService {
             user: true,
             publisher: true,
             itemStats: true,
+            itemLikes: { where: { userId } },
           },
         },
       },
@@ -86,7 +92,7 @@ class BookmarkService {
     const itemService = ItemService.getInstance()
     const list = bookmarks.map((b) => ({
       ...b,
-      item: itemService.serialize(b.item),
+      item: { ...itemService.serialize(b.item), isBookmarked: true },
     }))
 
     const endCursor = list.at(-1)?.id ?? null
@@ -98,16 +104,13 @@ class BookmarkService {
     return { totalCount, list, pageInfo: { endCursor, hasNextPage } }
   }
 
-  async deleteBookmark({
-    userId,
-    bookmarkId,
-  }: {
-    userId: number
-    bookmarkId: number
-  }) {
+  async deleteBookmark({ userId, itemId }: { userId: number; itemId: number }) {
     const bookmark = await db.bookmark.findUnique({
       where: {
-        id: bookmarkId,
+        userId_itemId: {
+          userId,
+          itemId,
+        },
       },
     })
 
@@ -121,7 +124,10 @@ class BookmarkService {
 
     await db.bookmark.delete({
       where: {
-        id: bookmarkId,
+        userId_itemId: {
+          userId,
+          itemId,
+        },
       },
     })
   }

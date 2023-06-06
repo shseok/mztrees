@@ -123,4 +123,6 @@ const authorizedItemRoute = (itemService: ItemService) =>
         return { id: itemId, itemStats, isLiked: false }
       },
     )
+
+    // items/(itemId)/bookmarks/(bookmarkId) 이렇게 해줘도 괜찮겠다
   })

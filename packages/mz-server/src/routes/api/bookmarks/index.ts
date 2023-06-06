@@ -11,6 +11,7 @@ export const bookmarkRoute: FastifyPluginAsync = createAuthorizedRoute(
       '/',
       { schema: BookmarkRouteSchema.CreateBookmark },
       async (request) => {
+        console.log(request.body)
         const { itemId } = request.body
         const userId = request.user?.id!
         return bookmarkService.createBookmark({
@@ -36,14 +37,14 @@ export const bookmarkRoute: FastifyPluginAsync = createAuthorizedRoute(
     )
 
     fastify.delete<BookmarkRoute['DeleteBookmark']>(
-      '/:bookmarkId',
+      '/',
       {
         schema: BookmarkRouteSchema.DeleteBookmark,
       },
       async (request, reply) => {
-        const { bookmarkId } = request.params
+        const { itemId } = request.query
         const userId = request.user?.id!
-        bookmarkService.deleteBookmark({ userId, bookmarkId })
+        bookmarkService.deleteBookmark({ userId, itemId })
         reply.status(204)
       },
     )

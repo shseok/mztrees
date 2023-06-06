@@ -23,7 +23,7 @@ export const BookmarkRouteSchema = createRouteSchema({
     },
   },
   DeleteBookmark: {
-    params: Type.Object({ bookmarkId: Type.Integer() }),
+    querystring: Type.Object({ itemId: Type.Integer() }),
     response: {
       204: Type.Null(),
     },

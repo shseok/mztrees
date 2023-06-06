@@ -111,33 +111,9 @@ class ItemService {
     return this.serialize(item)
   }
 
-  /**
-   *Item & {
-    publisher: Publisher;
-    user: User;
-    itemStats: ItemStats | null;
-}
-
-  id: number
-  title: string
-  body: string
-  author: string
-  link: string | null
-  thumbnail: string | null
-  createdAt: Date
-  updatedAt: Date
-  userId: number
-  publisherId: number
-
-    id: number
-  name: string
-  favicon: string | null
-  domain: string
-   */
   serialize<
     T extends Item & { itemLikes?: ItemLike[]; bookmarks?: Bookmark[] },
   >(item: T) {
-    console.log(item)
     return {
       ...item,
       isLiked: !!item.itemLikes?.length,
@@ -273,7 +249,6 @@ class ItemService {
         take: limit,
       }),
     ])
-    console.log(list.map((l) => [l.id, l.itemStats?.likes]))
     const endCursor = list.at(-1)?.id ?? null
     const hasNextPage = endCursor
       ? (await db.item.count({
