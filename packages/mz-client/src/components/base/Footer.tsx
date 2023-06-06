@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { colors } from '~/lib/colors';
 import FooterTabItem from '~/components/base/FooterTabItem';
+import { media } from '~/lib/media';
 
 const Footer = () => {
   return (
@@ -18,6 +19,10 @@ const StyledFooter = styled.footer`
   min-height: 56px;
   border-top: 1px solid ${colors.gray0};
   display: flex;
+
+  ${media.mobile} {
+    display: none;
+  }
 `;
 
 export default Footer;

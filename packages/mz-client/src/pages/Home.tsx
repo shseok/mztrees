@@ -2,12 +2,14 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
 import LinkCardList from '~/components/home/LinkCardList';
 import ListModeSelector from '~/components/home/ListModeSelector';
 import WeekSelector from '~/components/home/WeekSelector';
 import { useInfiniteScroll } from '~/hooks/useInfiniteScroll';
 import { getItems } from '~/lib/api/items';
 import { ListMode } from '~/lib/api/types';
+import { media } from '~/lib/media';
 import { getWeekRangeFromDate } from '~/lib/week';
 
 const Home = () => {
@@ -82,14 +84,20 @@ const Home = () => {
         // TODO: define error type
         <div>Error: {(error as any).message}</div>
       ) : (
-        <>
+        <Content>
           <LinkCardList items={infiniteData.pages.flatMap((page) => page.list)} />
           <div ref={observerTargetEl} />
-        </>
+        </Content>
       )}
       <ReactQueryDevtools position='top-right' />
     </>
   );
 };
 
+const Content = styled.div`
+  ${media.widescreen} {
+    width: 1200px;
+    margin: 0 auto;
+  }
+`;
 export default Home;

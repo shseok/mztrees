@@ -12,6 +12,7 @@ import { useOpenLoginDialog } from '~/hooks/useOpenLoginDialog';
 import { Link } from 'react-router-dom';
 import BookmarkButton from '../system/BookmarkButton';
 import { useBookmarkManager } from '~/hooks/useBookmarkManager';
+import { media } from '~/lib/media';
 
 interface Props {
   item: Item;
@@ -80,17 +81,19 @@ const LinkCard = ({ item }: Props) => {
         <Title>{item.title}</Title>
         <Body>{body}</Body>
       </StyledLink>
-      <AnimatePresence initial={false}>
-        {likes === 0 ? null : (
-          <LikesCount
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 26, opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-          >
-            좋아요 {likes.toLocaleString()}개
-          </LikesCount>
-        )}
-      </AnimatePresence>
+      <LikeCountWrapper>
+        <AnimatePresence initial={false}>
+          {likes === 0 ? null : (
+            <LikesCount
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 26, opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+            >
+              좋아요 {likes.toLocaleString()}개
+            </LikesCount>
+          )}
+        </AnimatePresence>
+      </LikeCountWrapper>
       <Footer>
         <IconContainer>
           <LikeButton onClick={toggleLike} isLiked={isLiked} />
@@ -118,8 +121,10 @@ const Block = styled.div`
 const Thumbnail = styled.img`
   display: block;
   width: 100%;
-  // aspect-ratio: 288/192;
   max-height: 40vh;
+  ${media.desktop} {
+    aspect-ratio: 288/192;
+  }
   object-fit: cover;
   flex: 1;
   border-radius: 12px;
@@ -157,8 +162,22 @@ const Body = styled.p`
   margin-top: 0;
   margin-bottom: 16px;
   color: ${colors.gray4};
+
+  ${media.tablet} {
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 84px;
+  }
 `;
 
+const LikeCountWrapper = styled.div`
+  ${media.tablet} {
+    height: 26px;
+  }
+`;
 // 12*1.5+8(height: font-size*line-height+padding-bottom)
 const LikesCount = styled(motion.div)`
   font-size: 12px;

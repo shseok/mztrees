@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import MoreVertButton from '~/components/base/MoreVertButton';
 import CommentInputOverlay from '~/components/items/CommentInputOverlay';
 import CommentList from '~/components/items/CommentList';
@@ -11,6 +12,7 @@ import { useBottomSheetModalStore } from '~/hooks/stores/useBottomSheetModalStor
 import { useUser, setUser } from '~/hooks/stores/userStore';
 import { getMyAccount } from '~/lib/api/auth';
 import { deleteItem } from '~/lib/api/items';
+import { media } from '~/lib/media';
 
 /** @todos validate itemId */
 /** @todos handle 404 */
@@ -105,11 +107,23 @@ const Items = () => {
       {loading && <div>로딩중..</div>}
       {/* {error && navigate('/error', { state: { error: error } })} */}
       {error && <div>에러</div>}
-      {item && <ItemViewer item={item} />}
-      {comments && <CommentList comments={comments} />}
+      <Content>
+        {item && <ItemViewer item={item} />}
+        {comments && <CommentList comments={comments} />}
+      </Content>
       <CommentInputOverlay />
     </BasicLayout>
   );
 };
+
+const Content = styled.div`
+  ${media.tablet} {
+    padding-right: 1rem;
+    padding-left: 1rem;
+    width: 768px;
+    margin: 0 auto;
+    margin-top: 64px;
+  }
+`;
 
 export default Items;

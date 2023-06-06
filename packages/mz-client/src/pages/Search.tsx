@@ -12,6 +12,7 @@ import SearchResultCardList from '~/components/search/SearchResultCardList';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useInfiniteScroll } from '~/hooks/useInfiniteScroll';
+import { media } from '~/lib/media';
 
 const Search = () => {
   const [searchParams] = useSearchParams();
@@ -51,25 +52,27 @@ const Search = () => {
     navigate(`/search?${stringify({ q: inputResult })}`);
   }, [inputResult, navigate]);
   return (
-    <TabLayout
-      header={
-        <StyledHeader title={<SearchInput value={searchText} onChangeText={setSearchText} />} />
-      }
-    >
-      {inputResult.trim() !== '' &&
-        (status === 'loading' ? (
-          <div>Loading...</div>
-        ) : status === 'error' ? (
-          // // TODO: define error type
-          <div>Error: {(error as any).message}</div>
-        ) : (
-          <>
-            <SearchResultCardList items={infiniteData.pages.flatMap((page) => page.list) ?? []} />
-            <div ref={observerTargetEl} />
-          </>
-        ))}
-      <ReactQueryDevtools position='top-right' />
-    </TabLayout>
+    <Content>
+      <TabLayout
+        header={
+          <StyledHeader title={<SearchInput value={searchText} onChangeText={setSearchText} />} />
+        }
+      >
+        {inputResult.trim() !== '' &&
+          (status === 'loading' ? (
+            <div>Loading...</div>
+          ) : status === 'error' ? (
+            // // TODO: define error type
+            <div>Error: {(error as any).message}</div>
+          ) : (
+            <>
+              <SearchResultCardList items={infiniteData.pages.flatMap((page) => page.list) ?? []} />
+              <div ref={observerTargetEl} />
+            </>
+          ))}
+        <ReactQueryDevtools position='top-right' />
+      </TabLayout>
+    </Content>
   );
 };
 
@@ -82,6 +85,16 @@ const StyledHeader = styled(Header)`
       height: 20px;
     }
   }
+`;
+
+const Content = styled.div`
+  ${media.tablet} {
+    padding-right: 1rem;
+    padding-left: 1rem;
+    width: 768px;
+    margin: 0 auto;
+  }
+  height: 100%;
 `;
 
 export default Search;

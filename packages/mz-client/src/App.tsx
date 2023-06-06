@@ -20,6 +20,7 @@ import BookmarkIntro from './pages/bookmark/BookmarkIntro';
 
 const StyledTabLayout = styled(TabLayout)`
   padding: 16px 16px 16px 16px;
+  // background: black;
 `;
 
 const router = createBrowserRouter([
