@@ -16,9 +16,10 @@ import { DialogProvider } from './context/DialogContext';
 import Items from './pages/Items';
 import GlobalBottomSheetModal from './components/system/GlobalBottomSheetModal';
 import Edit from './pages/write/Edit';
+import BookmarkIntro from './pages/bookmark/BookmarkIntro';
 
 const StyledTabLayout = styled(TabLayout)`
-  padding: 16px 16px 0 16px;
+  padding: 16px 16px 16px 16px;
 `;
 
 const router = createBrowserRouter([
@@ -29,10 +30,6 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Home />,
-      },
-      {
-        path: '/bookmarks',
-        element: <BookMarks />,
       },
       {
         path: '/setting',
@@ -68,6 +65,20 @@ const router = createBrowserRouter([
       {
         path: '/write/edit',
         element: <Edit />,
+      },
+    ],
+  },
+  {
+    path: '/bookmarks',
+    element: <BookMarks />,
+    children: [
+      {
+        path: '/bookmarks',
+        element: <BookmarkIntro />,
+      },
+      {
+        path: '/bookmarks/intro',
+        element: <BookmarkIntro />,
       },
     ],
   },

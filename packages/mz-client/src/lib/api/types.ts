@@ -19,6 +19,7 @@ export interface Item {
   publisher: Publisher;
   itemStats: ItemStats;
   isLiked: boolean;
+  isBookmarked: boolean;
 }
 export interface Publisher {
   id?: number;
@@ -92,3 +93,11 @@ export type SearchItemsResult = Pagination<SearchItemResult>;
 
 export type ListMode = 'recent' | 'trending' | 'past';
 export type Size = 'small' | 'medium' | 'large';
+
+export interface Bookmark {
+  id: number;
+  createdAt: string;
+  item: Item;
+}
+
+export type GetBookmarksResult = Pagination<Bookmark>;

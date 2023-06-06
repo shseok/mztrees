@@ -33,7 +33,7 @@ const Search = () => {
     {
       enabled: inputResult.trim() !== '',
       getNextPageParam: (lastPage, allPages) => {
-        if (!lastPage.pageInfo.hasNextPage) return null;
+        if (!lastPage.pageInfo.hasNextPage) return undefined;
         return lastPage.pageInfo.nextOffset;
       },
     },

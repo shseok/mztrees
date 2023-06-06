@@ -11,6 +11,8 @@ import { getMyAccount } from '~/lib/api/auth';
 import { useItemOverrideById } from '~/hooks/stores/ItemOverrideStore';
 import { useDateDistance } from '~/hooks/useDateDistance';
 import { Link } from 'react-router-dom';
+import BookmarkButton from '../system/BookmarkButton';
+import { useBookmarkManager } from '~/hooks/useBookmarkManager';
 
 interface Props {
   item: Item;
@@ -31,12 +33,14 @@ const ItemViewer = ({ item }: Props) => {
   const itemStats = itemOverride?.itemStats ?? item.itemStats;
   const dateDistance = useDateDistance(createdAt);
   const { like, unlike } = useLikeManager();
+  const { bookmark, unbookmark } = useBookmarkManager();
 
   const isLiked = itemOverride?.isLiked ?? item.isLiked;
-  const likes = itemOverride?.itemStats.likes ?? itemStats.likes;
-  /**@todo: 연타로 누르면 기존의 것이 잘 취소되어야함 */
+  const likes = itemOverride?.itemStats?.likes ?? itemStats.likes;
+  const isBookmarked = itemOverride?.isBookmarked ?? item.isBookmarked;
+  /**TODO: 연타로 누르면 기존의 것이 잘 취소되어야함 */
   const openLoginDialog = useOpenLoginDialog();
-  /**@todo: move to hooks */
+  /**TODO: move to hooks */
   const toggleLike = async () => {
     const currentUser = await getMyAccount();
     if (!currentUser) {
@@ -47,6 +51,19 @@ const ItemViewer = ({ item }: Props) => {
       unlike(id, itemStats);
     } else {
       like(id, itemStats);
+    }
+  };
+
+  const toggleBookmark = async () => {
+    const currentUser = await getMyAccount();
+    if (!currentUser) {
+      openLoginDialog('itemBookmark');
+      return;
+    }
+    if (isBookmarked) {
+      unbookmark(id);
+    } else {
+      bookmark(id);
     }
   };
   return (
@@ -78,7 +95,10 @@ const ItemViewer = ({ item }: Props) => {
           )}
         </AnimatePresence>
         <Footer>
-          <LikeButton onClick={toggleLike} isLiked={isLiked} />
+          <IconContainer>
+            <LikeButton onClick={toggleLike} isLiked={isLiked} />
+            <BookmarkButton onClick={toggleBookmark} isBookmarked={isBookmarked} />
+          </IconContainer>
           <UserInfo>
             by <b>{username}</b> · {dateDistance}
           </UserInfo>
@@ -169,6 +189,12 @@ const UserInfo = styled.p`
   font-size: 14px;
   margin-top: 0px;
   margin-bottom: 0px;
+`;
+
+const IconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `;
 
 export default ItemViewer;

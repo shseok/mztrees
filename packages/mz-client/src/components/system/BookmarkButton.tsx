@@ -8,15 +8,15 @@ import styled from 'styled-components';
 
 interface Props {
   onClick: () => void;
-  isLiked: boolean;
+  isBookmarked: boolean;
   size?: Size;
 }
 
-const BookmarkButton = ({ onClick, isLiked, size = 'medium' }: Props) => {
+const BookmarkButton = ({ onClick, isBookmarked, size = 'medium' }: Props) => {
   return (
     <IconToggleButton
       onClick={onClick}
-      isActive={isLiked}
+      isActive={isBookmarked}
       size={size}
       activeIcon={<StyledLikeFill key='fill' />}
       inactiveIcon={<StyledLikeOutline key='outline' />}

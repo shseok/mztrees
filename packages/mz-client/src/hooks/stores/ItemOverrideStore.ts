@@ -3,8 +3,9 @@ import { create } from 'zustand';
 import { ItemStats } from '~/lib/api/types';
 
 interface OverridableItem {
-  isLiked: boolean;
-  itemStats: ItemStats;
+  isLiked?: boolean;
+  itemStats?: ItemStats;
+  isBookmarked?: boolean;
 }
 
 interface ItemOverrideStore {
