@@ -72,6 +72,13 @@ const Home = () => {
       setDateRange(startDate && endDate ? [startDate, endDate] : defaultDateRange);
     }
   }, [startDate, endDate, defaultDateRange, mode]);
+
+  // if (typeof window !== 'undefined') {
+  //   (window as any).queryClient = useQueryClient();
+  // }
+
+  // useIsMultiColumnCheck();
+
   return (
     <>
       {/* render * 2 (init + after) > setMode */}

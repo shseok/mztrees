@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { colors } from '~/lib/colors';
 import { ReactComponent as Logo } from '~/assets/logo.svg';
+import { media } from '~/lib/media';
 
 export interface HeaderProps {
   title?: React.ReactNode;
@@ -28,6 +29,9 @@ const Block = styled.header`
   display: flex;
   align-items: center;
   justify-content: center;
+  ${media.mobile} {
+    display: none;
+  }
 `;
 
 const Title = styled.div`

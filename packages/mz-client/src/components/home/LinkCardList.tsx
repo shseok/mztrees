@@ -28,13 +28,10 @@ const List = styled.div`
   ${media.tablet} {
     grid-template-columns: repeat(2, 1fr);
   }
-  ${media.desktop} {
+  ${media.widescreen} {
     grid-template-columns: repeat(3, 1fr);
   }
-  ${media.widescreen} {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  gap: 24px;
+  gap: 32px;
   row-gap: 48px;
 `;
 

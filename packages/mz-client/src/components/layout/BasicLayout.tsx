@@ -3,7 +3,7 @@ import FullHeightPage from '~/components/system/FullHeightPage';
 import { useGoBack } from '~/hooks/useGoback';
 import styled from 'styled-components';
 import HeaderBackButton from '~/components/base/HeaderBackButton';
-import Header from '~/components/base/Header';
+import Header from '~/components/base/MobileHeader';
 
 interface Props {
   hasBackButton: boolean;

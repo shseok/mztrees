@@ -35,6 +35,9 @@ const LinkCard = ({ item }: Props) => {
   const { like, unlike } = useLikeManager();
   const { bookmark, unbookmark } = useBookmarkManager();
 
+  // const isMultiColumn = useIsMultiColumn();
+  // console.log(isMultiColumn);
+
   const isLiked = itemOverride?.isLiked ?? item.isLiked;
   const likes = itemOverride?.itemStats?.likes ?? itemStats.likes;
   const isBookmarked = itemOverride?.isBookmarked ?? item.isBookmarked;
@@ -122,8 +125,8 @@ const Thumbnail = styled.img`
   display: block;
   width: 100%;
   max-height: 40vh;
-  ${media.desktop} {
-    aspect-ratio: 288/192;
+  ${media.tablet} {
+    aspect-ratio: 1200/630;
   }
   object-fit: cover;
   flex: 1;
@@ -155,6 +158,13 @@ const Title = styled.h3`
   font-weight: 600;
   line-height: 1.5;
   color: ${colors.gray5};
+
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 27px;
 `;
 const Body = styled.p`
   line-height: 1.5;
@@ -166,7 +176,7 @@ const Body = styled.p`
   ${media.tablet} {
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     height: 84px;

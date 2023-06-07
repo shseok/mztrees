@@ -1,9 +1,10 @@
 import React from 'react';
 import FullHeightPage from '~/components/system/FullHeightPage';
-import Header from '~/components/base/Header';
+import MobileHeader from '~/components/base/MobileHeader';
 import Footer from '~/components/base/Footer';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
+import DesktopHeader from '../base/DesktopHeader';
 
 interface Props {
   className?: string;
@@ -14,7 +15,12 @@ interface Props {
 const TabLayout = ({ className, children, header }: Props) => {
   return (
     <FullHeightPage>
-      {header ?? <Header />}
+      {header ?? (
+        <>
+          <MobileHeader />
+          <DesktopHeader />
+        </>
+      )}
       <Content className={className}>{children ?? <Outlet />}</Content>
       <Footer />
     </FullHeightPage>
