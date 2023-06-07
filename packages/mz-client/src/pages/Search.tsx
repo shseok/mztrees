@@ -13,6 +13,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useInfiniteScroll } from '~/hooks/useInfiniteScroll';
 import { media } from '~/lib/media';
+import DesktopHeader from '~/components/base/DesktopHeader';
 
 const Search = () => {
   const [searchParams] = useSearchParams();
@@ -55,7 +56,10 @@ const Search = () => {
     <Content>
       <TabLayout
         header={
-          <StyledHeader title={<SearchInput value={searchText} onChangeText={setSearchText} />} />
+          <>
+            <StyledHeader title={<SearchInput value={searchText} onChangeText={setSearchText} />} />
+            <DesktopHeader />
+          </>
         }
       >
         {inputResult.trim() !== '' &&
