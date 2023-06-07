@@ -7,7 +7,7 @@ import Login from '~/pages/Login';
 import Search from '~/pages/Search';
 import BookMarks from '~/pages/BookMarks';
 import Setting from '~/pages/Setting';
-import TabLayout from '~/components/layout/TapLayout';
+import TabLayout from '~/components/layout/TabLayout';
 import WriteIntro from '~/pages/write/WriteIntro';
 import WriteLink from '~/pages/write/WriteLink';
 import Write from '~/pages/Write';

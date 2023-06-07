@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Header from '~/components/base/MobileHeader';
-import TabLayout from '~/components/layout/TapLayout';
+import TabLayout from '~/components/layout/TabLayout';
 import SearchInput from '~/components/search/SearchInput';
 // import useDebounce from '~/hooks/useDebounce';
 import { useDebounce } from 'use-debounce';

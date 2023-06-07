@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
-import TabLayout from '~/components/layout/TapLayout';
+import TabLayout from '~/components/layout/TabLayout';
 import { useProtectedRoute } from '~/hooks/useProtectedRoute';
 
 const BookMarks = () => {
