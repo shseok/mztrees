@@ -88,6 +88,7 @@ const ModeContainer = styled.div`
 `;
 
 const Mode = styled.div<{ isActive: boolean }>`
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
