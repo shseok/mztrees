@@ -42,7 +42,7 @@ const BookmarkIntro = () => {
 
 const Content = styled.div`
   ${media.widescreen} {
-    width: 1200px;
+    width: 1150px;
     margin-left: auto;
     margin-right: auto;
   }

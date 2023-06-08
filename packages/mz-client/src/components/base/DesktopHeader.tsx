@@ -18,10 +18,12 @@ const DesktopHeader = () => {
         <Addon>
           <SearchArea />
           <Buttons>
-            <Button variant='tertiary' size='small'>
+            <Button variant='tertiary' size='small' to='/login'>
               로그인
             </Button>
-            <Button size='small'>회원가입</Button>
+            <Button size='small' to='/register'>
+              회원가입
+            </Button>
           </Buttons>
         </Addon>
       </Content>
@@ -44,7 +46,7 @@ const Block = styled.header`
   }
 
   width: 100%;
-  max-width: 1200px;
+  max-width: 1150px;
   margin-right: auto;
   margin-left: auto;
 `;

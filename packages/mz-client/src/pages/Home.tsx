@@ -103,7 +103,7 @@ const Home = () => {
 
 const Content = styled.div`
   ${media.widescreen} {
-    width: 1200px;
+    width: 1150px;
     margin: 0 auto;
   }
 `;

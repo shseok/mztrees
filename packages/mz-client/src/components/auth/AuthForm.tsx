@@ -140,7 +140,7 @@ const AuthForm = ({ mode }: Props) => {
         {error?.name === 'AuthenticationError' && (
           <ActionErrorMessage>잘못된 계정 정보입니다.</ActionErrorMessage>
         )}
-        <Button layoutMode='fullWidth' type='submit' disabled={isSubmitting}>
+        <Button layoutmode='fullWidth' type='submit' disabled={isSubmitting}>
           {buttonText}
         </Button>
         <QuestionLink question={question} name={actionText} to={actionLink} />

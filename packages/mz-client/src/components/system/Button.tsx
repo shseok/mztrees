@@ -1,21 +1,42 @@
 import React, { forwardRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { colors } from '~/lib/colors';
 import { hover } from '~/lib/styles';
 
 interface ButtonProps {
-  layoutMode?: 'inline' | 'fullWidth';
+  layoutmode?: 'inline' | 'fullWidth';
   variant?: 'primary' | 'secondary' | 'tertiary';
   size?: 'small' | 'medium';
 }
-interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement>, ButtonProps {}
+
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement>, ButtonProps {
+  to?: string;
+}
 
 const Button = forwardRef<HTMLButtonElement, Props>(
-  ({ layoutMode = 'inline', variant = 'primary', size = 'medium', ...rest }: Props, ref) => {
-    return (
+  (
+    { layoutmode: layoutmode = 'inline', variant = 'primary', size = 'medium', to, ...rest }: Props,
+    ref,
+  ) => {
+    const location = useLocation();
+    return to ? (
+      <LinkedButton
+        ref={ref as any}
+        layoutmode={layoutmode}
+        variant={variant}
+        size={size}
+        children={rest.children}
+        className={rest.className}
+        // style={rest.style}
+        to={to}
+        state={{ from: location, redirect: '/' }}
+        // replace={true}
+      />
+    ) : (
       <StyledButton
         ref={ref as any}
-        layoutMode={layoutMode}
+        layoutmode={layoutmode}
         variant={variant}
         size={size}
         {...rest}
@@ -64,7 +85,10 @@ const sizeStyled = {
   `,
 };
 
-const StyledButton = styled.button<ButtonProps>`
+const sharedStyles = css<ButtonProps>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   ${(props) => variantStyled[props.variant!]}
   ${(props) => sizeStyled[props.size!]}
   cursor: pointer;
@@ -78,10 +102,19 @@ const StyledButton = styled.button<ButtonProps>`
   }
 
   ${(props) =>
-    props.layoutMode === 'fullWidth' &&
+    props.layoutmode === 'fullWidth' &&
     css`
       width: 100%;
     `}
+`;
+
+const StyledButton = styled.button`
+  ${sharedStyles}
+`;
+
+const LinkedButton = styled(Link)`
+  ${sharedStyles}
+  text-decoration: none;
 `;
 
 export default Button;

@@ -12,7 +12,7 @@ const SearchArea = () => {
 
   const onKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      navigate(`/search?q=${ref.current?.value ?? ''}`);
+      navigate(`/search?q=${ref.current?.value}`);
     }
   };
   const onClick = () => {
