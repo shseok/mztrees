@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { colors } from '~/lib/colors';
 import { ReactComponent as Logo } from '~/assets/logo.svg';
@@ -6,8 +6,20 @@ import { media } from '~/lib/media';
 import Button from '../system/Button';
 import SearchArea from './SearchArea';
 import { Link } from 'react-router-dom';
+import { getMyAccount } from '~/lib/api/auth';
+import { User } from '~/lib/api/types';
+import UserAddon from './UserAddon';
 
 const DesktopHeader = () => {
+  const [user, setUser] = useState<User | null>(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getMyAccount();
+      setUser(result);
+    };
+    fetchData();
+  }, []);
+
   return (
     <Block>
       <HomeLink to='/'>
@@ -17,14 +29,18 @@ const DesktopHeader = () => {
         <Addon></Addon>
         <Addon>
           <SearchArea />
-          <Buttons>
-            <Button variant='tertiary' size='small' to='/login'>
-              로그인
-            </Button>
-            <Button size='small' to='/register'>
-              회원가입
-            </Button>
-          </Buttons>
+          {user ? (
+            <UserAddon username={user.username} profileImage={''} />
+          ) : (
+            <Buttons>
+              <Button variant='tertiary' size='small' to='/login'>
+                로그인
+              </Button>
+              <Button size='small' to='/register'>
+                회원가입
+              </Button>
+            </Buttons>
+          )}
         </Addon>
       </Content>
     </Block>

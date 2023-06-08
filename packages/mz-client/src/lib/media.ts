@@ -8,7 +8,7 @@ const breakpoints = {
 
 type BreakpointKey = keyof typeof breakpoints;
 type Media = Record<BreakpointKey, string>;
-const mediaQuery = (width: number) => `@media (min-width: ${width}px)`;
+export const mediaQuery = (width: number) => `@media (min-width: ${width}px)`;
 
 export const media = Object.entries(breakpoints).reduce((acc, cur) => {
   const [key, value] = cur as [BreakpointKey, number];
