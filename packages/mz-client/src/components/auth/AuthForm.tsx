@@ -7,7 +7,10 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { userLogin, userRegister } from '~/lib/api/auth';
 import { AppError, extractError } from '~/lib/error';
 import { validate } from '~/lib/validate';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { media } from '~/lib/media';
+import { ReactComponent as Logo } from '~/assets/logo.svg';
+import { colors } from '~/lib/colors';
 
 interface Props {
   mode: 'login' | 'register';
@@ -103,6 +106,9 @@ const AuthForm = ({ mode }: Props) => {
   // handleSubmit > e.preventDefault() 를 기본으로 적용된다.
   return (
     <StyledForm method='post' onSubmit={handleSubmit(onSubmit)}>
+      <DesktopLogoLink to='/'>
+        <Logo />
+      </DesktopLogoLink>
       <InputGroup>
         <LabelInput
           label='아이디'
@@ -155,6 +161,31 @@ const StyledForm = styled.form`
   padding: 16px;
   flex: 1;
   justify-content: space-between;
+
+  ${media.mobile} {
+    justify-content: center;
+    // 500-16-16
+    width: 478px;
+    // margin: 0 auto;
+    align-self: center;
+  }
+`;
+
+const DesktopLogoLink = styled(Link)`
+  display: none;
+  ${media.mobile} {
+    display: flex;
+  }
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 48px;
+
+  svg {
+    display: box;
+    height: 32px;
+    width: auto;
+    color: ${colors.gray5};
+  }
 `;
 
 const InputGroup = styled.div`
@@ -169,6 +200,10 @@ const ActionsBox = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 24px;
+
+  ${media.mobile} {
+    margin-top: 24px;
+  }
 `;
 
 const ActionErrorMessage = styled.div`
