@@ -12,7 +12,6 @@ import SearchResultCardList from '~/components/search/SearchResultCardList';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useInfiniteScroll } from '~/hooks/useInfiniteScroll';
-import { media } from '~/lib/media';
 import DesktopHeader from '~/components/base/DesktopHeader';
 
 const Search = () => {
@@ -22,7 +21,7 @@ const Search = () => {
   const [inputResult] = useDebounce(searchText, 300);
   const observerTargetEl = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-
+  console.log(searchParams.get('q'), searchText);
   const {
     status,
     data: infiniteData,
@@ -40,7 +39,7 @@ const Search = () => {
       },
     },
   );
-
+  // console.log(inputResult, searchText, searchParams.get('q'));
   const fetchNextData = useCallback(() => {
     if (!hasNextPage) return;
     fetchNextPage();
@@ -48,35 +47,38 @@ const Search = () => {
 
   useInfiniteScroll(observerTargetEl, fetchNextData);
 
+  // TODO: resolve desktop render about search with SSR
   useEffect(() => {
-    // fetchData();
+    setSearchText(searchParams.get('q') ?? '');
+  }, [searchParams.get('q')]);
+
+  useEffect(() => {
     navigate(`/search?${stringify({ q: inputResult })}`);
   }, [inputResult, navigate]);
+
   return (
-    <Content>
-      <TabLayout
-        header={
+    <TabLayout
+      header={
+        <>
+          <StyledHeader title={<SearchInput value={searchText} onChangeText={setSearchText} />} />
+          <DesktopHeader />
+        </>
+      }
+    >
+      {inputResult.trim() !== '' &&
+        (status === 'loading' ? (
+          <div>Loading...</div>
+        ) : status === 'error' ? (
+          // // TODO: define error type
+          <div>Error: {(error as any).message}</div>
+        ) : (
           <>
-            <StyledHeader title={<SearchInput value={searchText} onChangeText={setSearchText} />} />
-            <DesktopHeader />
+            <SearchResultCardList items={infiniteData.pages.flatMap((page) => page.list) ?? []} />
+            <div ref={observerTargetEl} />
           </>
-        }
-      >
-        {inputResult.trim() !== '' &&
-          (status === 'loading' ? (
-            <div>Loading...</div>
-          ) : status === 'error' ? (
-            // // TODO: define error type
-            <div>Error: {(error as any).message}</div>
-          ) : (
-            <>
-              <SearchResultCardList items={infiniteData.pages.flatMap((page) => page.list) ?? []} />
-              <div ref={observerTargetEl} />
-            </>
-          ))}
-        <ReactQueryDevtools position='top-right' />
-      </TabLayout>
-    </Content>
+        ))}
+      <ReactQueryDevtools position='top-right' />
+    </TabLayout>
   );
 };
 
@@ -89,16 +91,6 @@ const StyledHeader = styled(Header)`
       height: 20px;
     }
   }
-`;
-
-const Content = styled.div`
-  ${media.tablet} {
-    padding-right: 1rem;
-    padding-left: 1rem;
-    width: 768px;
-    margin: 0 auto;
-  }
-  height: 100%;
 `;
 
 export default Search;
