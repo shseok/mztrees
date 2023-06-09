@@ -32,7 +32,7 @@ const UserMenu = ({ visible, onClose }: Props) => {
         >
           <Triangle />
           <TriangleBorder />
-          <MenuItem isMobileHidden={true} onClick={() => navigate('/write')}>
+          <MenuItem isDeskTopHidden={true} onClick={() => navigate('/write')}>
             새 글 등록
           </MenuItem>
           <MenuItem onClick={() => navigate('/setting')}>내 계정</MenuItem>
@@ -56,13 +56,13 @@ const Block = styled(motion.div)`
   z-index: 1;
 `;
 
-const MenuItem = styled.div<{ isMobileHidden?: boolean }>`
+const MenuItem = styled.div<{ isDeskTopHidden?: boolean }>`
   ${(props) =>
-    props.isMobileHidden &&
+    props.isDeskTopHidden &&
     css`
-      display: none;
+      display: block;
       ${mediaQuery(700)} {
-        display: block;
+        display: none;
       }
     `}
   color: ${colors.gray5};
