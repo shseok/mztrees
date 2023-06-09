@@ -11,7 +11,7 @@ export interface HeaderProps {
   className?: string;
 }
 
-const Header = ({ title = <Logo />, headerLeft, headerRight, className }: HeaderProps) => {
+const MobileHeader = ({ title = <Logo />, headerLeft, headerRight, className }: HeaderProps) => {
   return (
     <Block className={className}>
       {headerLeft && <HeaderSide position='left'>{headerLeft}</HeaderSide>}
@@ -56,4 +56,4 @@ const HeaderSide = styled.div<{ position: 'left' | 'right' }>`
   align-items: center;
 `;
 
-export default Header;
+export default MobileHeader;

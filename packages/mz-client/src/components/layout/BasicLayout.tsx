@@ -3,7 +3,7 @@ import FullHeightPage from '~/components/system/FullHeightPage';
 import { useGoBack } from '~/hooks/useGoback';
 import styled from 'styled-components';
 import HeaderBackButton from '~/components/base/HeaderBackButton';
-import Header from '~/components/base/MobileHeader';
+import MobileHeader from '~/components/base/MobileHeader';
 import DesktopHeader from '../base/DesktopHeader';
 
 interface Props {
@@ -27,7 +27,7 @@ const BasicLayout = ({
 
   return (
     <FullHeightPage>
-      <Header
+      <MobileHeader
         title={title}
         headerLeft={hasBackButton ? <HeaderBackButton onClick={onGoback ?? goBack} /> : undefined}
         headerRight={headerRight}

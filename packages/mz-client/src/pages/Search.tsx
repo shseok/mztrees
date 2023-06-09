@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import Header from '~/components/base/MobileHeader';
+import MobileHeader from '~/components/base/MobileHeader';
 import TabLayout from '~/components/layout/TabLayout';
 import SearchInput from '~/components/search/SearchInput';
 // import useDebounce from '~/hooks/useDebounce';
@@ -82,7 +82,7 @@ const Search = () => {
   );
 };
 
-const StyledHeader = styled(Header)`
+const StyledHeader = styled(MobileHeader)`
   & > .title {
     width: 100%;
 
