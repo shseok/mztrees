@@ -40,6 +40,7 @@ server.setErrorHandler(async (error, request, reply) => {
       name: error.name,
       message: error.message,
       statusCode: error.statusCode,
+      payload: error.payload,
     }
   }
   if (error instanceof AppError) {

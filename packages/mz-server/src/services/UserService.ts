@@ -7,6 +7,8 @@ import {
   validateToken,
 } from '../lib/token.js'
 import { Token, User } from '@prisma/client'
+import NextAppError from '../lib/NextAppError.js'
+import { validate } from '../lib/validate.js'
 
 export interface AuthParams {
   username: string
@@ -157,6 +159,55 @@ class UserService {
     } catch (e) {
       throw new AppError('RefreshTokenError')
     }
+  }
+
+  async changePassword({
+    userId,
+    oldPassword,
+    newPassword,
+  }: {
+    userId: number
+    oldPassword: string
+    newPassword: string
+  }) {
+    const user = await db.user.findUnique({
+      where: {
+        id: userId,
+      },
+    })
+
+    if (!validate.password(newPassword)) {
+      throw new NextAppError('Forbidden', { message: 'Password is invalid' })
+    }
+
+    try {
+      if (!user) {
+        // 유저가 존재하지 않는다는 에러는 결국 디비의 존재유무를 알려주는것. > 그저 인증실패로 에러 표현
+        throw new Error()
+      }
+      const result = await bcrypt.compare(oldPassword, user.passwordHash)
+      if (!result) {
+        // 비밀번호 불일치
+        throw new Error()
+      }
+    } catch (e) {
+      // 비밀번호 비교시 발생한 임의의 에러
+      throw new NextAppError('Forbidden', {
+        message: 'Password does not match',
+      })
+    }
+
+    const passwordHash = await bcrypt.hash(newPassword, SAULT_ROUNDS)
+    await db.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        passwordHash,
+      },
+    })
+
+    return true
   }
 }
 
