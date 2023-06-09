@@ -4,7 +4,7 @@ import BasicLayout from '~/components/layout/BasicLayout';
 
 const Register = () => {
   return (
-    <BasicLayout hasBackButton={true} title='회원가입'>
+    <BasicLayout hasBackButton={true} title='회원가입' desktopHeaderVisible={false}>
       <AuthForm mode='register' />
     </BasicLayout>
   );

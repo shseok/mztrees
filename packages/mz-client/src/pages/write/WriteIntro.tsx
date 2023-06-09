@@ -32,8 +32,8 @@ const WriteIntro = () => {
 
     // request & error
     try {
-      await createItem(form);
-      navigate('/');
+      const item = await createItem(form);
+      navigate(`/items/${item.id}`);
     } catch (e) {
       const error = extractError(e);
       if (error.statusCode === 422) {

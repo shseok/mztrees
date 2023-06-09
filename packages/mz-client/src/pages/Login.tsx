@@ -4,7 +4,7 @@ import BasicLayout from '~/components/layout/BasicLayout';
 
 const Login = () => {
   return (
-    <BasicLayout hasBackButton={true} title='로그인'>
+    <BasicLayout hasBackButton={true} title='로그인' desktopHeaderVisible={false}>
       <AuthForm mode='login' />
     </BasicLayout>
   );

@@ -4,6 +4,7 @@ import { useGoBack } from '~/hooks/useGoback';
 import styled from 'styled-components';
 import HeaderBackButton from '~/components/base/HeaderBackButton';
 import Header from '~/components/base/MobileHeader';
+import DesktopHeader from '../base/DesktopHeader';
 
 interface Props {
   hasBackButton: boolean;
@@ -11,9 +12,17 @@ interface Props {
   title?: React.ReactNode;
   children?: React.ReactNode;
   onGoback?(): void;
+  desktopHeaderVisible?: boolean;
 }
 
-const BasicLayout = ({ hasBackButton, headerRight, title, children, onGoback }: Props) => {
+const BasicLayout = ({
+  hasBackButton,
+  headerRight,
+  title,
+  children,
+  onGoback,
+  desktopHeaderVisible = true,
+}: Props) => {
   const goBack = useGoBack();
 
   return (
@@ -23,6 +32,7 @@ const BasicLayout = ({ hasBackButton, headerRight, title, children, onGoback }: 
         headerLeft={hasBackButton ? <HeaderBackButton onClick={onGoback ?? goBack} /> : undefined}
         headerRight={headerRight}
       />
+      {desktopHeaderVisible && <DesktopHeader />}
       <Content>{children}</Content>
     </FullHeightPage>
   );
