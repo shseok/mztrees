@@ -1,4 +1,4 @@
-import { FastifyPluginAsync, FastifyReply } from 'fastify'
+import { FastifyPluginAsync } from 'fastify'
 import UserService from '../../../services/UserService.js'
 import {
   loginSchema,
@@ -7,6 +7,7 @@ import {
   AuthBodyType,
 } from './schema.js'
 import AppError from '../../../lib/AppError.js'
+import { clearTokenCookie, setTokenCookie } from '../../../lib/cookies.js'
 
 const authRoute: FastifyPluginAsync = async (fastify) => {
   const userService = UserService.getInstance()
@@ -48,21 +49,11 @@ const authRoute: FastifyPluginAsync = async (fastify) => {
       return tokens
     },
   )
-}
 
-function setTokenCookie(
-  reply: FastifyReply,
-  tokens: { accessToken: string; refreshToken: string },
-) {
-  reply.setCookie('access_token', tokens.accessToken, {
-    httpOnly: true,
-    expires: new Date(Date.now() + 1000 * 60 * 60),
-    path: '/',
-  })
-  reply.setCookie('refresh_token', tokens.refreshToken, {
-    httpOnly: true,
-    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
-    path: '/',
+  fastify.post('/logout', async (request, reply) => {
+    clearTokenCookie(reply)
+    reply.status(204)
+    // return { message: 'logout success' }
   })
 }
 

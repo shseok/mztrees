@@ -2,6 +2,7 @@ import { FastifyPluginAsync } from 'fastify'
 import requireAuthPlugin from '../../../plugins/requireAuthPlugin.js'
 import { MeRoute, MeRouteSchema } from './schema.js'
 import UserService from '../../../services/UserService.js'
+import { clearTokenCookie } from '../../../lib/cookies.js'
 
 export const meRoute: FastifyPluginAsync = async (fastify) => {
   const userService = UserService.getInstance()
@@ -27,4 +28,10 @@ export const meRoute: FastifyPluginAsync = async (fastify) => {
       reply.status(204)
     },
   )
+
+  fastify.delete<MeRoute['Unregister']>('/', async (request, reply) => {
+    await userService.unregister(request.user?.id!)
+    reply.status(204)
+    clearTokenCookie(reply)
+  })
 }

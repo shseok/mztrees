@@ -209,6 +209,15 @@ class UserService {
 
     return true
   }
+
+  async unregister(userId: number) {
+    await db.user.delete({
+      where: {
+        id: userId,
+      },
+    })
+    return true
+  }
 }
 
 export default UserService

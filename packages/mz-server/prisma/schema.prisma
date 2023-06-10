@@ -27,7 +27,7 @@ model User {
 
 model Token {
   id              Int      @id @default(autoincrement())
-  user            User     @relation(fields: [userId], references: [id])
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId          Int
   rotationCounter Int      @default(1)
   createdAt       DateTime @default(now())
@@ -72,7 +72,7 @@ model Publisher {
 model Tag {
   id        Int         @id @default(autoincrement())
   name      String      @unique
-  Item      Item?       @relation(fields: [itemId], references: [id])
+  Item      Item?       @relation(fields: [itemId], references: [id], onDelete: Cascade)
   itemId    Int?
   itemsTags ItemsTags[]
 }
@@ -174,8 +174,8 @@ model Bookmark {
 
   createdAt DateTime @default(now())
 
-  user User @relation(fields: [userId], references: [id])
-  item Item @relation(fields: [itemId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
 
   @@unique([userId, itemId])
   @@index(createdAt)

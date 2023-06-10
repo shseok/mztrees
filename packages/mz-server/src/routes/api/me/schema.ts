@@ -38,6 +38,11 @@ export const MeRouteSchema = {
       }),
     },
   },
+  Unregister: {
+    response: {
+      204: Type.Null(),
+    },
+  },
 }
 
 export type MeRoute = RoutesType<typeof MeRouteSchema>
