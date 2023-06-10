@@ -18,12 +18,14 @@ const UnAuthroizedErrorSchema = createAppErrorSchema(
 
 export const MeRouteSchema = createRouteSchema({
   GetAccount: {
+    tags: ['me'],
     response: {
       200: UserSchema,
       401: UnAuthroizedErrorSchema,
     },
   },
   UpdatePassword: {
+    tags: ['me'],
     body: Type.Object({
       oldPassword: Type.String(),
       newPassword: Type.String(),
@@ -39,6 +41,7 @@ export const MeRouteSchema = createRouteSchema({
     },
   },
   Unregister: {
+    tags: ['me'],
     response: {
       204: Type.Null(),
     },

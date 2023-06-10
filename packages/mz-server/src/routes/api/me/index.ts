@@ -29,9 +29,13 @@ export const meRoute: FastifyPluginAsync = async (fastify) => {
     },
   )
 
-  fastify.delete<MeRoute['Unregister']>('/', async (request, reply) => {
-    await userService.unregister(request.user?.id!)
-    reply.status(204)
-    clearTokenCookie(reply)
-  })
+  fastify.delete<MeRoute['Unregister']>(
+    '/',
+    { schema: MeRouteSchema.Unregister },
+    async (request, reply) => {
+      await userService.unregister(request.user?.id!)
+      reply.status(204)
+      clearTokenCookie(reply)
+    },
+  )
 }
