@@ -1,63 +1,67 @@
-import { FastifySchema } from 'fastify/types/schema'
-import { createAppErrorSchema } from '../../../lib/AppError.js'
+import { Type } from '@sinclair/typebox'
 import { UserSchema } from '../../../schema/UserSchema.js'
-import { Static, Type } from '@sinclair/typebox'
+import { createAppErrorSchema } from '../../../lib/AppError.js'
+import { RoutesType } from '../../../lib/routeSchema.js'
+import { createRouteSchema } from '../../../lib/routeSchema.js'
 
 export const AuthBody = Type.Object({
   username: Type.String(),
   password: Type.String(),
 })
 
-export type AuthBodyType = Static<typeof AuthBody>
-
-const TokensSchema = Type.Object({
-  accessToken: Type.String(),
-  refreshToken: Type.String(),
-})
-
 const AuthResult = Type.Object({
-  tokens: TokensSchema,
+  tokens: Type.Object({
+    accessToken: Type.String(),
+    refreshToken: Type.String(),
+  }),
   user: UserSchema,
 })
 
-export const registerSchema: FastifySchema = {
-  tags: ['auth'],
-  body: AuthBody,
-  response: {
-    200: AuthResult,
-    409: createAppErrorSchema({
-      name: 'UserExistsError',
-      message: 'User already exists',
-      statusCode: 409,
-    }),
+export const AuthRouteSchema = createRouteSchema({
+  Login: {
+    tags: ['auth'],
+    body: AuthBody,
+    response: {
+      200: AuthResult,
+      401: createAppErrorSchema({
+        name: 'AuthenticationError',
+        message: 'Invalid username or password',
+        statusCode: 401,
+      }),
+    },
   },
-}
-
-export const loginSchema: FastifySchema = {
-  tags: ['auth'],
-  body: AuthBody,
-  response: {
-    200: AuthResult,
-    401: createAppErrorSchema({
-      name: 'AuthenticationError',
-      message: 'Invalid username or password',
-      statusCode: 401,
-    }),
+  Register: {
+    tags: ['auth'],
+    body: AuthBody,
+    response: {
+      200: AuthResult,
+      409: createAppErrorSchema({
+        name: 'UserExistsError',
+        message: 'User already exists',
+        statusCode: 409,
+      }),
+    },
   },
-}
-
-const refreshTokenBody = Type.Object({
-  refreshToken: Type.String(),
+  RefreshToken: {
+    tags: ['auth'],
+    body: Type.Object({
+      refreshToken: Type.String(),
+    }),
+    response: {
+      200: AuthResult,
+      401: createAppErrorSchema({
+        name: 'RefreshTokenError',
+        message: 'Invalid refresh token',
+        statusCode: 401,
+      }),
+    },
+  },
+  Logout: {
+    tags: ['auth'],
+    response: {
+      204: Type.Null(),
+    },
+  },
 })
-export const refreshTokenSchema: FastifySchema = {
-  tags: ['auth'],
-  body: refreshTokenBody,
-  response: {
-    200: AuthResult,
-    401: createAppErrorSchema({
-      name: 'RefreshTokenError',
-      message: 'Invalid refresh token',
-      statusCode: 401,
-    }),
-  },
-}
+
+export type AuthRoute = RoutesType<typeof AuthRouteSchema>

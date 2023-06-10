@@ -1,7 +1,7 @@
 import { FastifySchema } from 'fastify'
 import { UserSchema } from '../../../schema/UserSchema.js'
 import { createAppErrorSchema } from '../../../lib/AppError.js'
-import { RoutesType } from '../../../lib/routeSchema.js'
+import { RoutesType, createRouteSchema } from '../../../lib/routeSchema.js'
 import { Type } from '@sinclair/typebox'
 
 const UnAuthroizedErrorSchema = createAppErrorSchema(
@@ -16,7 +16,7 @@ const UnAuthroizedErrorSchema = createAppErrorSchema(
   Type.Object({ isExpiredToken: Type.Boolean() }),
 )
 
-export const MeRouteSchema = {
+export const MeRouteSchema = createRouteSchema({
   GetAccount: {
     response: {
       200: UserSchema,
@@ -43,6 +43,5 @@ export const MeRouteSchema = {
       204: Type.Null(),
     },
   },
-}
-
+})
 export type MeRoute = RoutesType<typeof MeRouteSchema>

@@ -1,19 +1,8 @@
 import { Static, Type } from '@sinclair/typebox'
-import { FastifySchema } from 'fastify'
+import { RoutesType, createRouteSchema } from '../../../lib/routeSchema.js'
 import { Nullable } from '../../../lib/typebox.js'
 import { UserSchema } from '../../../schema/UserSchema.js'
 import { PaginationSchema } from '../../../lib/pagination.js'
-
-// createItems
-
-const CreateItemSchema = Type.Object({
-  title: Type.String(),
-  body: Type.String(),
-  link: Type.String(),
-  tags: Type.Optional(Type.Array(Type.String())),
-})
-
-export type CreateItemBodyType = Static<typeof CreateItemSchema>
 
 const ItemStatsSchema = Type.Object({
   id: Type.Integer(),
@@ -26,6 +15,7 @@ ItemStatsSchema.example = {
   likes: 10,
   commentsCount: 2,
 }
+
 export const ItemSchema = Type.Object({
   id: Type.Integer(),
   title: Type.String(),
@@ -74,100 +64,6 @@ ItemSchema.example = {
   isLiked: true,
 }
 
-export type ItemType = Static<typeof ItemSchema>
-
-export const WriteItemSchema: FastifySchema = {
-  tags: ['item'],
-  body: CreateItemSchema,
-  response: {
-    200: ItemSchema,
-  },
-}
-
-export interface WriteItemRoute {
-  Body: CreateItemBodyType
-}
-
-// getItem
-
-export const ItemParamsSchema = Type.Object({
-  id: Type.Integer(),
-})
-
-export type ItemParamsType = Static<typeof ItemParamsSchema>
-
-export interface GetItemRoute {
-  Params: ItemParamsType
-}
-
-export const GetItemSchema: FastifySchema = {
-  tags: ['item'],
-  params: ItemParamsSchema,
-  response: {
-    200: ItemSchema,
-  },
-}
-
-// getItems
-
-const ItemsParamsSchema = Type.Object({
-  cursor: Type.Optional(Type.String()),
-})
-
-type ItemsParamsType = Static<typeof ItemsParamsSchema>
-
-export interface GetItemsRoute {
-  Querystring: ItemsParamsType & {
-    mode?: 'recent' | 'trending' | 'past'
-    startDate?: string
-    endDate?: string
-  }
-}
-
-export const GetItemsSchema: FastifySchema = {
-  tags: ['item'],
-  response: {
-    200: PaginationSchema(ItemSchema),
-  },
-}
-
-// updateItem
-const UpdateItemBodySchema = Type.Object({
-  title: Type.String(),
-  body: Type.String(),
-  tags: Type.Array(Type.String()),
-})
-
-type UpdateItemBodyType = Static<typeof UpdateItemBodySchema>
-
-export interface UpdateItemRoute {
-  Params: ItemParamsType
-  Body: UpdateItemBodyType
-}
-
-export const UpdateItemSchema: FastifySchema = {
-  tags: ['item'],
-  params: ItemParamsSchema,
-  body: UpdateItemBodySchema,
-  response: {
-    200: ItemSchema,
-  },
-}
-
-// delete Item
-export const DeleteItemSchema: FastifySchema = {
-  tags: ['item'],
-  params: ItemParamsSchema,
-  response: {
-    204: Type.Null(),
-  },
-}
-
-export interface DeleteItemRoute {
-  Params: ItemParamsType
-}
-
-// like Item
 const ItemLikeSchema = Type.Object({
   id: Type.Integer(),
   itemStats: ItemStatsSchema,
@@ -183,24 +79,83 @@ ItemLikeSchema.example = {
   isLiked: true,
 }
 
-export const LikeItemSchema: FastifySchema = {
-  params: ItemParamsSchema,
-  response: {
-    200: ItemLikeSchema,
-  },
-}
+export const ItemParamsSchema = Type.Object({
+  id: Type.Integer(),
+})
 
-export interface LikeItemRoute {
-  Params: ItemParamsType
-}
+export type ItemParamsType = Static<typeof ItemParamsSchema>
 
-// unlike Item
-export const UnlikeItemSchema: FastifySchema = {
-  params: ItemParamsSchema,
-  response: {
-    200: ItemLikeSchema,
+export const ItemRouteSchema = createRouteSchema({
+  GetItem: {
+    tags: ['item'],
+    params: ItemParamsSchema,
+    response: {
+      200: ItemSchema,
+    },
   },
-}
-export interface UnlikeItemRoute {
-  Params: ItemParamsType
-}
+  GetItems: {
+    tags: ['item'],
+    querystring: Type.Object({
+      cursor: Type.Optional(Type.Integer()),
+      mode: Type.Optional(
+        Type.Union([
+          Type.Literal('recent'),
+          Type.Literal('trending'),
+          Type.Literal('past'),
+        ]),
+      ),
+      startDate: Type.Optional(Type.String()),
+      endDate: Type.Optional(Type.String()),
+    }),
+    response: {
+      200: PaginationSchema(ItemSchema),
+    },
+  },
+  WriteItem: {
+    tags: ['item'],
+    body: Type.Object({
+      title: Type.String(),
+      body: Type.String(),
+      link: Type.String(),
+      tags: Type.Optional(Type.Array(Type.String())),
+    }),
+    response: {
+      200: ItemSchema,
+    },
+  },
+  UpdateItem: {
+    tags: ['item'],
+    params: ItemParamsSchema,
+    body: Type.Object({
+      title: Type.String(),
+      body: Type.String(),
+      tags: Type.Array(Type.String()),
+    }),
+    response: {
+      200: ItemSchema,
+    },
+  },
+  DeleteItem: {
+    tags: ['item'],
+    params: ItemParamsSchema,
+    response: {
+      204: Type.Null(),
+    },
+  },
+  LikeItem: {
+    tags: ['item'],
+    params: ItemParamsSchema,
+    response: {
+      200: ItemLikeSchema,
+    },
+  },
+  UnlikeItem: {
+    tags: ['item'],
+    params: ItemParamsSchema,
+    response: {
+      200: ItemLikeSchema,
+    },
+  },
+})
+
+export type ItemRoute = RoutesType<typeof ItemRouteSchema>

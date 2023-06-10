@@ -1,7 +1,7 @@
 //{ querystring: { q: { type: 'string' } } }
 
 import { Type } from '@sinclair/typebox'
-import { RoutesType } from '../../../lib/routeSchema.js'
+import { RoutesType, createRouteSchema } from '../../../lib/routeSchema.js'
 import { Nullable } from '../../../lib/typebox.js'
 import { PaginationSchema } from '../../../lib/pagination.js'
 
@@ -29,13 +29,13 @@ const SearchSchema = Type.Object({
   }),
 })
 
-export const SearchRouteSchema = {
+export const SearchRouteSchema = createRouteSchema({
   Search: {
     querystring: SearchQuerySchema,
     response: {
       200: PaginationSchema(SearchSchema),
     },
   },
-}
+})
 
 export type SearchRoute = RoutesType<typeof SearchRouteSchema>
