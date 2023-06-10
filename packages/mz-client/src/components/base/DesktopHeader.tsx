@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { colors } from '~/lib/colors';
 import { ReactComponent as Logo } from '~/assets/logo.svg';
@@ -6,19 +6,11 @@ import { media } from '~/lib/media';
 import Button from '../system/Button';
 import SearchArea from './SearchArea';
 import { Link } from 'react-router-dom';
-import { getMyAccount } from '~/lib/api/auth';
-import { User } from '~/lib/api/types';
 import UserAddon from './UserAddon';
+import { useUser } from '~/hooks/stores/userStore';
 
 const DesktopHeader = () => {
-  const [user, setUser] = useState<User | null>(null);
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await getMyAccount();
-      setUser(result);
-    };
-    fetchData();
-  }, []);
+  const user = useUser();
 
   return (
     <Block>

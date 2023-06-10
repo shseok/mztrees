@@ -11,6 +11,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { media } from '~/lib/media';
 import { ReactComponent as Logo } from '~/assets/logo.svg';
 import { colors } from '~/lib/colors';
+import { setUser } from '~/hooks/stores/userStore';
 
 interface Props {
   mode: 'login' | 'register';
@@ -54,18 +55,21 @@ const AuthForm = ({ mode }: Props) => {
   const location = useLocation();
 
   const [error, setError] = useState<AppError | undefined>();
-
+  const set = setUser();
   const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
     try {
       if (mode === 'register') {
-        await userRegister(data);
+        const result = await userRegister(data);
+        set(result.user);
         navigate('/');
       } else {
-        await userLogin(data);
+        const result = await userLogin(data);
+        set(result.user);
         const from = location.state?.from?.pathname || '/';
         navigate(from, { replace: true });
       }
     } catch (e) {
+      set(null);
       const error = extractError(e);
       setError(error);
     }

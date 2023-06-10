@@ -17,6 +17,7 @@ import Items from './pages/Items';
 import GlobalBottomSheetModal from './components/system/GlobalBottomSheetModal';
 import Edit from './pages/write/Edit';
 import BookmarkIntro from './pages/bookmark/BookmarkIntro';
+import SettingIndex from './pages/setting/index';
 
 const StyledTabLayout = styled(TabLayout)`
   padding: 16px 16px 16px 16px;
@@ -26,17 +27,11 @@ const StyledTabLayout = styled(TabLayout)`
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <StyledTabLayout />,
-    children: [
-      {
-        path: '/',
-        element: <Home />,
-      },
-      {
-        path: '/setting',
-        element: <Setting />,
-      },
-    ],
+    element: (
+      <StyledTabLayout>
+        <Home />
+      </StyledTabLayout>
+    ),
     errorElement: <Error />,
   },
   {
@@ -90,6 +85,16 @@ const router = createBrowserRouter([
   {
     path: '/search',
     element: <Search />,
+  },
+  {
+    path: '/setting',
+    element: <Setting />,
+    children: [
+      {
+        path: '/setting',
+        element: <SettingIndex />,
+      },
+    ],
   },
   // {
   //   path: '/error',

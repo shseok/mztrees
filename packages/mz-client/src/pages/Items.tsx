@@ -54,6 +54,7 @@ const Items = () => {
   const [item, comments] = [result[0].data, result[1].data];
 
   const navigate = useNavigate();
+  const currentUser = useUser();
   const set = setUser();
   const openBottomSheetModal = useBottomSheetModalStore((store) => store.open);
   const { open: openDialog } = useDialog();
@@ -65,7 +66,6 @@ const Items = () => {
     fetchData();
   }, [fetchData]);
 
-  const currentUser = useUser();
   const isMyItem = currentUser?.id === item?.user.id;
 
   const onClickMore = () => {

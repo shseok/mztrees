@@ -26,7 +26,7 @@ const UserAddon = ({ username }: Props) => {
   };
   return (
     <Responsive>
-      <Link to='/write'>
+      <Link to='/write' style={{ textDecoration: 'none' }}>
         <WriteButton size='small' variant='primary'>
           새 글 작성
         </WriteButton>

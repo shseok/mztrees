@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { colors } from '~/lib/colors';
 import { hover } from '~/lib/styles';
@@ -19,7 +19,6 @@ const Button = forwardRef<HTMLButtonElement, Props>(
     { layoutmode: layoutmode = 'inline', variant = 'primary', size = 'medium', to, ...rest }: Props,
     ref,
   ) => {
-    const location = useLocation();
     return to ? (
       <LinkedButton
         ref={ref as any}
@@ -30,7 +29,7 @@ const Button = forwardRef<HTMLButtonElement, Props>(
         className={rest.className}
         // style={rest.style}
         to={to}
-        state={{ from: location, redirect: '/' }}
+        state={{ redirect: '/' }}
         // replace={true}
       />
     ) : (

@@ -13,7 +13,7 @@ import { useItemId } from '~/hooks/useItemId';
 import { ReactComponent as MoreVert } from '~/assets/more-vert.svg';
 import { useBottomSheetModalStore } from '~/hooks/stores/useBottomSheetModalStore';
 import { useCommentActions } from '~/hooks/useCommentActions';
-import { useUser } from '~/hooks/stores/userStore';
+import { setUser, useUser } from '~/hooks/stores/userStore';
 
 /**@todo isSubcomment 굳이 필요한가에 대한 고민 */
 interface Props {
@@ -44,6 +44,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
   const likes = commentLike?.likes ?? comment.likes;
   const isLiked = commentLike?.isLiked ?? comment.isLiked;
   const { useDeleteComment: deleteComment } = useCommentActions();
+  const set = setUser();
   const onClickMore = () => {
     openBottomSheetModal([
       {
@@ -64,6 +65,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
   const toggleLike = async () => {
     if (!itemId) return;
     const currentUser = await getMyAccount();
+    set(currentUser);
     if (!currentUser) {
       openLoginDialog('commentLike');
       return;
@@ -77,6 +79,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
 
   const onReply = async () => {
     const currentUser = await getMyAccount();
+    set(currentUser);
     if (!currentUser) {
       openLoginDialog('comment');
       return;

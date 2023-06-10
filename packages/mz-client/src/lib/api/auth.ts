@@ -11,6 +11,10 @@ export async function userLogin(params: AuthParams) {
   return response.data;
 }
 
+export async function userLogout() {
+  await axios.post('/base/api/auth/logout');
+}
+
 export async function getMyAccount() {
   // const response = await fetch('http://localhost:4000/api/me', {
   //   method: 'GET',
