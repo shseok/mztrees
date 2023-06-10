@@ -1,6 +1,5 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import TabLayout from '~/components/layout/TabLayout';
 import { useProtectedRoute } from '~/hooks/useProtectedRoute';
 
 const Setting = () => {
@@ -10,11 +9,7 @@ const Setting = () => {
     return null;
   }
 
-  return (
-    <TabLayout>
-      <Outlet />
-    </TabLayout>
-  );
+  return <Outlet />;
 };
 
 export default Setting;

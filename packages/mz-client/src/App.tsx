@@ -18,6 +18,7 @@ import GlobalBottomSheetModal from './components/system/GlobalBottomSheetModal';
 import Edit from './pages/write/Edit';
 import BookmarkIntro from './pages/bookmark/BookmarkIntro';
 import SettingIndex from './pages/setting/index';
+import Account from './pages/setting/Account';
 
 const StyledTabLayout = styled(TabLayout)`
   padding: 16px 16px 16px 16px;
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
       {
         path: '/setting',
         element: <SettingIndex />,
+      },
+      {
+        path: '/setting/account',
+        element: <Account />,
       },
     ],
   },

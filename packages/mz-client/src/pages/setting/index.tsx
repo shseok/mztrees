@@ -1,23 +1,27 @@
 import React from 'react';
-import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import styled, { css } from 'styled-components';
+import TabLayout from '~/components/layout/TabLayout';
 import { useOpenLogoutDialog } from '~/hooks/useOpenLoginDialog';
 import { colors } from '~/lib/colors';
 
 const SettingIndex = () => {
   const openLogoutDialog = useOpenLogoutDialog();
   return (
-    <Block>
-      <ListWrapper>
-        <ListItem>내 계정</ListItem>
-        <ListItem
-          onClick={() => {
-            openLogoutDialog('logout');
-          }}
-        >
-          로그아웃
-        </ListItem>
-      </ListWrapper>
-    </Block>
+    <TabLayout>
+      <Block>
+        <ListWrapper>
+          <ListItemLink to='/setting/account'>내 계정</ListItemLink>
+          <ListItem
+            onClick={() => {
+              openLogoutDialog('logout');
+            }}
+          >
+            로그아웃
+          </ListItem>
+        </ListWrapper>
+      </Block>
+    </TabLayout>
   );
 };
 
@@ -27,20 +31,29 @@ const Block = styled.div`
 `;
 
 const ListWrapper = styled.ul`
-  margin: 0;
-  padding: 0;
-  list-style: none;
-
-  li + li {
+  * + li {
     border-top: 1px solid ${colors.gray0};
   }
 `;
-const ListItem = styled.li`
+
+const ListItemStyle = css`
   padding: 16px;
   background: white;
+  color: ${colors.gray5};
+
+  &:hover,
   &:active {
     opacity: 0.7;
   }
+`;
+const ListItem = styled.li`
+  ${ListItemStyle}
+`;
+
+const ListItemLink = styled(Link)`
+  text-decoration: none;
+  display: block;
+  ${ListItemStyle};
 `;
 
 export default SettingIndex;

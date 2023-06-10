@@ -20,6 +20,11 @@ const GlobalStyle = createGlobalStyle`
     outline: none;
     padding: 0;
   }
+  ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
 `;
 
 export default GlobalStyle;

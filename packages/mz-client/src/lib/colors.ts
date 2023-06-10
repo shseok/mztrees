@@ -7,4 +7,5 @@ export const colors = {
   gray5: '#121212',
   primary: '#017A59',
   secondary: '#FFF4E0',
+  destructive: '#fc684e',
 };
