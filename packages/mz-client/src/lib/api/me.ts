@@ -28,6 +28,9 @@ export async function changePassword({
   oldPassword: string;
   newPassword: string;
 }) {
-  const response = await axios.post('/base/api/me/change-password', { oldPassword, newPassword });
-  return response.data;
+  await axios.post('/base/api/me/change-password', { oldPassword, newPassword });
+}
+
+export async function unregister() {
+  await axios.delete('/base/api/me');
 }

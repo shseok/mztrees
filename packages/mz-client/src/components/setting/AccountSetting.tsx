@@ -6,7 +6,7 @@ import Input from '../system/Input';
 import Button from '../system/Button';
 import { useDialog } from '~/context/DialogContext';
 import { useMutation } from '@tanstack/react-query';
-import { changePassword } from '~/lib/api/me';
+import { changePassword, unregister } from '~/lib/api/me';
 import { extractNextError } from '~/lib/nextError';
 
 const AccountSetting = () => {
@@ -57,6 +57,22 @@ const AccountSetting = () => {
     },
   });
 
+  // 실패할 일이 없는 탈퇴는 mutation 사용 x
+  const askUnregister = () => {
+    open({
+      title: '계정 탈퇴',
+      description: '계정에 관련된 정보를 모두 삭제합니다. 정말로 탈퇴하시겠습니까?',
+      mode: 'confirm',
+      confirmText: '탈퇴',
+      cancelText: '취소',
+      async onConfirm() {
+        await unregister();
+        try {
+        } catch (e) {}
+        window.location.href = '/';
+      },
+    });
+  };
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({
       ...form,
@@ -104,7 +120,7 @@ const AccountSetting = () => {
           </form>
         </Section>
       </div>
-      <UnregisterButton>계정 탈퇴</UnregisterButton>
+      <UnregisterButton onClick={askUnregister}>계정 탈퇴</UnregisterButton>
     </Block>
   );
 };
