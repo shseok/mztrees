@@ -12,6 +12,7 @@ const SearchResultCard = ({ item }: Props) => {
   const {
     publisher: { favicon, name },
     author,
+    likes,
     hightlight: { title, body },
   } = item;
 
@@ -25,6 +26,7 @@ const SearchResultCard = ({ item }: Props) => {
       {/* TODO: Secure this code */}
       <Title dangerouslySetInnerHTML={{ __html: title }} />
       <Body dangerouslySetInnerHTML={{ __html: body }} />
+      <LikesCount>좋아요 {likes.toLocaleString()}개</LikesCount>
     </Block>
   );
 };
@@ -79,6 +81,16 @@ const Body = styled.p`
   em {
     font-weight: 600;
   }
+`;
+
+const LikesCount = styled.div`
+  font-size: 12px;
+  font-weight: 600;
+  color: ${colors.gray4};
+  line-height: 1.5;
+  height: 26px;
+  display: flex;
+  align-items: top;
 `;
 
 export default SearchResultCard;
