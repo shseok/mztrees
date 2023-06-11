@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { useUser } from '~/hooks/stores/userStore';
 import { colors } from '~/lib/colors';
@@ -8,21 +8,27 @@ import { useDialog } from '~/context/DialogContext';
 import { useMutation } from '@tanstack/react-query';
 import { changePassword, unregister } from '~/lib/api/me';
 import { extractNextError } from '~/lib/nextError';
+import { SubmitHandler, useForm } from 'react-hook-form';
+
+type Inputs = {
+  oldPassword: string;
+  newPassword: string;
+};
 
 const AccountSetting = () => {
   const user = useUser();
   if (!user) return null;
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [form, setForm] = useState({
-    oldPassword: '',
-    newPassword: '',
+  const firstInputRef = useRef<HTMLInputElement>(null);
+  const secondInputRef = useRef<HTMLInputElement>(null);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<Inputs>({
+    mode: 'all',
   });
-  const reset = () => {
-    setForm({
-      oldPassword: '',
-      newPassword: '',
-    });
-  };
+
   const { open } = useDialog();
 
   // 실패할 일이 있기때문에 mutation 사용
@@ -33,27 +39,30 @@ const AccountSetting = () => {
         description: '비밀번호 변경이 완료되었습니다.',
         mode: 'alert',
       });
-      reset();
     },
     onError: (error) => {
       const extractedError = extractNextError(error);
       console.log(extractedError);
-      if (extractedError.name === 'BadRequest') {
-        open({
-          title: '비밀번호 변경 실패',
-          description: '8~20자, 영문/숫자/특수문자 1가지 이상 입력해주세요.',
-          mode: 'alert',
-        });
-      } else if (extractedError.name === 'Forbidden') {
+      if (extractedError.name === 'Forbidden') {
         console.log();
         open({
           title: '비밀번호 불일치',
           description: '비밀번호가 일치하지 않습니다.. 현재 비밀번호를 다시 입력해주세요.',
           mode: 'alert',
+          onConfirm() {
+            firstInputRef.current?.focus();
+          },
+        });
+      } else if (extractedError.name === 'BadRequest') {
+        open({
+          title: '비밀번호 변경 실패',
+          description: '8~20자, 영문/숫자/특수문자 1가지 이상 입력해주세요.',
+          mode: 'alert',
+          onConfirm() {
+            secondInputRef.current?.focus();
+          },
         });
       }
-      reset();
-      inputRef.current?.focus();
     },
   });
 
@@ -73,16 +82,10 @@ const AccountSetting = () => {
       },
     });
   };
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
-  };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    mutate(form);
+  const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
+    console.log(data);
+    mutate(data);
   };
 
   return (
@@ -94,27 +97,32 @@ const AccountSetting = () => {
         </Section>
         <Section>
           <h4>비밀번호</h4>
-          <form onSubmit={onSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <InputGroup>
               <Input
-                value={form.oldPassword}
-                name='oldPassword'
-                placeholder='현재 비밀번호'
+                {...register('oldPassword')}
                 type='password'
-                onChange={onChange}
+                placeholder='현재 비밀번호'
                 autoComplete='off'
-                ref={inputRef}
+                // ref={firstInputRef} > ref 적용하면 data undefined...
+                disabled={isSubmitting}
               />
               <Input
-                value={form.newPassword}
-                name='newPassword'
-                placeholder='새 비밀번호'
+                {...register('newPassword')}
                 type='password'
-                onChange={onChange}
+                placeholder='새 비밀번호'
                 autoComplete='off'
+                // ref={secondInputRef}
+                disabled={isSubmitting}
               />
             </InputGroup>
-            <Button layoutmode='fullWidth' variant='primary' size='small' type='submit'>
+            <Button
+              layoutmode='fullWidth'
+              variant='primary'
+              size='small'
+              type='submit'
+              disabled={isSubmitting}
+            >
               비밀번호 변경
             </Button>
           </form>
