@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { getMyAccount } from '~/lib/api/auth';
+import { getMyAccount } from '~/lib/api/me';
 import { setUser } from './stores/userStore';
 
 export const useProtectedRoute = () => {

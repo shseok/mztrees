@@ -6,7 +6,7 @@ import SubCommentList from './SubcommentList';
 import LikeButton from '../system/LikeButton';
 import { useCommentInputStore } from '~/hooks/stores/useCommentInputStore';
 import { useOpenLoginDialog } from '~/hooks/useOpenLoginDialog';
-import { getMyAccount } from '~/lib/api/auth';
+import { getMyAccount } from '~/lib/api/me';
 import { useCommentLike } from '~/hooks/useCommentLike';
 import { useCommentLikeById } from '~/hooks/stores/useCommentLikesStore';
 import { useItemId } from '~/hooks/useItemId';

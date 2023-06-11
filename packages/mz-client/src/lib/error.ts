@@ -26,6 +26,7 @@ export interface AppError {
   payload?: ErrorPayloads[ErrorName];
 }
 
+// User Defined Type Guards Function
 export function isAppError(error: any): error is AppError {
   return (
     error?.statusCode !== undefined && error?.message !== undefined && error?.name !== undefined

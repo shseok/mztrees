@@ -176,10 +176,6 @@ class UserService {
       },
     })
 
-    if (!validate.password(newPassword)) {
-      throw new NextAppError('Forbidden', { message: 'Password is invalid' })
-    }
-
     try {
       if (!user) {
         // 유저가 존재하지 않는다는 에러는 결국 디비의 존재유무를 알려주는것. > 그저 인증실패로 에러 표현
@@ -195,6 +191,10 @@ class UserService {
       throw new NextAppError('Forbidden', {
         message: 'Password does not match',
       })
+    }
+
+    if (!validate.password(newPassword)) {
+      throw new NextAppError('BadRequest', { message: 'Password is invalid' })
     }
 
     const passwordHash = await bcrypt.hash(newPassword, SAULT_ROUNDS)

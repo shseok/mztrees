@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useCommentInputStore } from '~/hooks/stores/useCommentInputStore';
 import { setUser } from '~/hooks/stores/userStore';
 import { useOpenLoginDialog } from '~/hooks/useOpenLoginDialog';
-import { getMyAccount } from '~/lib/api/auth';
+import { getMyAccount } from '~/lib/api/me';
 import { colors } from '~/lib/colors';
 
 const CommentInput = () => {

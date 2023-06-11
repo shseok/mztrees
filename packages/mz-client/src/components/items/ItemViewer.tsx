@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import LikeButton from '../system/LikeButton';
 import { useLikeManager } from '~/hooks/useLikeManager';
 import { useOpenLoginDialog } from '~/hooks/useOpenLoginDialog';
-import { getMyAccount } from '~/lib/api/auth';
+import { getMyAccount } from '~/lib/api/me';
 import { useItemOverrideById } from '~/hooks/stores/ItemOverrideStore';
 import { useDateDistance } from '~/hooks/useDateDistance';
 import { Link } from 'react-router-dom';

@@ -10,7 +10,7 @@ import { useDialog } from '~/context/DialogContext';
 import { useItemAndCommentsQuery } from '~/hooks/query/useCommentsQuery';
 import { useBottomSheetModalStore } from '~/hooks/stores/useBottomSheetModalStore';
 import { useUser, setUser } from '~/hooks/stores/userStore';
-import { getMyAccount } from '~/lib/api/auth';
+import { getMyAccount } from '~/lib/api/me';
 import { deleteItem } from '~/lib/api/items';
 import { media } from '~/lib/media';
 

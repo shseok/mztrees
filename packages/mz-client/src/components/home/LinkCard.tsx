@@ -7,7 +7,7 @@ import { useLikeManager } from '~/hooks/useLikeManager';
 import LikeButton from '../system/LikeButton';
 import { useItemOverrideById } from '~/hooks/stores/ItemOverrideStore';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getMyAccount } from '~/lib/api/auth';
+import { getMyAccount } from '~/lib/api/me';
 import { useOpenLoginDialog } from '~/hooks/useOpenLoginDialog';
 import { Link } from 'react-router-dom';
 import BookmarkButton from '../system/BookmarkButton';
