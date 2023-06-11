@@ -12,7 +12,8 @@ import { extractNextError } from '~/lib/nextError';
 const AccountSetting = () => {
   const user = useUser();
   if (!user) return null;
-  const inputRef = useRef<HTMLInputElement>(null);
+  const oldPasswordInputRef = useRef<HTMLInputElement>(null);
+  const newPasswordInputRef = useRef<HTMLInputElement>(null);
   const [form, setForm] = useState({
     oldPassword: '',
     newPassword: '',
@@ -38,22 +39,27 @@ const AccountSetting = () => {
     onError: (error) => {
       const extractedError = extractNextError(error);
       console.log(extractedError);
-      if (extractedError.name === 'BadRequest') {
-        open({
-          title: '비밀번호 변경 실패',
-          description: '8~20자, 영문/숫자/특수문자 1가지 이상 입력해주세요.',
-          mode: 'alert',
-        });
-      } else if (extractedError.name === 'Forbidden') {
-        console.log();
+      if (extractedError.name === 'Forbidden') {
         open({
           title: '비밀번호 불일치',
           description: '비밀번호가 일치하지 않습니다.. 현재 비밀번호를 다시 입력해주세요.',
           mode: 'alert',
+          onConfirm() {
+            oldPasswordInputRef.current?.focus();
+            setForm((prev) => ({ ...prev, oldPassword: '' }));
+          },
+        });
+      } else if (extractedError.name === 'BadRequest') {
+        open({
+          title: '비밀번호 변경 실패',
+          description: '8~20자, 영문/숫자/특수문자 1가지 이상 입력해주세요.',
+          mode: 'alert',
+          onConfirm() {
+            newPasswordInputRef.current?.focus();
+            setForm((prev) => ({ ...prev, newPassword: '' }));
+          },
         });
       }
-      reset();
-      inputRef.current?.focus();
     },
   });
 
@@ -103,7 +109,7 @@ const AccountSetting = () => {
                 type='password'
                 onChange={onChange}
                 autoComplete='off'
-                ref={inputRef}
+                ref={oldPasswordInputRef}
               />
               <Input
                 value={form.newPassword}
@@ -112,6 +118,7 @@ const AccountSetting = () => {
                 type='password'
                 onChange={onChange}
                 autoComplete='off'
+                ref={newPasswordInputRef}
               />
             </InputGroup>
             <Button layoutmode='fullWidth' variant='primary' size='small' type='submit'>
