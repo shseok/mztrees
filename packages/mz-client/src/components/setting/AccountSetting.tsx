@@ -8,6 +8,7 @@ import { useDialog } from '~/context/DialogContext';
 import { useMutation } from '@tanstack/react-query';
 import { changePassword, unregister } from '~/lib/api/me';
 import { extractNextError } from '~/lib/nextError';
+import { media } from '~/lib/media';
 
 const AccountSetting = () => {
   const user = useUser();
@@ -94,6 +95,7 @@ const AccountSetting = () => {
   return (
     <Block>
       <div>
+        <Title>내 계정</Title>
         <Section>
           <h4>아이디</h4>
           <Username>{user.username} 님</Username>
@@ -137,6 +139,22 @@ const Block = styled.div`
   padding: 16px;
   flex: 1;
   justify-content: space-between;
+
+  ${media.mobile} {
+    width: 100%;
+    max-width: 560px;
+    margin: 0 auto;
+    // flex: initial;
+  }
+`;
+
+const Title = styled.h1`
+  margin-top: 0;
+  margin-bottom: 32px;
+  font-weight: 800;
+  color: ${colors.gray5};
+  font-size: 36px;
+  line-height: 1.5;
 `;
 
 const Section = styled.div`
