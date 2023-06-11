@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { SearchItemResult } from '~/lib/api/types';
 import { ReactComponent as Globe } from '~/assets/globe.svg';
 import { colors } from '~/lib/colors';
+import DOMPurify from 'dompurify';
 
 interface Props {
   item: SearchItemResult;
@@ -16,6 +17,8 @@ const SearchResultCard = ({ item }: Props) => {
     hightlight: { title, body },
   } = item;
 
+  const sanitizer = DOMPurify.sanitize;
+
   return (
     <Block>
       <Publisher>
@@ -24,8 +27,8 @@ const SearchResultCard = ({ item }: Props) => {
         {name}
       </Publisher>
       {/* TODO: Secure this code */}
-      <Title dangerouslySetInnerHTML={{ __html: title }} />
-      <Body dangerouslySetInnerHTML={{ __html: body }} />
+      <Title dangerouslySetInnerHTML={{ __html: sanitizer(title) }} />
+      <Body dangerouslySetInnerHTML={{ __html: sanitizer(body) }} />
       <LikesCount>좋아요 {likes.toLocaleString()}개</LikesCount>
     </Block>
   );
