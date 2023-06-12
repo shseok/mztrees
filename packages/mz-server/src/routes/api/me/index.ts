@@ -1,21 +1,17 @@
-import { FastifyPluginAsync } from 'fastify'
 import requireAuthPlugin from '../../../plugins/requireAuthPlugin.js'
-import { MeRoute, MeRouteSchema } from './schema.js'
+import { MeRouteSchema } from './schema.js'
 import UserService from '../../../services/UserService.js'
 import { clearTokenCookie } from '../../../lib/cookies.js'
+import { FastifyPluginAsyncTypebox } from '../../../lib/types.js'
 
-export const meRoute: FastifyPluginAsync = async (fastify) => {
+export const meRoute: FastifyPluginAsyncTypebox = async (fastify) => {
   const userService = UserService.getInstance()
   fastify.register(requireAuthPlugin)
-  fastify.get<MeRoute['GetAccount']>(
-    '/',
-    { schema: MeRouteSchema.GetAccount },
-    async (request) => {
-      return request.user
-    },
-  )
+  fastify.get('/', { schema: MeRouteSchema.GetAccount }, async (request) => {
+    return request.user!
+  })
 
-  fastify.post<MeRoute['UpdatePassword']>(
+  fastify.post(
     '/change-password',
     { schema: MeRouteSchema.UpdatePassword },
     async (request, reply) => {
@@ -29,7 +25,7 @@ export const meRoute: FastifyPluginAsync = async (fastify) => {
     },
   )
 
-  fastify.delete<MeRoute['Unregister']>(
+  fastify.delete(
     '/',
     { schema: MeRouteSchema.Unregister },
     async (request, reply) => {

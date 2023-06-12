@@ -1,7 +1,5 @@
-//{ querystring: { q: { type: 'string' } } }
-
-import { Type } from '@sinclair/typebox'
-import { RoutesType, createRouteSchema } from '../../../lib/routeSchema.js'
+import { Type } from '@fastify/type-provider-typebox'
+import { routeSchema } from '../../../lib/routeSchema.js'
 import { Nullable } from '../../../lib/typebox.js'
 import { PaginationSchema } from '../../../lib/pagination.js'
 
@@ -17,7 +15,7 @@ const SearchSchema = Type.Object({
   author: Nullable(Type.String()),
   publisher: Type.Object({
     name: Type.String(),
-    favicon: Type.String(),
+    favicon: Nullable(Type.String()),
     domain: Type.String(),
   }),
   likes: Type.Integer(),
@@ -28,14 +26,10 @@ const SearchSchema = Type.Object({
     body: Type.String(),
   }),
 })
-
-export const SearchRouteSchema = createRouteSchema({
-  Search: {
-    querystring: SearchQuerySchema,
-    response: {
-      200: PaginationSchema(SearchSchema),
-    },
+// export const searchSchema:FastifySchema({  => (x) / extends FastifySchema({  => (o)
+export const SearchRouteSchema = routeSchema({
+  querystring: SearchQuerySchema,
+  response: {
+    200: PaginationSchema(SearchSchema),
   },
 })
-
-export type SearchRoute = RoutesType<typeof SearchRouteSchema>

@@ -1,11 +1,5 @@
-import { Static, TSchema } from '@sinclair/typebox'
+import { Static, TSchema } from '@fastify/type-provider-typebox'
 import { FastifySchema } from 'fastify'
-
-export function createRouteSchema<T extends Record<string, FastifySchema>>(
-  params: T,
-) {
-  return params
-}
 
 type RouteSchema = {
   params?: TSchema
@@ -24,4 +18,15 @@ type RouteType<T extends RouteSchema> = {
 
 export type RoutesType<T extends Record<string, RouteSchema>> = {
   [K in keyof T]: RouteType<T[K]>
+}
+
+// for auto complete
+export function createRouteSchema<T extends Record<string, FastifySchema>>(
+  params: T,
+) {
+  return params
+}
+
+export function routeSchema<T extends FastifySchema>(schema: T) {
+  return schema
 }

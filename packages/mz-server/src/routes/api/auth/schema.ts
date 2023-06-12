@@ -1,4 +1,4 @@
-import { Type } from '@sinclair/typebox'
+import { Type } from '@fastify/type-provider-typebox'
 import { UserSchema } from '../../../schema/UserSchema.js'
 import { createAppErrorSchema } from '../../../lib/AppError.js'
 import { RoutesType } from '../../../lib/routeSchema.js'

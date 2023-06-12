@@ -1,12 +1,12 @@
-import { FastifyPluginAsync } from 'fastify'
 import UserService from '../../../services/UserService.js'
 import AppError from '../../../lib/AppError.js'
 import { clearTokenCookie, setTokenCookie } from '../../../lib/cookies.js'
 import { AuthRoute, AuthRouteSchema } from './schema.js'
+import { FastifyPluginAsyncTypebox } from '../../../lib/types.js'
 
-const authRoute: FastifyPluginAsync = async (fastify) => {
+const authRoute: FastifyPluginAsyncTypebox = async (fastify) => {
   const userService = UserService.getInstance()
-  fastify.post<AuthRoute['Login']>(
+  fastify.post(
     '/login',
     {
       schema: AuthRouteSchema.Login,
@@ -20,7 +20,7 @@ const authRoute: FastifyPluginAsync = async (fastify) => {
     },
   )
 
-  fastify.post<AuthRoute['Register']>(
+  fastify.post(
     '/register',
     { schema: AuthRouteSchema.Register },
     async (request, reply) => {
@@ -30,7 +30,7 @@ const authRoute: FastifyPluginAsync = async (fastify) => {
     },
   )
 
-  fastify.post<AuthRoute['RefreshToken']>(
+  fastify.post(
     '/refresh',
     { schema: AuthRouteSchema.RefreshToken },
     async (request, reply) => {
@@ -45,10 +45,10 @@ const authRoute: FastifyPluginAsync = async (fastify) => {
     },
   )
 
-  fastify.post<AuthRoute['Logout']>(
+  fastify.post(
     '/logout',
     { schema: AuthRouteSchema.Logout },
-    async (request, reply) => {
+    async (_, reply) => {
       clearTokenCookie(reply)
       reply.status(204)
       // return { message: 'logout success' }

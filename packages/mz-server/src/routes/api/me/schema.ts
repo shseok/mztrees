@@ -1,8 +1,7 @@
-import { FastifySchema } from 'fastify'
 import { UserSchema } from '../../../schema/UserSchema.js'
 import { createAppErrorSchema } from '../../../lib/AppError.js'
-import { RoutesType, createRouteSchema } from '../../../lib/routeSchema.js'
-import { Type } from '@sinclair/typebox'
+import { createRouteSchema } from '../../../lib/routeSchema.js'
+import { Type } from '@fastify/type-provider-typebox'
 
 const UnAuthroizedErrorSchema = createAppErrorSchema(
   {
@@ -52,4 +51,3 @@ export const MeRouteSchema = createRouteSchema({
     },
   },
 })
-export type MeRoute = RoutesType<typeof MeRouteSchema>

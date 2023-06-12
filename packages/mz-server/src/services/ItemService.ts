@@ -11,7 +11,6 @@ import NextAppError from '../lib/NextAppError.js'
 import db from '../lib/db.js'
 import { extractPageInfo } from '../lib/extractPageInfo.js'
 import { PaginationOptionType, createPagination } from '../lib/pagination.js'
-import { CreateItemBodyType } from '../routes/api/items/schema.js'
 import algolia from '../lib/algolia.js'
 import { calculateScore } from '../lib/ranking.js'
 import { checkDateFormat, checkWeekRange } from '../lib/checkDate.js'
@@ -46,7 +45,12 @@ class ItemService {
 
   async createItem(
     userId: number,
-    { title, body, link, tags }: CreateItemBodyType,
+    {
+      title,
+      body,
+      link,
+      tags,
+    }: { title: string; body: string; link: string; tags?: string[] },
   ) {
     const info = await extractPageInfo(link)
     const publisher = await this.getPublisher({

@@ -1,7 +1,7 @@
 import algoiasearch from 'algoliasearch'
 import { PaginationType } from './pagination.js'
-import { ItemSchema } from '../routes/api/items/schema.js'
 import { Publisher } from '@prisma/client'
+import { ItemType } from '../routes/api/items/schema.js'
 
 const ApplicationID = process.env.ALGOLIA_APP_ID
 const AdminAPIKey = process.env.ALGOLIA_ADMIN_KEY
@@ -23,11 +23,11 @@ const algolia = {
     query: string,
     { offset = 0, length = 20 }: SearchOption = {},
   ) => {
-    const result = await index.search<typeof ItemSchema>(query, {
+    const result = await index.search<ItemType>(query, {
       offset,
       length,
     })
-    console.log(result)
+    // console.log(result)
 
     const hasNextPage = offset + length < result.nbHits
 

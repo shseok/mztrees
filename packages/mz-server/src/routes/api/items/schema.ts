@@ -1,4 +1,4 @@
-import { Static, Type } from '@sinclair/typebox'
+import { Static, Type } from '@fastify/type-provider-typebox'
 import { RoutesType, createRouteSchema } from '../../../lib/routeSchema.js'
 import { Nullable } from '../../../lib/typebox.js'
 import { UserSchema } from '../../../schema/UserSchema.js'
@@ -20,7 +20,7 @@ export const ItemSchema = Type.Object({
   id: Type.Integer(),
   title: Type.String(),
   body: Type.String(),
-  link: Type.String(),
+  link: Nullable(Type.String()),
   author: Type.String(),
   thumbnail: Nullable(Type.String()),
   createdAt: Type.String(),
@@ -36,6 +36,8 @@ export const ItemSchema = Type.Object({
   isLiked: Type.Boolean(),
   isBookmarked: Type.Boolean(),
 })
+
+export type ItemType = Static<typeof ItemSchema>
 
 ItemSchema.example = {
   id: 1,

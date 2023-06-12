@@ -1,10 +1,9 @@
 // 인증 라우트를 위한 플러그인
-
-import { FastifyPluginAsync } from 'fastify'
 import fp from 'fastify-plugin'
 import AppError from '../lib/AppError.js'
+import { FastifyPluginAsyncTypebox } from '../lib/types.js'
 
-const requireAuthPluginAsync: FastifyPluginAsync = async (fastify) => {
+const requireAuthPluginAsync: FastifyPluginAsyncTypebox = async (fastify) => {
   fastify.addHook('preHandler', async (request, reply) => {
     // console.log(request.user, request.isExpiredToken, request.cookies)
     // console.log(request)
@@ -29,8 +28,8 @@ const requireAuthPlugin = fp(requireAuthPluginAsync, {
   name: 'requireAuthPlugin',
 })
 
-export function createAuthorizedRoute(plugin: FastifyPluginAsync) {
-  const wrappedPlugin: FastifyPluginAsync = async (fastify, opts) => {
+export function createAuthorizedRoute(plugin: FastifyPluginAsyncTypebox) {
+  const wrappedPlugin: FastifyPluginAsyncTypebox = async (fastify, opts) => {
     fastify.register(requireAuthPlugin)
     return plugin(fastify, opts)
   }

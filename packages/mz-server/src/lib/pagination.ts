@@ -1,4 +1,4 @@
-import { Type, Static, TSchema } from '@sinclair/typebox'
+import { Type, Static, TSchema } from '@fastify/type-provider-typebox'
 import { Nullable } from './typebox.js'
 
 export const PaginationSchema = <T extends TSchema>(type: T) =>

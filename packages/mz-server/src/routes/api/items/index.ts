@@ -1,10 +1,10 @@
-import { FastifyPluginAsync } from 'fastify'
 import { createAuthorizedRoute } from '../../../plugins/requireAuthPlugin.js'
 import ItemService from '../../../services/ItemService.js'
 import { commentsRoute } from './comments/index.js'
 import { ItemRoute, ItemRouteSchema } from './schema.js'
+import { FastifyPluginAsyncTypebox } from '../../../lib/types.js'
 
-export const itemsRoute: FastifyPluginAsync = async (fastify) => {
+export const itemsRoute: FastifyPluginAsyncTypebox = async (fastify) => {
   const itemService = ItemService.getInstance()
   // fastify.register(async (fastify) => {
   //   fastify.register(requireAuthPlugin)
@@ -17,34 +17,23 @@ export const itemsRoute: FastifyPluginAsync = async (fastify) => {
   //   )
   // })
   fastify.register(authorizedItemRoute(itemService)) // refactoring above code
-  fastify.get<ItemRoute['GetItem']>(
-    '/:id',
-    { schema: ItemRouteSchema.GetItem },
-    async (request) => {
-      const { id } = request.params
-      const item = await itemService.getItem(id, request.user?.id)
-      if (item) {
-        return item
-      }
-      return null
-    },
-  )
+  fastify.get('/:id', { schema: ItemRouteSchema.GetItem }, async (request) => {
+    const { id } = request.params
+    const item = await itemService.getItem(id, request.user?.id)
+    return item as any
+  })
 
-  fastify.get<ItemRoute['GetItems']>(
-    '/',
-    { schema: ItemRouteSchema.GetItems },
-    async (request) => {
-      const { cursor, mode, startDate, endDate } = request.query
-      return itemService.getItems({
-        mode: mode ?? 'recent',
-        cursor: cursor ?? null,
-        userId: request.user?.id,
-        limit: 20,
-        startDate,
-        endDate,
-      })
-    },
-  )
+  fastify.get('/', { schema: ItemRouteSchema.GetItems }, async (request) => {
+    const { cursor, mode, startDate, endDate } = request.query
+    return itemService.getItems({
+      mode: mode ?? 'recent',
+      cursor: cursor ?? null,
+      userId: request.user?.id,
+      limit: 20,
+      startDate,
+      endDate,
+    }) as any
+  })
 
   fastify.register(commentsRoute, { prefix: '/:id/comments' })
 }
@@ -52,7 +41,7 @@ export const itemsRoute: FastifyPluginAsync = async (fastify) => {
 const authorizedItemRoute = (itemService: ItemService) =>
   createAuthorizedRoute(async (fastify) => {
     // const itemService = ItemService.getInstance()
-    fastify.post<ItemRoute['WriteItem']>(
+    fastify.post(
       '/',
       { schema: ItemRouteSchema.WriteItem },
       async (request) => {
@@ -60,22 +49,22 @@ const authorizedItemRoute = (itemService: ItemService) =>
           request.user!.id, // authorizedItemRoute때문에 무조건 존재 => !
           request.body,
         )
-        return item
+        return item as any
       },
     )
 
-    fastify.patch<ItemRoute['UpdateItem']>(
+    fastify.patch(
       '/:id',
       { schema: ItemRouteSchema.UpdateItem },
       async (request) => {
         const { id: itemId } = request.params
         const userId = request.user!.id
         const { title, body } = request.body
-        return itemService.updateItem({ userId, itemId, title, body })
+        return itemService.updateItem({ userId, itemId, title, body }) as any
       },
     )
 
-    fastify.delete<ItemRoute['DeleteItem']>(
+    fastify.delete(
       '/:id',
       { schema: ItemRouteSchema.DeleteItem },
       async (request, reply) => {
@@ -86,7 +75,7 @@ const authorizedItemRoute = (itemService: ItemService) =>
       },
     )
 
-    fastify.post<ItemRoute['LikeItem']>(
+    fastify.post(
       '/:id/likes',
       { schema: ItemRouteSchema.LikeItem },
       async (request) => {
@@ -97,7 +86,7 @@ const authorizedItemRoute = (itemService: ItemService) =>
       },
     )
 
-    fastify.delete<ItemRoute['UnlikeItem']>(
+    fastify.delete(
       '/:id/likes',
       { schema: ItemRouteSchema.UnlikeItem },
       async (request) => {

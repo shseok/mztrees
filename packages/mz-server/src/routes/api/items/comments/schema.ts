@@ -1,4 +1,4 @@
-import { Type } from '@sinclair/typebox'
+import { Type } from '@fastify/type-provider-typebox'
 import { ItemParamsSchema } from '../schema.js'
 import { Nullable } from '../../../../lib/typebox.js'
 import { RoutesType, createRouteSchema } from '../../../../lib/routeSchema.js'
