@@ -28,6 +28,7 @@ const SearchSchema = Type.Object({
 })
 // export const searchSchema:FastifySchema({  => (x) / extends FastifySchema({  => (o)
 export const SearchRouteSchema = routeSchema({
+  tags: ['search'],
   querystring: SearchQuerySchema,
   response: {
     200: PaginationSchema(SearchSchema),

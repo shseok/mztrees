@@ -54,24 +54,28 @@ const CommentLikeSchema = Type.Object({
 
 export const CommentsRouteSchema = createRouteSchema({
   GetComments: {
+    tags: ['comments'],
     params: ItemParamsSchema,
     response: {
       200: Type.Array(CommentSchema),
     },
   },
   GetComment: {
+    tags: ['comments'],
     params: CommentsParamsSchema,
     response: {
       200: CommentSchema,
     },
   },
   GetSubcomments: {
+    tags: ['comments'],
     params: CommentsParamsSchema,
     response: {
       200: Type.Array(CommentSchema),
     },
   },
   CreateComment: {
+    tags: ['comments'],
     params: ItemParamsSchema,
     body: CreateCommentBodySchema,
     response: {
@@ -79,24 +83,28 @@ export const CommentsRouteSchema = createRouteSchema({
     },
   },
   LikeComment: {
+    tags: ['comments'],
     params: CommentsParamsSchema,
     response: {
       200: CommentLikeSchema,
     },
   },
   UnlikeComment: {
+    tags: ['comments'],
     params: CommentsParamsSchema,
     response: {
       200: CommentLikeSchema,
     },
   },
   DeleteComment: {
+    tags: ['comments'],
     params: CommentsParamsSchema,
     response: {
       204: {},
     },
   },
   UpdateComment: {
+    tags: ['comments'],
     params: CommentsParamsSchema,
     body: UpdateCommentSchema,
     response: {

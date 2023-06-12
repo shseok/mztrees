@@ -11,18 +11,21 @@ const BookmarkSchema = Type.Object({
 
 export const BookmarkRouteSchema = createRouteSchema({
   CreateBookmark: {
+    tags: ['bookmarks'],
     body: Type.Object({ itemId: Type.Integer() }),
     response: {
       200: BookmarkSchema,
     },
   },
   GetBookmarks: {
+    tags: ['bookmarks'],
     querystring: Type.Object({ cursor: Type.Optional(Type.Integer()) }),
     response: {
       200: PaginationSchema(BookmarkSchema),
     },
   },
   DeleteBookmark: {
+    tags: ['bookmarks'],
     querystring: Type.Object({ itemId: Type.Integer() }),
     response: {
       204: Type.Null(),
