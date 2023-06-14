@@ -44,7 +44,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
   const likes = commentLike?.likes ?? comment.likes;
   const isLiked = commentLike?.isLiked ?? comment.isLiked;
   const { useDeleteComment: deleteComment } = useCommentActions();
-  const set = setUser();
+  // const set = setUser();
   const onClickMore = () => {
     openBottomSheetModal([
       {
@@ -64,8 +64,8 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
 
   const toggleLike = async () => {
     if (!itemId) return;
-    const currentUser = await getMyAccount();
-    set(currentUser);
+    // const currentUser = await getMyAccount();
+    // set(currentUser);
     if (!currentUser) {
       openLoginDialog('commentLike');
       return;
@@ -77,9 +77,10 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
     }
   };
 
+  // TODO: 댓글을 열고 거기서 댓글 달 경우 처리하기
   const onReply = async () => {
-    const currentUser = await getMyAccount();
-    set(currentUser);
+    // const currentUser = await getMyAccount();
+    // set(currentUser);
     if (!currentUser) {
       openLoginDialog('comment');
       return;

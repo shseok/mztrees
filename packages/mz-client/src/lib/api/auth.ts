@@ -15,6 +15,17 @@ export async function userLogout() {
   await axios.post('/base/api/auth/logout');
 }
 
+export async function refreshToken() {
+  const response = await axios.post<Tokens>(
+    '/base/api/auth/refresh',
+    {},
+    {
+      withCredentials: true,
+    },
+  );
+  return response.data;
+}
+
 interface AuthParams {
   username: string;
   password: string;

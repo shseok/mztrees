@@ -19,6 +19,7 @@ import Edit from './pages/write/Edit';
 import BookmarkIntro from './pages/bookmark/BookmarkIntro';
 import SettingIndex from './pages/setting/index';
 import Account from './pages/setting/Account';
+import { getMyAccountWithRefresh } from './lib/protectRoute';
 
 const StyledTabLayout = styled(TabLayout)`
   padding: 16px 16px 16px 16px;

@@ -13,6 +13,7 @@ import { useUser, setUser } from '~/hooks/stores/userStore';
 import { getMyAccount } from '~/lib/api/me';
 import { deleteItem } from '~/lib/api/items';
 import { media } from '~/lib/media';
+import { getMyAccountWithRefresh } from '~/lib/protectRoute';
 
 /** @todos validate itemId */
 /** @todos handle 404 */
@@ -55,16 +56,19 @@ const Items = () => {
 
   const navigate = useNavigate();
   const currentUser = useUser();
-  const set = setUser();
+  // const set = setUser();
   const openBottomSheetModal = useBottomSheetModalStore((store) => store.open);
   const { open: openDialog } = useDialog();
-  const fetchData = useCallback(async () => {
-    const currentUser = await getMyAccount();
-    set(currentUser);
-  }, []);
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  // const fetchData = useCallback(async () => {
+  //   const currentUser = await getMyAccount();
+  //   set(currentUser);
+  // }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, [fetchData]);
+
+  // TODO: Remove with SSR
+  getMyAccountWithRefresh();
 
   const isMyItem = currentUser?.id === item?.user.id;
 

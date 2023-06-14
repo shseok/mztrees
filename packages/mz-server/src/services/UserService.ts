@@ -126,6 +126,7 @@ class UserService {
           user: true,
         },
       })
+      console.log(tokenItem, rotationCounter)
       if (!tokenItem) {
         throw new Error('Token not found')
       }
@@ -157,6 +158,7 @@ class UserService {
 
       return this.generateTokens(tokenItem.user, tokenItem)
     } catch (e) {
+      console.error(e)
       throw new AppError('RefreshTokenError')
     }
   }

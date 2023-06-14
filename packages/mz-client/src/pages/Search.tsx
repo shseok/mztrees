@@ -13,6 +13,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useInfiniteScroll } from '~/hooks/useInfiniteScroll';
 import DesktopHeader from '~/components/base/DesktopHeader';
+import { getMyAccountWithRefresh } from '~/lib/protectRoute';
 
 const Search = () => {
   const [searchParams] = useSearchParams();
@@ -55,6 +56,9 @@ const Search = () => {
   useEffect(() => {
     navigate(`/search?${stringify({ q: inputResult })}`);
   }, [inputResult, navigate]);
+
+  // TODO: Remove with SSR
+  getMyAccountWithRefresh();
 
   return (
     <TabLayout

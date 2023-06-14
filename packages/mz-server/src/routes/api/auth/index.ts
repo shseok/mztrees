@@ -1,7 +1,7 @@
 import UserService from '../../../services/UserService.js'
 import AppError from '../../../lib/AppError.js'
 import { clearTokenCookie, setTokenCookie } from '../../../lib/cookies.js'
-import { AuthRoute, AuthRouteSchema } from './schema.js'
+import { AuthRouteSchema } from './schema.js'
 import { FastifyPluginAsyncTypebox } from '../../../lib/types.js'
 
 const authRoute: FastifyPluginAsyncTypebox = async (fastify) => {
@@ -34,6 +34,14 @@ const authRoute: FastifyPluginAsyncTypebox = async (fastify) => {
     '/refresh',
     { schema: AuthRouteSchema.RefreshToken },
     async (request, reply) => {
+      console.log(
+        'headers',
+        request.headers,
+        'body',
+        request.body,
+        'cookies',
+        request.cookies,
+      )
       const refreshToken =
         request.body.refreshToken ?? request.cookies.refresh_token ?? ''
       if (!refreshToken) {

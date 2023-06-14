@@ -10,7 +10,7 @@ import UserAddon from './UserAddon';
 import { useUser } from '~/hooks/stores/userStore';
 
 const DesktopHeader = () => {
-  const user = useUser();
+  const currentUser = useUser();
 
   return (
     <Block>
@@ -21,8 +21,8 @@ const DesktopHeader = () => {
         <Addon></Addon>
         <Addon>
           <SearchArea />
-          {user ? (
-            <UserAddon username={user.username} profileImage={''} />
+          {currentUser ? (
+            <UserAddon username={currentUser.username} profileImage={''} />
           ) : (
             <Buttons>
               <Button variant='tertiary' size='small' to='/login'>

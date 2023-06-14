@@ -1,26 +1,39 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { getMyAccount } from '~/lib/api/me';
-import { setUser } from './stores/userStore';
+import { User } from '~/lib/api/types';
+import { extractNextError } from '~/lib/nextError';
+import usePrivateAxios from './usePrivateAxios';
 
 export const useProtectedRoute = () => {
+  const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const [hasUser, setHasUser] = useState(false);
-  const set = setUser();
-  console.log(location);
+  const privateAxios = usePrivateAxios();
+
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await getMyAccount();
-      set(result);
-      if (result) {
-        setHasUser(true);
-      } else {
-        // navigate('/login?redirect=/write', { state: { from: location }, replace: true });
+    let isMounted = true; // ?
+    const controller = new AbortController();
+
+    const getUsers = async () => {
+      try {
+        const response = await privateAxios.get<User>('/api/me', {
+          signal: controller.signal,
+        });
+        isMounted && setUser(response.data);
+      } catch (e) {
+        const extractedError = extractNextError(e);
+        console.log(extractedError);
         navigate('/login', { state: { from: location, redirect: '/' }, replace: true });
       }
     };
-    fetchData();
-  }, [hasUser, navigate]);
-  return hasUser;
+
+    getUsers();
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, [navigate]);
+
+  return !!user;
 };

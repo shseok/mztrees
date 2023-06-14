@@ -9,11 +9,13 @@ export const AuthBody = Type.Object({
   password: Type.String(),
 })
 
+const TokenSchema = Type.Object({
+  accessToken: Type.String(),
+  refreshToken: Type.String(),
+})
+
 const AuthResult = Type.Object({
-  tokens: Type.Object({
-    accessToken: Type.String(),
-    refreshToken: Type.String(),
-  }),
+  tokens: TokenSchema,
   user: UserSchema,
 })
 
@@ -45,10 +47,10 @@ export const AuthRouteSchema = createRouteSchema({
   RefreshToken: {
     tags: ['auth'],
     body: Type.Object({
-      refreshToken: Type.String(),
+      refreshToken: Type.Optional(Type.String()),
     }),
     response: {
-      200: AuthResult,
+      200: TokenSchema,
       401: createAppErrorSchema({
         name: 'RefreshTokenError',
         message: 'Invalid refresh token',

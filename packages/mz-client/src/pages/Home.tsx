@@ -10,6 +10,7 @@ import { useInfiniteScroll } from '~/hooks/useInfiniteScroll';
 import { getItems } from '~/lib/api/items';
 import { ListMode } from '~/lib/api/types';
 import { media } from '~/lib/media';
+import { getMyAccountWithRefresh } from '~/lib/protectRoute';
 import { getWeekRangeFromDate } from '~/lib/week';
 
 const Home = () => {
@@ -78,6 +79,8 @@ const Home = () => {
   // }
 
   // useIsMultiColumnCheck();
+  // TODO: Remove with SSR
+  getMyAccountWithRefresh();
 
   return (
     <>

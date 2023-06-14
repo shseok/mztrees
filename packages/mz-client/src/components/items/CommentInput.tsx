@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useCommentInputStore } from '~/hooks/stores/useCommentInputStore';
-import { setUser } from '~/hooks/stores/userStore';
+import { setUser, useUser } from '~/hooks/stores/userStore';
 import { useOpenLoginDialog } from '~/hooks/useOpenLoginDialog';
 import { getMyAccount } from '~/lib/api/me';
 import { colors } from '~/lib/colors';
@@ -9,10 +9,11 @@ import { colors } from '~/lib/colors';
 const CommentInput = () => {
   const write = useCommentInputStore((state) => state.write);
   const openLoginDialog = useOpenLoginDialog();
-  const set = setUser();
+  // const set = setUser();
+  const currentUser = useUser();
   const onClick = async () => {
-    const currentUser = await getMyAccount();
-    set(currentUser);
+    // const currentUser = await getMyAccount();
+    // set(currentUser);
     if (!currentUser) {
       openLoginDialog('comment');
       return;

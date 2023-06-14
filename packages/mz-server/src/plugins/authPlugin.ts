@@ -11,6 +11,7 @@ const authPluginAsync: FastifyPluginAsync = async (fastify) => {
   fastify.decorateRequest('user', null)
   fastify.decorateRequest('isExpiredToken', false)
   fastify.addHook('preHandler', async (request) => {
+    console.log(request.headers.authorization, request.cookies.access_token)
     const token =
       request.headers.authorization?.split('Bearer ')[1] ??
       request.cookies.access_token
