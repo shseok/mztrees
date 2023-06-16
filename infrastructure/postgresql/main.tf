@@ -17,7 +17,7 @@ provider "aws" {
 resource "aws_instance" "app_server" {
   ami           = "ami-0c9c942bd7bf113a2"
   instance_type = "t3a.micro"
-  key_name      = "mz"
+  key_name      = "mz" # role in matching for later ssh access.
   user_data     = file("scripts/init_postgresql.sh")
 
   tags = {
