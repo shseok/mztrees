@@ -44,6 +44,12 @@
     ],
     "mountPoints": [],
     "memory": 2048,
+    "secrets": [
+      {
+        "name": "PASSWORD",
+        "valueFrom": "${database_password}"
+      }
+    ],
     "volumesFrom": []
   }
 ]
