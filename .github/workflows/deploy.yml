@@ -26,7 +26,6 @@
 on:
   push:
     branches:
-      - main
       - feature/docker-deploy
 
 name: Deploy to Amazon ECS
@@ -53,7 +52,7 @@ jobs:
 
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
-        working-derctory: ./infrastructure/ecr/example-server
+        working-directory: ./infrastructure/ecr/example-server
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: aws-terraform-test/runner

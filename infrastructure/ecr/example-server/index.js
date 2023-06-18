@@ -10,7 +10,8 @@ app.get("/", async () => {
 
   return "안녕하세요? 제 비밀번호를 알려드리죠. 제 비밀번호는: "
     .concat(process.env.PASSWORD)
-    .concat(`CPU: ${usage}`);
+    .concat(`CPU: ${usage}`)
+    .concat("\n test: github actions");
 });
 
 app.get("/overwork", async () => {
