@@ -69,7 +69,7 @@ jobs:
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: infrastructure/ecr/sample-server/task-definition.json
+          task-definition: infrastructure/ecr/example-server/task-definition.json
           container-name: aws-terraform-test-app
           image: ${{ steps.build-image.outputs.image }}
 
