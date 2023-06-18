@@ -78,6 +78,6 @@ jobs:
         with:
           # task-definition: task-definition.json
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: aws-terraform-test-app-service
-          cluster: aws-terraform-test-app-cluster
+          service: aws-terraform-test-service
+          cluster: aws-terraform-test-cluster
           wait-for-service-stability: true
