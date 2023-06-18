@@ -11,8 +11,8 @@
         "logDriver": "awslogs",
         "options": {
           "awslogs-region": "ap-northeast-2",
-          "awslogs-stream-prefix": "aws-terraform-test-app-service",
-          "awslogs-group": "aws-terraform-test-app-log-group"
+          "awslogs-stream-prefix": "aws-terraform-test-service",
+          "awslogs-group": "aws-terraform-test-log-group"
         }
       },
       "portMappings": [
