@@ -43,7 +43,7 @@
       }
     ],
     "mountPoints": [],
-    "memory": 2048,
+    "memory": 512,
     "secrets": [
       {
         "name": "PASSWORD",
@@ -53,4 +53,3 @@
     "volumesFrom": []
   }
 ]
-

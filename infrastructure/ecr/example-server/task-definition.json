@@ -1,0 +1,47 @@
+{
+  "name": "aws-terraform-test-app",
+  "image": "350743031177.dkr.ecr.ap-northeast-2.amazonaws.com/aws-terraform-test/runner:latest",
+  "essential": true,
+  "logConfiguration": {
+    "logDriver": "awslogs",
+    "options": {
+      "awslogs-region": "ap-northeast-2",
+      "awslogs-stream-prefix": "aws-terraform-test-app-service",
+      "awslogs-group": "aws-terraform-test-app-log-group"
+    }
+  },
+  "portMappings": [
+    {
+      "containerPort": 8080,
+      "hostPort": 8080,
+      "protocol": "tcp"
+    }
+  ],
+  "cpu": 1,
+  "environment": [
+    {
+      "name": "NODE_ENV",
+      "value": "staging"
+    },
+    {
+      "name": "PORT",
+      "value": "80"
+    }
+  ],
+  "ulimits": [
+    {
+      "name": "nofile",
+      "softLimit": 65536,
+      "hardLimit": 65536
+    }
+  ],
+  "mountPoints": [],
+  "memory": 512,
+  "secrets": [
+    {
+      "name": "PASSWORD",
+      "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/aws-terraform-test/database/password/v2-csBXKx"
+    }
+  ],
+  "volumesFrom": []
+}

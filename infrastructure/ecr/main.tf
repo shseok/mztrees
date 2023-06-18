@@ -61,8 +61,10 @@ variable "db_password" {
   default     = "mzpw"
 }
 
+# Error: creating Secrets Manager Secret: InvalidRequestException: You can't create this secret because a secret with this name is already scheduled for deletion.
+# TODO: name = "/${var.prefix}/database/password/v{'number'}"
 resource "aws_secretsmanager_secret" "database_password_secret" {
-  name = "/${var.prefix}/database/password"
+  name = "/${var.prefix}/database/password/v2"
 }
 
 resource "aws_secretsmanager_secret_version" "database_password_secret_version" {
@@ -340,10 +342,11 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "ecs-autoscale" {
-  role = aws_iam_role.ecs-autoscale-role.id
+  role       = aws_iam_role.ecs-autoscale-role.id
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole"
 }
 
+// TODO: required > depends_on = [aws_ecs_service.staging]
 resource "aws_appautoscaling_target" "ecs_target" {
   max_capacity       = 2
   min_capacity       = 1
@@ -351,6 +354,7 @@ resource "aws_appautoscaling_target" "ecs_target" {
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
   role_arn           = aws_iam_role.ecs-autoscale-role.arn
+  depends_on         = [aws_ecs_service.staging]
 }
 
 resource "aws_appautoscaling_policy" "ecs_target_cpu" {
