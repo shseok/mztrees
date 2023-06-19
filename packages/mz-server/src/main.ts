@@ -27,10 +27,10 @@ if (process.env.NODE_ENV === 'development') {
     allowedHeaders: ['Cookie', 'Content-Type'],
     // exposedHeaders: ['Set-Cookie'],
   })
-}
 
-await server.register(fastifySwagger, swaggerConfig)
-await server.register(fastifySwaggerUi, swaggerUiConfig)
+  await server.register(fastifySwagger, swaggerConfig)
+  await server.register(fastifySwaggerUi, swaggerUiConfig)
+}
 
 server.register(fastifyCookie)
 
