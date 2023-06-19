@@ -14,11 +14,42 @@ provider "aws" {
   region  = "ap-northeast-2"
 }
 
+data "http" "myip" {
+  url = "http://ipv4.icanhazip.com"
+}
+
+resource "aws_security_group" "postgresql" {
+  name        = "postgresql-security-group"
+  description = "allow inbound access from current ip"
+
+  ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["${chomp(data.http.myip.response_body)}/32"]
+  }
+}
+
+
+data "aws_vpc" "default" {
+  default = true
+}
+
+data "aws_security_group" "selected" {
+  vpc_id = data.aws_vpc.default.id
+
+  filter {
+    name   = "group-name"
+    values = ["default"]
+  }
+}
+
 resource "aws_instance" "app_server" {
-  ami           = "ami-0c9c942bd7bf113a2"
-  instance_type = "t3a.micro"
-  key_name      = "mz" # role in matching for later ssh access.
-  user_data     = file("scripts/init_postgresql.sh")
+  ami                    = "ami-0c9c942bd7bf113a2"
+  instance_type          = "t3a.micro"
+  key_name               = "mz" # role in matching for later ssh access.
+  user_data              = file("scripts/init_postgresql.sh")
+  vpc_security_group_ids = [aws_security_group.postgresql.id, data.aws_security_group.selected.id]
 
   tags = {
     Name = "MZ PostgreSQL"

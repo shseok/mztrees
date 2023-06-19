@@ -17,6 +17,7 @@ docker exec -it postgresql-db-1 bin/bash
 
 ```bash
 su - postgres
+// ubuntu: sudo su - postgres
 psql
 
 ```

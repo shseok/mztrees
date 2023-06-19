@@ -69,7 +69,7 @@ server.register(routes)
 
 const start = async () => {
   try {
-    await server.listen({ port: 4000 })
+    await server.listen({ port: 8080, host: '0.0.0.0' })
   } catch (err) {
     server.log.error(err)
   }
