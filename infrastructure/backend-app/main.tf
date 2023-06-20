@@ -76,7 +76,7 @@ variable "algolia_admin_key" {
 # Error: creating Secrets Manager Secret: InvalidRequestException: You can't create this secret because a secret with this name is already scheduled for deletion.
 # TODO: name = "/${var.prefix}/database/password/v{'number'}"
 resource "aws_secretsmanager_secret" "database_url" {
-  name = "/${var.prefix}/database_url"
+  name = "/${var.prefix}/database_url/v2"
 }
 
 resource "aws_secretsmanager_secret_version" "database_url_version" {
@@ -86,7 +86,7 @@ resource "aws_secretsmanager_secret_version" "database_url_version" {
 
 
 resource "aws_secretsmanager_secret" "jwt_secret" {
-  name = "/${var.prefix}/jwt_secret"
+  name = "/${var.prefix}/jwt_secret/v2"
 }
 
 resource "aws_secretsmanager_secret_version" "jwt_secret_version" {
@@ -95,7 +95,7 @@ resource "aws_secretsmanager_secret_version" "jwt_secret_version" {
 }
 
 resource "aws_secretsmanager_secret" "algolia_admin_key" {
-  name = "/${var.prefix}/algolia_admin_key"
+  name = "/${var.prefix}/algolia_admin_key/v2"
 }
 
 resource "aws_secretsmanager_secret_version" "algolia_admin_key_version" {
@@ -138,8 +138,11 @@ data "aws_vpc" "default" {
   default = true
 }
 
-data "aws_subnet_ids" "default" {
-  vpc_id = data.aws_vpc.default.id
+data "aws_subnets" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
 }
 
 data "aws_caller_identity" "current" {}
@@ -150,6 +153,15 @@ output "account_id" {
 
 output "instance_dns_name" {
   value = aws_lb.staging.dns_name
+}
+
+data "aws_security_group" "selected" {
+  vpc_id = data.aws_vpc.default.id
+
+  filter {
+    name   = "group-name"
+    values = ["default"]
+  }
 }
 
 resource "aws_security_group" "lb" {
@@ -193,7 +205,7 @@ resource "aws_security_group" "ecs_tasks" {
 
 resource "aws_lb" "staging" {
   name               = "${var.prefix}-alb"
-  subnets            = data.aws_subnet_ids.default.ids
+  subnets            = data.aws_subnets.default.ids
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb.id]
 
@@ -307,16 +319,16 @@ resource "aws_ecs_task_definition" "service" {
   requires_compatibilities = ["FARGATE"]
   container_definitions = templatefile("./app.json.tpl", {
     aws_ecr_repository = aws_ecr_repository.repo.repository_url
+    database_url       = aws_secretsmanager_secret.database_url.arn
+    jwt_secret         = aws_secretsmanager_secret.jwt_secret.arn
+    algolia_admin_key  = aws_secretsmanager_secret.algolia_admin_key.arn
+    algolia_app_id     = "${var.algolia_app_id}"
     tag                = "latest"
     app_port           = 80
     region             = "${var.region}"
     prefix             = "${var.prefix}"
     envvars            = var.envvars
     port               = var.port
-    database_url       = aws_secretsmanager_secret.database_url.arn
-    jwt_secret         = aws_secretsmanager_secret.jwt_secret.arn
-    algolia_admin_key  = aws_secretsmanager_secret.algolia_admin_key.arn
-    algolia_app_id     = "${var.algolia_app_id}"
   })
   tags = {
     Environment = "staging"
@@ -332,8 +344,8 @@ resource "aws_ecs_service" "staging" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    security_groups  = [aws_security_group.ecs_tasks.id]
-    subnets          = data.aws_subnet_ids.default.ids
+    security_groups  = [aws_security_group.ecs_tasks.id, data.aws_security_group.selected.id]
+    subnets          = data.aws_subnets.default.ids
     assign_public_ip = true
   }
 
