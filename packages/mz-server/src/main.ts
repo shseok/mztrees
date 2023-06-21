@@ -14,7 +14,7 @@ const server: FastifyInstance = Fastify({
   logger: true,
 })
 
-// console.log(process.env.NODE_ENV)
+console.log(process.env.NODE_ENV)
 
 if (process.env.NODE_ENV === 'development') {
   server.register(cors, {
@@ -69,7 +69,7 @@ server.register(routes)
 
 const start = async () => {
   try {
-    await server.listen({ port: 8080, host: '0.0.0.0' })
+    await server.listen({ port: 4000, host: '0.0.0.0' })
   } catch (err) {
     server.log.error(err)
   }
