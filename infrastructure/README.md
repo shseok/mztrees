@@ -16,7 +16,9 @@
 
   - ecs
     - service
-      - cluster
+      - cluster(backend-app)
+      - cluster(ranking-worker)
+        - cloudewatch
       - task_definition
   - ecr
     - repo
