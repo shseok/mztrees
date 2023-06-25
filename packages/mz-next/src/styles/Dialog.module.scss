@@ -1,0 +1,31 @@
+@import "_var";
+
+.styled_modal {
+  width: 375px;
+  max-width: calc(100vw - 32px);
+  padding: 24px 16px 24px 16px;
+}
+
+.title {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.5;
+  color: $gray5;
+}
+
+.description {
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: $gray5;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 8px;
+}

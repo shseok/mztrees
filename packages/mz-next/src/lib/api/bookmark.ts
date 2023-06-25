@@ -1,28 +1,35 @@
-import { client } from '../client'
-import { type GetBookmarksResult, type Bookmark } from './types'
+import { fetchClient } from "../client";
+import { Bookmark, GetBookmarksResult } from "./types";
 
-export async function createBookmark(itemId: number, controller?: AbortController) {
-  const response = await client.post<Bookmark>(
-    '/api/bookmarks',
+export const createBookmark = async (
+  itemId: number,
+  contorller?: AbortController
+) => {
+  const response = await fetchClient.post<Bookmark>(
+    "/api/bookmark/",
     { itemId },
     {
-      signal: controller?.signal,
+      signal: contorller?.signal,
+    }
+  );
+  return response;
+};
+
+export const deleteBookmark = async (
+  itemId: number,
+  contorller?: AbortController
+) => {
+  await fetchClient.delete(`/api/bookmark/`, {
+    params: {
+      itemId,
     },
-  )
-  return response.data
-}
+    signal: contorller?.signal,
+  });
+};
 
-export async function deleteBookmark(itemId: number, controller?: AbortController) {
-  const response = await client.delete('/api/bookmarks', {
-    signal: controller?.signal,
-    params: { itemId },
-  })
-  return response.data
-}
-
-export async function getBookmarks(cursor?: number) {
-  const response = await client.get<GetBookmarksResult>('/api/bookmarks', {
+export const getBookmarks = async (cursor?: number) => {
+  const response = await fetchClient.get<GetBookmarksResult>("/api/bookmark/", {
     params: { cursor },
-  })
-  return response.data
-}
+  });
+  return response;
+};

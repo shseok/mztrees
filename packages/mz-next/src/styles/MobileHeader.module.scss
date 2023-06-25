@@ -1,0 +1,43 @@
+@import "_var", "_module";
+
+.block {
+  position: relative;
+  min-height: 56px;
+  border-bottom: 1px solid $gray0;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @include mobile {
+    display: none;
+  }
+}
+
+.title {
+  color: $gray5;
+  font-size: 18px;
+  font-weight: 600;
+
+  svg {
+    display: block;
+    width: 84px;
+    height: 17px;
+  }
+}
+
+.header_side {
+  position: absolute;
+  &.left {
+    left: 8px;
+  }
+
+  &.right {
+    right: 8px;
+  }
+  top: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

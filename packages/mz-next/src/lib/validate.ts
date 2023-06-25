@@ -1,15 +1,9 @@
+const USER_REGEX = /^[a-z0-9]{5,20}$/;
+const PWD_REGEX = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,20}$/;
+const LINK_REGEX = /^(http|https):\/\/[^ "]+$/;
+
 export const validate = {
-  username: (text: string) => /^[a-z0-9]{5,20}$/.test(text),
-  password: (text: string) => {
-    const passwordRules = [/[a-zA-Z]/, /[0-9]/, /[^A-Za-z0-9]/]
-    if (text.length < 8) return false
-    const counter = passwordRules.reduce((acc, current) => {
-      if (current.test(text)) {
-        acc += 1
-      }
-      return acc
-    }, 0)
-    return counter > 1
-  },
-  link: (text: string) => /^(http|https):\/\/[^ "]+$/.test(text),
-}
+  username: (text: string) => USER_REGEX.test(text),
+  password: (text: string) => PWD_REGEX.test(text),
+  link: (text: string) => LINK_REGEX.test(text),
+};

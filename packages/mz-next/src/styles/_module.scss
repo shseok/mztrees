@@ -1,0 +1,43 @@
+@import "./var";
+
+@mixin mobile {
+  @media (min-width: #{$mobile}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: #{$tablet}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$desktop}) {
+    @content;
+  }
+}
+
+@mixin widescreen {
+  @media (min-width: #{$widescreen}) {
+    @content;
+  }
+}
+@mixin xwidescreen {
+  @media (min-width: #{$xwidescreen}) {
+    @content;
+  }
+}
+
+@mixin layout {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: scroll;
+}
+
+// @mixin tablet {
+//   @media (min-width: #{$tablet}) and (max-width: #{$desktop - 1px}) {
+//     @content;
+//   }
+// }

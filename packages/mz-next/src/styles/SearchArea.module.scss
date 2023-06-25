@@ -1,0 +1,32 @@
+@import "_var";
+.block {
+}
+
+.search_input_wrapper {
+  display: flex;
+  align-items: center;
+  width: 200px;
+  height: 36px;
+  padding: 0 8px;
+  // border: 1px solid ${colors.gray1};
+  border-radius: 5px;
+  margin-right: 8px;
+  background: #f0f0f0;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    color: $gray4;
+    flex-shrink: 0;
+    margin-right: 8px;
+  }
+
+  input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    padding: 0;
+    min-width: 0;
+  }
+}

@@ -1,25 +1,25 @@
-import axios from 'axios'
+// import axios from 'axios';
 
-export function isNextError(e: any): e is NextAppError {
-  return e?.statusCode !== undefined && e?.message !== undefined && e?.name !== undefined
-}
+// interface NextAppError {
+//   name: 'Forbidden' | 'BadRequest' | 'Unknown';
+//   message: string;
+//   statusCode: number;
+// }
 
-interface NextAppError {
-  name: 'Forbidden' | 'BadRequest' | 'Unknown'
-  statusCode: number
-  message: string
-}
+// export function isNextError(e: any): e is NextAppError {
+//   return e?.name !== undefined && e?.message !== undefined && e?.statusCode !== undefined;
+// }
 
-export function extractNextError(e: any): NextAppError {
-  if (axios.isAxiosError(e)) {
-    const data = e.response?.data
-    if (isNextError(data)) {
-      return data
-    }
-  }
-  return {
-    statusCode: 500,
-    message: 'Unknown error',
-    name: 'Unknown',
-  }
-}
+// export function extractNextError(error: any): NextAppError {
+//   if (axios.isAxiosError(error)) {
+//     const data = error.response?.data;
+//     if (isNextError(data)) {
+//       return data;
+//     }
+//   }
+//   return {
+//     name: 'Unknown',
+//     message: 'Unknown error',
+//     statusCode: 500,
+//   };
+// }

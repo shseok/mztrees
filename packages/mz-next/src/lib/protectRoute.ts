@@ -1,56 +1,35 @@
-import { type AuthResult, getMyAccount, refreshToken } from './api/auth'
-import { applyAuth } from './applyAuth'
-import { setClientCookie } from './client'
-import { extractError } from './error'
+// import { useEffect } from 'react';
+// import usePrivateAxios from '~/hooks/usePrivateAxios';
+// import { extractNextError } from './nextError';
+// import { setUser } from '~/hooks/stores/userStore';
+// import { User } from './api/types';
 
-let getMyAccountPromise: Promise<{
-  me: AuthResult
-  headers: Headers | null
-}> | null = null
+// export function getMyAccountWithRefresh() {
+//   console.log('refresh');
+//   const privateAxios = usePrivateAxios();
+//   // TODO: Remove with SSR
+//   const set = setUser();
+//   useEffect(() => {
+//     let isMounted = true; // ?
+//     const controller = new AbortController();
 
-async function getMyAccountWithRefresh() {
-  try {
-    const me = await getMyAccount()
-    return {
-      me,
-      headers: null,
-    }
-  } catch (e) {
-    const error = extractError(e)
-    if (error.name === 'UnauthorizedError' && error.payload?.isExpiredToken) {
-      try {
-        const { tokens, headers } = await refreshToken()
-        setClientCookie(`access_token=${tokens.accessToken}`)
-        const me = await getMyAccount()
-        return {
-          me,
-          headers,
-        }
-      } catch (innerError) {
-        throw e
-      }
-    }
-    throw e
-  }
-}
+//     const getUsers = async () => {
+//       try {
+//         const response = await privateAxios.get<User>('/api/me', {
+//           signal: controller.signal,
+//         });
+//         isMounted && set(response.data);
+//       } catch (e) {
+//         const extractedError = extractNextError(e);
+//         console.log(extractedError);
+//         return null;
+//       }
+//     };
 
-export async function getMemoMyAccount() {
-  if (!getMyAccountPromise) {
-    getMyAccountPromise = getMyAccountWithRefresh()
-  }
-  return getMyAccountPromise
-}
+//     getUsers();
 
-export const checkIsLoggedIn = async (request: Request) => {
-  const applied = applyAuth(request)
-  if (!applied) return false
-
-  try {
-    await getMemoMyAccount()
-  } catch (e) {
-    console.log({ e })
-    return false
-  }
-
-  return true
-}
+//     return () => {
+//       isMounted = false;
+//       controller.abort();
+//     };
+//   }, []);

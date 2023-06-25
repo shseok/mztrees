@@ -1,0 +1,31 @@
+@import "_var";
+
+.input {
+  height: 48px;
+  border-radius: 4px;
+  border: 1px solid $gray2;
+  outline: none;
+  font-size: 16px;
+  padding: 0 16px;
+  color: $gray5;
+  transition: all 0.25s ease-in-out;
+
+  &:focus {
+    border: 1px solid $primary;
+  }
+
+  &::placeholder {
+    color: $gray2;
+  }
+
+  &:disabled {
+    background-color: $gray0;
+    color: $gray3;
+  }
+}
+
+.message {
+  color: red;
+  font-size: 14px;
+  margin-top: 8px;
+}

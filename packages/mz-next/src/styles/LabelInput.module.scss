@@ -1,0 +1,18 @@
+@import "_var";
+.block {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 16px;
+  color: $gray4;
+  font-weight: 600;
+  line-height: 1.5;
+  margin-bottom: 8px;
+  transition: all 0.25s ease-in-out;
+
+  &.focused {
+    color: $primary;
+  }
+}

@@ -1,0 +1,51 @@
+@import "_var", "_module";
+
+.block {
+  min-height: 64px;
+  border-bottom: 1px solid $gray0;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  display: none;
+
+  @include mobile {
+    display: flex;
+  }
+
+  @include widescreen {
+    padding: 0;
+  }
+
+  width: 100%;
+  max-width: 1150px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.home_link {
+  display: block;
+  color: inherit;
+}
+
+.logo_container {
+  display: block;
+  height: 17px;
+  width: auto;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.addon {
+  display: flex;
+  align-items: center;
+}
+
+.buttons {
+  display: flex;
+  gap: 8px;
+}

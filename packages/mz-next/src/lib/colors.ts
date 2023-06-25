@@ -5,8 +5,7 @@ export const colors = {
   gray3: '#4B4B4B',
   gray4: '#2E2E2E',
   gray5: '#121212',
-  primary: '#FFA000',
+  primary: '#017A59',
   secondary: '#FFF4E0',
-  secondaryButtonText: '#e15500',
-  destructive: 'red',
-}
+  destructive: '#fc684e',
+};
