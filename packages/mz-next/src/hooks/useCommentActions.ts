@@ -1,10 +1,10 @@
-import { useCallback } from 'react';
-import { useItemId } from './useItemId';
-import { deleteComment, editComment } from '~/lib/api/items';
-import { useQueryClient } from '@tanstack/react-query';
-import { useCommentsQuery } from './query/useCommentsQuery';
-import { Comment } from '~/lib/api/types';
-import { produce } from 'immer';
+import { useCallback } from "react";
+import { useItemId } from "./useItemId";
+import { deleteComment, editComment } from "@/lib/api/items";
+import { useQueryClient } from "@tanstack/react-query";
+import { useCommentsQuery } from "./query/useCommentsQuery";
+import { Comment } from "@/lib/api/types";
+import { produce } from "immer";
 
 // TODO: mutation으로 변경 후 폴더로 이동하기
 export const useCommentActions = () => {
@@ -16,27 +16,32 @@ export const useCommentActions = () => {
       if (!itemId) return;
       await deleteComment({ itemId, commentId });
       const queryKey = useCommentsQuery.extractKey(itemId);
-      queryClient.setQueryData(queryKey, (prevComments: Comment[] | undefined) => {
-        if (!prevComments) return;
-        // return prevComments.filter((comment: Comment) => comment.id !== commentId);
-        return produce(prevComments, (draft) => {
-          const rootComment = draft.find((comment) => comment.id === commentId);
-          if (rootComment) {
-            rootComment.isDeleted = true;
-          }
-          // childComment
-          draft.forEach((comment) => {
-            if (comment.subcomments) {
-              comment.subcomments = comment.subcomments.filter(
-                (subcomment) => subcomment.id !== commentId,
-              );
+      queryClient.setQueryData(
+        queryKey,
+        (prevComments: Comment[] | undefined) => {
+          if (!prevComments) return;
+          // return prevComments.filter((comment: Comment) => comment.id !== commentId);
+          return produce(prevComments, (draft) => {
+            const rootComment = draft.find(
+              (comment) => comment.id === commentId
+            );
+            if (rootComment) {
+              rootComment.isDeleted = true;
             }
+            // childComment
+            draft.forEach((comment) => {
+              if (comment.subcomments) {
+                comment.subcomments = comment.subcomments.filter(
+                  (subcomment) => subcomment.id !== commentId
+                );
+              }
+            });
           });
-        });
-      });
+        }
+      );
       // queryClient.invalidateQueries(useCommentsQuery.extractKey(itemId));
     },
-    [itemId, queryClient],
+    [itemId, queryClient]
   );
   // TODO: commentInputOverlay에서 mutation으로 쓰고 있으므로 추후 변경 후 대체하기
   const useEditComment = useCallback(
@@ -44,30 +49,35 @@ export const useCommentActions = () => {
       if (!itemId) return;
       await editComment({ itemId, commentId, text });
       const queryKey = useCommentsQuery.extractKey(itemId);
-      queryClient.setQueryData(queryKey, (prevComments: Comment[] | undefined) => {
-        if (!prevComments) return;
-        // return prevComments.filter((comment: Comment) => comment.id !== commentId);
-        return produce(prevComments, (draft) => {
-          const rootComment = draft.find((comment) => comment.id === commentId);
-          if (rootComment) {
-            rootComment.text = text;
-          }
-          // childComment
-          draft.forEach((comment) => {
-            if (comment.subcomments) {
-              const childComment = comment.subcomments.find(
-                (subcomment) => subcomment.id === commentId,
-              );
-              if (childComment) {
-                childComment.text = text;
-              }
+      queryClient.setQueryData(
+        queryKey,
+        (prevComments: Comment[] | undefined) => {
+          if (!prevComments) return;
+          // return prevComments.filter((comment: Comment) => comment.id !== commentId);
+          return produce(prevComments, (draft) => {
+            const rootComment = draft.find(
+              (comment) => comment.id === commentId
+            );
+            if (rootComment) {
+              rootComment.text = text;
             }
+            // childComment
+            draft.forEach((comment) => {
+              if (comment.subcomments) {
+                const childComment = comment.subcomments.find(
+                  (subcomment) => subcomment.id === commentId
+                );
+                if (childComment) {
+                  childComment.text = text;
+                }
+              }
+            });
           });
-        });
-      });
+        }
+      );
       // queryClient.invalidateQueries(useCommentsQuery.extractKey(itemId));
     },
-    [itemId, queryClient],
+    [itemId, queryClient]
   );
   return { useDeleteComment, useEditComment };
 };

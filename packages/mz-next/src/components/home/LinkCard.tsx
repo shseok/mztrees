@@ -83,7 +83,7 @@ const LinkCard = ({ item }: Props) => {
         {thumbnail ? <Image src={thumbnail} alt={title} /> : null}
         <div className={styles.publisher}>
           {favicon ? (
-            <img src={favicon} alt="favicon" />
+            <Image src={favicon} alt="favicon" />
           ) : (
             <Image src={globe} alt="globe" />
           )}

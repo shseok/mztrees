@@ -1,6 +1,6 @@
-import { likeComment, unlikeComment } from '~/lib/api/items';
-import { useCommentLikeSetter } from './stores/useCommentLikesStore';
-import { useCallback } from 'react';
+import { likeComment, unlikeComment } from "@/lib/api/items";
+import { useCommentLikeSetter } from "./stores/useCommentLikesStore";
+import { useCallback } from "react";
 
 export function useCommentLike() {
   // const { mutate: like, isLoading: isLikeLoading } = useMutation(likeComment);
@@ -19,7 +19,7 @@ export function useCommentLike() {
       });
       likeComment({ itemId, commentId });
     },
-    [set],
+    [set]
   );
   const unlike = useCallback(
     ({ itemId, commentId, prevLikes }: UnlikeParams) => {
@@ -29,7 +29,7 @@ export function useCommentLike() {
       });
       unlikeComment({ itemId, commentId });
     },
-    [set],
+    [set]
   );
 
   return { like, unlike };

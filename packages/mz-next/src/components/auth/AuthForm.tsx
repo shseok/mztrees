@@ -107,7 +107,7 @@ const AuthForm = ({ mode }: Props) => {
       }
     }
     return undefined;
-  }, [mode, errors, errors.password]);
+  }, [mode, errors]);
 
   // if (error) {
   //   return <h1>{error.message}</h1>;

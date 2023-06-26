@@ -1,6 +1,6 @@
-import { useCallback, useRef } from 'react';
-import { useItemOverrideSetter } from './stores/ItemOverrideStore';
-import { createBookmark, deleteBookmark } from '~/lib/api/bookmark';
+import { useCallback, useRef } from "react";
+import { useItemOverrideSetter } from "./stores/ItemOverrideStore";
+import { createBookmark, deleteBookmark } from "@/lib/api/bookmark";
 
 export const useBookmarkManager = () => {
   const set = useItemOverrideSetter();
@@ -23,7 +23,7 @@ export const useBookmarkManager = () => {
         console.error(e);
       }
     },
-    [set, abortControllers],
+    [set, abortControllers]
   );
 
   const unbookmark = useCallback(
@@ -43,7 +43,7 @@ export const useBookmarkManager = () => {
         console.error(e);
       }
     },
-    [set, abortControllers],
+    [set, abortControllers]
   );
   return { bookmark, unbookmark };
 };
