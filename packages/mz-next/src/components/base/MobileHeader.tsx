@@ -1,9 +1,10 @@
 import React from "react";
-import logioIcon from "../../../public/assets/logo.svg";
+import logo from "../../../public/assets/logo.svg";
 import Image from "next/image";
 import styles from "@/styles/MobileHeader.module.scss";
-import classNames from "classnames";
+import classNames from "classnames/bind";
 
+const cx = classNames.bind(styles);
 export interface HeaderProps {
   title?: React.ReactNode;
   headerLeft?: React.ReactNode;
@@ -12,23 +13,19 @@ export interface HeaderProps {
 }
 
 const MobileHeader = ({
-  title = <Image src={logioIcon} alt="logo" />,
+  title = <Image src={logo} alt="logo" width={84} height={17} />,
   headerLeft,
   headerRight,
   className,
 }: HeaderProps) => {
   return (
-    <header className={styles.block}>
+    <header className={cx("block", className)}>
       {headerLeft && (
-        <div className={classNames(styles.header_side, "left")}>
-          {headerLeft}
-        </div>
+        <div className={cx("header_side", "left")}>{headerLeft}</div>
       )}
       <div className={styles.title}>{title}</div>
       {headerRight && (
-        <div className={classNames(styles.header_side, "right")}>
-          {headerRight}
-        </div>
+        <div className={cx("header_side", "right")}>{headerRight}</div>
       )}
     </header>
   );

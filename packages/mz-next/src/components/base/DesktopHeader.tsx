@@ -14,7 +14,12 @@ const DesktopHeader = () => {
   return (
     <header className={styles.block}>
       <Link href="/">
-        <Image src={logo} alt="logo" className={styles.logo_container} />
+        <Image
+          src={logo}
+          alt="logo"
+          className={styles.logo_container}
+          height={17}
+        />
       </Link>
       <div className={styles.content}>
         <div className={styles.addon}></div>

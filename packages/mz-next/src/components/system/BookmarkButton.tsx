@@ -1,10 +1,11 @@
-import React from 'react';
-import { Size } from '~/lib/api/types';
-import IconToggleButton from './IconToggleButton';
-import { ReactComponent as BookmarkOutline } from '~/assets/bookmark-outline.svg';
-import { ReactComponent as BookmarkFill } from '~/assets/bookmark-fill.svg';
-import { colors } from '~/lib/colors';
-import styled from 'styled-components';
+import React from "react";
+import { Size } from "@/lib/api/types";
+import IconToggleButton from "./IconToggleButton";
+
+import Image from "next/image";
+import bookmarkOutline from "../../../public/assets/bookmark-outline.svg";
+import bookmarkFill from "../../../public/assets/bookmark-fill.svg";
+import styles from "@/styles/CommentItem.module.scss";
 
 interface Props {
   onClick: () => void;
@@ -12,24 +13,30 @@ interface Props {
   size?: Size;
 }
 
-const BookmarkButton = ({ onClick, isBookmarked, size = 'medium' }: Props) => {
+const BookmarkButton = ({ onClick, isBookmarked, size = "medium" }: Props) => {
   return (
     <IconToggleButton
       onClick={onClick}
       isActive={isBookmarked}
       size={size}
-      activeIcon={<StyledLikeFill key='fill' />}
-      inactiveIcon={<StyledLikeOutline key='outline' />}
+      activeIcon={
+        <Image
+          className={styles.styled_like_fill}
+          src={bookmarkFill}
+          alt="bookmark"
+          key="fill"
+        />
+      }
+      inactiveIcon={
+        <Image
+          className={styles.styled_like_outline}
+          src={bookmarkOutline}
+          alt="bookmark"
+          key="outline"
+        />
+      }
     />
   );
 };
-
-const StyledLikeOutline = styled(BookmarkOutline)`
-  color: ${colors.gray3};
-`;
-
-const StyledLikeFill = styled(BookmarkFill)`
-  color: ${colors.primary};
-`;
 
 export default BookmarkButton;

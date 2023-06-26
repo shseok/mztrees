@@ -1,7 +1,10 @@
-import React from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import styled, { css } from 'styled-components';
-import { Size } from '~/lib/api/types';
+import React from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Size } from "@/lib/api/types";
+import styles from "@/styles/CommentItem.module.scss";
+import classNames from "classnames/bind";
+
+const cx = classNames.bind(styles);
 
 interface Props {
   onClick: () => void;
@@ -11,58 +14,40 @@ interface Props {
   inactiveIcon: React.ReactNode;
 }
 
-const IconToggleButton = ({ onClick, isActive, size, activeIcon, inactiveIcon }: Props) => {
+const IconToggleButton = ({
+  onClick,
+  isActive,
+  size,
+  activeIcon,
+  inactiveIcon,
+}: Props) => {
   return (
-    <StyledButton onClick={onClick} size={size}>
+    <button className={cx("styled_button", size)} onClick={onClick}>
       <AnimatePresence initial={false}>
         {isActive ? (
-          <SvgWrapper key='fill' initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}>
+          <motion.div
+            className={styles.svg_wrapper}
+            key="fill"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0 }}
+          >
             {activeIcon}
-          </SvgWrapper>
+          </motion.div>
         ) : (
-          <SvgWrapper
-            key='outline'
+          <motion.div
+            className={styles.svg_wrapper}
+            key="outline"
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
           >
             {inactiveIcon}
-          </SvgWrapper>
+          </motion.div>
         )}
       </AnimatePresence>
-    </StyledButton>
+    </button>
   );
 };
-
-const StyledButton = styled.button<{ size: Size }>`
-  display: flex;
-  ${(props) =>
-    props.size === 'medium' &&
-    css`
-      width: 24px;
-      height: 24px;
-    `}
-
-  ${(props) =>
-    props.size === 'small' &&
-    css`
-      width: 16px;
-      height: 16px;
-    `}
-
-  svg {
-    width: 100%;
-    height: 100%;
-  }
-  position: relative;
-`;
-
-const SvgWrapper = styled(motion.div)`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-`;
 
 export default IconToggleButton;

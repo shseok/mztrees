@@ -1,8 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
-import CommentInput from './CommentInput';
-import { Comment } from '~/lib/api/types';
-import CommentItem from './CommentItem';
+import React from "react";
+import CommentInput from "./CommentInput";
+import { Comment } from "@/lib/api/types";
+import CommentItem from "./CommentItem";
+import styles from "@/styles/CommentList.module.scss";
 
 interface Props {
   comments: Comment[];
@@ -10,34 +10,16 @@ interface Props {
 
 const CommentList = ({ comments }: Props) => {
   return (
-    <Block>
-      <CommentTitle>댓글 {comments.length}개</CommentTitle>
+    <div className={styles.block}>
+      <h3 className={styles.comment_title}>댓글 {comments.length}개</h3>
       <CommentInput />
-      <List>
+      <div className={styles.list}>
         {comments.map((comment) => (
           <CommentItem comment={comment} key={comment.id} />
         ))}
-      </List>
-    </Block>
+      </div>
+    </div>
   );
 };
 
-const Block = styled.div`
-  padding: 16px;
-`;
-
-const CommentTitle = styled.h3`
-  margin-top: 0;
-  margin-bottom: 16px;
-  font-size: 16px;
-  font-weight: 600;
-`;
-
-const List = styled.div`
-  margin-top: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: 100%;
-`;
 export default CommentList;

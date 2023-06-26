@@ -1,25 +1,40 @@
-// import axios from 'axios';
+import { FetchError } from "./client";
 
-// interface NextAppError {
-//   name: 'Forbidden' | 'BadRequest' | 'Unknown';
-//   message: string;
-//   statusCode: number;
-// }
+export function isNextError(e: any): e is NextAppError {
+  return (
+    e?.statusCode !== undefined &&
+    e?.message !== undefined &&
+    e?.name !== undefined
+  );
+}
 
-// export function isNextError(e: any): e is NextAppError {
-//   return e?.name !== undefined && e?.message !== undefined && e?.statusCode !== undefined;
-// }
+export interface NextAppError {
+  name:
+    | "Unauthorized"
+    | "Forbidden"
+    | "UserExists"
+    | "WrongCredentials"
+    | "Unknown"
+    | "BadRequest"
+    | "RefreshFailure"
+    | "NotFound"
+    | "InvalidURL"
+    | "AlreadyExists";
+  statusCode: number;
+  message: string;
+  payload?: any;
+}
 
-// export function extractNextError(error: any): NextAppError {
-//   if (axios.isAxiosError(error)) {
-//     const data = error.response?.data;
-//     if (isNextError(data)) {
-//       return data;
-//     }
-//   }
-//   return {
-//     name: 'Unknown',
-//     message: 'Unknown error',
-//     statusCode: 500,
-//   };
-// }
+export function extractNextError(e: any): NextAppError {
+  if (e instanceof FetchError) {
+    const data = e.data;
+    if (isNextError(data)) {
+      return data;
+    }
+  }
+  return {
+    statusCode: 500,
+    message: "Unknown error",
+    name: "Unknown",
+  };
+}

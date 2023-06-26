@@ -34,6 +34,7 @@
   flex-direction: column;
   flex: 1;
   overflow: scroll;
+  overflow-x: hidden;
 }
 
 // @mixin tablet {

@@ -10,7 +10,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { validate } from "@/lib/validate";
 import logioIcon from "../../../public/assets/logo.svg";
 import Image from "next/image";
-import { setUser } from "@/hooks/stores/userStore";
+import { useSetUser } from "@/hooks/stores/userStore";
 import styles from "@/styles/AuthForm.module.scss";
 import Link from "next/link";
 
@@ -63,7 +63,7 @@ const AuthForm = ({ mode }: Props) => {
 
   // const [error, setError] = useState<AppError | undefined>();
   const [error, setError] = useState<any | undefined>();
-  const set = setUser();
+  const set = useSetUser();
   const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
     try {
       if (mode === "register") {
@@ -95,7 +95,7 @@ const AuthForm = ({ mode }: Props) => {
       return "이미 존재하는 계정입니다.";
     }
     return undefined;
-  }, [error, errors.username]);
+  }, [mode, error, errors.username]);
 
   const passwordErrorMessage = useMemo(() => {
     if (mode !== "register") return undefined;
@@ -107,7 +107,7 @@ const AuthForm = ({ mode }: Props) => {
       }
     }
     return undefined;
-  }, [errors.password]);
+  }, [mode, errors, errors.password]);
 
   // if (error) {
   //   return <h1>{error.message}</h1>;
@@ -123,7 +123,7 @@ const AuthForm = ({ mode }: Props) => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <Link className={styles.desktop_logo} href="/">
-        <Image src={logioIcon} alt="logo" />
+        <Image src={logioIcon} alt="logo" height={32} />
       </Link>
       <div className={styles.input_group}>
         <LabelInput
@@ -158,7 +158,7 @@ const AuthForm = ({ mode }: Props) => {
         {/*{errors.password && <span>This field is required</span>}*/}
       </div>
 
-      <div className={styles.action_box}>
+      <div className={styles.actions_box}>
         {error?.name === "AuthenticationError" && (
           <div className={styles.action_error_message}>
             잘못된 계정 정보입니다.

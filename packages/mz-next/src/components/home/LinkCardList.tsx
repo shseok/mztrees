@@ -1,8 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Item } from '~/lib/api/types';
-import LinkCard from './LinkCard';
-import { media } from '~/lib/media';
+import React from "react";
+import { Item } from "@/lib/api/types";
+import LinkCard from "./LinkCard";
+import styles from "@/styles/LinkCardList.module.scss";
 
 interface Props {
   items: Item[];
@@ -10,29 +9,12 @@ interface Props {
 
 const LinkCardList = ({ items }: Props) => {
   return (
-    <List>
+    <div className={styles.list}>
       {items.map((item) => (
         <LinkCard key={item.id} item={item} />
       ))}
-    </List>
+    </div>
   );
 };
-
-const List = styled.div`
-  // display: flex;
-  // flex-direction: column;
-  // grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  ${media.tablet} {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  ${media.widescreen} {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  gap: 32px;
-  row-gap: 48px;
-`;
 
 export default LinkCardList;

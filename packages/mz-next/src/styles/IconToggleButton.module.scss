@@ -1,0 +1,25 @@
+.styled_button {
+  display: flex;
+  &.medium {
+    width: 24px;
+    height: 24px;
+  }
+
+  &.small {
+    width: 16px;
+    height: 16px;
+  }
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+  position: relative;
+}
+
+.svg_wrapper {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}

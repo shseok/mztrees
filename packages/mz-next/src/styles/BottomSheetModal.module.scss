@@ -1,0 +1,19 @@
+.sheet {
+  position: fixed;
+  background: white;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  padding: 16px;
+  color: $gray5;
+}

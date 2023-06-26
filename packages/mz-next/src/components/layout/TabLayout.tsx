@@ -4,7 +4,9 @@ import MobileHeader from "@/components/base/MobileHeader";
 import Footer from "@/components/base/Footer";
 import styles from "@/styles/TabLayout.module.scss";
 import DesktopHeader from "../base/DesktopHeader";
-import classNames from "classnames";
+import classNames from "classnames/bind";
+
+const cx = classNames.bind(styles);
 
 interface Props {
   className?: string;
@@ -13,7 +15,6 @@ interface Props {
 }
 
 const TabLayout = ({ className, children, header }: Props) => {
-  const divClass = classNames(styles.tabLayout, className);
   return (
     <FullHeightPage>
       {header ?? (
@@ -22,7 +23,7 @@ const TabLayout = ({ className, children, header }: Props) => {
           <DesktopHeader />
         </>
       )}
-      <div className={divClass}>{children}</div>
+      <div className={cx("tabLayout", className)}>{children}</div>
       <Footer />
     </FullHeightPage>
   );

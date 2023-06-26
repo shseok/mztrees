@@ -1,0 +1,50 @@
+@import "_var";
+
+.block {
+  margin: 0 auto;
+  margin-bottom: 14px;
+}
+
+.mode_container {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  position: relative;
+}
+
+.mode {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // width: ${ModeWidth}px;
+  width: 75px;
+  margin-bottom: 4px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: $gray3;
+
+  &.active {
+    color: $primary;
+    font-weight: 600;
+  }
+
+  svg {
+    display: block;
+    width: 24px;
+    height: 24px;
+    margin-right: 7px;
+  }
+}
+
+.indicator {
+  width: 75px;
+  height: 3px;
+  border-radius: 1px;
+  background: $primary;
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+
+  transition: left 0.2s ease-in-out;
+}

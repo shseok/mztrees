@@ -1,26 +1,11 @@
-import React from 'react';
-import styled, { keyframes } from 'styled-components';
-import { ReactComponent as Spinner } from '~/assets/spinner.svg';
-import { colors } from '~/lib/colors';
+import React from "react";
+import Image from "next/image";
+import spinner from "../../../public/assets/spinner.svg";
+import styles from "@/styles/LoadingIndicator.module.scss";
 
 const LoadingIndicator = () => {
-  return <StyledSpinner />;
+  return (
+    <Image className={styles.styled_spinner} src={spinner} alt="Loading..." />
+  );
 };
-
-const spin = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
-const StyledSpinner = styled(Spinner)`
-  width: 24px;
-  height: 24px;
-  animation: ${spin} 0.5s linear infinite;
-  color: ${colors.gray3};
-`;
-
 export default LoadingIndicator;

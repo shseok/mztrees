@@ -28,7 +28,7 @@ const SearchArea = () => {
         onClick={onClick}
         onKeyUp={onKeyUp}
       >
-        <Image src={search} alt="search" />
+        <Image src={search} alt="search" width={20} height={20} />
         <input ref={ref} type="text" defaultValue={initialKeyword} />
       </div>
     </div>

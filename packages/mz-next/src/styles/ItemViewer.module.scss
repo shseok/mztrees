@@ -1,0 +1,91 @@
+@import "_var";
+
+.content {
+  padding: 16px;
+  border-bottom: 1px solid $gray0;
+  a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  a {
+    display: block;
+  }
+}
+
+.thumbnail {
+  width: 100%;
+  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 0px;
+}
+
+.publisher {
+  display: flex;
+  align-items: center;
+  line-height: 1.5;
+  color: $gray3;
+  font-size: 14px;
+  margin-bottom: 4px;
+  img,
+  svg {
+    display: block;
+    margin-right: 8px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.title {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: $gray5;
+}
+
+.body {
+  line-height: 1.5;
+  font-size: 14px;
+  margin-top: 0;
+  margin-bottom: 32px;
+  color: $gray4;
+  white-space: pre-wrap;
+  word-break: keep-all;
+}
+
+.likescount {
+  font-size: 12px;
+  font-weight: 600;
+  color: $gray4;
+  line-height: 1.5;
+  height: 26px;
+  display: flex;
+  align-items: top;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user_info {
+  color: $gray2;
+  font-size: 14px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.icon_container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

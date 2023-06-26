@@ -1,8 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import { SearchItemResult } from '~/lib/api/types';
-import SearchResultCard from './SearchResultCard';
-import { media } from '~/lib/media';
+import React from "react";
+import { SearchItemResult } from "@/lib/api/types";
+import SearchResultCard from "./SearchResultCard";
+import styles from "@/styles/SearchResultCardList.module.scss";
 
 interface Props {
   items: SearchItemResult[];
@@ -10,23 +9,11 @@ interface Props {
 
 const SearchResultCardList = ({ items }: Props) => {
   return (
-    <Block>
+    <div className={styles.block}>
       {items.map((item) => (
         <SearchResultCard item={item} key={item.id} />
       ))}
-    </Block>
+    </div>
   );
 };
-
-const Block = styled.div`
-  padding: 24px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-
-  ${media.desktop} {
-    width: 768px;
-    margin: 0 auto;
-  }
-`;
 export default SearchResultCardList;

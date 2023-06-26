@@ -21,7 +21,7 @@ const StyledButton = styled.button`
   justify-content: center;
   padding: 8px;
   margin-right: -8px;
-  colors: ${colors.gray5};
+  color: ${colors.gray5};
   svg {
     display: block;
     width: 24px;

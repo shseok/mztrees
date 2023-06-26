@@ -1,0 +1,13 @@
+@import "_module";
+
+.block {
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  @include desktop {
+    width: 768px;
+    margin: 0 auto;
+  }
+}

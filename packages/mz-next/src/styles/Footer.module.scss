@@ -1,0 +1,11 @@
+@import "_var", "_module";
+
+.styled_footer {
+  min-height: 56px;
+  border-top: 1px solid $gray0;
+  display: flex;
+
+  @include mobile {
+    display: none;
+  }
+}

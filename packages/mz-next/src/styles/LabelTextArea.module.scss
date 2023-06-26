@@ -1,0 +1,43 @@
+@import "_var";
+
+.block {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 16px;
+  line-height: 1.5;
+  color: $gray4;
+  font-weight: 600;
+  margin-bottom: 8px;
+  transition: all 0.25s ease-in-out;
+
+  &.focused {
+    color: $primary;
+  }
+}
+
+.styled_text_area {
+  border: 1px solid $gray2;
+  border-radius: 4px;
+  outline: none;
+  font-size: 16px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  line-height: 1.5;
+  padding-left: 16px;
+  padding-right: 16px;
+  color: $gray5;
+  transition: all 0.25s ease-in-out;
+  &:focus {
+    border: 1px solid $primary;
+  }
+  &::placeholder {
+    color: $gray2;
+  }
+  &:disabled {
+    background: $gray0;
+    color: $gray3;
+  }
+}

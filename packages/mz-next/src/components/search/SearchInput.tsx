@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import { colors } from '~/lib/colors';
-import { ReactComponent as Search } from '~/assets/search.svg';
+import React from "react";
+import Image from "next/image";
+import search from "../../../public/assets/search.svg";
+import styles from "@/styles/SearchInput.module.scss";
 
 interface Props {
   value: string;
@@ -10,42 +10,18 @@ interface Props {
 
 const SearchInput = ({ value, onChangeText }: Props) => {
   return (
-    <Block>
-      <Search />
+    <div className={styles.block}>
+      <Image src={search} alt="search" />
       <input
-        placeholder='검색어를 입력해주세요.'
-        type='text'
+        placeholder="검색어를 입력해주세요."
+        type="text"
         value={value}
         onChange={(e) => {
           onChangeText(e.target.value);
         }}
       />
-    </Block>
+    </div>
   );
 };
-
-const Block = styled.div`
-  width: 100%;
-  height: 32px;
-  background: ${colors.gray0};
-  display: flex;
-  align-items: center;
-  padding: 0 8px;
-  border-radius: 4px;
-
-  svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  input {
-    flex: 1;
-    margin-left: 8px;
-    background: none;
-    border: none;
-    outline: none;
-    padding: 0;
-  }
-`;
 
 export default SearchInput;

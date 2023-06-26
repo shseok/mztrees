@@ -2,8 +2,9 @@ import React from "react";
 import Overlay from "./Overlay";
 import { AnimatePresence, motion } from "framer-motion";
 import styles from "@/styles/Modal.module.scss";
-import classNames from "classnames";
+import classNames from "classnames/bind";
 
+const cx = classNames.bind(styles);
 interface Props {
   visible: boolean;
   className?: string;
@@ -22,7 +23,7 @@ const Modal = ({ visible, children, className }: Props) => {
               animate={{ y: "0vh", opacity: 1 }}
               exit={{ y: "30vh", opacity: 0 }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className={classNames(className, styles.block)}
+              className={cx(className, "block")}
             >
               {children}
             </motion.div>

@@ -1,10 +1,11 @@
-import React from 'react';
-import styled from 'styled-components';
-import { colors } from '~/lib/colors';
-import { ReactComponent as LikeOutline } from '~/assets/like-outline.svg';
-import { ReactComponent as LikeFill } from '~/assets/like-fill.svg';
-import IconToggleButton from './IconToggleButton';
-import { Size } from '~/lib/api/types';
+import React from "react";
+
+import Image from "next/image";
+import likeOutline from "../../../public/assets/like-outline.svg";
+import likeFill from "../../../public/assets/like-fill.svg";
+import styles from "@/styles/LikeButton.module.scss";
+import IconToggleButton from "./IconToggleButton";
+import { Size } from "@/lib/api/types";
 
 interface Props {
   onClick: () => void;
@@ -12,24 +13,30 @@ interface Props {
   size?: Size;
 }
 
-const LikeButton = ({ onClick, isLiked, size = 'medium' }: Props) => {
+const LikeButton = ({ onClick, isLiked, size = "medium" }: Props) => {
   return (
     <IconToggleButton
       onClick={onClick}
       isActive={isLiked}
       size={size}
-      activeIcon={<StyledLikeFill key='fill' />}
-      inactiveIcon={<StyledLikeOutline key='outline' />}
+      activeIcon={
+        <Image
+          className={styles.styled_like_fill}
+          src={likeFill}
+          alt="like"
+          key="fill"
+        />
+      }
+      inactiveIcon={
+        <Image
+          className={styles.styled_like_outline}
+          src={likeOutline}
+          alt="like"
+          key="outline"
+        />
+      }
     />
   );
 };
-
-const StyledLikeOutline = styled(LikeOutline)`
-  color: ${colors.gray3};
-`;
-
-const StyledLikeFill = styled(LikeFill)`
-  color: ${colors.primary};
-`;
 
 export default LikeButton;

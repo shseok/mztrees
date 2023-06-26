@@ -1,9 +1,8 @@
-import React from 'react';
-import Overlay from './Overlay';
-import styled from 'styled-components';
-import { AnimatePresence, motion } from 'framer-motion';
-import { BottomSheetModalItem } from '~/hooks/stores/useBottomSheetModalStore';
-import { colors } from '~/lib/colors';
+import React from "react";
+import Overlay from "./Overlay";
+import { AnimatePresence, motion } from "framer-motion";
+import { BottomSheetModalItem } from "@/hooks/stores/useBottomSheetModalStore";
+import styles from "@/styles/BottomSheetModal.module.scss";
 
 interface Props {
   visible: boolean;
@@ -17,43 +16,28 @@ const BottomSheetModal = ({ visible, items, onClose }: Props) => {
       <Overlay visible={visible} onClose={onClose} />
       <AnimatePresence>
         {visible && (
-          <Sheet
-            initial={{ y: '100%' }}
-            animate={{ y: '0%' }}
-            exit={{ y: '100%' }}
+          <motion.div
+            className={styles.sheet}
+            initial={{ y: "100%" }}
+            animate={{ y: "0%" }}
+            exit={{ y: "100%" }}
             transition={{ dumping: 0 }}
           >
-            <Items onClick={onClose}>
+            <div className={styles.items} onClick={onClose}>
               {items.map((item) => (
-                <Item key={item.name} onClick={item.onClick}>
+                <div
+                  className={styles.item}
+                  key={item.name}
+                  onClick={item.onClick}
+                >
                   {item.name}
-                </Item>
+                </div>
               ))}
-            </Items>
-          </Sheet>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </>
   );
 };
-
-const Sheet = styled(motion.div)`
-  position: fixed;
-  background: white;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-`;
-
-const Items = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Item = styled.div`
-  padding: 16px;
-  color: ${colors.gray5};
-`;
 export default BottomSheetModal;

@@ -35,7 +35,7 @@ export const useOpenLoginDialog = () => {
         mode: "confirm",
       });
     },
-    [router, open]
+    [pathname, router, open]
   );
 
   return openLoginDialog;
@@ -59,7 +59,7 @@ export const useOpenLogoutDialog = () => {
         cancelText: "취소",
       });
     },
-    [open]
+    [logout, open]
   );
 
   return openLoginDialog;

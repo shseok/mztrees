@@ -1,0 +1,34 @@
+@import "_var", "_module";
+
+.styled_form {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+
+  @include mobile {
+    width: 478px;
+    align-self: center;
+    justify-content: center;
+  }
+
+  h3 {
+    color: $gray5;
+    line-height: 1.5;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 16px;
+  }
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  @include mobile {
+    flex: initial;
+    padding-bottom: 24px;
+  }
+}

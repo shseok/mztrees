@@ -1,7 +1,9 @@
 import Link from "next/link";
 import React from "react";
-import classNames from "classnames";
+import classNames from "classnames/bind";
 import styles from "@/styles/QuestionLink.module.scss";
+
+const cx = classNames.bind(styles);
 
 interface Props {
   question: string;
@@ -12,7 +14,7 @@ interface Props {
 
 const QuestionLink = ({ question, name, to, className }: Props) => {
   return (
-    <div className={classNames(className, styles.block)}>
+    <div className={cx(className, "block")}>
       {question} <Link href={to}>{name}</Link>
     </div>
   );

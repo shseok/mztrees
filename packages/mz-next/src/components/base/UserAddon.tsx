@@ -36,7 +36,7 @@ const UserAddon = ({ username }: Props) => {
       </Link>
       <Button size="small" variant="tertiary" onClick={onOpen} ref={buttonRef}>
         <span className={styles.block}>
-          <Image src={user} alt="user" />
+          <Image src={user} alt="user" width={20} height={20} />
           {username}
         </span>
       </Button>

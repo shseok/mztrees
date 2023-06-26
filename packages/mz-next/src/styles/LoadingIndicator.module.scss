@@ -1,0 +1,17 @@
+@import "_var";
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.styled_spinner {
+  width: 24px;
+  height: 24px;
+  animation: spin 0.5s linear infinite;
+  color: $gray3;
+}
