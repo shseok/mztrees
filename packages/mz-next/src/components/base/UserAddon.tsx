@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import Image from "next/image";
-import user from "../../../public/assets/user.svg";
 import Button from "../system/Button";
 import UserMenu from "./UserMenu";
 import styles from "@/styles/UserAddon.module.scss";
 import Link from "next/link";
+import { User } from "@/utils/vectors";
 
 interface Props {
   username: string;
@@ -36,7 +35,7 @@ const UserAddon = ({ username }: Props) => {
       </Link>
       <Button size="small" variant="tertiary" onClick={onOpen} ref={buttonRef}>
         <span className={styles.block}>
-          <Image src={user} alt="user" width={20} height={20} />
+          <User />
           {username}
         </span>
       </Button>

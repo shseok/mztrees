@@ -1,9 +1,6 @@
 import React, { useMemo } from "react";
 import { ListMode } from "@/lib/api/types";
-import Image from "next/image";
-import calendar from "../../../public/assets/calendar.svg";
-import trendingOutline from "../../../public/assets/trendingOutline.svg";
-import time from "../../../public/assets/time.svg";
+import { Trending, Time, Calendar } from "@/utils/vectors";
 import classNames from "classnames/bind";
 import styles from "@/styles/ListModeSelector.module.scss";
 
@@ -22,17 +19,17 @@ const ListModeSelector = ({ mode, onSelectMode }: Props) => {
       [
         {
           mode: "trending",
-          icon: <Image src={trendingOutline} alt="trending" />,
+          icon: <Trending />,
           name: "트렌딩",
         },
         {
           mode: "recent",
-          icon: <Image src={calendar} alt="recent" />,
+          icon: <Time />,
           name: "최근",
         },
         {
           mode: "past",
-          icon: <Image src={time} alt="past" />,
+          icon: <Calendar />,
           name: "과거",
         },
       ] as const,

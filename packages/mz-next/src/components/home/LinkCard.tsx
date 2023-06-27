@@ -1,6 +1,6 @@
 import { Item } from "@/lib/api/types";
 import Image from "next/image";
-import globe from "../../../public/assets/globe.svg";
+import { Globe } from "@/utils/vectors";
 import { useDateDistance } from "@/hooks/useDateDistance";
 import { useLikeManager } from "@/hooks/useLikeManager";
 import LikeButton from "../system/LikeButton";
@@ -80,12 +80,18 @@ const LinkCard = ({ item }: Props) => {
   return (
     <div className={styles.block}>
       <Link href={link} className={styles.styled_link}>
-        {thumbnail ? <Image src={thumbnail} alt={title} /> : null}
+        <div className={styles.thumbnail}>
+          {thumbnail ? (
+            <Image src={thumbnail} alt={title} fill priority sizes="100vw" />
+          ) : null}
+        </div>
         <div className={styles.publisher}>
           {favicon ? (
-            <Image src={favicon} alt="favicon" />
+            <div className={styles.favicon}>
+              <Image src={favicon} alt="favicon" fill />
+            </div>
           ) : (
-            <Image src={globe} alt="globe" />
+            <Globe />
           )}
           {author ? `${author} · ` : ""}
           {name}
@@ -108,7 +114,7 @@ const LinkCard = ({ item }: Props) => {
         </AnimatePresence>
       </div>
       <div className={styles.footer}>
-        <div className={styles.icon_container}>
+        <div className={styles.icon_buttons}>
           <LikeButton onClick={toggleLike} isLiked={isLiked} />
           <BookmarkButton
             onClick={toggleBookmark}

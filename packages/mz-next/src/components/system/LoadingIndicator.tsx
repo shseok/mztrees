@@ -1,11 +1,7 @@
-import React from "react";
-import Image from "next/image";
-import spinner from "../../../public/assets/spinner.svg";
 import styles from "@/styles/LoadingIndicator.module.scss";
+import { Spinner } from "@/utils/vectors";
 
 const LoadingIndicator = () => {
-  return (
-    <Image className={styles.styled_spinner} src={spinner} alt="Loading..." />
-  );
+  return <Spinner className={styles.styled_spinner} />;
 };
 export default LoadingIndicator;

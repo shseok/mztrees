@@ -1,7 +1,7 @@
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Size } from "@/lib/api/types";
-import styles from "@/styles/CommentItem.module.scss";
+import styles from "@/styles/IconToggleButton.module.scss";
 import classNames from "classnames/bind";
 
 const cx = classNames.bind(styles);
@@ -22,7 +22,7 @@ const IconToggleButton = ({
   inactiveIcon,
 }: Props) => {
   return (
-    <button className={cx("styled_button", size)} onClick={onClick}>
+    <button className={cx(styles.styled_button, size)} onClick={onClick}>
       <AnimatePresence initial={false}>
         {isActive ? (
           <motion.div

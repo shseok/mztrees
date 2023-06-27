@@ -1,6 +1,5 @@
 import React from "react";
-import logo from "../../../public/assets/logo.svg";
-import Image from "next/image";
+import { Logo } from "@/utils/vectors";
 import styles from "@/styles/MobileHeader.module.scss";
 import classNames from "classnames/bind";
 
@@ -13,7 +12,7 @@ export interface HeaderProps {
 }
 
 const MobileHeader = ({
-  title = <Image src={logo} alt="logo" width={84} height={17} />,
+  title = <Logo />,
   headerLeft,
   headerRight,
   className,

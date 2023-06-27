@@ -36,7 +36,7 @@ export const fetchClient = {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        Cookie: _cookie,
+        // Cookie: _cookie,
         ...(config?.headers ?? {}),
       },
     });
@@ -53,7 +53,7 @@ export const fetchClient = {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        Cookie: _cookie,
+        // Cookie: _cookie,
         ...(config.headers ?? {}),
       },
       signal: config.signal,
@@ -72,7 +72,7 @@ export const fetchClient = {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        Cookie: _cookie,
+        // Cookie: _cookie,
         ...(config.headers ?? {}),
       },
       signal: config.signal,
@@ -88,7 +88,7 @@ export const fetchClient = {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        Cookie: _cookie,
+        // Cookie: _cookie,
         ...(config.headers ?? {}),
       },
       signal: config.signal,

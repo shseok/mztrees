@@ -11,9 +11,8 @@ import { useItemId } from "@/hooks/useItemId";
 import { useBottomSheetModalStore } from "@/hooks/stores/useBottomSheetModalStore";
 import { useCommentActions } from "@/hooks/useCommentActions";
 import { useUser } from "@/hooks/stores/userStore";
-import Image from "next/image";
-import morevert from "../../../public/assets/more-vert.svg";
 import styles from "@/styles/CommentItem.module.scss";
+import { MoreVert } from "@/utils/vectors";
 
 /**@todo isSubcomment 굳이 필요한가에 대한 고민 */
 interface Props {
@@ -108,7 +107,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
         </div>
         {isMyComment && (
           <button className={styles.more_button} onClick={onClickMore}>
-            <Image src={morevert} alt="more-vert" />
+            <MoreVert />
           </button>
         )}
       </div>

@@ -20,8 +20,8 @@ export async function getItems({
   startDate,
   endDate,
 }: {
-  cursor?: number;
   mode: ListMode;
+  cursor?: number;
   startDate?: string;
   endDate?: string;
 }) {

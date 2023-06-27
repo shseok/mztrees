@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, useCallback, useContext, useState } from "react";
 import Dialog from "@/components/system/Dialog";
 

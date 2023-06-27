@@ -1,8 +1,4 @@
-import React from "react";
-
-import Image from "next/image";
-import likeOutline from "../../../public/assets/like-outline.svg";
-import likeFill from "../../../public/assets/like-fill.svg";
+import { LikeFill, LikeOutline } from "@/utils/vectors";
 import styles from "@/styles/LikeButton.module.scss";
 import IconToggleButton from "./IconToggleButton";
 import { Size } from "@/lib/api/types";
@@ -19,22 +15,8 @@ const LikeButton = ({ onClick, isLiked, size = "medium" }: Props) => {
       onClick={onClick}
       isActive={isLiked}
       size={size}
-      activeIcon={
-        <Image
-          className={styles.styled_like_fill}
-          src={likeFill}
-          alt="like"
-          key="fill"
-        />
-      }
-      inactiveIcon={
-        <Image
-          className={styles.styled_like_outline}
-          src={likeOutline}
-          alt="like"
-          key="outline"
-        />
-      }
+      activeIcon={<LikeFill className={styles.styled_like_fill} />}
+      inactiveIcon={<LikeOutline className={styles.styled_like_outline} />}
     />
   );
 };

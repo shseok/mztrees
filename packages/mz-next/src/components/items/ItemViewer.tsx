@@ -1,7 +1,6 @@
 import React from "react";
 import { Item } from "@/lib/api/types";
 import Image from "next/image";
-import globe from "../../../public/assets/globe.svg";
 import { AnimatePresence, motion } from "framer-motion";
 import LikeButton from "../system/LikeButton";
 import { useLikeManager } from "@/hooks/useLikeManager";
@@ -14,6 +13,7 @@ import { useBookmarkManager } from "@/hooks/useBookmarkManager";
 import { useSetUser, useUser } from "@/hooks/stores/userStore";
 import Link from "next/link";
 import styles from "@/styles/ItemViewer.module.scss";
+import { Globe } from "@/utils/vectors";
 
 interface Props {
   item: Item;
@@ -75,16 +75,18 @@ const ItemViewer = ({ item }: Props) => {
     <div className={styles.block}>
       {thumbnail ? (
         <Link href={item.link}>
-          <Image src={thumbnail} alt="thumbnail" className={styles.thumbnail} />
+          <div className={styles.thumbnail}>
+            <Image src={thumbnail} fill alt="thumbnail" />
+          </div>
         </Link>
       ) : null}
       <div className={styles.content}>
         <Link href={item.link}>
           <div className={styles.publisher}>
             {favicon ? (
-              <Image src={favicon} alt="favicon" />
+              <Image src={favicon} alt="favicon" width={16} height={16} />
             ) : (
-              <Image src={globe} alt="globe" />
+              <Globe />
             )}
             {author ? `${author} · ` : ""}
             {name}

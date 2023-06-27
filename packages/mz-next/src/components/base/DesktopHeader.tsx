@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "../../../public/assets/logo.svg";
 import Image from "next/image";
 import styles from "@/styles/DesktopHeader.module.scss";
 import Button from "../system/Button";
@@ -7,19 +6,15 @@ import SearchArea from "./SearchArea";
 import UserAddon from "./UserAddon";
 import { useUser } from "@/hooks/stores/userStore";
 import Link from "next/link";
+import { Logo } from "@/utils/vectors";
 
 const DesktopHeader = () => {
   const currentUser = useUser();
 
   return (
     <header className={styles.block}>
-      <Link href="/">
-        <Image
-          src={logo}
-          alt="logo"
-          className={styles.logo_container}
-          height={17}
-        />
+      <Link className={styles.home_link} href="/">
+        <Logo className={styles.styled_logo} />
       </Link>
       <div className={styles.content}>
         <div className={styles.addon}></div>

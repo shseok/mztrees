@@ -1,9 +1,9 @@
 import React from "react";
 import { SearchItemResult } from "@/lib/api/types";
 import Image from "next/image";
-import globe from "../../../public/assets/globe.svg";
 import styles from "@/styles/SearchResultCard.module.scss";
 import DOMPurify from "dompurify";
+import { Globe } from "@/utils/vectors";
 
 interface Props {
   item: SearchItemResult;
@@ -23,9 +23,11 @@ const SearchResultCard = ({ item }: Props) => {
     <div className={styles.block}>
       <div className={styles.publisher}>
         {favicon ? (
-          <Image src={favicon} alt="favicon" />
+          <div className={styles.favicon}>
+            <Image src={favicon} alt="favicon" fill />
+          </div>
         ) : (
-          <Image src={globe} alt="globe" />
+          <Globe />
         )}
         {author ? `${author} · ` : ""}
         {name}

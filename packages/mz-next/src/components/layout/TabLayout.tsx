@@ -23,7 +23,7 @@ const TabLayout = ({ className, children, header }: Props) => {
           <DesktopHeader />
         </>
       )}
-      <div className={cx("tabLayout", className)}>{children}</div>
+      <div className={cx("content", className)}>{children}</div>
       <Footer />
     </FullHeightPage>
   );

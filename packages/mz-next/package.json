@@ -30,6 +30,7 @@
     "zustand": "^4.3.8"
   },
   "devDependencies": {
+    "@svgr/webpack": "^8.0.1",
     "@tanstack/react-query-devtools": "^4.29.15",
     "@types/dompurify": "^3.0.2",
     "@types/qs": "^6.9.7",

@@ -19,6 +19,7 @@ console.log(process.env.NODE_ENV)
 if (process.env.NODE_ENV === 'development') {
   server.register(cors, {
     origin: [
+      'http://localhost:3000',
       'http://localhost:4000',
       'http://127.0.0.1:5173',
       'http://localhost:5173',

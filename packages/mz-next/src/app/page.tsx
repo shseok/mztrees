@@ -1,12 +1,26 @@
-import Link from "next/link";
+import getQueryClient from "@/utils/getQueryClient";
+import Hydrate from "@/utils/hydrate.client";
+import { dehydrate } from "@tanstack/react-query";
+import ListUsers from "./list-user";
+import { getItems } from "@/lib/api/items";
+import Home from "./home";
 
-export default function Home() {
+export default async function Hydation({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  console.log(searchParams);
+  const queryClient = getQueryClient();
+  await queryClient.prefetchQuery(["items"], () =>
+    getItems({ mode: "trending" })
+  );
+  const dehydratedState = dehydrate(queryClient);
+
   return (
-    <main>
-      <h1>Home!</h1>
-      <Link href="/login">login</Link>
-      <br />
-      <Link href="/register">register</Link>
-    </main>
+    <Hydrate state={dehydratedState}>
+      {/* <ListUsers /> */}
+      <Home />
+    </Hydrate>
   );
 }

@@ -8,11 +8,10 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { userLogin, userRegister } from "@/lib/api/auth";
 import { useSearchParams, useRouter } from "next/navigation";
 import { validate } from "@/lib/validate";
-import logioIcon from "../../../public/assets/logo.svg";
-import Image from "next/image";
 import { useSetUser } from "@/hooks/stores/userStore";
 import styles from "@/styles/AuthForm.module.scss";
 import Link from "next/link";
+import { Logo } from "@/utils/vectors";
 
 interface Props {
   mode: "login" | "register";
@@ -123,7 +122,7 @@ const AuthForm = ({ mode }: Props) => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <Link className={styles.desktop_logo} href="/">
-        <Image src={logioIcon} alt="logo" height={32} />
+        <Logo />
       </Link>
       <div className={styles.input_group}>
         <LabelInput

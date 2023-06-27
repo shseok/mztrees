@@ -1,7 +1,5 @@
-import React from "react";
-import Image from "next/image";
-import morevert from "../../../public/assets/more-vert.svg";
 import styles from "@/styles/MoreVertButton.module.scss";
+import { MoreVert } from "@/utils/vectors";
 interface Props {
   onClick: () => void;
 }
@@ -9,7 +7,7 @@ interface Props {
 const MoreVertButton = ({ onClick }: Props) => {
   return (
     <button className={styles.styled_button} onClick={onClick}>
-      <Image src={morevert} alt="more-vert" />
+      <MoreVert />
     </button>
   );
 };

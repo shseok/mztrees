@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useRef } from "react";
-import Image from "next/image";
-import search from "../../../public/assets/search.svg";
+import { useRef } from "react";
 import styles from "@/styles/SearchArea.module.scss";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Search } from "@/utils/vectors";
 
 const SearchArea = () => {
   const ref = useRef<HTMLInputElement>(null);
@@ -28,7 +27,7 @@ const SearchArea = () => {
         onClick={onClick}
         onKeyUp={onKeyUp}
       >
-        <Image src={search} alt="search" width={20} height={20} />
+        <Search />
         <input ref={ref} type="text" defaultValue={initialKeyword} />
       </div>
     </div>

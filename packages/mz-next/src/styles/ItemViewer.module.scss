@@ -19,11 +19,15 @@
 }
 
 .thumbnail {
+  position: relative;
   width: 100%;
   height: auto;
   max-height: 80vh;
-  object-fit: contain;
-  border-radius: 0px;
+
+  img {
+    border-radius: 0px;
+    object-fit: contain;
+  }
 }
 
 .publisher {
