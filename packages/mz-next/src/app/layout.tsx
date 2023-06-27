@@ -9,7 +9,7 @@ export const metadata = {
 };
 
 const notoSans = Noto_Sans_KR({
-  weight: ["400", "700"],
+  weight: ["400", "500", "700"],
   subsets: ["latin"],
   display: "swap",
 });
