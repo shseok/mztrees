@@ -1,6 +1,6 @@
 import { Noto_Sans_KR } from "next/font/google";
 import Providers from "@/utils/provider";
-// import "../styles/global.scss";
+import "../styles/global.scss";
 import { DialogProvider } from "@/context/DialogContext";
 
 export const metadata = {
@@ -14,7 +14,7 @@ const notoSans = Noto_Sans_KR({
   display: "swap",
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;

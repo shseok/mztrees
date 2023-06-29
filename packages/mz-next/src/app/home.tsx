@@ -72,10 +72,12 @@ export default async function Home() {
 
   // useInfiniteScroll(observerTargetEl, fetchNextData);
 
-  const { data, isLoading, isFetching, error, status } = useQuery({
-    queryKey: ["items"],
-    queryFn: () => getItems({ mode: "recent" }),
-  });
+  // const { data, isLoading, isFetching, error, status } = useQuery({
+  //   queryKey: ["items"],
+  //   queryFn: () => getItems({ mode: "recent" }),
+  // });
+
+  const data = await getItems({ mode: "recent" });
 
   const onselect = (mode: ListMode) => {
     setSearchParams({ mode });
@@ -108,7 +110,7 @@ export default async function Home() {
       <ListModeSelector mode={mode} onSelectMode={onselect} />
       {mode === "past" && <WeekSelector dateRange={dateRange} />}
       {/* TODO: make loading */}
-      {status === "loading" ? (
+      {/* {status === "loading" ? (
         <div>Loading...</div>
       ) : status === "error" ? (
         // TODO: define error type
@@ -121,7 +123,14 @@ export default async function Home() {
           />
           <div ref={observerTargetEl} />
         </div>
-      )}
+      )} */}
+      <div className={styles.content}>
+        <LinkCardList
+          // items={infiniteData.pages.flatMap((page) => page.list)}
+          items={data.list}
+        />
+        <div ref={observerTargetEl} />
+      </div>
     </TabLayout>
   );
 }

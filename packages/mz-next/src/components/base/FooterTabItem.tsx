@@ -22,7 +22,7 @@ interface Props {
 
 const FooterTabItem = ({ icon, to }: Props) => {
   const pathname = usePathname();
-  console.log(pathname, to);
+  // console.log(pathname, to);
   return (
     <Link
       className={cx("like_item", pathname === to && "active")}

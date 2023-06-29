@@ -75,7 +75,8 @@ const LinkCard = ({ item }: Props) => {
     }
   };
 
-  const link = `/items/${item.id}`;
+  // const link = `/items/${item.id}`;
+  const link = `/`;
 
   return (
     <div className={styles.block}>
