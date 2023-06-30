@@ -76,11 +76,12 @@ const LinkCard = ({ item }: Props) => {
   };
 
   // const link = `/items/${item.id}`;
-  const link = `/`;
+  const link = "/items/[id]";
+  const as = `/items/${item.id}`;
 
   return (
     <div className={styles.block}>
-      <Link href={link} className={styles.styled_link}>
+      <Link href={link} as={as} className={styles.styled_link}>
         <div className={styles.thumbnail}>
           {thumbnail ? (
             <Image src={thumbnail} alt={title} fill priority sizes="100vw" />

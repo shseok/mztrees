@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+
 import { Home, Search, PlusCircle, Bookmark, Setting } from "@/utils/vectors";
 import styles from "@/styles/FooterTabItem.module.scss";
 import classNames from "classnames/bind";

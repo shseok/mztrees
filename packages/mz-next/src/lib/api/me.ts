@@ -5,13 +5,17 @@ export async function getMyAccount(
   accessToken?: string,
   controller?: AbortController
 ) {
-  const response = await fetchClient.get<User>("/api/me", {
-    headers: accessToken
-      ? { Authorization: `Bearer ${accessToken}` }
-      : undefined,
-    signal: controller?.signal,
-  });
-  return response;
+  try {
+    const response = await fetchClient.get<User>("/api/me", {
+      headers: accessToken
+        ? { Authorization: `Bearer ${accessToken}` }
+        : undefined,
+      signal: controller?.signal,
+    });
+    return response;
+  } catch {
+    return null;
+  }
 }
 
 export async function changePassword({

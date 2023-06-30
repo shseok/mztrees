@@ -12,6 +12,7 @@ import { useSetUser } from "@/hooks/stores/userStore";
 import styles from "@/styles/AuthForm.module.scss";
 import Link from "next/link";
 import { Logo } from "@/utils/vectors";
+import { NextAppError, extractNextError } from "@/lib/nextError";
 
 interface Props {
   mode: "login" | "register";
@@ -61,7 +62,7 @@ const AuthForm = ({ mode }: Props) => {
   const searchParams = useSearchParams();
 
   // const [error, setError] = useState<AppError | undefined>();
-  const [error, setError] = useState<any | undefined>();
+  const [error, setError] = useState<NextAppError | undefined>();
   const set = useSetUser();
   const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
     try {
@@ -77,7 +78,7 @@ const AuthForm = ({ mode }: Props) => {
       }
     } catch (e) {
       set(null);
-      // const error = extractError(e);
+      const error = extractNextError(e);
       setError(error);
     }
   };
@@ -90,7 +91,7 @@ const AuthForm = ({ mode }: Props) => {
         return "영문 소문자 또는 숫자를 입력해주세요.";
       }
     }
-    if (error?.name === "UserExistsError") {
+    if (error?.name === "UserExists") {
       return "이미 존재하는 계정입니다.";
     }
     return undefined;
@@ -158,7 +159,7 @@ const AuthForm = ({ mode }: Props) => {
       </div>
 
       <div className={styles.actions_box}>
-        {error?.name === "AuthenticationError" && (
+        {error?.name === "WrongCredentials" && (
           <div className={styles.action_error_message}>
             잘못된 계정 정보입니다.
           </div>

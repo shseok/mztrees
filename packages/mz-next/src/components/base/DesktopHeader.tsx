@@ -1,15 +1,19 @@
-import React from "react";
-import Image from "next/image";
+"use client";
+
+import React, { use } from "react";
 import styles from "@/styles/DesktopHeader.module.scss";
 import Button from "../system/Button";
 import SearchArea from "./SearchArea";
 import UserAddon from "./UserAddon";
-import { useUser } from "@/hooks/stores/userStore";
+// import { useUser } from "@/hooks/stores/userStore";
 import Link from "next/link";
 import { Logo } from "@/utils/vectors";
+import { useUser } from "@/context/userContext";
 
 const DesktopHeader = () => {
+  // const currentUser = useUser();
   const currentUser = useUser();
+  console.log("DesktopHeader", currentUser);
 
   return (
     <header className={styles.block}>

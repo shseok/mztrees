@@ -7,7 +7,7 @@ const Footer = () => {
       <FooterTabItem icon={"home"} to="/" />
       <FooterTabItem icon={"search"} to="/search" />
       <FooterTabItem icon={"plus-circle"} to="/write" />
-      <FooterTabItem icon={"bookmark"} to="/bookmarks" />
+      <FooterTabItem icon={"bookmark"} to="/bookmark" />
       <FooterTabItem icon={"setting"} to="/setting" />
     </div>
   );

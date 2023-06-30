@@ -5,35 +5,38 @@ import ListUsers from "./list-user";
 import { getItems } from "@/lib/api/items";
 import Home from "./home";
 import { cookies } from "next/headers";
+import styles from "@/styles/Home.module.scss";
+import Test from "./test";
+import TabLayout from "@/components/layout/TabLayout";
 import { getMyAccount } from "@/lib/api/me";
-import { useSetUser } from "@/hooks/stores/userStore";
+
+async function fetchData() {
+  const req = await fetch("http://localhost:3000/api/items");
+  const result = req.json();
+  return result;
+}
 
 export default async function Hydation({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  // console.log(searchParams);
-  const queryClient = getQueryClient();
-  await queryClient.prefetchQuery(["items"], () =>
-    getItems({ mode: "trending" })
-  );
-  const dehydratedState = dehydrate(queryClient);
+  console.log("page", searchParams);
   const cookieStore = cookies();
   const ac = cookieStore.get("access_token");
   const re = cookieStore.get("refresh_token");
-  const a = cookieStore.getAll("Set-Cookie");
-  const set = useSetUser();
-  if (ac?.value) {
-    const user = await getMyAccount();
-    if (user) {
-      set(user);
-    }
-  }
+
+  const queryClient = getQueryClient();
+  const dehydratedState = dehydrate(queryClient);
+
+  // await queryClient.prefetchQuery(["items"], () => fetchData());
   return (
-    <Hydrate state={dehydratedState}>
-      <ListUsers />
-      {/* <Home /> */}
-    </Hydrate>
+    <TabLayout className={styles.layout_padding}>
+      <Test />
+    </TabLayout>
+    // <Hydrate state={dehydratedState}>
+    // <ListUsers isUser={!!ac?.value} />
+    //   {/* <Home /> */}
+    // </Hydrate>
   );
 }

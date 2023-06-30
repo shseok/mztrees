@@ -23,7 +23,7 @@ import { getWeekRangeFromDate } from "@/lib/week";
 import useSetSearchParams from "@/hooks/useSetSearchParams";
 
 // export default function Home({searchParams}) {
-export default async function Home() {
+export default function Home() {
   const observerTargetEl = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
   const setSearchParams = useSetSearchParams();
@@ -77,7 +77,7 @@ export default async function Home() {
   //   queryFn: () => getItems({ mode: "recent" }),
   // });
 
-  const data = await getItems({ mode: "recent" });
+  // const data = await getItems({ mode: "recent" });
 
   const onselect = (mode: ListMode) => {
     setSearchParams({ mode });
@@ -125,10 +125,10 @@ export default async function Home() {
         </div>
       )} */}
       <div className={styles.content}>
-        <LinkCardList
+        {/* <LinkCardList
           // items={infiniteData.pages.flatMap((page) => page.list)}
           items={data.list}
-        />
+        /> */}
         <div ref={observerTargetEl} />
       </div>
     </TabLayout>
