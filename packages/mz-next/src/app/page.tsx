@@ -22,9 +22,6 @@ export default async function Hydation({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   console.log("page", searchParams);
-  const cookieStore = cookies();
-  const ac = cookieStore.get("access_token");
-  const re = cookieStore.get("refresh_token");
 
   const queryClient = getQueryClient();
   const dehydratedState = dehydrate(queryClient);

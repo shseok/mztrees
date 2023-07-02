@@ -4,6 +4,7 @@ import "../styles/global.scss";
 import { DialogProvider } from "@/context/DialogContext";
 import { getMyAccount } from "@/lib/api/me";
 import { UserProvider } from "@/context/userContext";
+import { cookies } from "next/headers";
 
 export const metadata = {
   title: "mz",
@@ -23,7 +24,11 @@ export default async function RootLayout({
 }) {
   // 캐시되어있어서 그런가??
   const user = await getMyAccount();
-  console.log("RootLayout", user);
+  const cookieStore = cookies();
+  const ac = cookieStore.get("access_token");
+  const re = cookieStore.get("refresh_token");
+
+  console.log("RootLayout", user, ac, re);
   return (
     <html lang="en">
       <body>
