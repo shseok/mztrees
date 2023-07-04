@@ -78,8 +78,6 @@ export default function Home() {
   //   queryFn: () => getItems({ mode: "recent" }),
   // });
 
-  // const { currentUser } = useUser();
-
   const onselect = (mode: ListMode) => {
     setSearchParams({ mode });
   };

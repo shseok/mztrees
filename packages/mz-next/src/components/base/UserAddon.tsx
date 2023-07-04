@@ -28,11 +28,14 @@ const UserAddon = ({ username }: Props) => {
   };
   return (
     <div className={styles.responsive}>
-      <Link href="/write" style={{ textDecoration: "none" }}>
-        <Button className={styles.write_button} size="small" variant="primary">
-          새 글 작성
-        </Button>
-      </Link>
+      <Button
+        className={styles.write_button}
+        to="/write"
+        size="small"
+        variant="primary"
+      >
+        새 글 작성
+      </Button>
       <Button size="small" variant="tertiary" onClick={onOpen} ref={buttonRef}>
         <span className={styles.block}>
           <User />

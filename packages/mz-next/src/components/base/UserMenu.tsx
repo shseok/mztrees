@@ -6,6 +6,9 @@ import { useOnClickOutside } from "@/hooks/useOnClickOuteside";
 import { useOpenLogoutDialog } from "@/hooks/useOpenLoginDialog";
 import { useRouter } from "next/navigation";
 import styles from "@/styles/UserMenu.module.scss";
+import classNames from "classnames/bind";
+
+const cx = classNames.bind(styles);
 
 interface Props {
   visible: boolean;
@@ -23,6 +26,7 @@ const UserMenu = ({ visible, onClose }: Props) => {
     <AnimatePresence initial={false}>
       {visible && (
         <motion.div
+          className={styles.block}
           onClick={() => {
             onClose();
           }}
@@ -35,7 +39,7 @@ const UserMenu = ({ visible, onClose }: Props) => {
           <div className={styles.triangle} />
           <div className={styles.triangle_border} />
           <div
-            className={(styles.menu_item, "isDeskTopHidden")}
+            className={cx(styles.menu_item, "isDeskTopHidden")}
             onClick={() => router.push("/write")}
           >
             새 글 등록

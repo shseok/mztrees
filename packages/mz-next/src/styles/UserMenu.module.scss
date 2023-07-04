@@ -13,12 +13,6 @@
 }
 
 .menu_item {
-  &.isDeskTopHidden {
-    display: block;
-    @media (min-width: 700px) {
-      display: none;
-    }
-  }
   color: $gray5;
   padding: 16px;
   cursor: pointer;
@@ -26,6 +20,13 @@
   &:hover {
     transition: all 0.125s ease-in;
     background: $gray0;
+  }
+
+  &.isDeskTopHidden {
+    display: block;
+    @media (min-width: 700px) {
+      display: none;
+    }
   }
 }
 
