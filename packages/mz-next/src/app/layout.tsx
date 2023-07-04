@@ -16,19 +16,18 @@ export const metadata = {
 //   subsets: ["latin"],
 //   display: "swap",
 // });
+export const revalidate = 0;
 
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // 캐시되어있어서 그런가??
-  const user = await getMyAccount();
   const cookieStore = cookies();
   const ac = cookieStore.get("access_token");
   const re = cookieStore.get("refresh_token");
-
-  console.log("RootLayout", user, ac, re);
+  const user = await getMyAccount(ac?.value);
+  console.log("RootLayout", user);
   return (
     <html lang="en">
       <body>

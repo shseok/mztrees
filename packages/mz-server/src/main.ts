@@ -65,7 +65,8 @@ server.register(routes)
 
 const start = async () => {
   try {
-    await server.listen({ port: 4000, host: '0.0.0.0' })
+    // await server.listen({ port: 4000, host: '0.0.0.0' }) // nextjs에서 auth에서는 localhost > 다른 요청에서 http://localhost:4000 > BUG
+    await server.listen({ port: 4000 })
   } catch (err) {
     server.log.error(err)
   }

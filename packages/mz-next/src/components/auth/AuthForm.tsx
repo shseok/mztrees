@@ -13,6 +13,7 @@ import styles from "@/styles/AuthForm.module.scss";
 import Link from "next/link";
 import { Logo } from "@/utils/vectors";
 import { NextAppError, extractNextError } from "@/lib/nextError";
+import { useUser } from "@/context/userContext";
 
 interface Props {
   mode: "login" | "register";
@@ -25,7 +26,7 @@ const authDescription = {
     question: "계정이 없으신가요?",
     buttonText: "로그인",
     actionText: "회원가입",
-    actionLink: "/register",
+    actionLink: "/auth/register",
   },
   register: {
     usernamePlaceholder: "5~20자 사이의 영문 소문자 숫자 입력",
@@ -33,7 +34,7 @@ const authDescription = {
     question: "계정이 이미 있으신가요?",
     buttonText: "회원가입",
     actionText: "로그인",
-    actionLink: "/login",
+    actionLink: "/auth/login",
   },
 };
 
@@ -63,7 +64,8 @@ const AuthForm = ({ mode }: Props) => {
 
   // const [error, setError] = useState<AppError | undefined>();
   const [error, setError] = useState<NextAppError | undefined>();
-  const set = useSetUser();
+  // const set = useSetUser();
+  const { setCurrentUser: set } = useUser();
   const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
     try {
       if (mode === "register") {

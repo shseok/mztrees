@@ -1,19 +1,18 @@
 import { fetchClient } from "../client";
+import { extractNextError } from "../nextError";
 import { User } from "./types";
 
-export async function getMyAccount(
-  accessToken?: string,
-  controller?: AbortController
-) {
+export async function getMyAccount(accessToken?: string) {
   try {
     const response = await fetchClient.get<User>("/api/me", {
       headers: accessToken
         ? { Authorization: `Bearer ${accessToken}` }
         : undefined,
-      signal: controller?.signal,
     });
     return response;
-  } catch {
+  } catch (e) {
+    const error = extractNextError(e);
+    console.log(error);
     return null;
   }
 }

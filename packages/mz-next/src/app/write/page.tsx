@@ -1,5 +1,4 @@
-import React from "react";
-
 export default function Write() {
+  console.log("writing");
   return <div>Write</div>;
 }

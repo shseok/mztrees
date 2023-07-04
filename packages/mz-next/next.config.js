@@ -33,6 +33,15 @@ const nextConfig = {
       },
     ],
   },
+  // TODO: config proxy
+  // rewrites: async () => {
+  //   return [
+  //     {
+  //       source: "/api/:path*",
+  //       destination: "http://0.0.0.0:4000/api/:path*",
+  //     },
+  //   ];
+  // },
 };
 
 module.exports = nextConfig;

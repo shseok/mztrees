@@ -1,19 +1,17 @@
 "use client";
 
-import React, { use } from "react";
 import styles from "@/styles/DesktopHeader.module.scss";
 import Button from "../system/Button";
 import SearchArea from "./SearchArea";
 import UserAddon from "./UserAddon";
-// import { useUser } from "@/hooks/stores/userStore";
 import Link from "next/link";
 import { Logo } from "@/utils/vectors";
 import { useUser } from "@/context/userContext";
+// import { useUser } from "@/hooks/stores/userStore";
 
 const DesktopHeader = () => {
+  const { currentUser } = useUser();
   // const currentUser = useUser();
-  const currentUser = useUser();
-  console.log("DesktopHeader", currentUser);
 
   return (
     <header className={styles.block}>
@@ -28,10 +26,10 @@ const DesktopHeader = () => {
             <UserAddon username={currentUser.username} profileImage={""} />
           ) : (
             <div className={styles.buttons}>
-              <Button variant="tertiary" size="small" to="/login">
+              <Button variant="tertiary" size="small" to="/auth/login">
                 로그인
               </Button>
-              <Button size="small" to="/register">
+              <Button size="small" to="/auth/register">
                 회원가입
               </Button>
             </div>
