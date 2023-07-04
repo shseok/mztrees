@@ -1,7 +1,7 @@
 "use client";
 
 import TabLayout from "@/components/layout/TabLayout";
-import styles from "@/styles/Home.module.scss";
+import styles from "@/styles/StyledTabLayout.module.scss";
 
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import React, {
