@@ -1,78 +1,82 @@
-// import { createContext, useContext, useMemo, useState } from 'react';
-// import { AppError } from '@/lib/nextError';
+"use client";
 
-// interface WriteContextState {
-//   form: {
-//     link: string;
-//     title: string;
-//     body: string;
-//   };
-//   error?: AppError;
-// }
+import { createContext, useContext, useMemo, useState } from "react";
+import { NextAppError } from "@/lib/nextError";
 
-// interface WriteContextActions {
-//   change(key: keyof WriteContextState['form'], value: string): void;
-//   reset(): void;
-//   setError(error?: AppError): void;
-// }
+interface WriteContextState {
+  form: {
+    link: string;
+    title: string;
+    body: string;
+  };
+  error?: NextAppError;
+}
 
-// interface WriteContextType {
-//   state: WriteContextState;
-//   actions: WriteContextActions;
-// }
+interface WriteContextActions {
+  change(key: keyof WriteContextState["form"], value: string): void;
+  reset(): void;
+  setError(error?: NextAppError): void;
+}
 
-// const WriteContext = createContext<WriteContextType | null>(null);
+interface WriteContextType {
+  state: WriteContextState;
+  actions: WriteContextActions;
+}
 
-// interface Props {
-//   children: React.ReactNode;
-// }
+const WriteContext = createContext<WriteContextType | null>(null);
 
-// const initialState = {
-//   form: {
-//     link: '',
-//     title: '',
-//     body: '',
-//   },
-//   error: undefined,
-// };
+interface Props {
+  children: React.ReactNode;
+}
 
-// export const WriteProvider = ({ children }: Props) => {
-//   const [state, setState] = useState<WriteContextState>(initialState);
-//   // change > immer를 써도되지만, 일단 킵
-//   const actions: WriteContextActions = useMemo(() => {
-//     return {
-//       change(key, value) {
-//         setState((prev) => ({
-//           ...prev,
-//           form: {
-//             ...prev.form,
-//             [key]: value,
-//           },
-//         }));
-//       },
-//       reset() {
-//         setState(initialState);
-//       },
-//       setError(error) {
-//         setState((prev) => ({
-//           ...prev,
-//           error,
-//         }));
-//       },
-//     };
-//   }, []);
+const initialState = {
+  form: {
+    link: "",
+    title: "",
+    body: "",
+  },
+  error: undefined,
+};
 
-//   const value = useMemo(() => ({ state, actions }), [state, actions]);
+export const WriteProvider = ({ children }: Props) => {
+  const [state, setState] = useState<WriteContextState>(initialState);
+  // TODO: refactoring with immer
+  const actions: WriteContextActions = useMemo(() => {
+    return {
+      change(key, value) {
+        setState((prev) => ({
+          ...prev,
+          form: {
+            ...prev.form,
+            [key]: value,
+          },
+        }));
+      },
+      reset() {
+        setState(initialState);
+      },
+      setError(error) {
+        setState((prev) => ({
+          ...prev,
+          error,
+        }));
+      },
+    };
+  }, []);
 
-//   return <WriteContext.Provider value={value}>{children}</WriteContext.Provider>;
-// };
+  const value = useMemo(() => ({ state, actions }), [state, actions]);
 
-// export const useWriteContext = () => {
-//   const context = useContext(WriteContext);
+  return (
+    <WriteContext.Provider value={value}>{children}</WriteContext.Provider>
+  );
+};
 
-//   if (!context) {
-//     throw new Error('useWriteContext must be used within a WriteProvider');
-//   }
+export const useWriteContext = () => {
+  const context = useContext(WriteContext);
 
-//   return context;
-// };
+  if (!context) {
+    throw new Error("useWriteContext must be used within a WriteProvider");
+  }
+
+  return context;
+};

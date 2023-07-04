@@ -1,5 +1,6 @@
+"use client";
+
 import React, { useRef, useState } from "react";
-import { useUser } from "@/hooks/stores/userStore";
 import Input from "../system/Input";
 import Button from "../system/Button";
 import { useDialog } from "@/context/DialogContext";
@@ -7,9 +8,10 @@ import { useMutation } from "@tanstack/react-query";
 import { changePassword, unregister } from "@/lib/api/me";
 import { extractNextError } from "@/lib/nextError";
 import styles from "@/styles/AccountSetting.module.scss";
+import { useUser } from "@/context/userContext";
 
 const AccountSetting = () => {
-  const user = useUser();
+  const { currentUser } = useUser();
 
   const oldPasswordInputRef = useRef<HTMLInputElement>(null);
   const newPasswordInputRef = useRef<HTMLInputElement>(null);
@@ -92,7 +94,7 @@ const AccountSetting = () => {
     mutate(form);
   };
 
-  if (!user) return null;
+  if (!currentUser) return null;
 
   return (
     <div className={styles.block}>
@@ -100,7 +102,7 @@ const AccountSetting = () => {
         <h1 className={styles.title}>내 계정</h1>
         <div className={styles.section}>
           <h4>아이디</h4>
-          <div className={styles.username}>{user.username} 님</div>
+          <div className={styles.username}>{currentUser.username} 님</div>
         </div>
         <div className={styles.section}>
           <h4>비밀번호</h4>

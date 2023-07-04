@@ -1,0 +1,24 @@
+.group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 16px;
+}
+
+.styeld_label_textarea {
+  flex: 1;
+
+  textarea {
+    flex: 1;
+    resize: none;
+    font-family: inherit;
+  }
+}
+
+.message {
+  color: red;
+  font-size: 14px;
+  margin-top: 8px;
+  text-align: center;
+}

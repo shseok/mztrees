@@ -1,3 +1,5 @@
+"use client";
+
 import React, { forwardRef, useState } from "react";
 import Input, { type Props as InputProps } from "@/components/system/Input";
 import styles from "@/styles/LabelInput.module.scss";

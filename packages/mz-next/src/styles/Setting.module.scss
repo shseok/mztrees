@@ -1,0 +1,32 @@
+@import "_var";
+
+@mixin ListItemStyle {
+  padding: 16px;
+  color: $gray5;
+  background: white;
+  &:active {
+    opacity: 0.7;
+  }
+}
+
+.block {
+  background: $gray0;
+  flex: 1;
+}
+
+.list_wrapper {
+  * + div {
+    border-top: 1px solid $gray0;
+  }
+}
+
+.list_item {
+  @include ListItemStyle;
+}
+
+.list_item_link {
+  cursor: pointer;
+  display: block;
+  text-decoration: none;
+  @include ListItemStyle;
+}
