@@ -3,7 +3,7 @@
 import TabLayout from "@/components/layout/TabLayout";
 import styles from "@/styles/StyledTabLayout.module.scss";
 
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import React, {
   useCallback,
   useEffect,
@@ -21,14 +21,12 @@ import { ListMode } from "@/lib/api/types";
 // import { getMyAccountWithRefresh } from "@/lib/protectRoute";
 import { getWeekRangeFromDate } from "@/lib/week";
 import useSetSearchParams from "@/hooks/useSetSearchParams";
-import { useUser } from "@/context/userContext";
 
 // export default function Home({searchParams}) {
 export default function Home() {
   const observerTargetEl = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
   const setSearchParams = useSetSearchParams();
-  // console.log(searchParams);
   const [mode, setMode] = useState<ListMode>(
     (searchParams.get("mode") as ListMode | null) ?? "trending"
   );
@@ -40,61 +38,59 @@ export default function Home() {
     startDate && endDate ? [startDate, endDate] : defaultDateRange
   );
 
-  // const {
-  //   status,
-  //   data: infiniteData,
-  //   error,
-  //   fetchNextPage,
-  //   hasNextPage,
-  // } = useInfiniteQuery(
-  //   ["Items", mode, mode === "past" ? dateRange : undefined].filter(
-  //     (item) => !!item
-  //   ),
-  //   ({ pageParam = undefined }) =>
-  //     getItems({
-  //       mode,
-  //       cursor: pageParam,
-  //       ...(mode === "past"
-  //         ? { startDate: dateRange[0], endDate: dateRange[1] }
-  //         : {}),
-  //     }),
-  //   {
-  //     getNextPageParam: (lastPage) => {
-  //       if (!lastPage.pageInfo.hasNextPage) return undefined;
-  //       return lastPage.pageInfo.endCursor;
-  //     },
-  //   }
-  // );
+  const {
+    status,
+    data: infiniteData,
+    error,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery(
+    ["Items", mode, mode === "past" ? dateRange : undefined].filter(
+      (item) => !!item
+    ),
+    ({ pageParam = undefined }) =>
+      getItems({
+        mode,
+        cursor: pageParam,
+        ...(mode === "past"
+          ? { startDate: dateRange[0], endDate: dateRange[1] }
+          : {}),
+      }),
+    {
+      getNextPageParam: (lastPage) => {
+        if (!lastPage.pageInfo.hasNextPage) return undefined;
+        return lastPage.pageInfo.endCursor;
+      },
+    }
+  );
 
-  // const fetchNextData = useCallback(() => {
-  //   if (!hasNextPage) return;
-  //   fetchNextPage();
-  // }, [hasNextPage]);
+  const fetchNextData = useCallback(() => {
+    if (!hasNextPage) return;
+    fetchNextPage();
+  }, [hasNextPage]);
 
-  // useInfiniteScroll(observerTargetEl, fetchNextData);
-
-  const { data, isLoading, isFetching, error, status } = useQuery({
-    queryKey: ["items"],
-    queryFn: () => getItems({ mode: "recent" }),
-  });
+  useInfiniteScroll(observerTargetEl, fetchNextData);
 
   const onselect = (mode: ListMode) => {
     setSearchParams({ mode });
   };
-  // useEffect(() => {
-  //   const nextMode = (searchParams.get("mode") as ListMode) ?? "trending";
-  //   if (nextMode !== mode) {
-  //     setMode(nextMode);
-  //   }
-  // }, [searchParams, mode]);
 
-  // useEffect(() => {
-  //   if (mode === "past") {
-  //     setDateRange(
-  //       startDate && endDate ? [startDate, endDate] : defaultDateRange
-  //     );
-  //   }
-  // }, [startDate, endDate, defaultDateRange, mode]);
+  useEffect(() => {
+    const nextMode = (searchParams.get("mode") as ListMode) ?? "trending";
+    if (nextMode !== mode) {
+      setMode(nextMode);
+    }
+  }, [searchParams, mode]);
+
+  console.log(searchParams);
+
+  useEffect(() => {
+    if (mode === "past") {
+      setDateRange(
+        startDate && endDate ? [startDate, endDate] : defaultDateRange
+      );
+    }
+  }, [startDate, endDate, defaultDateRange, mode]);
 
   // if (typeof window !== 'undefined') {
   //   (window as any).queryClient = useQueryClient();
@@ -108,7 +104,7 @@ export default function Home() {
       <ListModeSelector mode={mode} onSelectMode={onselect} />
       {mode === "past" && <WeekSelector dateRange={dateRange} />}
       {/* TODO: make loading */}
-      {/* {status === "loading" ? (
+      {status === "loading" ? (
         <div>Loading...</div>
       ) : status === "error" ? (
         // TODO: define error type
@@ -116,15 +112,8 @@ export default function Home() {
       ) : (
         <div className={styles.content}>
           <LinkCardList
-            // items={infiniteData.pages.flatMap((page) => page.list)}
-            items={data.list}
+            items={infiniteData.pages.flatMap((page) => page.list)}
           />
-          <div ref={observerTargetEl} />
-        </div>
-      )} */}
-      {status === "success" && (
-        <div className={styles.content}>
-          <LinkCardList items={data.list} />
           <div ref={observerTargetEl} />
         </div>
       )}
