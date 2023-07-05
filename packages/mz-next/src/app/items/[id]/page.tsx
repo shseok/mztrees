@@ -1,12 +1,11 @@
-import { getItem } from "@/lib/api/items";
-// import type { Metadata } from "next";
+import { getComments, getItem } from "@/lib/api/items";
+import getQueryClient from "@/utils/getQueryClient";
+import Hydrate from "@/utils/hydrate.client";
+import { dehydrate } from "@tanstack/react-query";
 import { Metadata } from "next";
+import Item from "./item";
 
-type Params = {
-  params: {
-    id: string;
-  };
-};
+export const revalidate = 0;
 
 export async function generateMetadata({
   params: { id },
@@ -19,8 +18,32 @@ export async function generateMetadata({
   };
 }
 
-export default async function Items({ params: { id } }: Params) {
-  const itemData = await getItem(parseInt(id));
-  console.log("item", itemData);
-  return <div>Items {id}</div>;
+type Params = {
+  params: {
+    id: string;
+  };
+};
+
+export default async function Hydation({ params: { id } }: Params) {
+  console.log("each item");
+  const item = await getItem(parseInt(id));
+  const queryClient = getQueryClient();
+  const dehydratedState = dehydrate(queryClient);
+  await queryClient.prefetchQuery(["comments"], () =>
+    getComments(parseInt(id))
+  );
+  return (
+    <Hydrate state={dehydratedState}>
+      <Item item={item} />
+    </Hydrate>
+  );
 }
+
+// export async function generateStaticParams() {
+//   const usersData: Promise<User[]> = getAllUsers();
+//   const users = await usersData;
+
+//   return users.map((user) => ({
+//     userId: user.id.toString(),
+//   }));
+// }

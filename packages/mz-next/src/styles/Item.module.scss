@@ -1,0 +1,11 @@
+@import "_module";
+
+.content {
+  @include tablet {
+    padding-right: 1rem;
+    padding-left: 1rem;
+    width: 768px;
+    margin: 0 auto;
+    margin-top: 64px;
+  }
+}

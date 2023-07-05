@@ -76,7 +76,7 @@ const ItemViewer = ({ item }: Props) => {
       {thumbnail ? (
         <Link href={item.link}>
           <div className={styles.thumbnail}>
-            <Image src={thumbnail} fill alt="thumbnail" />
+            <Image src={thumbnail} alt={title} fill priority sizes="100vw" />
           </div>
         </Link>
       ) : null}

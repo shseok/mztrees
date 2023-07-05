@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 export interface BottomSheetModalItem {
   name: string;
@@ -12,9 +12,11 @@ interface BottomSheetModalStore {
   close: () => void;
 }
 
-export const useBottomSheetModalStore = create<BottomSheetModalStore>((set) => ({
-  visible: false,
-  items: [],
-  open: (items) => set((prev) => ({ ...prev, items, visible: true })),
-  close: () => set((prev) => ({ ...prev, visible: false })),
-}));
+export const useBottomSheetModalStore = create<BottomSheetModalStore>(
+  (set) => ({
+    visible: false,
+    items: [],
+    open: (items) => set((prev) => ({ ...prev, items, visible: true })),
+    close: () => set((prev) => ({ ...prev, visible: false })),
+  })
+);

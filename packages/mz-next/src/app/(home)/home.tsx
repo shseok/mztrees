@@ -73,10 +73,10 @@ export default function Home() {
 
   // useInfiniteScroll(observerTargetEl, fetchNextData);
 
-  // const { data, isLoading, isFetching, error, status } = useQuery({
-  //   queryKey: ["items"],
-  //   queryFn: () => getItems({ mode: "recent" }),
-  // });
+  const { data, isLoading, isFetching, error, status } = useQuery({
+    queryKey: ["items"],
+    queryFn: () => getItems({ mode: "recent" }),
+  });
 
   const onselect = (mode: ListMode) => {
     setSearchParams({ mode });
@@ -104,33 +104,30 @@ export default function Home() {
   // getMyAccountWithRefresh();
 
   return (
-    <TabLayout className={styles.layout_padding}>Test</TabLayout>
-
-    // <TabLayout className={styles.layout_padding}>
-    //   <ListModeSelector mode={mode} onSelectMode={onselect} />
-    //   {mode === "past" && <WeekSelector dateRange={dateRange} />}
-    //   {/* TODO: make loading */}
-    //   {/* {status === "loading" ? (
-    //     <div>Loading...</div>
-    //   ) : status === "error" ? (
-    //     // TODO: define error type
-    //     <div>Error: {(error as any).message}</div>
-    //   ) : (
-    //     <div className={styles.content}>
-    //       <LinkCardList
-    //         // items={infiniteData.pages.flatMap((page) => page.list)}
-    //         items={data.list}
-    //       />
-    //       <div ref={observerTargetEl} />
-    //     </div>
-    //   )} */}
-    //   <div className={styles.content}>
-    //     {/* <LinkCardList
-    //       // items={infiniteData.pages.flatMap((page) => page.list)}
-    //       items={data.list}
-    //     /> */}
-    //     <div ref={observerTargetEl} />
-    //   </div>
-    // </TabLayout>
+    <TabLayout className={styles.layout_padding}>
+      <ListModeSelector mode={mode} onSelectMode={onselect} />
+      {mode === "past" && <WeekSelector dateRange={dateRange} />}
+      {/* TODO: make loading */}
+      {/* {status === "loading" ? (
+        <div>Loading...</div>
+      ) : status === "error" ? (
+        // TODO: define error type
+        <div>Error: {(error as any).message}</div>
+      ) : (
+        <div className={styles.content}>
+          <LinkCardList
+            // items={infiniteData.pages.flatMap((page) => page.list)}
+            items={data.list}
+          />
+          <div ref={observerTargetEl} />
+        </div>
+      )} */}
+      {status === "success" && (
+        <div className={styles.content}>
+          <LinkCardList items={data.list} />
+          <div ref={observerTargetEl} />
+        </div>
+      )}
+    </TabLayout>
   );
 }

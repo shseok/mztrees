@@ -21,8 +21,10 @@
 .thumbnail {
   position: relative;
   width: 100%;
-  height: auto;
-  max-height: 80vh;
+  // height: auto;
+  // max-height: 80vh;
+  // aspect-ratio > img에 absolute 안생김
+  aspect-ratio: 1200/630;
 
   img {
     border-radius: 0px;

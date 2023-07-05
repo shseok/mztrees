@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import BottomSheetModal from "./BottomSheetModal";
 import { useBottomSheetModalStore } from "@/hooks/stores/useBottomSheetModalStore";

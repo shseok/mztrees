@@ -5,6 +5,7 @@ import { DialogProvider } from "@/context/DialogContext";
 import { getMyAccount } from "@/lib/api/me";
 import { UserProvider } from "@/context/userContext";
 import { cookies } from "next/headers";
+import GlobalBottomSheetModal from "@/components/system/GlobalBottomSheetModal";
 
 export const metadata = {
   title: "mz",
@@ -35,6 +36,7 @@ export default async function RootLayout({
           <DialogProvider>
             <UserProvider user={user}>{children}</UserProvider>
           </DialogProvider>
+          <GlobalBottomSheetModal />
         </Providers>
       </body>
     </html>
