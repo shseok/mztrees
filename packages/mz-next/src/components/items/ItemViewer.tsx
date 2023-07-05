@@ -5,15 +5,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import LikeButton from "../system/LikeButton";
 import { useLikeManager } from "@/hooks/useLikeManager";
 import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
-import { getMyAccount } from "@/lib/api/me";
 import { useItemOverrideById } from "@/hooks/stores/ItemOverrideStore";
 import { useDateDistance } from "@/hooks/useDateDistance";
 import BookmarkButton from "../system/BookmarkButton";
 import { useBookmarkManager } from "@/hooks/useBookmarkManager";
-import { useSetUser, useUser } from "@/hooks/stores/userStore";
 import Link from "next/link";
 import styles from "@/styles/ItemViewer.module.scss";
 import { Globe } from "@/utils/vectors";
+import { useUser } from "@/context/userContext";
 
 interface Props {
   item: Item;
@@ -42,7 +41,7 @@ const ItemViewer = ({ item }: Props) => {
   /**TODO: 연타로 누르면 기존의 것이 잘 취소되어야함 */
   const openLoginDialog = useOpenLoginDialog();
   // const set = setUser();
-  const currentUser = useUser();
+  const { currentUser } = useUser();
   /**TODO: move to hooks */
   const toggleLike = async () => {
     // const currentUser = await getMyAccount();

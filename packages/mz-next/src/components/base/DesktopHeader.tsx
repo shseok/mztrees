@@ -7,11 +7,9 @@ import UserAddon from "./UserAddon";
 import Link from "next/link";
 import { Logo } from "@/utils/vectors";
 import { useUser } from "@/context/userContext";
-// import { useUser } from "@/hooks/stores/userStore";
 
 const DesktopHeader = () => {
   const { currentUser } = useUser();
-  // const currentUser = useUser();
 
   return (
     <header className={styles.block}>

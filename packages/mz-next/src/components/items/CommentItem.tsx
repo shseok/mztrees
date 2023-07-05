@@ -10,9 +10,9 @@ import { useCommentLikeById } from "@/hooks/stores/useCommentLikesStore";
 import { useItemId } from "@/hooks/useItemId";
 import { useBottomSheetModalStore } from "@/hooks/stores/useBottomSheetModalStore";
 import { useCommentActions } from "@/hooks/useCommentActions";
-import { useUser } from "@/hooks/stores/userStore";
 import styles from "@/styles/CommentItem.module.scss";
 import { MoreVert } from "@/utils/vectors";
+import { useUser } from "@/context/userContext";
 
 /**@todo isSubcomment 굳이 필요한가에 대한 고민 */
 interface Props {
@@ -36,7 +36,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
   const { write, edit } = useCommentInputStore();
   const openLoginDialog = useOpenLoginDialog();
   const itemId = useItemId();
-  const currentUser = useUser();
+  const { currentUser } = useUser();
   const isMyComment = comment.user.id === currentUser?.id;
   const openBottomSheetModal = useBottomSheetModalStore((store) => store.open);
 

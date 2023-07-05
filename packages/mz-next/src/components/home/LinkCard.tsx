@@ -6,13 +6,12 @@ import { useLikeManager } from "@/hooks/useLikeManager";
 import LikeButton from "../system/LikeButton";
 import { useItemOverrideById } from "@/hooks/stores/ItemOverrideStore";
 import { motion, AnimatePresence } from "framer-motion";
-import { getMyAccount } from "@/lib/api/me";
 import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
 import BookmarkButton from "../system/BookmarkButton";
 import { useBookmarkManager } from "@/hooks/useBookmarkManager";
-import { useSetUser, useUser } from "@/hooks/stores/userStore";
 import styles from "@/styles/LinkCard.module.scss";
 import Link from "next/link";
+import { useUser } from "@/context/userContext";
 
 interface Props {
   item: Item;
@@ -44,10 +43,9 @@ const LinkCard = ({ item }: Props) => {
   /**TODO: 연타로 누르면 기존의 것이 잘 취소되어야함 */
   const openLoginDialog = useOpenLoginDialog();
   // const set = setUser();
-  // const currentUser = useUser();
+  const { currentUser } = useUser();
   /**TODO: move to hooks */
   const toggleLike = async () => {
-    const currentUser = await getMyAccount();
     // set(currentUser);
 
     if (!currentUser) {
@@ -62,7 +60,6 @@ const LinkCard = ({ item }: Props) => {
   };
 
   const toggleBookmark = async () => {
-    const currentUser = await getMyAccount();
     // set(currentUser);
     if (!currentUser) {
       openLoginDialog("itemBookmark");

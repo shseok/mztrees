@@ -8,7 +8,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { userLogin, userRegister } from "@/lib/api/auth";
 import { useSearchParams, useRouter } from "next/navigation";
 import { validate } from "@/lib/validate";
-import { useSetUser } from "@/hooks/stores/userStore";
 import styles from "@/styles/AuthForm.module.scss";
 import Link from "next/link";
 import { Logo } from "@/utils/vectors";
