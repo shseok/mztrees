@@ -33,11 +33,6 @@ const myFont = localFont({
   ],
   display: "swap",
 });
-// const notoSans = Noto_Sans_KR({
-//   weight: ["400", "500", "700"],
-//   subsets: ["latin"],
-//   display: "swap",
-// });
 
 export const revalidate = 0;
 

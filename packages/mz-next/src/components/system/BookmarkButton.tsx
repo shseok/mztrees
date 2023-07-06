@@ -1,7 +1,7 @@
 import { Size } from "@/lib/api/types";
 import IconToggleButton from "./IconToggleButton";
 import { BookmarkOutline, Bookmark } from "@/utils/vectors";
-import styles from "@/styles/CommentItem.module.scss";
+import styles from "@/styles/BookmarkButton.module.scss";
 
 interface Props {
   onClick: () => void;

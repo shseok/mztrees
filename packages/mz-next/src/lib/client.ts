@@ -57,7 +57,7 @@ export const fetchClient = {
         ...(config.headers ?? {}),
       },
       signal: config.signal,
-      body: body ? JSON.stringify(body) : undefined,
+      body: body ? JSON.stringify(body) : JSON.stringify({}),
     });
     await rejectIfNeeded(response);
     return response.json();

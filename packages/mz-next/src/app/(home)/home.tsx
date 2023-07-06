@@ -82,8 +82,6 @@ export default function Home() {
     }
   }, [searchParams, mode]);
 
-  console.log(searchParams);
-
   useEffect(() => {
     if (mode === "past") {
       setDateRange(
@@ -101,22 +99,22 @@ export default function Home() {
 
   return (
     <TabLayout className={styles.layout_padding}>
-      <ListModeSelector mode={mode} onSelectMode={onselect} />
-      {mode === "past" && <WeekSelector dateRange={dateRange} />}
-      {/* TODO: make loading */}
-      {status === "loading" ? (
-        <div>Loading...</div>
-      ) : status === "error" ? (
-        // TODO: define error type
-        <div>Error: {(error as any).message}</div>
-      ) : (
-        <div className={styles.content}>
+      <div className={styles.content}>
+        <ListModeSelector mode={mode} onSelectMode={onselect} />
+        {mode === "past" && <WeekSelector dateRange={dateRange} />}
+        {/* TODO: make loading */}
+        {status === "loading" ? (
+          <div>Loading...</div>
+        ) : status === "error" ? (
+          // TODO: define error type
+          <div>Error: {(error as any).message}</div>
+        ) : (
           <LinkCardList
             items={infiniteData.pages.flatMap((page) => page.list)}
           />
-          <div ref={observerTargetEl} />
-        </div>
-      )}
+        )}
+        <div ref={observerTargetEl} />
+      </div>
     </TabLayout>
   );
 }

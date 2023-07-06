@@ -138,7 +138,7 @@ const AccountSetting = () => {
           </form>
         </div>
       </div>
-      <Button className={styles.unregister_button} onClick={askUnregister}>
+      <Button variant="warning" onClick={askUnregister}>
         계정 탈퇴
       </Button>
     </div>

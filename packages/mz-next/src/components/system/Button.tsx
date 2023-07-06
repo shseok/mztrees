@@ -7,7 +7,7 @@ const cx = classNames.bind(styles);
 
 interface ButtonProps {
   layoutmode?: "inline" | "fullWidth";
-  variant?: "primary" | "secondary" | "tertiary";
+  variant?: "primary" | "secondary" | "tertiary" | "warning";
   size?: "small" | "medium";
 }
 
@@ -20,7 +20,7 @@ interface Props
 const Button = forwardRef<HTMLButtonElement, Props>(
   (
     {
-      layoutmode: layoutmode = "inline",
+      layoutmode = "inline",
       variant = "primary",
       size = "medium",
       to,

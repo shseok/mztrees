@@ -6,13 +6,7 @@ import Home from "./home";
 
 export const revalidate = 0;
 
-export default async function Hydation({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  console.log("page", searchParams);
-
+export default async function Hydation() {
   const queryClient = getQueryClient();
   const dehydratedState = dehydrate(queryClient);
   await queryClient.prefetchInfiniteQuery(["items"], () =>

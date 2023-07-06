@@ -52,7 +52,7 @@ const UserMenu = ({ visible, onClose }: Props) => {
           </div>
           <div
             className={styles.menu_item}
-            onClick={() => router.push("/bookmarks")}
+            onClick={() => router.push("/bookmark")}
           >
             북마크
           </div>

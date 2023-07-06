@@ -68,6 +68,16 @@
       }
     }
   }
+
+  &.warning {
+    background: $destructive;
+    color: white;
+    @media (hover: hover) {
+      &:hover:not(:disabled) {
+        opacity: 0.8;
+      }
+    }
+  }
   // sizeStyled
   &.small {
     height: 36px;
