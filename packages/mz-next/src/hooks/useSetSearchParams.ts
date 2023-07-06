@@ -11,17 +11,22 @@ export default function useSetSearchParams() {
   const searchParams = useSearchParams();
 
   const setSearchParams = useCallback(
-    (mode: Record<string, string>) => {
+    (obj: Record<string, string>) => {
       const createQueryString = (name: string, value: string) => {
-        // const params = new URLSearchParams(searchParams.toString());
-        const params = new URLSearchParams(searchParams);
+        const params = new URLSearchParams();
+        // const params = new URLSearchParams(searchParams);
         params.set(name, value);
-
         return params.toString();
       };
-      router.push(pathname + "?" + createQueryString(mode.name, mode.value));
+      const query = [];
+      for (const [key, value] of Object.entries(obj)) {
+        const param = createQueryString(key, value);
+        query.push(param);
+      }
+      const parameters = query.join("&");
+      router.push(pathname + "?" + parameters);
     },
-    [router, pathname, searchParams]
+    [router, pathname]
   );
 
   return setSearchParams;
