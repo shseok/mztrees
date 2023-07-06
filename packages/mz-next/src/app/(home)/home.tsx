@@ -67,7 +67,7 @@ export default function Home() {
   const fetchNextData = useCallback(() => {
     if (!hasNextPage) return;
     fetchNextPage();
-  }, [hasNextPage]);
+  }, [hasNextPage, fetchNextPage]);
 
   useInfiniteScroll(observerTargetEl, fetchNextData);
 

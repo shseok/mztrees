@@ -2,13 +2,13 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback } from "react";
-import useSearchParams from "./useSearchParams";
+// import useSearchParams from "./useSearchParams";
 
 // Get a new searchParams string by merging the current searchParams with a provided key/value pair
 export default function useSetSearchParams() {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
 
   const setSearchParams = useCallback(
     (obj: Record<string, string>) => {
