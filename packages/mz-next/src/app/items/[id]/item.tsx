@@ -1,8 +1,7 @@
 "use client";
 
 import BasicLayout from "@/components/layout/BasicLayout";
-import { deleteItem, getItem } from "@/lib/api/items";
-import { Metadata } from "next";
+import { deleteItem } from "@/lib/api/items";
 import styles from "@/styles/Item.module.scss";
 import ItemViewer from "@/components/items/ItemViewer";
 import CommentList from "@/components/items/CommentList";

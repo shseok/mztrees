@@ -104,7 +104,7 @@ export default function Home() {
         {mode === "past" && <WeekSelector dateRange={dateRange} />}
         {/* TODO: make loading */}
         {status === "loading" ? (
-          <div>Loading...</div>
+          <div>로아딩...</div>
         ) : status === "error" ? (
           // TODO: define error type
           <div>Error: {(error as any).message}</div>
