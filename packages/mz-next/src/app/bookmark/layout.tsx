@@ -2,7 +2,8 @@ import TabLayout from "@/components/layout/TabLayout";
 import { getBookmarks } from "@/lib/api/bookmark";
 import styles from "@/styles/StyledTabLayout.module.scss";
 import getQueryClient from "@/utils/getQueryClient";
-import { Hydrate, dehydrate } from "@tanstack/react-query";
+import Hydrate from "@/utils/hydrate.client";
+import { dehydrate } from "@tanstack/react-query";
 
 export const metadata = {
   title: "bookmark",

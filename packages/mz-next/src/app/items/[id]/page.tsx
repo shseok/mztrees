@@ -41,6 +41,7 @@ export default async function Hydation({ params: { id } }: Params) {
   );
 }
 
+// if server is not working, not build
 export async function generateStaticParams() {
   const itemsResult = await getItems({ mode: "recent" });
   const items = itemsResult.list;

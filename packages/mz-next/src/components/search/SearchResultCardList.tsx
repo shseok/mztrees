@@ -1,4 +1,3 @@
-import React from "react";
 import { SearchItemResult } from "@/lib/api/types";
 import SearchResultCard from "./SearchResultCard";
 import styles from "@/styles/SearchResultCardList.module.scss";

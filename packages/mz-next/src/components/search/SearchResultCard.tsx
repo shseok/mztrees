@@ -1,4 +1,3 @@
-import React from "react";
 import { SearchItemResult } from "@/lib/api/types";
 import Image from "next/image";
 import styles from "@/styles/SearchResultCard.module.scss";

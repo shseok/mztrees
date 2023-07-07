@@ -9,7 +9,7 @@ import { useCallback, useRef } from "react";
 export default function Bookmark() {
   console.log("bookmark");
 
-  const ref = useRef<HTMLDivElement>(null);
+  const observerTargetEl = useRef<HTMLDivElement>(null);
 
   const { status, data, error, fetchNextPage, hasNextPage } = useInfiniteQuery(
     ["bookmarks"],
@@ -27,7 +27,7 @@ export default function Bookmark() {
     fetchNextPage();
   }, [hasNextPage, fetchNextPage]);
 
-  useInfiniteScroll(ref, fetchNextData);
+  useInfiniteScroll(observerTargetEl, fetchNextData);
 
   return (
     <>
@@ -43,7 +43,7 @@ export default function Bookmark() {
             .map((page) => page.item)}
         />
       )}
-      <div ref={ref} />
+      <div ref={observerTargetEl} />
     </>
   );
 }
