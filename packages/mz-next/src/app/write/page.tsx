@@ -7,7 +7,6 @@ import { useWriteContext } from "@/context/WriteContext";
 import { useRouter } from "next/navigation";
 
 export default function Write() {
-  console.log("writing");
   const router = useRouter();
   const {
     state: { form, error },

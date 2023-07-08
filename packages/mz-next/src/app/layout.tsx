@@ -2,10 +2,10 @@ import "../styles/global.scss";
 import localFont from "next/font/local";
 import Providers from "@/utils/provider";
 import { DialogProvider } from "@/context/DialogContext";
-import { getMyAccount } from "@/lib/api/me";
 import { UserProvider } from "@/context/userContext";
 import { cookies } from "next/headers";
 import GlobalBottomSheetModal from "@/components/system/GlobalBottomSheetModal";
+import { getMemoMyAccount } from "@/lib/protectRoute";
 
 export const metadata = {
   title: "mz",
@@ -36,16 +36,22 @@ const myFont = localFont({
 
 export const revalidate = 0;
 
+async function getAccount() {
+  try {
+    return await getMemoMyAccount();
+  } catch (e) {
+    return null;
+  }
+}
+
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const cookieStore = cookies();
-  const ac = cookieStore.get("access_token");
-  const re = cookieStore.get("refresh_token");
-  const user = await getMyAccount(ac?.value);
+  const user = await getAccount();
   console.log("RootLayout", user);
+
   return (
     <html lang="en" className={myFont.className}>
       <body>

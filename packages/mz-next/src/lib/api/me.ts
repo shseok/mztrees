@@ -3,18 +3,12 @@ import { extractNextError } from "../nextError";
 import { User } from "./types";
 
 export async function getMyAccount(accessToken?: string) {
-  try {
-    const response = await fetchClient.get<User>("/api/me", {
-      headers: accessToken
-        ? { Authorization: `Bearer ${accessToken}` }
-        : undefined,
-    });
-    return response;
-  } catch (e) {
-    const error = extractNextError(e);
-    console.log(error);
-    return null;
-  }
+  const response = await fetchClient.get<User>("/api/me", {
+    headers: accessToken
+      ? { Authorization: `Bearer ${accessToken}` }
+      : undefined,
+  });
+  return response;
 }
 
 export async function changePassword({
