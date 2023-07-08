@@ -3,7 +3,7 @@ import { getBookmarks } from "@/lib/api/bookmark";
 import styles from "@/styles/StyledTabLayout.module.scss";
 import getQueryClient from "@/utils/getQueryClient";
 import Hydrate from "@/utils/hydrate.client";
-import { dehydrate } from "@tanstack/react-query";
+import { dehydrate } from "@tanstack/query-core";
 
 export const metadata = {
   title: "bookmark",

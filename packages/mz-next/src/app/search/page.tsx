@@ -9,7 +9,6 @@ import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { searchItems } from "@/lib/api/search";
 import styles from "@/styles/Search.module.scss";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useRouter } from "next/navigation";
 import { stringify } from "qs";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -26,8 +25,8 @@ export default function Search({ searchParams }: Props) {
 
   // const queryClient = getQueryClient();
   // const dehydratedState = dehydrate(queryClient);
-  console.log("search", searchText, inputResult);
   // await queryClient.prefetchInfiniteQuery(["searchItems"], () => searchItems());
+  console.log("search", searchText, inputResult);
   const router = useRouter();
 
   const {
@@ -98,8 +97,6 @@ export default function Search({ searchParams }: Props) {
           </>
         ))}
       <div ref={observerTargetEl} />
-      <ReactQueryDevtools position="top-right" />
-      {/* <Hydrate state={dehydratedState}>Search</Hydrate> */}
     </TabLayout>
   );
 }

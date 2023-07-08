@@ -1,13 +1,13 @@
 @import "_var";
 
 .block {
-  margin: 0 auto;
-  margin-bottom: 14px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
 }
 
 .mode_container {
   display: flex;
-  justify-content: center;
   gap: 16px;
   position: relative;
 }

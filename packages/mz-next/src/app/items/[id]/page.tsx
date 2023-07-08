@@ -1,7 +1,7 @@
 import { getComments, getItem, getItems } from "@/lib/api/items";
 import getQueryClient from "@/utils/getQueryClient";
 import Hydrate from "@/utils/hydrate.client";
-import { dehydrate } from "@tanstack/react-query";
+import { dehydrate } from "@tanstack/query-core";
 import { Metadata } from "next";
 import Item from "./item";
 
