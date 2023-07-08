@@ -8,15 +8,12 @@ export async function searchItems({
   q: string;
   offset?: number;
 }) {
-  const response = await fetchClient.get<SearchItemsResult>(
-    "/base/api/search",
-    {
-      params: {
-        q,
-        offset,
-      },
-    }
-  );
+  const response = await fetchClient.get<SearchItemsResult>("/api/search", {
+    params: {
+      q,
+      offset,
+    },
+  });
 
   return response;
 }

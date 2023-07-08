@@ -8,27 +8,25 @@ import SearchResultCardList from "@/components/search/SearchResultCardList";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { searchItems } from "@/lib/api/search";
 import styles from "@/styles/Search.module.scss";
-import getQueryClient from "@/utils/getQueryClient";
-import Hydrate from "@/utils/hydrate.client";
-import { dehydrate, useInfiniteQuery } from "@tanstack/react-query";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { useRouter } from "next/navigation";
 import { stringify } from "qs";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
 
 interface Props {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: { [key: string]: string | undefined };
 }
 
 export default function Search({ searchParams }: Props) {
-  const searchparams = useSearchParams();
   const [searchText, setSearchText] = useState(searchParams?.["q"] ?? "");
-  const [inputResult] = useDebounce(searchText as string, 300);
+  const [inputResult] = useDebounce(searchText, 300);
   const observerTargetEl = useRef<HTMLDivElement>(null);
 
   // const queryClient = getQueryClient();
   // const dehydratedState = dehydrate(queryClient);
-  console.log("search", searchText, inputResult, searchparams);
+  console.log("search", searchText, inputResult);
   // await queryClient.prefetchInfiniteQuery(["searchItems"], () => searchItems());
   const router = useRouter();
 
@@ -41,7 +39,7 @@ export default function Search({ searchParams }: Props) {
   } = useInfiniteQuery(
     ["searchItems", inputResult],
     ({ pageParam = undefined }) =>
-      searchItems({ q: encodeURIComponent(inputResult), offset: pageParam }),
+      searchItems({ q: inputResult, offset: pageParam }),
     {
       enabled: inputResult.trim() !== "",
       getNextPageParam: (lastPage, allPages) => {
@@ -59,8 +57,18 @@ export default function Search({ searchParams }: Props) {
   useInfiniteScroll(observerTargetEl, fetchNextData);
 
   useEffect(() => {
-    router.push(`/search?${stringify({ q: inputResult })}`);
+    const query = { q: inputResult };
+    const url = `/search?${stringify(query, {
+      charset: "utf-8",
+      encodeValuesOnly: true,
+    })}`;
+    router.push(url);
   }, [inputResult, router]);
+
+  // for desktop search
+  useEffect(() => {
+    setSearchText(searchParams?.["q"] ?? "");
+  }, [searchParams]);
 
   return (
     <TabLayout
@@ -69,10 +77,7 @@ export default function Search({ searchParams }: Props) {
           <MobileHeader
             className={styles.style_mobile_header}
             title={
-              <SearchInput
-                value={searchText as string}
-                onChangeText={setSearchText}
-              />
+              <SearchInput value={searchText} onChangeText={setSearchText} />
             }
           />
           <DesktopHeader />
@@ -93,6 +98,7 @@ export default function Search({ searchParams }: Props) {
           </>
         ))}
       <div ref={observerTargetEl} />
+      <ReactQueryDevtools position="top-right" />
       {/* <Hydrate state={dehydratedState}>Search</Hydrate> */}
     </TabLayout>
   );
