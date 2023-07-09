@@ -1,4 +1,4 @@
-import AppError from './NextAppError.js'
+import AppError from './AppError.js'
 
 export function checkWeekRange({ startDate, endDate }: DateParams) {
   const oneDat = 24 * 60 * 60 * 1000

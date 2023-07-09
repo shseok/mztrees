@@ -1,4 +1,4 @@
-import AppError from '../lib/NextAppError.js'
+import AppError from '../lib/AppError.js'
 import db from '../lib/db.js'
 import ItemService from './ItemService.js'
 

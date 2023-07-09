@@ -1,5 +1,5 @@
 import { Comment, CommentLike } from '@prisma/client'
-import AppError from '../lib/NextAppError.js'
+import AppError from '../lib/AppError.js'
 import db from '../lib/db.js'
 
 class CommentService {

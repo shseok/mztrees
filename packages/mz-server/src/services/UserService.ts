@@ -7,7 +7,6 @@ import {
   validateToken,
 } from '../lib/token.js'
 import { Token, User } from '@prisma/client'
-import NextAppError from '../lib/NextAppError.js'
 import { validate } from '../lib/validate.js'
 
 export interface AuthParams {
@@ -66,7 +65,7 @@ class UserService {
     })
 
     if (exists) {
-      throw new AppError('UserExistsError')
+      throw new AppError('AlreadyExists')
     }
     const hash = await bcrypt.hash(password, SAULT_ROUNDS)
     const user = await db.user.create({
@@ -91,13 +90,13 @@ class UserService {
 
     if (!user) {
       // 유저가 존재하지 않는다는 에러는 결국 디비의 존재유무를 알려주는것. > 그저 인증실패로 에러 표현
-      throw new AppError('AuthenticationError')
+      throw new AppError('WrongCredentials')
     }
 
     try {
       const result = await bcrypt.compare(password, user.passwordHash)
       if (!result) {
-        throw new AppError('AuthenticationError')
+        throw new AppError('WrongCredentials')
       }
     } catch (e) {
       if (isAppError(e)) {
@@ -105,7 +104,7 @@ class UserService {
         throw e
       }
       // 비밀번호 비교시 발생한 임의의 에러
-      throw new AppError('UnknownError')
+      throw new AppError('Unknown')
     }
     const tokens = await this.generateTokens(user)
     return {
@@ -159,7 +158,7 @@ class UserService {
       return this.generateTokens(tokenItem.user, tokenItem)
     } catch (e) {
       console.error(e)
-      throw new AppError('RefreshTokenError')
+      throw new AppError('RefreshFailure')
     }
   }
 
@@ -190,13 +189,13 @@ class UserService {
       }
     } catch (e) {
       // 비밀번호 비교시 발생한 임의의 에러
-      throw new NextAppError('Forbidden', {
+      throw new AppError('Forbidden', {
         message: 'Password does not match',
       })
     }
 
     if (!validate.password(newPassword)) {
-      throw new NextAppError('BadRequest', { message: 'Password is invalid' })
+      throw new AppError('BadRequest', { message: 'Password is invalid' })
     }
 
     const passwordHash = await bcrypt.hash(newPassword, SAULT_ROUNDS)

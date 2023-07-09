@@ -3,12 +3,11 @@ import routes from './routes/index.js'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
 import { swaggerConfig, swaggerUiConfig } from './config/swagger.js'
-import AppError from './lib/AppError.js'
 import 'dotenv/config'
 import { authPlugin } from './plugins/authPlugin.js'
 import fastifyCookie from '@fastify/cookie'
 import cors from '@fastify/cors'
-import { isNextAppError } from './lib/NextAppError.js'
+import { isAppError } from './lib/AppError.js'
 
 const server: FastifyInstance = Fastify({
   logger: true,
@@ -33,7 +32,7 @@ server.register(fastifyCookie)
 server.setErrorHandler(async (error, request, reply) => {
   // Fastify에서는 기본적으로 HTTP 응답 코드로 200 (OK)을 사용하므로
   reply.statusCode = error.statusCode ?? 500
-  if (isNextAppError(error)) {
+  if (isAppError(error)) {
     return {
       name: error.name,
       message: error.message,
@@ -41,22 +40,15 @@ server.setErrorHandler(async (error, request, reply) => {
       payload: error.payload,
     }
   }
-  if (error instanceof AppError) {
+
+  if (error.statusCode === 400) {
     return {
-      name: error.name,
+      name: 'BadRequest',
       message: error.message,
-      statusCode: error.statusCode,
-      payload: error.payload,
-    }
-  } else {
-    if (error.statusCode === 400) {
-      return {
-        name: 'BadRequest',
-        message: error.message,
-        statusCode: 400,
-      }
+      statusCode: 400,
     }
   }
+
   return error
 })
 

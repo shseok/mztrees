@@ -1,83 +1,89 @@
-/* @todo: replace AppError to nextError */
+import { Type, TSchema } from '@fastify/type-provider-typebox'
 
-type ErrorName =
-  | 'UserExistsError'
-  | 'AuthenticationError'
-  | 'UnknownError'
-  | 'UnauthorizedError'
-  | 'BadRequestError'
-  | 'RefreshTokenError'
-  | 'NotFoundError'
-  | 'ForbiddenError'
-  | 'InvalidURLError'
-
-type ErrorInfo = {
-  message: string
-  statusCode: number
+const errors = {
+  BadRequest: {
+    statusCode: 400,
+    message: 'Bad request',
+  },
+  WrongCredentials: {
+    statusCode: 401,
+    message: 'Invalid username or password',
+  },
+  Unauthorized: {
+    statusCode: 401,
+    message: 'Unauthorized',
+  },
+  RefreshFailure: {
+    statusCode: 401,
+    message: 'Failed to refresh token',
+  },
+  Forbidden: {
+    statusCode: 403,
+    message: 'Forbidden',
+  },
+  NotFound: {
+    statusCode: 404,
+    message: 'Not Found',
+  },
+  AlreadyExists: {
+    statusCode: 409,
+    message: 'Already exists',
+  },
+  UserExists: {
+    statusCode: 409,
+    message: 'User already exists',
+  },
+  InvalidURL: {
+    statusCode: 422,
+    message: 'Invalid URL',
+  },
+  Unknown: {
+    statusCode: 500,
+    message: 'Unknown error',
+  },
 }
 
-interface ErrorPayloads {
-  UserExistsError: undefined
-  AuthenticationError: undefined
-  UnknownError: undefined
-  BadRequestError: undefined
-  RefreshTokenError: undefined
-  UnauthorizedError: {
+type ErrorName = keyof typeof errors
+
+type ErrorPayloads = {
+  Unauthorized: {
     isExpiredToken: boolean
   }
-  NotFoundError: undefined
-  ForbiddenError: undefined
-  InvalidURLError: undefined
+  BadRequest: any
 }
 
-const statusCodeMap: Record<ErrorName, ErrorInfo> = {
-  UserExistsError: {
-    message: 'User already exists',
-    statusCode: 409,
-  },
-  AuthenticationError: {
-    message: 'Invalid username or password',
-    statusCode: 401,
-  },
-  UnknownError: {
-    message: 'Unknown error',
-    statusCode: 500,
-  },
-  UnauthorizedError: {
-    message: 'Unauthorized error',
-    statusCode: 401,
-  },
-  BadRequestError: {
-    message: 'BadRequest error',
-    statusCode: 400,
-  },
-  RefreshTokenError: {
-    message: 'Failed to refresh token',
-    statusCode: 401,
-  },
-  NotFoundError: {
-    message: 'Not found',
-    statusCode: 404,
-  },
-  ForbiddenError: {
-    message: 'Forbidden',
-    statusCode: 403,
-  },
-  InvalidURLError: {
-    message: 'Invalid URL',
-    statusCode: 422,
-  },
-}
+// type ErrorPayloads {
+//   UserExistsError: undefined
+//   AuthenticationError: undefined
+//   UnknownError: undefined
+//   BadRequestError: undefined
+//   RefreshTokenError: undefined
+//   UnauthorizedError: {
+//     isExpiredToken: boolean
+//   }
+//   NotFoundError: undefined
+//   ForbiddenError: undefined
+// }
+// -> ErrorPayloadsWithDefault
+type ErrorPayloadsWithDefault = Omit<
+  Record<ErrorName, undefined>,
+  keyof ErrorPayloads
+> &
+  ErrorPayloads
 
 export default class AppError extends Error {
   public statusCode: number
+
   constructor(
     public name: ErrorName,
-    public payload?: ErrorPayloads[ErrorName],
+    public payload?: ErrorPayloadsWithDefault[ErrorName] | { message?: string },
   ) {
-    const info = statusCodeMap[name]
-    super(info.message)
-    this.statusCode = info.statusCode
+    const errorInfo = errors[name]
+    super(payload?.message ?? errorInfo.message)
+    // if (payload?.message) {
+    //   delete payload.message
+    // }
+    this.statusCode = errorInfo.statusCode
   }
 }
 
@@ -85,23 +91,18 @@ export function isAppError(error: any): error is AppError {
   return error instanceof AppError
 }
 
-export const appErrorSchema = {
-  type: 'object',
-  properties: {
-    name: { type: 'string' },
-    message: { type: 'string' },
-    statusCode: { type: 'number' },
-  },
-}
-
-export function createAppErrorSchema<T, S>(example: T, payloadSchema?: S) {
-  return {
-    type: 'object',
-    properties: {
-      ...appErrorSchema.properties,
-      ...(payloadSchema ? { payload: payloadSchema } : {}),
-    },
-    example,
-  }
-  // return { ...appErrorSchema, example }
+export function createAppErrorSchema<T, P extends TSchema>(
+  name: ErrorName,
+  examplePayload?: ErrorPayloadsWithDefault[ErrorName],
+  payloadSchema?: P,
+) {
+  const example = { ...errors[name], payload: examplePayload }
+  const schema = Type.Object({
+    name: Type.String(),
+    message: Type.String(),
+    statusCode: Type.Number(),
+    ...(payloadSchema ? { payload: payloadSchema } : {}),
+  })
+  schema.example = example
+  return schema
 }

@@ -4,13 +4,9 @@ import { createRouteSchema } from '../../../lib/routeSchema.js'
 import { Type } from '@fastify/type-provider-typebox'
 
 const UnAuthroizedErrorSchema = createAppErrorSchema(
+  'Unauthorized',
   {
-    name: 'UnauthorizedError',
-    message: 'Unauthorized error',
-    statusCode: 401,
-    payload: {
-      isExpiredToken: true,
-    },
+    isExpiredToken: true,
   },
   Type.Object({ isExpiredToken: Type.Boolean() }),
 )
@@ -32,16 +28,8 @@ export const MeRouteSchema = createRouteSchema({
     response: {
       204: Type.Null(),
       401: UnAuthroizedErrorSchema,
-      403: createAppErrorSchema({
-        name: 'Forbidden',
-        message: 'Password does not match',
-        statusCode: 403,
-      }),
-      400: createAppErrorSchema({
-        name: 'BadRequest',
-        message: 'Password is invalid',
-        statusCode: 400,
-      }),
+      403: createAppErrorSchema('Forbidden'), //Password does not match
+      400: createAppErrorSchema('BadRequest'), //Password is invalid
     },
   },
   Unregister: {

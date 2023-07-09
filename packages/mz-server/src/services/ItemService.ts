@@ -7,7 +7,6 @@ import {
   User,
 } from '@prisma/client'
 import AppError from '../lib/AppError.js'
-import NextAppError from '../lib/NextAppError.js'
 import db from '../lib/db.js'
 import { extractPageInfo } from '../lib/extractPageInfo.js'
 import { PaginationOptionType, createPagination } from '../lib/pagination.js'
@@ -110,7 +109,7 @@ class ItemService {
       },
     })
     if (!item) {
-      throw new AppError('NotFoundError')
+      throw new AppError('NotFound')
     }
     return this.serialize(item)
   }
@@ -183,7 +182,7 @@ class ItemService {
     userId?: number
   }) {
     if (!startDate || !endDate) {
-      throw new NextAppError('BadRequest', {
+      throw new AppError('BadRequest', {
         message: 'startDate and endDate are required',
       })
     }
@@ -459,7 +458,7 @@ class ItemService {
   async updateItem({ itemId, userId, title, body }: UpdateItemParams) {
     const item = await this.getItem(itemId)
     if (item.userId !== userId) {
-      throw new AppError('ForbiddenError')
+      throw new AppError('Forbidden')
     }
     const updatedItem = await db.item.update({
       where: {
@@ -497,7 +496,7 @@ class ItemService {
   async deleteItem({ itemId, userId }: ItemActionParams) {
     const item = await this.getItem(itemId)
     if (item.userId !== userId) {
-      throw new AppError('ForbiddenError')
+      throw new AppError('Forbidden')
     }
     await db.item.delete({
       where: {
