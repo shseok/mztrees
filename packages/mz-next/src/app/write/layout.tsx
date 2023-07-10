@@ -1,17 +1,20 @@
-import { WriteProvider } from "@/context/WriteContext";
-import { checkIsLoggedIn } from "@/lib/protectRoute";
-import { redirect } from "next/navigation";
+"use client";
 
-export default async function Root({
+import { WriteProvider } from "@/context/WriteContext";
+import { useProtectedRoute } from "@/lib/protectRoute";
+
+export default async function WriteLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const isLoggedIn = await checkIsLoggedIn();
-  if (!isLoggedIn) {
-    redirect("/auth/login?next=/write");
+  // layout이 client라서 server 컴포넌트인 edit> id > page에서 에러날 줄 알았는데 안난다..?
+  const hasPermission = useProtectedRoute();
+
+  if (!hasPermission) {
+    // TODO: 인가 관련 에러처리해주기 (react-tostify)
+    return null;
   }
-  console.log("write", isLoggedIn);
 
   return <WriteProvider>{children}</WriteProvider>;
 }

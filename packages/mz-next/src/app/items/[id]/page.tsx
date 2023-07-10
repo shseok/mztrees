@@ -5,7 +5,7 @@ import { dehydrate } from "@tanstack/query-core";
 import { Metadata } from "next";
 import Item from "./item";
 
-export const revalidate = 0;
+// export const revalidate = 0;
 
 export async function generateMetadata({
   params: { id },
@@ -42,8 +42,8 @@ export default async function Hydation({ params: { id } }: Params) {
 }
 
 // if server is not working, not build
-export async function generateStaticParams() {
-  const itemsResult = await getItems({ mode: "recent" });
-  const items = itemsResult.list;
-  return items.map((item) => ({ id: item.id.toString() }));
-}
+// export async function generateStaticParams() {
+//   const itemsResult = await getItems({ mode: "recent" });
+//   const items = itemsResult.list;
+//   return items.map((item) => ({ id: item.id.toString() }));
+// }

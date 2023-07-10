@@ -34,14 +34,14 @@ const authRoute: FastifyPluginAsyncTypebox = async (fastify) => {
     '/refresh',
     { schema: AuthRouteSchema.RefreshToken },
     async (request, reply) => {
-      console.log(
-        'headers',
-        request.headers,
-        'body',
-        request.body,
-        'cookies',
-        request.cookies,
-      )
+      // console.log(
+      //   'headers',
+      //   request.headers,
+      //   'body',
+      //   request.body,
+      //   'cookies',
+      //   request.cookies,
+      // )
       const refreshToken =
         request.body.refreshToken ?? request.cookies.refresh_token ?? ''
       if (!refreshToken) {

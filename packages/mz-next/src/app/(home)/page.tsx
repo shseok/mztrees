@@ -4,7 +4,7 @@ import Hydrate from "@/utils/hydrate.client";
 import { dehydrate } from "@tanstack/query-core";
 import Home from "./home";
 
-export const revalidate = 0;
+// export const revalidate = 0;
 
 export default async function Hydation() {
   const queryClient = getQueryClient();

@@ -2,12 +2,18 @@
 
 import TabLayout from "@/components/layout/TabLayout";
 import { useLogout } from "@/hooks/useLogout";
+import { useProtectedRoute } from "@/lib/protectRoute";
 import styles from "@/styles/Setting.module.scss";
 import Link from "next/link";
 
 export default function Setting() {
-  console.log("setting");
   const logout = useLogout();
+  const hasPermission = useProtectedRoute();
+
+  if (!hasPermission) {
+    // TODO: 인가 관련 에러처리해주기 (react-tostify)
+    return null;
+  }
   return (
     <TabLayout>
       <div className={styles.block}>

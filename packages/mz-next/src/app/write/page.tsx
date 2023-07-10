@@ -4,10 +4,17 @@ import BasicLayout from "@/components/layout/BasicLayout";
 import LabelInput from "@/components/system/LabelInput";
 import WriteFormTemplate from "@/components/write/WriteFormTemplate";
 import { useWriteContext } from "@/context/WriteContext";
+import { useProtectedRoute } from "@/lib/protectRoute";
 import { useRouter } from "next/navigation";
 
 export default function Write() {
   const router = useRouter();
+  // const hasPermission = useProtectedRoute();
+
+  // if (!hasPermission) {
+  //   // TODO: 인가 관련 에러처리해주기 (react-tostify)
+  //   return null;
+  // }
   const {
     state: { form, error },
     actions,

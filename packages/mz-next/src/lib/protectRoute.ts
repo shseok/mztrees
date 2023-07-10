@@ -1,59 +1,29 @@
-// import { useEffect } from 'react';
-// import usePrivateAxios from '~/hooks/usePrivateAxios';
-// import { extractNextError } from './nextError';
-// import { setUser } from '~/hooks/stores/userStore';
+"use client";
+
 import { getMyAccount } from "./api/me";
 import { refreshToken } from "./api/auth";
-import { User } from "./api/types";
-
 import { extractNextError } from "./nextError";
-import { cookies } from "next/headers";
+import { setClientCookie } from "./client";
+import { useUser } from "@/context/userContext";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-// export function getMyAccountWithRefresh() {
-//   console.log('refresh');
-//   const privateAxios = usePrivateAxios();
-//   // TODO: Remove with SSR
-//   const set = setUser();
-//   useEffect(() => {
-//     let isMounted = true; // ?
-//     const controller = new AbortController();
+export async function getMyAccountWithRefresh() {
+  // TODO: 왜 cookie를 전송하지 않으면 /me api를 못 건드는지 알아보기 > fetch는 브라우저 api이기 때문> Cookie 설정
 
-//     const getUsers = async () => {
-//       try {
-//         const response = await privateAxios.get<User>('/api/me', {
-//           signal: controller.signal,
-//         });
-//         isMounted && set(response.data);
-//       } catch (e) {
-//         const extractedError = extractNextError(e);
-//         console.log(extractedError);
-//         return null;
-//       }
-//     };
-
-//     getUsers();
-
-//     return () => {
-//       isMounted = false;
-//       controller.abort();
-//     };
-//   }, []);
-async function getMyAccountWithRefresh() {
-  // TODO: 왜 cookie를 전송하지 않으면 /me api를 못 건드는지 알아보기
-  const cookieStore = cookies();
-  const ac = cookieStore.get("access_token");
-  const re = cookieStore.get("refresh_token");
   try {
     console.log("getMyAccountWithRefresh");
-    const me = await getMyAccount(ac?.value);
+    const me = await getMyAccount();
     return me;
   } catch (e) {
     const error = extractNextError(e);
     // access token expired
     if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
       try {
-        await refreshToken();
-        const me = await getMyAccount(ac?.value);
+        const tokens = await refreshToken();
+        console.log("request refresh api", tokens.accessToken);
+        setClientCookie(`access_token=${tokens.accessToken}`);
+        const me = await getMyAccount();
         return me;
       } catch (innerError) {
         throw innerError;
@@ -63,21 +33,16 @@ async function getMyAccountWithRefresh() {
   }
 }
 
-let getMyAccountPromise: Promise<User> | null = null;
-
-export async function getMemoMyAccount() {
-  if (!getMyAccountPromise) {
-    getMyAccountPromise = getMyAccountWithRefresh();
-  }
-  return getMyAccountPromise;
+export function useProtectedRoute() {
+  const { currentUser } = useUser();
+  const router = useRouter();
+  const pathname = usePathname();
+  console.log(currentUser);
+  useEffect(() => {
+    if (!currentUser) {
+      router.replace(`/auth/login?next=${pathname}`);
+      // router.replace(`/auth/login?next=${pathname}`);
+    }
+  }, [currentUser, router, pathname]);
+  return !!currentUser;
 }
-
-export const checkIsLoggedIn = async () => {
-  try {
-    await getMemoMyAccount();
-  } catch (e) {
-    console.log("checkIsLoggedIn", extractNextError(e));
-    return false;
-  }
-  return true;
-};

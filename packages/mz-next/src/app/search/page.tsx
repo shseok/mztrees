@@ -56,6 +56,7 @@ export default function Search({ searchParams }: Props) {
   useInfiniteScroll(observerTargetEl, fetchNextData);
 
   useEffect(() => {
+    console.log("1router.push");
     const query = { q: inputResult };
     const url = `/search?${stringify(query, {
       charset: "utf-8",
@@ -64,8 +65,9 @@ export default function Search({ searchParams }: Props) {
     router.push(url);
   }, [inputResult, router]);
 
-  // for desktop search
+  // render for desktop search
   useEffect(() => {
+    console.log("2useEffect");
     setSearchText(searchParams?.["q"] ?? "");
   }, [searchParams]);
 

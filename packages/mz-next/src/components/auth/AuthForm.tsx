@@ -60,6 +60,7 @@ const AuthForm = ({ mode }: Props) => {
   });
   const router = useRouter();
   const searchParams = useSearchParams();
+  const next = searchParams.get("next");
 
   // const [error, setError] = useState<AppError | undefined>();
   const [error, setError] = useState<NextAppError | undefined>();
@@ -74,7 +75,8 @@ const AuthForm = ({ mode }: Props) => {
       } else {
         const result = await userLogin(data);
         set(result.user);
-        const from = searchParams.get("next") ?? "/";
+        const from = next ?? "/";
+        console.log(from);
         router.replace(from);
       }
     } catch (e) {
@@ -168,7 +170,11 @@ const AuthForm = ({ mode }: Props) => {
         <Button layoutmode="fullWidth" type="submit" disabled={isSubmitting}>
           {buttonText}
         </Button>
-        <QuestionLink question={question} name={actionText} to={actionLink} />
+        <QuestionLink
+          question={question}
+          name={actionText}
+          to={next ? `${actionLink}/?next=${next}` : actionLink}
+        />
       </div>
     </form>
   );

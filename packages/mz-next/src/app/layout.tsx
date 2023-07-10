@@ -3,9 +3,10 @@ import localFont from "next/font/local";
 import Providers from "@/utils/provider";
 import { DialogProvider } from "@/context/DialogContext";
 import { UserProvider } from "@/context/userContext";
-import { cookies } from "next/headers";
+import { headers } from "next/headers";
 import GlobalBottomSheetModal from "@/components/system/GlobalBottomSheetModal";
-import { getMemoMyAccount } from "@/lib/protectRoute";
+
+import { setClientCookie } from "@/lib/client";
 
 export const metadata = {
   title: "mz",
@@ -34,30 +35,21 @@ const myFont = localFont({
   display: "swap",
 });
 
-export const revalidate = 0;
+// export const revalidate = 60; // 60초 이후 refresh > 모든 페이지 모두 ssr
 
-async function getAccount() {
-  try {
-    return await getMemoMyAccount();
-  } catch (e) {
-    return null;
-  }
-}
-
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getAccount();
-  console.log("RootLayout", user);
+  console.log("RootLayout");
 
   return (
     <html lang="en" className={myFont.className}>
       <body>
         <Providers>
           <DialogProvider>
-            <UserProvider user={user}>{children}</UserProvider>
+            <UserProvider>{children}</UserProvider>
           </DialogProvider>
           <GlobalBottomSheetModal />
         </Providers>

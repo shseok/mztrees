@@ -7,6 +7,7 @@ import WriteFormTemplate from "@/components/write/WriteFormTemplate";
 import { useWriteContext } from "@/context/WriteContext";
 import { createItem } from "@/lib/api/items";
 import { extractNextError } from "@/lib/nextError";
+import { useProtectedRoute } from "@/lib/protectRoute";
 import styles from "@/styles/WriteIntro.module.scss";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -46,6 +47,13 @@ export default function Intro() {
       }
     }
   };
+
+  const hasPermission = useProtectedRoute();
+
+  if (!hasPermission) {
+    // TODO: 인가 관련 에러처리해주기 (react-tostify)
+    return null;
+  }
 
   return (
     <BasicLayout title="뉴스 소개" hasBackButton>
