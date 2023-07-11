@@ -1,10 +1,10 @@
 "use client";
 
 import TabLayout from "@/components/layout/TabLayout";
-import { useProtectedRoute } from "@/lib/protectRoute";
 import styles from "@/styles/StyledTabLayout.module.scss";
 import { Suspense } from "react";
 import SkeletonUI from "@/components/system/SkeletonUI";
+import { useProtectedRoute } from "@/hooks/useProtectedRoute";
 
 export const metadata = {
   title: "bookmark",

@@ -2,7 +2,7 @@
 
 import BasicLayout from "@/components/layout/BasicLayout";
 import AccountSetting from "@/components/setting/AccountSetting";
-import { useProtectedRoute } from "@/lib/protectRoute";
+import { useProtectedRoute } from "@/hooks/useProtectedRoute";
 
 export default function Account() {
   const hasPermission = useProtectedRoute();

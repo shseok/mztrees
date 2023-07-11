@@ -4,9 +4,6 @@ import { getMyAccount } from "./api/me";
 import { refreshToken } from "./api/auth";
 import { extractNextError } from "./nextError";
 import { setClientCookie } from "./client";
-import { useUser } from "@/context/userContext";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 export async function getMyAccountWithRefresh() {
   // TODO: 왜 cookie를 전송하지 않으면 /me api를 못 건드는지 알아보기 > fetch는 브라우저 api이기 때문> Cookie 설정
@@ -31,18 +28,4 @@ export async function getMyAccountWithRefresh() {
     }
     throw e;
   }
-}
-
-export function useProtectedRoute() {
-  const { currentUser } = useUser();
-  const router = useRouter();
-  const pathname = usePathname();
-  console.log(currentUser);
-  useEffect(() => {
-    if (!currentUser) {
-      router.replace(`/auth/login?next=${pathname}`);
-      // router.replace(`/auth/login?next=${pathname}`);
-    }
-  }, [currentUser, router, pathname]);
-  return !!currentUser;
 }

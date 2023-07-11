@@ -1,7 +1,7 @@
 "use client";
 
 import { WriteProvider } from "@/context/WriteContext";
-import { useProtectedRoute } from "@/lib/protectRoute";
+import { useProtectedRoute } from "@/hooks/useProtectedRoute";
 
 export default async function WriteLayout({
   children,

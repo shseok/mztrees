@@ -2,7 +2,7 @@
 
 import TabLayout from "@/components/layout/TabLayout";
 import { useLogout } from "@/hooks/useLogout";
-import { useProtectedRoute } from "@/lib/protectRoute";
+import { useProtectedRoute } from "@/hooks/useProtectedRoute";
 import styles from "@/styles/Setting.module.scss";
 import Link from "next/link";
 
