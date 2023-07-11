@@ -12,6 +12,7 @@ import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
 import WriteFormTemplate from "@/components/write/WriteFormTemplate";
 import LabelInput from "@/components/system/LabelInput";
 import LabelTextArea from "@/components/system/LabelTextArea";
+import { useDialog } from "@/context/DialogContext";
 
 type Params = {
   params: {
@@ -69,9 +70,10 @@ export default function Edit({ params: { id } }: Params) {
         } catch (innerError) {
           openLoginDialog("edit");
         }
+      } else {
+        openLoginDialog("edit");
       }
-      console.log("부적절한 접근으로 인해 홈페이지로 이동", error);
-      router.replace("/");
+      console.log(extractNextError(e));
     }
   };
 
