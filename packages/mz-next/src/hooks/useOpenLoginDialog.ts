@@ -14,6 +14,7 @@ const messageMap = {
     "나중에 이 글을 또 보고 싶으신가요? 로그인하고 북마크를 추가해보세요.",
   logout: "접속중인 기기에서 로그아웃 하시겠습니까?",
   deleteAccount: "계정에 관련된 정보를 모두 삭제합니다. 계속할까요?",
+  edit: "세션이 만료되었습니다. 작성하신 내용은 저장됩니다. 다시 로그인하시겠습니까?",
 };
 
 export const useOpenLoginDialog = () => {

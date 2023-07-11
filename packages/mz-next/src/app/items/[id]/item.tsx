@@ -1,7 +1,7 @@
 "use client";
 
 import BasicLayout from "@/components/layout/BasicLayout";
-import { deleteItem } from "@/lib/api/items";
+import { deleteItem, getItem } from "@/lib/api/items";
 import styles from "@/styles/Item.module.scss";
 import ItemViewer from "@/components/items/ItemViewer";
 import CommentList from "@/components/items/CommentList";
@@ -13,15 +13,19 @@ import { useDialog } from "@/context/DialogContext";
 import { useBottomSheetModalStore } from "@/hooks/stores/useBottomSheetModalStore";
 import { useRouter } from "next/navigation";
 import { Item } from "@/lib/api/types";
+import { useEffect, useState } from "react";
+import { extractNextError } from "@/lib/nextError";
+import Loading from "@/app/loading";
 
-interface Props {
-  item: Item;
-}
+type Props = {
+  itemId: string;
+};
 
-export default function Item({ item }: Props) {
+export default function Item({ itemId }: Props) {
   const { currentUser } = useUser();
-  const isMyItem = item.user.id === currentUser?.id;
-  const { data: comments, isError, isLoading } = useCommentsQuery(item.id);
+  const [item, setItem] = useState<Item | null>(null);
+  const isMyItem = item ? item.user.id === currentUser?.id : false;
+  const { data: comments, status } = useCommentsQuery(parseInt(itemId));
 
   const openBottomSheetModal = useBottomSheetModalStore((store) => store.open);
   const { open: openDialog } = useDialog();
@@ -32,7 +36,7 @@ export default function Item({ item }: Props) {
         name: "수정",
         onClick: () => {
           // if (!item.id) return;
-          router.push(`/write/edit/${item.id}`);
+          router.push(`/write/edit/${parseInt(itemId)}`);
         },
       },
       {
@@ -45,7 +49,7 @@ export default function Item({ item }: Props) {
             onConfirm: async () => {
               /** TODO: show fullscreen spinner on loading */
               // if (!item.id) return;
-              await deleteItem(item.id);
+              await deleteItem(parseInt(itemId));
               router.push("/");
             },
             confirmText: "삭제",
@@ -56,6 +60,18 @@ export default function Item({ item }: Props) {
     ]);
   };
 
+  useEffect(() => {
+    async function fetchItemData() {
+      try {
+        const item = await getItem(parseInt(itemId));
+        setItem(item);
+      } catch (e) {
+        console.log(extractNextError(e));
+      }
+    }
+    fetchItemData();
+  }, []);
+
   return (
     <BasicLayout
       hasBackButton
@@ -64,9 +80,13 @@ export default function Item({ item }: Props) {
     >
       <div className={styles.content}>
         {item && <ItemViewer item={item} />}
-        {isLoading && <div>로딩중..</div>}
-        {isError && <div>에러</div>}
-        {comments && <CommentList comments={comments} />}
+        {status === "loading" ? (
+          <Loading />
+        ) : status === "error" ? (
+          <div>에러</div>
+        ) : (
+          comments && <CommentList comments={comments} />
+        )}
       </div>
       <CommentInputOverlay />
     </BasicLayout>
