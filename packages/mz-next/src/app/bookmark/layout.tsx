@@ -3,6 +3,8 @@
 import TabLayout from "@/components/layout/TabLayout";
 import { useProtectedRoute } from "@/lib/protectRoute";
 import styles from "@/styles/StyledTabLayout.module.scss";
+import { Suspense } from "react";
+import SkeletonUI from "@/components/system/SkeletonUI";
 
 export const metadata = {
   title: "bookmark",
@@ -28,7 +30,9 @@ export default function BookmarkLayout({
   return (
     // <Hydrate state={dehydratedState}>
     <TabLayout className={styles.layout_padding}>
-      <div className={styles.content}>{children}</div>
+      <div className={styles.content}>
+        <Suspense fallback={<SkeletonUI />}>{children}</Suspense>
+      </div>
     </TabLayout>
     // </Hydrate>
   );

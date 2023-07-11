@@ -5,6 +5,7 @@ import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { getBookmarks } from "@/lib/api/bookmark";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useCallback, useRef } from "react";
+import SkeletonUI from "@/components/system/SkeletonUI";
 
 export default function Bookmark() {
   console.log("bookmark");
@@ -19,6 +20,7 @@ export default function Bookmark() {
         if (!lastPage.pageInfo.hasNextPage) return undefined;
         return lastPage.pageInfo.endCursor;
       },
+      suspense: true,
     }
   );
 
@@ -29,20 +31,20 @@ export default function Bookmark() {
 
   useInfiniteScroll(observerTargetEl, fetchNextData);
 
+  const items = data?.pages
+    .flatMap((page) => page.list)
+    .map((page) => page.item);
+
   return (
     <>
       {status === "loading" ? (
-        <div>로아딩...</div>
+        <SkeletonUI />
       ) : status === "error" ? (
         // TODO: define error type
         <div>에러: {(error as any).message}</div>
-      ) : (
-        <LinkCardList
-          items={data.pages
-            .flatMap((page) => page.list)
-            .map((page) => page.item)}
-        />
-      )}
+      ) : items ? (
+        <LinkCardList items={items} />
+      ) : null}
       <div ref={observerTargetEl} />
     </>
   );

@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { stringify } from "qs";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
+import Loading from "../loading";
 
 interface Props {
   searchParams: { [key: string]: string | undefined };
@@ -87,7 +88,7 @@ export default function Search({ searchParams }: Props) {
     >
       {inputResult.trim() !== "" &&
         (status === "loading" ? (
-          <div>Loading...</div>
+          <Loading />
         ) : status === "error" ? (
           // // TODO: define error type
           <div>Error: {(error as any).message}</div>

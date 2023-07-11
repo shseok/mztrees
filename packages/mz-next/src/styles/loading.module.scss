@@ -1,0 +1,68 @@
+@import "_module";
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @include widescreen {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  gap: 32px;
+  row-gap: 48px;
+
+  .block {
+    display: flex;
+    flex-direction: column;
+
+    .content {
+      display: flex;
+      flex-direction: column;
+
+      .thumbnail {
+        @include skeleton_item;
+        aspect-ratio: 1200/630;
+        margin-bottom: 16px;
+        border-radius: 12px;
+      }
+
+      .publisher {
+        display: flex;
+        margin-bottom: 4px;
+        .circle {
+          @include skeleton_item;
+          height: 16px;
+          width: 16px;
+          border-radius: 50%;
+          margin-right: 8px;
+        }
+
+        .text {
+          @include skeleton_item;
+          width: 45px;
+          height: 16px;
+        }
+      }
+      .title {
+        @include skeleton_item;
+        margin-top: 0;
+        margin-bottom: 16px;
+        height: 27px;
+      }
+
+      .body {
+        @include skeleton_item;
+        aspect-ratio: 412/84; // TODO: refactor
+        margin-top: 0;
+        margin-bottom: 16px;
+      }
+    }
+
+    .bottom {
+      // like
+      @include skeleton_item;
+      height: 50px;
+    }
+  }
+}

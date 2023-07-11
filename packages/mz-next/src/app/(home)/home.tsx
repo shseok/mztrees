@@ -21,6 +21,7 @@ import { ListMode } from "@/lib/api/types";
 // import { getMyAccountWithRefresh } from "@/lib/protectRoute";
 import { getWeekRangeFromDate } from "@/lib/week";
 import useSetSearchParams from "@/hooks/useSetSearchParams";
+import SkeletonUI from "@/components/system/SkeletonUI";
 
 // export default function Home({searchParams}) {
 export default function Home() {
@@ -102,9 +103,8 @@ export default function Home() {
       <div className={styles.content}>
         <ListModeSelector mode={mode} onSelectMode={onselect} />
         {mode === "past" && <WeekSelector dateRange={dateRange} />}
-        {/* TODO: make loading */}
         {status === "loading" ? (
-          <div>로아딩...</div>
+          <SkeletonUI />
         ) : status === "error" ? (
           // TODO: define error type
           <div>Error: {(error as any).message}</div>
