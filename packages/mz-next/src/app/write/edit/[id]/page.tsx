@@ -87,7 +87,7 @@ export default function Edit({ params: { id } }: Params) {
       }
     }
     fetchItemData();
-  }, []);
+  }, [id]);
 
   return (
     <BasicLayout title="수정" hasBackButton>

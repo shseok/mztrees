@@ -70,7 +70,7 @@ export default function Item({ itemId }: Props) {
       }
     }
     fetchItemData();
-  }, []);
+  }, [itemId]);
 
   return (
     <BasicLayout
