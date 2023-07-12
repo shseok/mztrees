@@ -15,6 +15,7 @@ const messageMap = {
   logout: "접속중인 기기에서 로그아웃 하시겠습니까?",
   deleteAccount: "계정에 관련된 정보를 모두 삭제합니다. 계속할까요?",
   edit: "세션이 만료되었습니다. 작성하신 내용은 저장됩니다. 다시 로그인하시겠습니까?",
+  sessionOut: "세션이 만료되었습니다. 로그인화면으로 이동합니다.",
 };
 
 export const useOpenLoginDialog = () => {
