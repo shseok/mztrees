@@ -2,6 +2,15 @@ import { getItem } from "@/lib/api/items";
 import { Metadata } from "next";
 import Item from "./item";
 
+type Params = {
+  params: {
+    id: string;
+  };
+  searchParams: {
+    [key: string]: string | undefined;
+  };
+};
+
 export async function generateMetadata({
   params: { id },
 }: Params): Promise<Metadata> {
@@ -12,17 +21,10 @@ export async function generateMetadata({
     description: itemData.body,
   };
 }
-
-type Params = {
-  params: {
-    id: string;
-  };
-};
 // TODO: client component로 변경하기
 
-export default function Hydation({ params: { id } }: Params) {
-  console.log("each item", parseInt(id), isNaN(parseInt(id)));
-  if (isNaN(parseInt(id))) return;
+export default function Hydation({ params: { id }, searchParams }: Params) {
+  console.log("each item", parseInt(id), isNaN(parseInt(id)), searchParams);
   // const queryClient = getQueryClient();
   // const dehydratedState = dehydrate(queryClient);
   // // const item = await getItem(parseInt(id));

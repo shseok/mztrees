@@ -12,6 +12,7 @@ import { useBookmarkManager } from "@/hooks/useBookmarkManager";
 import styles from "@/styles/LinkCard.module.scss";
 import Link from "next/link";
 import { useUser } from "@/context/userContext";
+import { useSearchParams } from "next/navigation";
 
 interface Props {
   item: Item;
@@ -33,6 +34,7 @@ const LinkCard = ({ item }: Props) => {
   const dateDistance = useDateDistance(createdAt);
   const { like, unlike } = useLikeManager();
   const { bookmark, unbookmark } = useBookmarkManager();
+  const searchParams = useSearchParams();
 
   // const isMultiColumn = useIsMultiColumn();
   // console.log(isMultiColumn);
@@ -72,13 +74,13 @@ const LinkCard = ({ item }: Props) => {
     }
   };
 
-  // const link = `/items/${item.id}`;
-  const link = "/items/[id]";
-  const as = `/items/${item.id}`;
+  const link = `/items/${item.id}?mode=${
+    searchParams.get("mode") ?? "trending"
+  }`;
 
   return (
     <div className={styles.block}>
-      <Link href={link} as={as} className={styles.styled_link}>
+      <Link href={link} className={styles.styled_link}>
         <div className={styles.thumbnail}>
           {thumbnail ? (
             <Image src={thumbnail} alt={title} fill priority sizes="100vw" />
