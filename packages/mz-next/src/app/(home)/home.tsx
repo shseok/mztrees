@@ -99,7 +99,7 @@ export default function Home() {
   // getMyAccountWithRefresh();
 
   return (
-    <TabLayout className={styles.layout_padding}>
+    <TabLayout className="layout_padding">
       <div className={styles.content}>
         <ListModeSelector mode={mode} onSelectMode={onselect} />
         {mode === "past" && <WeekSelector dateRange={dateRange} />}

@@ -7,7 +7,6 @@ import SearchInput from "@/components/search/SearchInput";
 import SearchResultCardList from "@/components/search/SearchResultCardList";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { searchItems } from "@/lib/api/search";
-import styles from "@/styles/Search.module.scss";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { stringify } from "qs";
@@ -77,7 +76,7 @@ export default function Search({ searchParams }: Props) {
       header={
         <>
           <MobileHeader
-            className={styles.style_mobile_header}
+            className="style_mobile_header"
             title={
               <SearchInput value={searchText} onChangeText={setSearchText} />
             }

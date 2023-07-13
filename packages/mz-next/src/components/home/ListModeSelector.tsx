@@ -1,13 +1,11 @@
 import React, { useMemo } from "react";
 import { ListMode } from "@/lib/api/types";
 import { Trending, Time, Calendar } from "@/utils/vectors";
-import classNames from "classnames/bind";
 import styles from "@/styles/ListModeSelector.module.scss";
+import { cn } from "@/utils/common";
 
 const ModeWidth = 75;
 const ModeGap = 16;
-
-const cx = classNames.bind(styles);
 
 interface Props {
   mode: ListMode;
@@ -72,7 +70,7 @@ const ListModeItem = ({
 }: Props & { name: string; icon: React.ReactNode; currentMode: ListMode }) => {
   return (
     <div
-      className={cx("mode", mode === currentMode && "active")}
+      className={cn(styles.mode, mode === currentMode && styles.active)}
       onClick={() => onSelectMode(mode)}
     >
       {icon}

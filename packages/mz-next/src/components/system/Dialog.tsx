@@ -25,7 +25,7 @@ const Dialog = ({
   mode = "alert",
 }: Props) => {
   return (
-    <Modal className={styles.styled_modal} visible={visible}>
+    <Modal className="styled_modal" visible={visible}>
       <h3 className={styles.title}>{title}</h3>
       <p className={styles.description}>{description}</p>
       <section className={styles.footer}>

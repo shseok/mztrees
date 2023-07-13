@@ -2,11 +2,9 @@
 
 import { Home, Search, PlusCircle, Bookmark, Setting } from "@/utils/vectors";
 import styles from "@/styles/FooterTabItem.module.scss";
-import classNames from "classnames/bind";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-const cx = classNames.bind(styles);
+import { cn } from "@/utils/common";
 
 const IconMap = {
   home: <Home />,
@@ -26,7 +24,7 @@ const FooterTabItem = ({ icon, to }: Props) => {
   // console.log(pathname, to);
   return (
     <Link
-      className={cx("like_item", pathname === to && "active")}
+      className={cn(styles.like_item, pathname === to && styles.active)}
       href={to}
       // passHref
     >

@@ -100,7 +100,7 @@ export default function Edit({ params: { id } }: Params) {
             value={form.title}
           />
           <LabelTextArea
-            className={styles.styled_label_textarea}
+            className="styled_label_textarea"
             label="내용"
             name="body"
             onChange={onChange}

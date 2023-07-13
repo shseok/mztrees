@@ -1,9 +1,7 @@
 import React, { forwardRef } from "react";
-import classNames from "classnames/bind";
 import Link from "next/link";
 import styles from "@/styles/Button.module.scss";
-
-const cx = classNames.bind(styles);
+import { cn } from "@/utils/common";
 
 interface ButtonProps {
   layoutmode?: "inline" | "fullWidth";
@@ -31,12 +29,12 @@ const Button = forwardRef<HTMLButtonElement, Props>(
     return to ? (
       <Link
         ref={ref as any}
-        className={cx(
+        className={cn(
           rest.className,
-          layoutmode,
-          variant,
-          size,
-          "linked_button"
+          styles.linked_button,
+          styles[layoutmode],
+          styles[variant],
+          styles[size]
         )}
         // style={rest.style}
         href={to}
@@ -48,7 +46,12 @@ const Button = forwardRef<HTMLButtonElement, Props>(
     ) : (
       <button
         ref={ref as any}
-        className={cx(layoutmode, variant, size, "styled_button")}
+        className={cn(
+          styles.styled_button,
+          styles[layoutmode],
+          styles[variant],
+          styles[size]
+        )}
         {...rest}
       />
     );

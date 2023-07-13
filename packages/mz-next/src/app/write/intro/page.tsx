@@ -70,7 +70,7 @@ export default function Intro() {
             onChange={onChange}
           ></LabelInput>
           <LabelTextArea
-            className={styles.styeld_label_textarea}
+            className="styled_label_textarea"
             label="내용"
             name="body"
             value={form.body}

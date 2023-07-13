@@ -1,9 +1,7 @@
 import React from "react";
 import { Logo } from "@/utils/vectors";
 import styles from "@/styles/MobileHeader.module.scss";
-import classNames from "classnames/bind";
-
-const cx = classNames.bind(styles);
+import { cn } from "@/utils/common";
 export interface HeaderProps {
   title?: React.ReactNode;
   headerLeft?: React.ReactNode;
@@ -18,13 +16,15 @@ const MobileHeader = ({
   className,
 }: HeaderProps) => {
   return (
-    <header className={cx("block", className)}>
+    <header className={cn(styles.block, className && styles[className])}>
       {headerLeft && (
-        <div className={cx("header_side", "left")}>{headerLeft}</div>
+        <div className={cn(styles.header_side, styles.left)}>{headerLeft}</div>
       )}
       <div className={styles.title}>{title}</div>
       {headerRight && (
-        <div className={cx("header_side", "right")}>{headerRight}</div>
+        <div className={cn(styles.header_side, styles.right)}>
+          {headerRight}
+        </div>
       )}
     </header>
   );

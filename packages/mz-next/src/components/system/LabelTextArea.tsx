@@ -1,8 +1,6 @@
 import { forwardRef, useState } from "react";
-import classNames from "classnames/bind";
+import { cn } from "@/utils/common";
 import styles from "@/styles/LabelTextArea.module.scss";
-
-const cx = classNames.bind(styles);
 
 interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string;
@@ -21,8 +19,8 @@ const LabelTextArea = forwardRef<HTMLTextAreaElement, Props>(
     };
 
     return (
-      <div className={cx(className, "block")}>
-        <label className={cx("label", focused && styles.focused)}>
+      <div className={cn(styles.block, className && styles[className])}>
+        <label className={cn(styles.label, focused && styles.focused)}>
           {label}
         </label>
         <textarea

@@ -29,7 +29,7 @@ const UserAddon = ({ username }: Props) => {
   return (
     <div className={styles.responsive}>
       <Button
-        className={styles.write_button}
+        className="write_button"
         to="/write"
         size="small"
         variant="primary"

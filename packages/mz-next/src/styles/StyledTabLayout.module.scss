@@ -1,9 +1,5 @@
 @import "_module";
 
-.layout_padding {
-  padding: 16px 16px 16px 16px;
-}
-
 .content {
   @include widescreen {
     width: 1150px;

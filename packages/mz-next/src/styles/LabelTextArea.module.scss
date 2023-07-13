@@ -3,6 +3,16 @@
 .block {
   display: flex;
   flex-direction: column;
+
+  &.styled_label_textarea {
+    flex: 1;
+
+    textarea {
+      flex: 1;
+      resize: none;
+      font-family: inherit;
+    }
+  }
 }
 
 .label {

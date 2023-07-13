@@ -29,7 +29,7 @@ export default function BookmarkLayout({
 
   return (
     // <Hydrate state={dehydratedState}>
-    <TabLayout className={styles.layout_padding}>
+    <TabLayout className="layout_padding">
       <div className={styles.content}>
         <Suspense fallback={<SkeletonUI />}>{children}</Suspense>
       </div>

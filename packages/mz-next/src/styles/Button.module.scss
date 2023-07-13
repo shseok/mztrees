@@ -99,4 +99,13 @@
 .linked_button {
   @include sharedStyles;
   text-decoration: none;
+
+  &.write_button {
+    display: none;
+    margin-right: 8px;
+
+    @media (min-width: 700px) {
+      display: flex;
+    }
+  }
 }

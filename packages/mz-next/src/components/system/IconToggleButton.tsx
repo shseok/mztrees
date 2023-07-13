@@ -2,9 +2,7 @@ import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Size } from "@/lib/api/types";
 import styles from "@/styles/IconToggleButton.module.scss";
-import classNames from "classnames/bind";
-
-const cx = classNames.bind(styles);
+import { cn } from "@/utils/common";
 
 interface Props {
   onClick: () => void;
@@ -22,7 +20,10 @@ const IconToggleButton = ({
   inactiveIcon,
 }: Props) => {
   return (
-    <button className={cx(styles.styled_button, size)} onClick={onClick}>
+    <button
+      className={cn(styles.styled_button, styles[size])}
+      onClick={onClick}
+    >
       <AnimatePresence initial={false}>
         {isActive ? (
           <motion.div

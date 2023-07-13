@@ -12,6 +12,12 @@
   @include mobile {
     display: none;
   }
+
+  &.style_mobile_header {
+    & > .title {
+      width: 100%;
+    }
+  }
 }
 
 .title {
