@@ -1,6 +1,6 @@
 import { Item } from "@/types/db";
 import Image from "next/image";
-import { Globe } from "@/utils/vectors";
+import { Globe } from "@/components/vectors";
 import { useDateDistance } from "@/hooks/useDateDistance";
 import { useLikeManager } from "@/hooks/useLikeManager";
 import LikeButton from "../system/LikeButton";

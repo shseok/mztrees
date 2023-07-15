@@ -1,5 +1,5 @@
 import React from "react";
-import { Logo } from "@/utils/vectors";
+import { Logo } from "@/components/vectors";
 import styles from "@/styles/MobileHeader.module.scss";
 import { cn } from "@/utils/common";
 export interface HeaderProps {

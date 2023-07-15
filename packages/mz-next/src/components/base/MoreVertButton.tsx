@@ -1,5 +1,5 @@
 import styles from "@/styles/MoreVertButton.module.scss";
-import { MoreVert } from "@/utils/vectors";
+import { MoreVert } from "@/components/vectors";
 interface Props {
   onClick: () => void;
 }

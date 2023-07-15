@@ -10,7 +10,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { validate } from "@/lib/validate";
 import styles from "@/styles/AuthForm.module.scss";
 import Link from "next/link";
-import { Logo } from "@/utils/vectors";
+import { Logo } from "@/components/vectors";
 import { NextAppError, extractNextError } from "@/lib/nextError";
 import { useUser } from "@/context/userContext";
 

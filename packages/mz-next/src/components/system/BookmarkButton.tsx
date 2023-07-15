@@ -1,6 +1,6 @@
 import { Size } from "@/types/db";
 import IconToggleButton from "./IconToggleButton";
-import { BookmarkOutline, Bookmark } from "@/utils/vectors";
+import { BookmarkOutline, Bookmark } from "@/components/vectors";
 import styles from "@/styles/BookmarkButton.module.scss";
 
 interface Props {

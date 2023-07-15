@@ -1,4 +1,4 @@
-import { LikeFill, LikeOutline } from "@/utils/vectors";
+import { LikeFill, LikeOutline } from "@/components/vectors";
 import styles from "@/styles/LikeButton.module.scss";
 import IconToggleButton from "./IconToggleButton";
 import { Size } from "@/types/db";

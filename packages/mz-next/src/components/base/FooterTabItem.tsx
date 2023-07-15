@@ -1,6 +1,12 @@
 "use client";
 
-import { Home, Search, PlusCircle, Bookmark, Setting } from "@/utils/vectors";
+import {
+  Home,
+  Search,
+  PlusCircle,
+  Bookmark,
+  Setting,
+} from "@/components/vectors";
 import styles from "@/styles/FooterTabItem.module.scss";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

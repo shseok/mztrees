@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import styles from "@/styles/SearchArea.module.scss";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Search } from "@/utils/vectors";
+import { Search } from "@/components/vectors";
 
 const SearchArea = () => {
   const ref = useRef<HTMLInputElement>(null);

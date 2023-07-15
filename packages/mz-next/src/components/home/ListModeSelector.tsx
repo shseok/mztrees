@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { ListMode } from "@/types/db";
-import { Trending, Time, Calendar } from "@/utils/vectors";
+import { Trending, Time, Calendar } from "@/components/vectors";
 import styles from "@/styles/ListModeSelector.module.scss";
 import { cn } from "@/utils/common";
 

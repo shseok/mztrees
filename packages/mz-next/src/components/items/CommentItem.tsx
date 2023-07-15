@@ -11,7 +11,7 @@ import { useItemId } from "@/hooks/useItemId";
 import { useBottomSheetModalStore } from "@/hooks/stores/useBottomSheetModalStore";
 import { useCommentActions } from "@/hooks/useCommentActions";
 import styles from "@/styles/CommentItem.module.scss";
-import { MoreVert } from "@/utils/vectors";
+import { MoreVert } from "@/components/vectors";
 import { useUser } from "@/context/userContext";
 
 /**@todo isSubcomment 굳이 필요한가에 대한 고민 */

@@ -5,7 +5,7 @@ import Button from "../system/Button";
 import SearchArea from "./SearchArea";
 import UserAddon from "./UserAddon";
 import Link from "next/link";
-import { Logo } from "@/utils/vectors";
+import { Logo } from "@/components/vectors";
 import { useUser } from "@/context/userContext";
 
 const DesktopHeader = () => {

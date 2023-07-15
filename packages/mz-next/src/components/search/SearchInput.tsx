@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "@/styles/SearchInput.module.scss";
-import { Search } from "@/utils/vectors";
+import { Search } from "@/components/vectors";
 
 interface Props {
   value: string;

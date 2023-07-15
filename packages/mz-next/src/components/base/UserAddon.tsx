@@ -5,7 +5,7 @@ import Button from "../system/Button";
 import UserMenu from "./UserMenu";
 import styles from "@/styles/UserAddon.module.scss";
 import Link from "next/link";
-import { User } from "@/utils/vectors";
+import { User } from "@/components/vectors";
 
 interface Props {
   username: string;

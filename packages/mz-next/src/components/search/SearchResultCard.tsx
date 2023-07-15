@@ -2,7 +2,7 @@ import { SearchItemResult } from "@/types/db";
 import Image from "next/image";
 import styles from "@/styles/SearchResultCard.module.scss";
 import DOMPurify from "dompurify";
-import { Globe } from "@/utils/vectors";
+import { Globe } from "@/components/vectors";
 
 interface Props {
   item: SearchItemResult;

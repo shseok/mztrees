@@ -2,7 +2,7 @@
 
 import { useGoBack } from "@/hooks/useGoback";
 import styles from "@/styles/HeaderBackButton.module.scss";
-import { ArrowLeft } from "@/utils/vectors";
+import { ArrowLeft } from "@/components/vectors";
 
 // interface Props {
 //   onClick: () => void;
