@@ -17,7 +17,7 @@ import WeekSelector from "@/components/home/WeekSelector";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { useSearchParams } from "next/navigation";
 import { getItems } from "@/lib/api/items";
-import { ListMode } from "@/lib/api/types";
+import { ListMode } from "@/types/db";
 // import { getMyAccountWithRefresh } from "@/lib/protectRoute";
 import { getWeekRangeFromDate } from "@/lib/week";
 import useSetSearchParams from "@/hooks/useSetSearchParams";

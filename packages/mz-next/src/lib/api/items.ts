@@ -7,7 +7,7 @@ import {
   LikeItemResult,
   ListMode,
   UnlikeCommentResult,
-} from "./types";
+} from "@/types/db";
 
 export async function createItem(params: CreateItemParams) {
   const response = await fetchClient.post<Item>("/api/items", params);

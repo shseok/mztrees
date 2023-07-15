@@ -1,5 +1,5 @@
 import { fetchClient } from "../client";
-import { SearchItemsResult } from "./types";
+import { SearchItemsResult } from "@/types/db";
 
 export async function searchItems({
   q,

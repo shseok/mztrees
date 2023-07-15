@@ -1,4 +1,4 @@
-import { SearchItemResult } from "@/lib/api/types";
+import { SearchItemResult } from "@/types/db";
 import SearchResultCard from "./SearchResultCard";
 import styles from "@/styles/SearchResultCardList.module.scss";
 

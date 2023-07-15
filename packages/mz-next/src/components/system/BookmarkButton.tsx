@@ -1,4 +1,4 @@
-import { Size } from "@/lib/api/types";
+import { Size } from "@/types/db";
 import IconToggleButton from "./IconToggleButton";
 import { BookmarkOutline, Bookmark } from "@/utils/vectors";
 import styles from "@/styles/BookmarkButton.module.scss";

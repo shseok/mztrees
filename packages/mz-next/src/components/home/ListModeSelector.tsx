@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { ListMode } from "@/lib/api/types";
+import { ListMode } from "@/types/db";
 import { Trending, Time, Calendar } from "@/utils/vectors";
 import styles from "@/styles/ListModeSelector.module.scss";
 import { cn } from "@/utils/common";

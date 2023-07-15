@@ -3,7 +3,7 @@ import { useItemId } from "./useItemId";
 import { deleteComment, editComment } from "@/lib/api/items";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCommentsQuery } from "./query/useCommentsQuery";
-import { Comment } from "@/lib/api/types";
+import { Comment } from "@/types/db";
 import { produce } from "immer";
 
 // TODO: mutation으로 변경 후 폴더로 이동하기

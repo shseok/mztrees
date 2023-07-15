@@ -1,7 +1,7 @@
 import { LikeFill, LikeOutline } from "@/utils/vectors";
 import styles from "@/styles/LikeButton.module.scss";
 import IconToggleButton from "./IconToggleButton";
-import { Size } from "@/lib/api/types";
+import { Size } from "@/types/db";
 
 interface Props {
   onClick: () => void;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Item } from "@/lib/api/types";
+import { Item } from "@/types/db";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import LikeButton from "../system/LikeButton";

@@ -12,7 +12,7 @@ import { useUser } from "@/context/userContext";
 import { useDialog } from "@/context/DialogContext";
 import { useBottomSheetModalStore } from "@/hooks/stores/useBottomSheetModalStore";
 import { useRouter } from "next/navigation";
-import { Item } from "@/lib/api/types";
+import { Item } from "@/types/db";
 import { useEffect, useState } from "react";
 import { extractNextError } from "@/lib/nextError";
 import Loading from "@/app/loading";

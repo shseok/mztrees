@@ -1,5 +1,5 @@
 import React from "react";
-import { Comment } from "@/lib/api/types";
+import { Comment } from "@/types/db";
 import CommentItem from "./CommentItem";
 import styles from "@/styles/SubcommentList.module.scss";
 

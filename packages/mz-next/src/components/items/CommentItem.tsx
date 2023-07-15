@@ -1,5 +1,5 @@
 import { useDateDistance } from "@/hooks/useDateDistance";
-import { Comment } from "@/lib/api/types";
+import { Comment } from "@/types/db";
 import SubCommentList from "./SubcommentList";
 import LikeButton from "../system/LikeButton";
 import { useCommentInputStore } from "@/hooks/stores/useCommentInputStore";

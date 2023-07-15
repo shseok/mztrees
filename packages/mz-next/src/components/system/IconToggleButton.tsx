@@ -1,6 +1,6 @@
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Size } from "@/lib/api/types";
+import { Size } from "@/types/db";
 import styles from "@/styles/IconToggleButton.module.scss";
 import { cn } from "@/utils/common";
 

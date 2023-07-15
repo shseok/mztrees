@@ -1,5 +1,5 @@
 import { fetchClient } from "../client";
-import { User } from "./types";
+import { User } from "@/types/db";
 
 export async function userRegister(params: AuthParams) {
   const response = await fetchClient.post<AuthResult>(

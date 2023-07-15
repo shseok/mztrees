@@ -1,4 +1,4 @@
-import { Item } from "@/lib/api/types";
+import { Item } from "@/types/db";
 import Image from "next/image";
 import { Globe } from "@/utils/vectors";
 import { useDateDistance } from "@/hooks/useDateDistance";

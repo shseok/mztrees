@@ -1,5 +1,5 @@
 import { fetchClient } from "../client";
-import { Bookmark, GetBookmarksResult } from "./types";
+import { Bookmark, GetBookmarksResult } from "@/types/db";
 
 export const createBookmark = async (
   itemId: number,
