@@ -25,7 +25,7 @@ const authDescription = {
     question: "계정이 없으신가요?",
     buttonText: "로그인",
     actionText: "회원가입",
-    actionLink: "/auth/register",
+    actionLink: "/register",
   },
   register: {
     usernamePlaceholder: "5~20자 사이의 영문 소문자 숫자 입력",
@@ -33,7 +33,7 @@ const authDescription = {
     question: "계정이 이미 있으신가요?",
     buttonText: "회원가입",
     actionText: "로그인",
-    actionLink: "/auth/login",
+    actionLink: "/login",
   },
 };
 

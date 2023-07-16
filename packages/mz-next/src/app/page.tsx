@@ -1,8 +1,8 @@
+import Home from "@/components/home/Home";
 import { getItems } from "@/lib/api/items";
 import getQueryClient from "@/utils/getQueryClient";
 import Hydrate from "@/utils/hydrate.client";
 import { dehydrate } from "@tanstack/query-core";
-import Home from "./home";
 
 // export const revalidate = 0;
 

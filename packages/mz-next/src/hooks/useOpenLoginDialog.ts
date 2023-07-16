@@ -32,7 +32,7 @@ export const useOpenLoginDialog = () => {
         confirmText: "로그인",
         onConfirm: () => {
           /**@todos refactor like useProtectedRoute or use useProtectedRoute */
-          router.push(`/auth/login?next=${pathname}`);
+          router.push(`/login?next=${pathname}`);
         },
         mode: "confirm",
       });

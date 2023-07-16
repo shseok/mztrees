@@ -24,10 +24,10 @@ const DesktopHeader = () => {
             <UserAddon username={currentUser.username} profileImage={""} />
           ) : (
             <div className={styles.buttons}>
-              <Button variant="tertiary" size="small" to="/auth/login">
+              <Button variant="tertiary" size="small" to="/login">
                 로그인
               </Button>
-              <Button size="small" to="/auth/register">
+              <Button size="small" to="/register">
                 회원가입
               </Button>
             </div>
