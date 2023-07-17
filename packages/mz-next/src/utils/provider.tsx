@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { DialogProvider } from "@/context/DialogContext";
+import { UserProvider } from "@/context/userContext";
 
 function Providers({ children }: React.PropsWithChildren) {
   const [client] = useState(
@@ -11,7 +13,9 @@ function Providers({ children }: React.PropsWithChildren) {
 
   return (
     <QueryClientProvider client={client}>
-      {children}
+      <DialogProvider>
+        <UserProvider>{children}</UserProvider>
+      </DialogProvider>
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
     </QueryClientProvider>
   );

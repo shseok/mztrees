@@ -1,8 +1,6 @@
 import "../styles/global.scss";
 import localFont from "next/font/local";
 import Providers from "@/utils/provider";
-import { DialogProvider } from "@/context/DialogContext";
-import { UserProvider } from "@/context/userContext";
 import { headers } from "next/headers";
 import GlobalBottomSheetModal from "@/components/system/GlobalBottomSheetModal";
 
@@ -47,12 +45,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={myFont.className}>
       <body>
-        <Providers>
-          <DialogProvider>
-            <UserProvider>{children}</UserProvider>
-          </DialogProvider>
-          <GlobalBottomSheetModal />
-        </Providers>
+        <Providers>{children}</Providers>
+        <GlobalBottomSheetModal />
       </body>
     </html>
   );
