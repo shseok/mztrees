@@ -1,13 +1,4 @@
-@import "_var";
-
-@mixin ListItemStyle {
-  padding: 16px;
-  color: $gray5;
-  background: white;
-  &:active {
-    opacity: 0.7;
-  }
-}
+@import "_var", "_module";
 
 .block {
   background: $gray0;

@@ -2,10 +2,11 @@ import { headers } from "next/headers";
 import { setClientCookie } from "./client";
 import { getMyAccountWithRefresh } from "./protectRoute";
 import { extractNextError } from "./nextError";
+import type { NextRequest } from "next/server";
 
-export function applyAuth() {
-  const headersList = headers();
-  const cookie = headersList.get("Cookie");
+export function applyAuth(request: NextRequest) {
+  const cookie = request.headers.get("Cookie");
+  console.log(cookie, "in applyAuth");
   if (!cookie || !cookie.includes("access_token")) {
     return false;
   }
@@ -13,8 +14,8 @@ export function applyAuth() {
   return true;
 }
 
-export const checkIsLoggedIn = async () => {
-  const applied = applyAuth();
+export const checkIsLoggedIn = async (request: NextRequest) => {
+  const applied = applyAuth(request);
   if (!applied) return false;
 
   try {

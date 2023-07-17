@@ -58,9 +58,10 @@ export default function Search({ searchParams }: Props) {
   useEffect(() => {
     console.log("1router.push");
     const query = { q: inputResult };
-    const url = `/search?${stringify(query, {
+    const url = `/search${stringify(query, {
       charset: "utf-8",
       encodeValuesOnly: true,
+      addQueryPrefix: true,
     })}`;
     router.push(url);
   }, [inputResult, router]);

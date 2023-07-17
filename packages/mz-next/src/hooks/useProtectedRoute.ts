@@ -8,9 +8,10 @@ export function useProtectedRoute() {
   const pathname = usePathname();
   console.log(currentUser);
   useEffect(() => {
+    console.log("bookmark", currentUser, "in useProtectedRoute");
     if (!currentUser) {
-      router.replace(`/auth/login?next=${pathname}`);
-      // router.replace(`/auth/login?next=${pathname}`);
+      router.replace(`/login?next=${pathname}`);
+      // router.replace(`/login?next=${pathname}`);
     }
   }, [currentUser, router, pathname]);
   return !!currentUser;

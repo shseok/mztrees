@@ -37,6 +37,15 @@
   overflow-x: hidden;
 }
 
+@mixin ListItemStyle {
+  padding: 16px;
+  color: $gray5;
+  background: white;
+  &:active {
+    opacity: 0.7;
+  }
+}
+
 // @mixin tablet {
 //   @media (min-width: #{$tablet}) and (max-width: #{$desktop - 1px}) {
 //     @content;

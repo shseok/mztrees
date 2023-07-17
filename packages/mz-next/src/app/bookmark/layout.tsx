@@ -1,10 +1,7 @@
-"use client";
-
 import TabLayout from "@/components/layout/TabLayout";
 import styles from "@/styles/StyledTabLayout.module.scss";
 import { Suspense } from "react";
 import SkeletonUI from "@/components/system/SkeletonUI";
-import { useProtectedRoute } from "@/hooks/useProtectedRoute";
 
 export const metadata = {
   title: "bookmark",
@@ -19,14 +16,6 @@ export default function BookmarkLayout({
   // const queryClient = getQueryClient();
   // const dehydratedState = dehydrate(queryClient);
   // await queryClient.prefetchInfiniteQuery(["bookmarks"], () => getBookmarks());
-
-  const hasPermission = useProtectedRoute();
-
-  if (!hasPermission) {
-    // TODO: 인가 관련 에러처리해주기 (react-tostify)
-    return null;
-  }
-
   return (
     // <Hydrate state={dehydratedState}>
     <TabLayout className="layout_padding">

@@ -1,3 +1,4 @@
+import { stringify } from "qs";
 import { fetchClient } from "../client";
 import { Bookmark, GetBookmarksResult } from "@/types/db";
 
@@ -28,8 +29,9 @@ export const deleteBookmark = async (
 };
 
 export const getBookmarks = async (cursor?: number) => {
-  const response = await fetchClient.get<GetBookmarksResult>("/api/bookmark/", {
-    params: { cursor },
-  });
+  const query = cursor ? stringify({ cursor }, { addQueryPrefix: true }) : "";
+  const response = await fetchClient.get<GetBookmarksResult>(
+    "/api/bookmark/".concat(query)
+  );
   return response;
 };

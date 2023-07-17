@@ -1,5 +1,3 @@
-"use client";
-
 import { getMyAccount } from "./api/me";
 import { refreshToken } from "./api/auth";
 import { extractNextError } from "./nextError";

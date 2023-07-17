@@ -28,10 +28,10 @@ async function rejectIfNeeded(response: Response) {
 export const fetchClient = {
   baseUrl: "http://localhost:4000",
   async get<T>(url: string, config: RequestConfig = {}): Promise<T> {
-    const query = config?.params
-      ? QueryString.stringify(config?.params, { addQueryPrefix: true })
-      : "";
-    const response = await fetch(this.baseUrl.concat(url, query), {
+    // const query = config?.params
+    //   ? QueryString.stringify(config?.params, { addQueryPrefix: true })
+    //   : "";
+    const response = await fetch(this.baseUrl.concat(url), {
       method: "GET",
       credentials: "include",
       headers: {

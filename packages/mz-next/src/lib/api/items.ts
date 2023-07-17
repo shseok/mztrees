@@ -1,3 +1,4 @@
+import { stringify } from "qs";
 import { fetchClient } from "../client";
 import {
   Comment,
@@ -25,9 +26,13 @@ export async function getItems({
   startDate?: string;
   endDate?: string;
 }) {
-  const resonse = await fetchClient.get<GetItemsResult>("/api/items", {
-    params: { mode, cursor, startDate, endDate },
-  });
+  const query = stringify(
+    { mode, cursor, startDate, endDate },
+    { addQueryPrefix: true }
+  );
+  const resonse = await fetchClient.get<GetItemsResult>(
+    "/api/items".concat(query)
+  );
   // const resonse = await fetchClient.get<GetItemsResult>(
   //   '/api/items'.concat(
   //     qs.stringify({ mode, cursor, startDate, endDate }, { addQueryPrefix: true }),
