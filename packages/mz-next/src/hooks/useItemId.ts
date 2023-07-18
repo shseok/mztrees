@@ -6,8 +6,8 @@ import { useParams } from "next/navigation";
  * Returns ItemId URL parameter in items page
  */
 export function useItemId() {
-  const { itemId } = useParams();
-  const parsed = itemId ? parseInt(itemId) : null;
+  const { id } = useParams();
+  const parsed = id ? parseInt(id) : null;
   if (parsed && isNaN(parsed)) return null;
   return parsed;
 }

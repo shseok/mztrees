@@ -1,10 +1,12 @@
 import Home from "@/components/home/Home";
+import TabLayout from "@/components/layout/TabLayout";
 import { getItems } from "@/lib/api/items";
 import getQueryClient from "@/utils/getQueryClient";
 import Hydrate from "@/utils/hydrate.client";
 import { dehydrate } from "@tanstack/query-core";
 
 // export const revalidate = 0;
+// export const dynamic = "force-dynamic";
 
 export default async function Hydation() {
   const queryClient = getQueryClient();
@@ -14,7 +16,9 @@ export default async function Hydation() {
   );
   return (
     <Hydrate state={dehydratedState}>
-      <Home />
+      <TabLayout className="layout_padding">
+        <Home />
+      </TabLayout>
     </Hydrate>
   );
 }

@@ -30,7 +30,7 @@ const Button = forwardRef<HTMLButtonElement, Props>(
       <Link
         ref={ref as any}
         className={cn(
-          rest.className,
+          rest.className && styles[rest.className],
           styles.linked_button,
           styles[layoutmode],
           styles[variant],

@@ -1,7 +1,7 @@
 "use client";
 
 import BasicLayout from "@/components/layout/BasicLayout";
-import { deleteItem, getItem } from "@/lib/api/items";
+import { deleteItem } from "@/lib/api/items";
 import styles from "@/styles/Item.module.scss";
 import ItemViewer from "@/components/items/ItemViewer";
 import CommentList from "@/components/items/CommentList";
@@ -13,19 +13,16 @@ import { useDialog } from "@/context/DialogContext";
 import { useBottomSheetModalStore } from "@/hooks/stores/useBottomSheetModalStore";
 import { useRouter } from "next/navigation";
 import { Item } from "@/types/db";
-import { useEffect, useState } from "react";
-import { extractNextError } from "@/lib/nextError";
-import Loading from "@/app/loading";
+import Loading from "@/components/base/PostLoading";
 
 type Props = {
-  itemId: string;
+  item: Item;
 };
 
-export default function Item({ itemId }: Props) {
+export default function Item({ item }: Props) {
   const { currentUser } = useUser();
-  const [item, setItem] = useState<Item | null>(null);
   const isMyItem = item ? item.user.id === currentUser?.id : false;
-  const { data: comments, status } = useCommentsQuery(parseInt(itemId));
+  const { data: comments, status } = useCommentsQuery(item.id);
 
   const openBottomSheetModal = useBottomSheetModalStore((store) => store.open);
   const { open: openDialog } = useDialog();
@@ -36,7 +33,7 @@ export default function Item({ itemId }: Props) {
         name: "수정",
         onClick: () => {
           // if (!item.id) return;
-          router.push(`/write/edit/${parseInt(itemId)}`);
+          router.push(`/write/edit/${item.id}`);
         },
       },
       {
@@ -49,8 +46,9 @@ export default function Item({ itemId }: Props) {
             onConfirm: async () => {
               /** TODO: show fullscreen spinner on loading */
               // if (!item.id) return;
-              await deleteItem(parseInt(itemId));
-              router.push("/");
+              await deleteItem(item.id);
+              router.push("/?mode=recent");
+              router.refresh();
             },
             confirmText: "삭제",
             cancelText: "취소",
@@ -60,18 +58,6 @@ export default function Item({ itemId }: Props) {
     ]);
   };
 
-  useEffect(() => {
-    async function fetchItemData() {
-      try {
-        const item = await getItem(parseInt(itemId));
-        setItem(item);
-      } catch (e) {
-        console.log(extractNextError(e));
-      }
-    }
-    fetchItemData();
-  }, [itemId]);
-
   return (
     <BasicLayout
       hasBackButton
@@ -79,7 +65,7 @@ export default function Item({ itemId }: Props) {
       headerRight={isMyItem && <MoreVertButton onClick={onClickMore} />}
     >
       <div className={styles.content}>
-        {item && <ItemViewer item={item} />}
+        <ItemViewer item={item} />
         {status === "loading" ? (
           <Loading />
         ) : status === "error" ? (

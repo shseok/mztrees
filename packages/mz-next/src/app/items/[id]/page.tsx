@@ -1,6 +1,6 @@
 import { getItem } from "@/lib/api/items";
 import { Metadata } from "next";
-import Item from "./item";
+import Item from "@/components/items/Item";
 
 type Params = {
   params: {
@@ -21,21 +21,16 @@ export async function generateMetadata({
     description: itemData.body,
   };
 }
-// TODO: client component로 변경하기
+export const dynamic = "force-dynamic";
+// export const fetchCache = "force-no-store";
 
-export default function Hydation({ params: { id }, searchParams }: Params) {
-  console.log("each item", parseInt(id), isNaN(parseInt(id)), searchParams);
-  // const queryClient = getQueryClient();
-  // const dehydratedState = dehydrate(queryClient);
-  // // const item = await getItem(parseInt(id));
-  // await queryClient.prefetchQuery(["comments"], () =>
-  //   getComments(parseInt(id))
-  // );
-  return (
-    // <Hydrate state={dehydratedState}>
-    <Item itemId={id} />
-    // </Hydrate>
-  );
+export default async function ItemPage({
+  params: { id },
+  searchParams,
+}: Params) {
+  const itemData = await getItem(parseInt(id));
+  console.log("each item", parseInt(id), searchParams, itemData);
+  return <Item item={itemData} />;
 }
 
 // if server is not working, not build

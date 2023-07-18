@@ -52,6 +52,7 @@ export default function Edit({ params: { id } }: Params) {
       });
       // router.push(`/items/${item.id}`);
       router.back();
+      router.refresh();
     } catch (e) {
       // TODO: refactor erorr like "getMyAccountWithRefresh"
       const error = extractNextError(e);

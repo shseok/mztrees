@@ -10,6 +10,7 @@ import { useUser } from "@/context/userContext";
 
 const DesktopHeader = () => {
   const { currentUser } = useUser();
+  console.log("in desktop header", currentUser);
 
   return (
     <header className={styles.block}>

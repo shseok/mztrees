@@ -99,22 +99,18 @@ export default function Home() {
   // getMyAccountWithRefresh();
 
   return (
-    <TabLayout className="layout_padding">
-      <div className={styles.content}>
-        <ListModeSelector mode={mode} onSelectMode={onselect} />
-        {mode === "past" && <WeekSelector dateRange={dateRange} />}
-        {status === "loading" ? (
-          <SkeletonUI />
-        ) : status === "error" ? (
-          // TODO: define error type
-          <div>Error: {(error as any).message}</div>
-        ) : (
-          <LinkCardList
-            items={infiniteData.pages.flatMap((page) => page.list)}
-          />
-        )}
-        <div ref={observerTargetEl} />
-      </div>
-    </TabLayout>
+    <div className={styles.content}>
+      <ListModeSelector mode={mode} onSelectMode={onselect} />
+      {mode === "past" && <WeekSelector dateRange={dateRange} />}
+      {status === "loading" ? (
+        <SkeletonUI />
+      ) : status === "error" ? (
+        // TODO: define error type
+        <div>Error: {(error as any).message}</div>
+      ) : (
+        <LinkCardList items={infiniteData.pages.flatMap((page) => page.list)} />
+      )}
+      <div ref={observerTargetEl} />
+    </div>
   );
 }
