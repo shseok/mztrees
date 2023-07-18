@@ -31,7 +31,7 @@ export const deleteBookmark = async (
 export const getBookmarks = async (cursor?: number) => {
   const query = cursor ? stringify({ cursor }, { addQueryPrefix: true }) : "";
   const response = await fetchClient.get<GetBookmarksResult>(
-    "/api/bookmark/".concat(query)
+    "/api/bookmark".concat(query)
   );
   return response;
 };
