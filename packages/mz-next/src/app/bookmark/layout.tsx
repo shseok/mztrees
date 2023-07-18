@@ -1,7 +1,14 @@
+"use client";
+
 import TabLayout from "@/components/layout/TabLayout";
 import styles from "@/styles/StyledTabLayout.module.scss";
 import { Suspense } from "react";
 import SkeletonUI from "@/components/system/SkeletonUI";
+import { ErrorBoundary } from "react-error-boundary";
+import { extractNextError } from "@/lib/nextError";
+import Button from "@/components/system/Button";
+import { refreshToken } from "@/lib/api/auth";
+import { useQueryErrorResetBoundary } from "@tanstack/react-query";
 
 export const metadata = {
   title: "bookmark",
@@ -16,11 +23,33 @@ export default function BookmarkLayout({
   // const queryClient = getQueryClient();
   // const dehydratedState = dehydrate(queryClient);
   // await queryClient.prefetchInfiniteQuery(["bookmarks"], () => getBookmarks());
+  const { reset } = useQueryErrorResetBoundary();
   return (
     // <Hydrate state={dehydratedState}>
     <TabLayout className="layout_padding">
       <div className={styles.content}>
-        <Suspense fallback={<SkeletonUI />}>{children}</Suspense>
+        <ErrorBoundary
+          FallbackComponent={({ error, resetErrorBoundary }) => {
+            const e = extractNextError(error);
+            console.log(e.name === "Unauthorized" && e.payload?.isExpiredToken);
+            return (
+              <div>
+                세션이 만료되었습니다. 새로고침해주세요.
+                <Button
+                  onClick={async () => {
+                    await refreshToken();
+                    resetErrorBoundary();
+                  }}
+                >
+                  새로고침
+                </Button>
+              </div>
+            );
+          }}
+          onReset={reset}
+        >
+          <Suspense fallback={<SkeletonUI />}>{children}</Suspense>
+        </ErrorBoundary>
       </div>
     </TabLayout>
     // </Hydrate>
