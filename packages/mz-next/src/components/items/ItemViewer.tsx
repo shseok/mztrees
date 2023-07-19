@@ -12,7 +12,7 @@ import { useBookmarkManager } from "@/hooks/useBookmarkManager";
 import Link from "next/link";
 import styles from "@/styles/ItemViewer.module.scss";
 import { Globe } from "@/components/vectors";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/UserContext";
 
 interface Props {
   item: Item;

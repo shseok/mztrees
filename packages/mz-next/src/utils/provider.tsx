@@ -4,7 +4,7 @@ import { useState } from "react";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { DialogProvider } from "@/context/DialogContext";
-import { UserProvider } from "@/context/userContext";
+import { UserProvider } from "@/context/UserContext";
 
 function Providers({ children }: React.PropsWithChildren) {
   const [client] = useState(

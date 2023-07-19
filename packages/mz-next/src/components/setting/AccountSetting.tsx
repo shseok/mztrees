@@ -8,7 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { changePassword, unregister } from "@/lib/api/me";
 import { extractNextError } from "@/lib/nextError";
 import styles from "@/styles/AccountSetting.module.scss";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/UserContext";
 
 const AccountSetting = () => {
   const { currentUser } = useUser();

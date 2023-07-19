@@ -11,7 +11,7 @@ import { useBottomSheetModalStore } from "@/hooks/stores/useBottomSheetModalStor
 import { useCommentActions } from "@/hooks/useCommentActions";
 import styles from "@/styles/CommentItem.module.scss";
 import { MoreVert } from "@/components/vectors";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/UserContext";
 
 /**@todo isSubcomment 굳이 필요한가에 대한 고민 */
 interface Props {

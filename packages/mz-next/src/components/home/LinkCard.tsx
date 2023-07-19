@@ -11,7 +11,7 @@ import BookmarkButton from "../system/BookmarkButton";
 import { useBookmarkManager } from "@/hooks/useBookmarkManager";
 import styles from "@/styles/LinkCard.module.scss";
 import Link from "next/link";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/UserContext";
 import { useSearchParams } from "next/navigation";
 
 interface Props {

@@ -8,7 +8,7 @@ import CommentList from "@/components/items/CommentList";
 import CommentInputOverlay from "@/components/items/CommentInputOverlay";
 import MoreVertButton from "@/components/base/MoreVertButton";
 import { useCommentsQuery } from "@/hooks/query/useCommentsQuery";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/UserContext";
 import { useDialog } from "@/context/DialogContext";
 import { useBottomSheetModalStore } from "@/hooks/stores/useBottomSheetModalStore";
 import { useRouter } from "next/navigation";

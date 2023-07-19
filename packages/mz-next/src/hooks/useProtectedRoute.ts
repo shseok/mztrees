@@ -1,4 +1,4 @@
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/UserContext";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 

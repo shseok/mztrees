@@ -6,7 +6,7 @@ import SearchArea from "./SearchArea";
 import UserAddon from "./UserAddon";
 import Link from "next/link";
 import { Logo } from "@/components/vectors";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/UserContext";
 
 const DesktopHeader = () => {
   const { currentUser } = useUser();

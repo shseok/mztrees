@@ -2,7 +2,7 @@ import React from "react";
 import { useCommentInputStore } from "@/hooks/stores/useCommentInputStore";
 import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
 import styles from "@/styles/CommentInput.module.scss";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/UserContext";
 
 const CommentInput = () => {
   const write = useCommentInputStore((state) => state.write);
