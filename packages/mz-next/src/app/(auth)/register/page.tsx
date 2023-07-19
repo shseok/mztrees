@@ -1,6 +1,6 @@
 import BasicLayout from "@/components/layout/BasicLayout";
 import { Suspense } from "react";
-import Loading from "@/components/base/PostLoading";
+import Loading from "@/components/system/PostLoading";
 import AuthForm from "@/components/auth/AuthForm";
 
 export default function Register() {

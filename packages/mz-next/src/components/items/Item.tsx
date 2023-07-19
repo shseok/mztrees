@@ -13,7 +13,7 @@ import { useDialog } from "@/context/DialogContext";
 import { useBottomSheetModalStore } from "@/hooks/stores/useBottomSheetModalStore";
 import { useRouter } from "next/navigation";
 import { Item } from "@/types/db";
-import Loading from "@/components/base/PostLoading";
+import Loading from "@/components/system/PostLoading";
 
 type Props = {
   item: Item;

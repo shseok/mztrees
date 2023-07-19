@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import { stringify } from "qs";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
-import Loading from "@/components/base/PostLoading";
+import Loading from "@/components/system/PostLoading";
 
 interface Props {
   searchParams: { [key: string]: string | undefined };

@@ -1,3 +1,5 @@
+"use client";
+
 import LinkCardList from "@/components/home/LinkCardList";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { getBookmarks } from "@/lib/api/bookmark";
