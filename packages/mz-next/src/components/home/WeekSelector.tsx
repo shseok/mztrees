@@ -1,6 +1,5 @@
 import { format } from "date-fns";
 import React, { useMemo } from "react";
-// import { useSearchParams } from "react-router-dom";
 import { addWeekToRange } from "@/lib/week";
 import styles from "@/styles/WeekSelector.module.scss";
 import useSetSearchParams from "@/hooks/useSetSearchParams";

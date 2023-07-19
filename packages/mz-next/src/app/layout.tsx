@@ -1,10 +1,7 @@
 import "../styles/global.scss";
 import localFont from "next/font/local";
 import Providers from "@/utils/provider";
-import { headers } from "next/headers";
 import GlobalBottomSheetModal from "@/components/system/GlobalBottomSheetModal";
-
-import { setClientCookie } from "@/lib/client";
 
 export const metadata = {
   title: "mz",

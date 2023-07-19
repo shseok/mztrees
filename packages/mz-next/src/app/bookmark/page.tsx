@@ -9,8 +9,6 @@ import SkeletonUI from "@/components/system/SkeletonUI";
 
 export default function Bookmark() {
   console.log("bookmark");
-  // const router = useRouter();
-  // const openLoginDialog = useOpenLoginDialog();
   const observerTargetEl = useRef<HTMLDivElement>(null);
 
   const {
@@ -42,19 +40,6 @@ export default function Bookmark() {
   const items = data?.pages
     .flatMap((page) => page.list)
     .map((page) => page.item);
-
-  // if (isError) {
-  //   console.log("젭라", isError, e);
-  //   const error = extractNextError(e);
-  //   if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
-  //     // refresh token
-  //     console.log("페이지 리프레쉬 ");
-  //     router.refresh();
-  //   } else {
-  //     openLoginDialog("sessionOut");
-  //   }
-  //   console.log(extractNextError(e));
-  // }
 
   return (
     <>

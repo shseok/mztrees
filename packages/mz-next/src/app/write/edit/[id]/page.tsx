@@ -3,7 +3,7 @@
 import BasicLayout from "@/components/layout/BasicLayout";
 import React, { useEffect, useState } from "react";
 import styles from "@/styles/EditForm.module.scss";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { getItem, updateItem } from "@/lib/api/items";
 import { extractNextError } from "@/lib/nextError";
 import { refreshToken } from "@/lib/api/auth";
@@ -115,15 +115,3 @@ export default function Edit({ params: { id } }: Params) {
     </BasicLayout>
   );
 }
-
-/**
- * 
- * const result = await fetch(`http://localhost:4000/api/items/${id}`, {
-    cache: "no-store",
-  });
-
-  or 
-
-  export const revalidate = 0;
-  을 해도 수정하고 다시 들어오면 캐시가 된다.. 그래서 그냥 client component로 변경
- */

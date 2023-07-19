@@ -7,11 +7,8 @@ import { useUser } from "@/context/userContext";
 const CommentInput = () => {
   const write = useCommentInputStore((state) => state.write);
   const openLoginDialog = useOpenLoginDialog();
-  // const set = setUser();
   const { currentUser } = useUser();
   const onClick = async () => {
-    // const currentUser = await getMyAccount();
-    // set(currentUser);
     if (!currentUser) {
       openLoginDialog("comment");
       return;

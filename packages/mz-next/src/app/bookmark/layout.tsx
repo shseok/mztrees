@@ -18,12 +18,8 @@ export default function BookmarkLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // const queryClient = getQueryClient();
-  // const dehydratedState = dehydrate(queryClient);
-  // await queryClient.prefetchInfiniteQuery(["bookmarks"], () => getBookmarks());
   const { reset } = useQueryErrorResetBoundary();
   return (
-    // <Hydrate state={dehydratedState}>
     <TabLayout className="layout_padding">
       <div className={styles.content} style={{ height: "100%" }}>
         <ErrorBoundary FallbackComponent={ErrorFallback} onReset={reset}>
@@ -31,6 +27,5 @@ export default function BookmarkLayout({
         </ErrorBoundary>
       </div>
     </TabLayout>
-    // </Hydrate>
   );
 }

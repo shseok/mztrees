@@ -40,12 +40,9 @@ const ItemViewer = ({ item }: Props) => {
   const isBookmarked = itemOverride?.isBookmarked ?? item.isBookmarked;
   /**TODO: 연타로 누르면 기존의 것이 잘 취소되어야함 */
   const openLoginDialog = useOpenLoginDialog();
-  // const set = setUser();
   const { currentUser } = useUser();
   /**TODO: move to hooks */
   const toggleLike = async () => {
-    // const currentUser = await getMyAccount();
-    // set(currentUser);
     if (!currentUser) {
       openLoginDialog("itemLike");
       return;
@@ -58,8 +55,6 @@ const ItemViewer = ({ item }: Props) => {
   };
 
   const toggleBookmark = async () => {
-    // const currentUser = await getMyAccount();
-    // set(currentUser);
     if (!currentUser) {
       openLoginDialog("itemBookmark");
       return;

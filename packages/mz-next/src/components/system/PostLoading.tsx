@@ -1,12 +1,10 @@
 import styles from "@/styles/gooLoader.module.scss";
 
 export default function Loading() {
-  // You can add any UI inside Loading, including a Skeleton.
   return <LoadingSkeleton />;
 }
 
 function LoadingSkeleton() {
-  // return <div>잠시만 기다려 주세요.</div>;
   return (
     <div className={styles.loading_container}>
       <div className={styles.blobs}>

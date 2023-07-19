@@ -36,20 +36,14 @@ const LinkCard = ({ item }: Props) => {
   const { bookmark, unbookmark } = useBookmarkManager();
   const searchParams = useSearchParams();
 
-  // const isMultiColumn = useIsMultiColumn();
-  // console.log(isMultiColumn);
-
   const isLiked = itemOverride?.isLiked ?? item.isLiked;
   const likes = itemOverride?.itemStats?.likes ?? itemStats.likes;
   const isBookmarked = itemOverride?.isBookmarked ?? item.isBookmarked;
   /**TODO: 연타로 누르면 기존의 것이 잘 취소되어야함 */
   const openLoginDialog = useOpenLoginDialog();
-  // const set = setUser();
   const { currentUser } = useUser();
   /**TODO: move to hooks */
   const toggleLike = async () => {
-    // set(currentUser);
-
     if (!currentUser) {
       openLoginDialog("itemLike");
       return;
@@ -62,7 +56,6 @@ const LinkCard = ({ item }: Props) => {
   };
 
   const toggleBookmark = async () => {
-    // set(currentUser);
     if (!currentUser) {
       openLoginDialog("itemBookmark");
       return;

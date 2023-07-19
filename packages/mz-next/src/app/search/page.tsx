@@ -22,11 +22,6 @@ export default function Search({ searchParams }: Props) {
   const [searchText, setSearchText] = useState(searchParams?.["q"] ?? "");
   const [inputResult] = useDebounce(searchText, 300);
   const observerTargetEl = useRef<HTMLDivElement>(null);
-
-  // const queryClient = getQueryClient();
-  // const dehydratedState = dehydrate(queryClient);
-  // await queryClient.prefetchInfiniteQuery(["searchItems"], () => searchItems());
-  console.log("search", searchText, inputResult);
   const router = useRouter();
 
   const {
@@ -47,7 +42,6 @@ export default function Search({ searchParams }: Props) {
       },
     }
   );
-  // console.log(inputResult, searchText, searchParams.get('q'));
   const fetchNextData = useCallback(() => {
     if (!hasNextPage) return;
     fetchNextPage();

@@ -95,9 +95,6 @@ export default function Home() {
   //   (window as any).queryClient = useQueryClient();
   // }
 
-  // TODO: Remove with SSR
-  // getMyAccountWithRefresh();
-
   return (
     <div className={styles.content}>
       <ListModeSelector mode={mode} onSelectMode={onselect} />

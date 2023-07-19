@@ -4,7 +4,6 @@ import styles from "@/styles/Overlay.module.scss";
 
 interface Props {
   visible: boolean;
-  // 당장은 필요 x
   onClose?: () => void;
 }
 

@@ -38,8 +38,6 @@ const Button = forwardRef<HTMLButtonElement, Props>(
         )}
         // style={rest.style}
         href={to}
-        // state={{ redirect: "/" }}
-        // replace={true}
       >
         {rest.children}
       </Link>

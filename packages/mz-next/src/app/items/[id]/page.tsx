@@ -24,18 +24,7 @@ export async function generateMetadata({
 export const dynamic = "force-dynamic";
 // export const fetchCache = "force-no-store";
 
-export default async function ItemPage({
-  params: { id },
-  searchParams,
-}: Params) {
+export default async function ItemPage({ params: { id } }: Params) {
   const itemData = await getItem(parseInt(id));
-  console.log("each item", parseInt(id), searchParams, itemData);
   return <Item item={itemData} />;
 }
-
-// if server is not working, not build
-// export async function generateStaticParams() {
-//   const itemsResult = await getItems({ mode: "recent" });
-//   const items = itemsResult.list;
-//   return items.map((item) => ({ id: item.id.toString() }));
-// }
