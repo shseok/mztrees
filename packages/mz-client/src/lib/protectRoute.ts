@@ -1,62 +1,29 @@
-import { useEffect } from 'react';
-import usePrivateAxios from '~/hooks/usePrivateAxios';
-import { extractNextError } from './nextError';
-import { setUser } from '~/hooks/stores/userStore';
-import { User } from './api/types';
+import { getMyAccount } from "./api/me";
+import { refreshToken } from "./api/auth";
+import { extractNextError } from "./nextError";
+import { setClientCookie } from "./client";
 
-export function getMyAccountWithRefresh() {
-  console.log('refresh');
-  const privateAxios = usePrivateAxios();
-  // TODO: Remove with SSR
-  const set = setUser();
-  useEffect(() => {
-    let isMounted = true; // ?
-    const controller = new AbortController();
+export async function getMyAccountWithRefresh() {
+  // TODO: 왜 cookie를 전송하지 않으면 /me api를 못 건드는지 알아보기 > fetch는 브라우저 api이기 때문> Cookie 설정
 
-    const getUsers = async () => {
-      try {
-        const response = await privateAxios.get<User>('/api/me', {
-          signal: controller.signal,
-        });
-        isMounted && set(response.data);
-      } catch (e) {
-        const extractedError = extractNextError(e);
-        console.log(extractedError);
-        return null;
-      }
-    };
-
-    getUsers();
-
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
-  }, []);
-  /*
   try {
+    console.log("getMyAccountWithRefresh");
     const me = await getMyAccount();
-    console.log('1: access 기한 내');
     return me;
   } catch (e) {
-    console.log('2: access 기한 민료');
-    const error = extractError(e);
-    if (error.name === 'UnauthorizedError' && error.payload?.isExpiredToken) {
+    const error = extractNextError(e);
+    // access token expired
+    if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
       try {
-        console.log('3: refresh ');
-        await refreshToken();
+        const tokens = await refreshToken();
+        console.log("request refresh api", tokens.accessToken);
+        setClientCookie(`access_token=${tokens.accessToken}`);
         const me = await getMyAccount();
-        console.log(me);
         return me;
       } catch (innerError) {
-        console.log(innerError);
-        throw e;
+        throw innerError;
       }
     }
-    console.log(
-      '4: refresh 토큰 마저 만료된 경우 or 모든 토큰이 쿠키에 없는 경우 > 로그인 페이지로',
-    );
     throw e;
   }
-  */
 }

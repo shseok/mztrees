@@ -1,4 +1,4 @@
-import { refreshToken } from '~/lib/api/auth';
+import { refreshToken } from "@/lib/api/auth";
 
 const useRefreshToken = () => {
   // const set = setUser();
@@ -11,7 +11,7 @@ const useRefreshToken = () => {
   const refresh = async () => {
     try {
     } catch (e) {
-      throw new Error('useRefreshToken hook error');
+      throw new Error("useRefreshToken hook error");
     }
     const response = await refreshToken();
     return response.accessToken;

@@ -1,29 +1,28 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { colors } from '~/lib/colors';
+import Link from "next/link";
+import React from "react";
+import styles from "@/styles/QuestionLink.module.scss";
+import { cn } from "@/utils/common";
 
 interface Props {
   question: string;
   name: string;
   to: string;
   className?: string;
+  mode?: string;
 }
 
-const QuestionLink = ({ question, name, to, className }: Props) => {
+const QuestionLink = ({ question, name, to, className, mode }: Props) => {
   return (
-    <Block className={className}>
-      {question} <Link to={to}>{name}</Link>
-    </Block>
+    <div
+      className={cn(
+        styles.block,
+        className && styles[className],
+        mode === "dark" && styles.dark
+      )}
+    >
+      {question} <Link href={to}>{name}</Link>
+    </div>
   );
 };
-
-const Block = styled.div`
-  color: ${colors.gray3};
-  a {
-    color: ${colors.gray5};
-    font-weight: 600;
-  }
-`;
 
 export default QuestionLink;

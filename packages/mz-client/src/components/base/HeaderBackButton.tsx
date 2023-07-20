@@ -1,25 +1,15 @@
-import React from 'react';
-import { ReactComponent as ArrowLeft } from '~/assets/arrow-left.svg';
-import styled from 'styled-components';
+"use client";
 
-interface Props {
-  onClick: () => void;
-}
+import { useGoBack } from "@/hooks/useGoback";
+import styles from "@/styles/HeaderBackButton.module.scss";
+import { ArrowLeft } from "@/components/vectors";
 
-const HeaderBackButton = ({ onClick }: Props) => {
+const HeaderBackButton = () => {
+  const goBack = useGoBack();
   return (
-    <IconButton onClick={onClick}>
+    <button className={styles.button} onClick={goBack}>
       <ArrowLeft />
-    </IconButton>
+    </button>
   );
 };
-
-const IconButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px;
-  margin-left: -8px;
-`;
-
 export default HeaderBackButton;

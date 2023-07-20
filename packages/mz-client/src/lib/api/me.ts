@@ -1,13 +1,14 @@
-import axios from 'axios';
-import { User } from './types';
+import { fetchClient } from "../client";
+import { extractNextError } from "../nextError";
+import { User } from "@/types/db";
 
-export async function getMyAccount(accessToken?: string, controller?: AbortController) {
-  const response = await axios.get<User>('/base/api/me', {
-    headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
-    signal: controller?.signal,
-    withCredentials: true,
+export async function getMyAccount(accessToken?: string) {
+  const response = await fetchClient.get<User>("/api/me", {
+    headers: accessToken
+      ? { Authorization: `Bearer ${accessToken}` }
+      : undefined,
   });
-  return response.data;
+  return response;
 }
 
 export async function changePassword({
@@ -17,11 +18,14 @@ export async function changePassword({
   oldPassword: string;
   newPassword: string;
 }) {
-  await axios.post('/base/api/me/change-password', { oldPassword, newPassword });
+  await fetchClient.post("/api/me/change-password", {
+    oldPassword,
+    newPassword,
+  });
 }
 
 export async function unregister() {
-  await axios.delete('/base/api/me');
+  await fetchClient.delete("/api/me");
 }
 
 // export async function getMyAccount() {

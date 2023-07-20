@@ -1,55 +1,58 @@
-// import { createContext, useContext } from 'react';
-// import { User } from '~/lib/api/auth';
-// /* 해당 컨텍스트에서 action이 필요하지 않을 것 같다.*/
-// /*
-//  * null: 로그인 x
-//  * undefined: UserContext.Provider x (유저 컨텍스트를 사용하지 않았을 때)
-//  * */
-// export const UserContext = createContext<User | null | undefined>(null);
+"use client";
 
-// export const useUser = () => {
-//   const user = useContext(UserContext);
-//   if (user === undefined) {
-//     throw new Error('UserContext.Provider not used');
-//   }
-//   return user;
-// };
+import { extractNextError } from "@/lib/nextError";
+import { getMyAccountWithRefresh } from "@/lib/protectRoute";
+import { User } from "@/types/db";
+import { createContext, useContext, useEffect, useState } from "react";
 
-// 일단 보류
-import { ReactNode, createContext, useContext, useState } from 'react';
-import { User } from '~/lib/api/auth';
-/* 해당 컨텍스트에서 action이 필요하지 않을 것 같다.*/
-/*
- * null: 로그인 x
- * undefined: UserContext.Provider x (유저 컨텍스트를 사용하지 않았을 때)
- * */
-
-type UserAvailableType = User | null | undefined;
-
+/**
+ * null: not logged in
+ * undefined: UserContext.Provider not used
+ */
 type UserContextType = {
-  user: UserAvailableType;
-  setUser: (user: UserAvailableType) => void;
+  currentUser: User | null;
+  setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
-const initialUserContext = {
-  user: null,
-  setUser: () => {},
+type Props = {
+  children: React.ReactNode;
+  // user: User | null;
 };
 
-const UserContext = createContext<UserContextType>(initialUserContext);
+export const UserContext = createContext<UserContextType | undefined>(
+  undefined
+);
 
-export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<UserAvailableType>(null);
+// TODO: user를 받아오지 않아서 새로고침시 확실히 유저를 입히는데 부자연스러운게 있다.
+export function UserProvider({ children }: Props) {
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
-  return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
-};
+  // user update?
+  useEffect(() => {
+    async function fetchUserData() {
+      try {
+        const user = await getMyAccountWithRefresh();
+        setCurrentUser(user);
+      } catch (e) {
+        console.log("in desktopheader", extractNextError(e));
+        setCurrentUser(null);
+      }
+    }
+    console.log("component mount"); // refresh
+    // TODO: cookie가 없다면 못하도록... 하고 싶다
+    fetchUserData();
+  }, []);
+  return (
+    <UserContext.Provider value={{ currentUser, setCurrentUser }}>
+      {children}
+    </UserContext.Provider>
+  );
+}
 
-export const useUserState = () => {
-  const { user, setUser } = useContext(UserContext);
-  if (user === undefined || !setUser) {
-    throw new Error('UserContext.Provider not used');
+export function useUser() {
+  const user = useContext(UserContext);
+  if (user === undefined) {
+    throw new Error("UserContext.Provider not used");
   }
-  return { user, setUser };
-};
-
-export default UserContext;
+  return user;
+}

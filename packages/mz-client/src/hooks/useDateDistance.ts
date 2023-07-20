@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useReducer } from 'react';
-import { formatDistanceToNow } from 'date-fns';
-import { ko } from 'date-fns/locale';
+import { useEffect, useMemo, useReducer } from "react";
+import { formatDistanceToNow } from "date-fns";
+import { ko } from "date-fns/locale";
 
 export const useDateDistance = (date: string | Date) => {
   const [value, rerender] = useReducer((state) => !state, false);
@@ -18,14 +18,14 @@ export const useDateDistance = (date: string | Date) => {
     const diff = Date.now() - d.getTime();
     // console.log(d, value);
     if (diff < 60 * 1000) {
-      return '방금 전';
+      return "방금 전";
     }
 
     return formatDistanceToNow(d, {
       locale: ko,
       addSuffix: true,
     });
-  }, [date, value]);
+  }, [date]);
 
   return formatted;
 };

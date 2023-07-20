@@ -1,19 +1,26 @@
-import axios from 'axios';
-import { Bookmark, GetBookmarksResult } from './types';
+import { stringify } from "qs";
+import { fetchClient } from "../client";
+import { Bookmark, GetBookmarksResult } from "@/types/db";
 
-export const createBookmark = async (itemId: number, contorller?: AbortController) => {
-  const response = await axios.post<Bookmark>(
-    '/base/api/bookmark/',
+export const createBookmark = async (
+  itemId: number,
+  contorller?: AbortController
+) => {
+  const response = await fetchClient.post<Bookmark>(
+    "/api/bookmark/",
     { itemId },
     {
       signal: contorller?.signal,
-    },
+    }
   );
-  return response.data;
+  return response;
 };
 
-export const deleteBookmark = async (itemId: number, contorller?: AbortController) => {
-  await axios.delete(`/base/api/bookmark/`, {
+export const deleteBookmark = async (
+  itemId: number,
+  contorller?: AbortController
+) => {
+  await fetchClient.delete(`/api/bookmark/`, {
     params: {
       itemId,
     },
@@ -22,8 +29,9 @@ export const deleteBookmark = async (itemId: number, contorller?: AbortControlle
 };
 
 export const getBookmarks = async (cursor?: number) => {
-  const response = await axios.get<GetBookmarksResult>('/base/api/bookmark/', {
-    params: { cursor },
-  });
-  return response.data;
+  const query = cursor ? stringify({ cursor }, { addQueryPrefix: true }) : "";
+  const response = await fetchClient.get<GetBookmarksResult>(
+    "/api/bookmark".concat(query)
+  );
+  return response;
 };

@@ -1,6 +1,6 @@
-import { produce } from 'immer';
-import { create } from 'zustand';
-import { ItemStats } from '~/lib/api/types';
+import { produce } from "immer";
+import { create } from "zustand";
+import { ItemStats } from "@/types/db";
 
 interface OverridableItem {
   isLiked?: boolean;
@@ -21,7 +21,7 @@ export const useItemOverrideStore = create<ItemOverrideStore>((set) => ({
     set((store) =>
       produce(store, (draft) => {
         draft.overrides[itemId] = overridableItem;
-      }),
+      })
     ),
 }));
 

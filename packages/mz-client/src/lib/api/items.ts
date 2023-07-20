@@ -1,4 +1,5 @@
-import axios from 'axios';
+import { stringify } from "qs";
+import { fetchClient } from "../client";
 import {
   Comment,
   GetItemsResult,
@@ -7,12 +8,11 @@ import {
   LikeItemResult,
   ListMode,
   UnlikeCommentResult,
-} from './types';
-import qs from 'qs';
+} from "@/types/db";
 
 export async function createItem(params: CreateItemParams) {
-  const response = await axios.post<Item>('/base/api/items', params);
-  return response.data;
+  const response = await fetchClient.post<Item>("/api/items", params);
+  return response;
 }
 
 export async function getItems({
@@ -21,26 +21,33 @@ export async function getItems({
   startDate,
   endDate,
 }: {
-  cursor?: number;
   mode: ListMode;
+  cursor?: number;
   startDate?: string;
   endDate?: string;
 }) {
-  const resonse = await axios.get<GetItemsResult>(
-    '/base/api/items'.concat(
-      qs.stringify({ mode, cursor, startDate, endDate }, { addQueryPrefix: true }),
-    ),
+  const query = stringify(
+    { mode, cursor, startDate, endDate },
+    { addQueryPrefix: true }
   );
-  return resonse.data;
+  const resonse = await fetchClient.get<GetItemsResult>(
+    "/api/items".concat(query)
+  );
+  // const resonse = await fetchClient.get<GetItemsResult>(
+  //   '/api/items'.concat(
+  //     qs.stringify({ mode, cursor, startDate, endDate }, { addQueryPrefix: true }),
+  //   ),
+  // );
+  return resonse;
 }
 
 export async function getItem(itemId: number) {
-  const response = await axios.get<Item>(`/base/api/items/${itemId}`);
-  return response.data;
+  const response = await fetchClient.get<Item>(`/api/items/${itemId}`);
+  return response;
 }
 
 export async function deleteItem(itemId: number) {
-  return axios.delete(`/base/api/items/${itemId}`);
+  return fetchClient.delete(`/api/items/${itemId}`);
 }
 
 export async function updateItem({
@@ -52,24 +59,31 @@ export async function updateItem({
   title: string;
   body: string;
 }) {
-  const response = await axios.patch(`/base/api/items/${itemId}`, { title, body, tags: [] });
-  return response.data;
+  const response = await fetchClient.patch(`/api/items/${itemId}`, {
+    title,
+    body,
+    tags: [],
+  });
+  return response;
 }
 
 export async function likeItem(itemId: number, controller?: AbortController) {
-  const response = await axios.post<LikeItemResult>(
-    `/base/api/items/${itemId}/likes`,
+  const response = await fetchClient.post<LikeItemResult>(
+    `/api/items/${itemId}/likes`,
     {},
-    { signal: controller?.signal },
+    { signal: controller?.signal }
   );
-  return response.data;
+  return response;
 }
 
 export async function unlikeItem(itemId: number, controller?: AbortController) {
-  const response = await axios.delete<LikeItemResult>(`/base/api/items/${itemId}/likes`, {
-    signal: controller?.signal,
-  });
-  return response.data;
+  const response = await fetchClient.delete<LikeItemResult>(
+    `/api/items/${itemId}/likes`,
+    {
+      signal: controller?.signal,
+    }
+  );
+  return response;
 }
 
 interface CreateItemParams {
@@ -79,8 +93,10 @@ interface CreateItemParams {
 }
 
 export async function getComments(itemId: number) {
-  const response = await axios.get<Comment[]>(`/base/api/items/${itemId}/comments`);
-  return response.data;
+  const response = await fetchClient.get<Comment[]>(
+    `/api/items/${itemId}/comments`
+  );
+  return response;
 }
 
 export async function createComment({
@@ -92,11 +108,14 @@ export async function createComment({
   text: string;
   parentCommentId?: number;
 }) {
-  const response = await axios.post<Comment>(`/base/api/items/${itemId}/comments`, {
-    text,
-    parentCommentId,
-  });
-  return response.data;
+  const response = await fetchClient.post<Comment>(
+    `/api/items/${itemId}/comments`,
+    {
+      text,
+      parentCommentId,
+    }
+  );
+  return response;
 }
 
 export async function editComment({
@@ -108,15 +127,26 @@ export async function editComment({
   commentId: number;
   text: string;
 }) {
-  const response = await axios.patch<Comment>(`/base/api/items/${itemId}/comments/${commentId}`, {
-    text,
-  });
-  return response.data;
+  const response = await fetchClient.patch<Comment>(
+    `/api/items/${itemId}/comments/${commentId}`,
+    {
+      text,
+    }
+  );
+  return response;
 }
 
-export async function deleteComment({ itemId, commentId }: { itemId: number; commentId: number }) {
-  const response = await axios.delete(`/base/api/items/${itemId}/comments/${commentId}`);
-  return response.data;
+export async function deleteComment({
+  itemId,
+  commentId,
+}: {
+  itemId: number;
+  commentId: number;
+}) {
+  const response = await fetchClient.delete(
+    `/api/items/${itemId}/comments/${commentId}`
+  );
+  return response;
 }
 
 export async function likeComment({
@@ -128,12 +158,12 @@ export async function likeComment({
   commentId: number;
   controller?: AbortController;
 }) {
-  const response = await axios.post<LikeCommentResult>(
-    `/base/api/items/${itemId}/comments/${commentId}/likes`,
+  const response = await fetchClient.post<LikeCommentResult>(
+    `/api/items/${itemId}/comments/${commentId}/likes`,
     {},
-    { signal: controller?.signal },
+    { signal: controller?.signal }
   );
-  return response.data;
+  return response;
 }
 
 export async function unlikeComment({
@@ -145,9 +175,9 @@ export async function unlikeComment({
   commentId: number;
   controller?: AbortController;
 }) {
-  const response = await axios.delete<UnlikeCommentResult>(
-    `/base/api/items/${itemId}/comments/${commentId}/likes`,
-    { signal: controller?.signal },
+  const response = await fetchClient.delete<UnlikeCommentResult>(
+    `/api/items/${itemId}/comments/${commentId}/likes`,
+    { signal: controller?.signal }
   );
-  return response.data;
+  return response;
 }

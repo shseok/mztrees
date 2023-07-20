@@ -1,29 +1,29 @@
-import axios from 'axios';
-import { User } from './types';
+import { fetchClient } from "../client";
+import { User } from "@/types/db";
 
 export async function userRegister(params: AuthParams) {
-  const response = await axios.post<AuthResult>('/base/api/auth/register', params);
-  return response.data;
+  const response = await fetchClient.post<AuthResult>(
+    "/api/auth/register",
+    params
+  );
+  return response;
 }
 
 export async function userLogin(params: AuthParams) {
-  const response = await axios.post<AuthResult>('/base/api/auth/login', params);
-  return response.data;
+  const response = await fetchClient.post<AuthResult>(
+    "/api/auth/login",
+    params
+  );
+  return response;
 }
 
 export async function userLogout() {
-  await axios.post('/base/api/auth/logout');
+  await fetchClient.post("/api/auth/logout");
 }
 
 export async function refreshToken() {
-  const response = await axios.post<Tokens>(
-    '/base/api/auth/refresh',
-    {},
-    {
-      withCredentials: true,
-    },
-  );
-  return response.data;
+  const response = await fetchClient.post<Tokens>("/api/auth/refresh", {});
+  return response;
 }
 
 interface AuthParams {

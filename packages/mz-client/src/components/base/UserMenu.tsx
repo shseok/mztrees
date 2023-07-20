@@ -1,11 +1,12 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import React, { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled, { css } from 'styled-components';
-import { useOnClickOutside } from '~/hooks/useOnClickOuteside';
-import { useOpenLogoutDialog } from '~/hooks/useOpenLoginDialog';
-import { colors } from '~/lib/colors';
-import { mediaQuery } from '~/lib/media';
+"use client";
+
+import { AnimatePresence, motion } from "framer-motion";
+import React, { useRef } from "react";
+import { useOnClickOutside } from "@/hooks/useOnClickOuteside";
+import { useOpenLogoutDialog } from "@/hooks/useOpenLoginDialog";
+import { useRouter } from "next/navigation";
+import styles from "@/styles/UserMenu.module.scss";
+import { cn } from "@/utils/common";
 
 interface Props {
   visible: boolean;
@@ -14,7 +15,7 @@ interface Props {
 
 const UserMenu = ({ visible, onClose }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
+  const router = useRouter();
   useOnClickOutside(ref, (e) => {
     onClose(e);
   });
@@ -22,7 +23,8 @@ const UserMenu = ({ visible, onClose }: Props) => {
   return (
     <AnimatePresence initial={false}>
       {visible && (
-        <Block
+        <motion.div
+          className={styles.block}
           onClick={() => {
             onClose();
           }}
@@ -32,79 +34,38 @@ const UserMenu = ({ visible, onClose }: Props) => {
           transition={{ duration: 0.2 }}
           ref={ref}
         >
-          <Triangle />
-          <TriangleBorder />
-          <MenuItem isDeskTopHidden={true} onClick={() => navigate('/write')}>
+          <div className={styles.triangle} />
+          <div className={styles.triangle_border} />
+          <div
+            className={cn(styles.menu_item, styles.isDeskTopHidden)}
+            onClick={() => router.push("/write")}
+          >
             새 글 등록
-          </MenuItem>
-          <MenuItem onClick={() => navigate('/setting/account')}>내 계정</MenuItem>
-          <MenuItem onClick={() => navigate('/bookmarks')}>북마크</MenuItem>
-          <MenuItem
+          </div>
+          <div
+            className={styles.menu_item}
+            onClick={() => router.push("/setting/account")}
+          >
+            내 계정
+          </div>
+          <div
+            className={styles.menu_item}
+            onClick={() => router.push("/bookmark")}
+          >
+            북마크
+          </div>
+          <div
+            className={styles.menu_item}
             onClick={() => {
-              openLogoutDialog('logout');
+              openLogoutDialog("logout");
             }}
           >
             로그아웃
-          </MenuItem>
-        </Block>
+          </div>
+        </motion.div>
       )}
     </AnimatePresence>
   );
 };
-
-const Block = styled(motion.div)`
-  background: white;
-  position: absolute;
-  top: 48px;
-  right: 0;
-  width: 200px;
-  border-radius: 4px;
-  // box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
-  z-index: 1;
-`;
-
-const MenuItem = styled.div<{ isDeskTopHidden?: boolean }>`
-  ${(props) =>
-    props.isDeskTopHidden &&
-    css`
-      display: block;
-      ${mediaQuery(700)} {
-        display: none;
-      }
-    `}
-  color: ${colors.gray5};
-  padding: 16px;
-  cursor: pointer;
-
-  &:hover {
-    transition: all 0.125s ease-in;
-    background: ${colors.gray0};
-  }
-`;
-
-const Triangle = styled.div`
-  position: absolute;
-  top: -8px;
-  right: 16px;
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-bottom: 8px solid white;
-  z-index: 2;
-`;
-
-const TriangleBorder = styled.div`
-  position: absolute;
-  top: -10px;
-  right: 14px;
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 10px solid #e0e0e0;
-  z-index: 1;
-`;
 
 export default UserMenu;

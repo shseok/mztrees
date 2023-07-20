@@ -1,19 +1,20 @@
-import styled from 'styled-components';
-import { Item } from '~/lib/api/types';
-import { colors } from '~/lib/colors';
-import { ReactComponent as Globe } from '~/assets/globe.svg';
-import { useDateDistance } from '~/hooks/useDateDistance';
-import { useLikeManager } from '~/hooks/useLikeManager';
-import LikeButton from '../system/LikeButton';
-import { useItemOverrideById } from '~/hooks/stores/ItemOverrideStore';
-import { motion, AnimatePresence } from 'framer-motion';
-import { getMyAccount } from '~/lib/api/me';
-import { useOpenLoginDialog } from '~/hooks/useOpenLoginDialog';
-import { Link } from 'react-router-dom';
-import BookmarkButton from '../system/BookmarkButton';
-import { useBookmarkManager } from '~/hooks/useBookmarkManager';
-import { media } from '~/lib/media';
-import { setUser, useUser } from '~/hooks/stores/userStore';
+import { Item } from "@/types/db";
+import Image from "next/image";
+import { Globe } from "@/components/vectors";
+import { useDateDistance } from "@/hooks/useDateDistance";
+import { useLikeManager } from "@/hooks/useLikeManager";
+import LikeButton from "../system/LikeButton";
+import { useItemOverrideById } from "@/hooks/stores/ItemOverrideStore";
+import { motion, AnimatePresence } from "framer-motion";
+import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
+import BookmarkButton from "../system/BookmarkButton";
+import { useBookmarkManager } from "@/hooks/useBookmarkManager";
+import styles from "@/styles/LinkCard.module.scss";
+import Link from "next/link";
+import { useUser } from "@/context/UserContext";
+import { useSearchParams } from "next/navigation";
+import { useTheme } from "@/context/ThemeContext";
+import { cn } from "@/utils/common";
 
 interface Props {
   item: Item;
@@ -35,24 +36,19 @@ const LinkCard = ({ item }: Props) => {
   const dateDistance = useDateDistance(createdAt);
   const { like, unlike } = useLikeManager();
   const { bookmark, unbookmark } = useBookmarkManager();
-
-  // const isMultiColumn = useIsMultiColumn();
-  // console.log(isMultiColumn);
+  const searchParams = useSearchParams();
 
   const isLiked = itemOverride?.isLiked ?? item.isLiked;
   const likes = itemOverride?.itemStats?.likes ?? itemStats.likes;
   const isBookmarked = itemOverride?.isBookmarked ?? item.isBookmarked;
   /**TODO: 연타로 누르면 기존의 것이 잘 취소되어야함 */
   const openLoginDialog = useOpenLoginDialog();
-  // const set = setUser();
-  // const currentUser = useUser();
+  const { currentUser } = useUser();
+  const { mode } = useTheme();
   /**TODO: move to hooks */
   const toggleLike = async () => {
-    const currentUser = await getMyAccount();
-    // set(currentUser);
-
     if (!currentUser) {
-      openLoginDialog('itemLike');
+      openLoginDialog("itemLike");
       return;
     }
     if (isLiked) {
@@ -63,10 +59,8 @@ const LinkCard = ({ item }: Props) => {
   };
 
   const toggleBookmark = async () => {
-    const currentUser = await getMyAccount();
-    // set(currentUser);
     if (!currentUser) {
-      openLoginDialog('itemBookmark');
+      openLoginDialog("itemBookmark");
       return;
     }
     if (isBookmarked) {
@@ -76,151 +70,64 @@ const LinkCard = ({ item }: Props) => {
     }
   };
 
-  const link = `/items/${item.id}`;
+  const link = `/items/${item.id}?mode=${
+    searchParams.get("mode") ?? "trending"
+  }`;
 
   return (
-    <Block>
-      <StyledLink to={link}>
-        {thumbnail ? <Thumbnail src={thumbnail} alt={title} /> : null}
-        <Publisher>
-          {favicon ? <img src={favicon} alt='favicon' /> : <Globe />}
-          {author ? `${author} · ` : ''}
+    <div className={styles.block}>
+      <Link href={link} className={styles.styled_link}>
+        <div className={styles.thumbnail}>
+          {thumbnail ? (
+            <Image src={thumbnail} alt={title} fill priority sizes="100vw" />
+          ) : null}
+        </div>
+        <div className={cn(styles.publisher, mode === "dark" && styles.dark)}>
+          {favicon ? (
+            <div className={styles.favicon}>
+              <Image src={favicon} alt="favicon" fill />
+            </div>
+          ) : (
+            <Globe />
+          )}
+          {author ? `${author} · ` : ""}
           {name}
-        </Publisher>
-        <Title>{item.title}</Title>
-        <Body>{body}</Body>
-      </StyledLink>
-      <LikeCountWrapper>
+        </div>
+        <h3 className={cn(styles.title, mode === "dark" && styles.dark)}>
+          {item.title}
+        </h3>
+        <p className={cn(styles.body, mode === "dark" && styles.dark)}>
+          {body}
+        </p>
+      </Link>
+      <div className={styles.likecount_wrapper}>
         <AnimatePresence initial={false}>
           {likes === 0 ? null : (
-            <LikesCount
+            <motion.div
+              className={cn(styles.likescount, mode === "dark" && styles.dark)}
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 26, opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
             >
               좋아요 {likes.toLocaleString()}개
-            </LikesCount>
+            </motion.div>
           )}
         </AnimatePresence>
-      </LikeCountWrapper>
-      <Footer>
-        <IconContainer>
+      </div>
+      <div className={styles.footer}>
+        <div className={styles.icon_buttons}>
           <LikeButton onClick={toggleLike} isLiked={isLiked} />
-          <BookmarkButton onClick={toggleBookmark} isBookmarked={isBookmarked} />
-        </IconContainer>
-        <UserInfo>
+          <BookmarkButton
+            onClick={toggleBookmark}
+            isBookmarked={isBookmarked}
+          />
+        </div>
+        <p className={cn(styles.user_info, mode === "dark" && styles.dark)}>
           by <b>{username}</b> · {dateDistance}
-        </UserInfo>
-      </Footer>
-    </Block>
+        </p>
+      </div>
+    </div>
   );
 };
-
-const StyledLink = styled(Link)`
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-`;
-
-const Block = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Thumbnail = styled.img`
-  display: block;
-  width: 100%;
-  max-height: 40vh;
-  ${media.tablet} {
-    aspect-ratio: 1200/630;
-  }
-  object-fit: cover;
-  flex: 1;
-  border-radius: 12px;
-  box-shadow: 0 0 3px rgb(0 0 0 / 15%);
-  margin-bottom: 16px;
-`;
-
-const Publisher = styled.div`
-  display: flex;
-  align-items: center;
-  line-height: 1.5;
-  color: ${colors.gray3};
-  font-size: 14px;
-  margin-bottom: 4px;
-  img,
-  svg {
-    display: block;
-    margin-right: 8px;
-    width: 16px;
-    height: 16px;
-  }
-`;
-
-const Title = styled.h3`
-  margin-top: 0;
-  margin-bottom: 16px;
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1.5;
-  color: ${colors.gray5};
-
-  display: -webkit-box;
-  text-overflow: ellipsis;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  height: 27px;
-`;
-const Body = styled.p`
-  line-height: 1.5;
-  font-size: 14px;
-  margin-top: 0;
-  margin-bottom: 16px;
-  color: ${colors.gray4};
-
-  ${media.tablet} {
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    height: 84px;
-  }
-`;
-
-const LikeCountWrapper = styled.div`
-  ${media.tablet} {
-    height: 26px;
-  }
-`;
-// 12*1.5+8(height: font-size*line-height+padding-bottom)
-const LikesCount = styled(motion.div)`
-  font-size: 12px;
-  font-weight: 600;
-  color: ${colors.gray4};
-  line-height: 1.5;
-  height: 26px;
-  display: flex;
-  align-items: top;
-`;
-const Footer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const UserInfo = styled.p`
-  color: ${colors.gray2};
-  font-size: 14px;
-  margin-top: 0px;
-  margin-bottom: 0px;
-`;
-
-const IconContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`;
 
 export default LinkCard;

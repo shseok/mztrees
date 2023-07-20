@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Comment } from '~/lib/api/types';
-import CommentItem from './CommentItem';
+import React from "react";
+import { Comment } from "@/types/db";
+import CommentItem from "./CommentItem";
+import styles from "@/styles/SubcommentList.module.scss";
 
 interface Props {
   comments: Comment[];
@@ -10,20 +10,16 @@ interface Props {
 const SubCommentList = ({ comments }: Props) => {
   if (comments.length === 0) return null;
   return (
-    <List>
+    <div className={styles.list}>
       {comments.map((comment) => (
-        <CommentItem comment={comment} key={comment.id} isSubcomment></CommentItem>
+        <CommentItem
+          comment={comment}
+          key={comment.id}
+          isSubcomment
+        ></CommentItem>
       ))}
-    </List>
+    </div>
   );
 };
-
-const List = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding-left: 24px;
-  padding-top: 12px;
-`;
 
 export default SubCommentList;

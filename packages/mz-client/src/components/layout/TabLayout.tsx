@@ -1,10 +1,10 @@
-import React from 'react';
-import FullHeightPage from '~/components/system/FullHeightPage';
-import MobileHeader from '~/components/base/MobileHeader';
-import Footer from '~/components/base/Footer';
-import { Outlet } from 'react-router-dom';
-import styled from 'styled-components';
-import DesktopHeader from '../base/DesktopHeader';
+import React from "react";
+import FullHeightPage from "@/components/system/FullHeightPage";
+import MobileHeader from "@/components/base/MobileHeader";
+import Footer from "@/components/base/Footer";
+import styles from "@/styles/TabLayout.module.scss";
+import DesktopHeader from "../base/DesktopHeader";
+import { cn } from "@/utils/common";
 
 interface Props {
   className?: string;
@@ -21,17 +21,12 @@ const TabLayout = ({ className, children, header }: Props) => {
           <DesktopHeader />
         </>
       )}
-      <Content className={className}>{children ?? <Outlet />}</Content>
+      <div className={cn(styles.content, className && styles[className])}>
+        {children}
+      </div>
       <Footer />
     </FullHeightPage>
   );
 };
-
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  overflow: scroll;
-`;
 
 export default TabLayout;

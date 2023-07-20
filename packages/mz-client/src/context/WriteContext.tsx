@@ -1,5 +1,7 @@
-import { createContext, useContext, useMemo, useState } from 'react';
-import { AppError } from '~/lib/error';
+"use client";
+
+import { createContext, useContext, useMemo, useState } from "react";
+import { NextAppError } from "@/lib/nextError";
 
 interface WriteContextState {
   form: {
@@ -7,13 +9,13 @@ interface WriteContextState {
     title: string;
     body: string;
   };
-  error?: AppError;
+  error?: NextAppError;
 }
 
 interface WriteContextActions {
-  change(key: keyof WriteContextState['form'], value: string): void;
+  change(key: keyof WriteContextState["form"], value: string): void;
   reset(): void;
-  setError(error?: AppError): void;
+  setError(error?: NextAppError): void;
 }
 
 interface WriteContextType {
@@ -29,16 +31,16 @@ interface Props {
 
 const initialState = {
   form: {
-    link: '',
-    title: '',
-    body: '',
+    link: "",
+    title: "",
+    body: "",
   },
   error: undefined,
 };
 
 export const WriteProvider = ({ children }: Props) => {
   const [state, setState] = useState<WriteContextState>(initialState);
-  // change > immer를 써도되지만, 일단 킵
+  // TODO: refactoring with immer
   const actions: WriteContextActions = useMemo(() => {
     return {
       change(key, value) {
@@ -64,14 +66,16 @@ export const WriteProvider = ({ children }: Props) => {
 
   const value = useMemo(() => ({ state, actions }), [state, actions]);
 
-  return <WriteContext.Provider value={value}>{children}</WriteContext.Provider>;
+  return (
+    <WriteContext.Provider value={value}>{children}</WriteContext.Provider>
+  );
 };
 
 export const useWriteContext = () => {
   const context = useContext(WriteContext);
 
   if (!context) {
-    throw new Error('useWriteContext must be used within a WriteProvider');
+    throw new Error("useWriteContext must be used within a WriteProvider");
   }
 
   return context;

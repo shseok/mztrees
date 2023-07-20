@@ -1,25 +1,28 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Item } from '~/lib/api/types';
-import { colors } from '~/lib/colors';
-import { ReactComponent as Globe } from '~/assets/globe.svg';
-import { AnimatePresence, motion } from 'framer-motion';
-import LikeButton from '../system/LikeButton';
-import { useLikeManager } from '~/hooks/useLikeManager';
-import { useOpenLoginDialog } from '~/hooks/useOpenLoginDialog';
-import { getMyAccount } from '~/lib/api/me';
-import { useItemOverrideById } from '~/hooks/stores/ItemOverrideStore';
-import { useDateDistance } from '~/hooks/useDateDistance';
-import { Link } from 'react-router-dom';
-import BookmarkButton from '../system/BookmarkButton';
-import { useBookmarkManager } from '~/hooks/useBookmarkManager';
-import { setUser, useUser } from '~/hooks/stores/userStore';
+import React from "react";
+import { Item } from "@/types/db";
+import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
+import LikeButton from "../system/LikeButton";
+import { useLikeManager } from "@/hooks/useLikeManager";
+import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
+import { useItemOverrideById } from "@/hooks/stores/ItemOverrideStore";
+import { useDateDistance } from "@/hooks/useDateDistance";
+import BookmarkButton from "../system/BookmarkButton";
+import { useBookmarkManager } from "@/hooks/useBookmarkManager";
+import Link from "next/link";
+import styles from "@/styles/ItemViewer.module.scss";
+import { Globe } from "@/components/vectors";
+import { useUser } from "@/context/UserContext";
+import { useTheme } from "@/context/ThemeContext";
+import { cn } from "@/utils/common";
+import MoreVertButton from "../base/MoreVertButton";
 
 interface Props {
   item: Item;
+  onClickMore(): void;
 }
 
-const ItemViewer = ({ item }: Props) => {
+const ItemViewer = ({ item, onClickMore }: Props) => {
   const {
     id,
     thumbnail,
@@ -41,14 +44,12 @@ const ItemViewer = ({ item }: Props) => {
   const isBookmarked = itemOverride?.isBookmarked ?? item.isBookmarked;
   /**TODO: 연타로 누르면 기존의 것이 잘 취소되어야함 */
   const openLoginDialog = useOpenLoginDialog();
-  // const set = setUser();
-  const currentUser = useUser();
+  const { currentUser } = useUser();
+  const { mode } = useTheme();
   /**TODO: move to hooks */
   const toggleLike = async () => {
-    // const currentUser = await getMyAccount();
-    // set(currentUser);
     if (!currentUser) {
-      openLoginDialog('itemLike');
+      openLoginDialog("itemLike");
       return;
     }
     if (isLiked) {
@@ -59,10 +60,8 @@ const ItemViewer = ({ item }: Props) => {
   };
 
   const toggleBookmark = async () => {
-    // const currentUser = await getMyAccount();
-    // set(currentUser);
     if (!currentUser) {
-      openLoginDialog('itemBookmark');
+      openLoginDialog("itemBookmark");
       return;
     }
     if (isBookmarked) {
@@ -72,134 +71,62 @@ const ItemViewer = ({ item }: Props) => {
     }
   };
   return (
-    <Block>
+    <div className={styles.block}>
       {thumbnail ? (
-        <Link to={item.link}>
-          <Thumbnail src={thumbnail} />
+        <Link href={item.link}>
+          <div className={styles.thumbnail}>
+            <Image src={thumbnail} alt={title} fill priority sizes="100vw" />
+          </div>
         </Link>
       ) : null}
-      <Content>
-        <Link to={item.link}>
-          <Publisher>
-            {favicon ? <img src={favicon} alt='favicon' /> : <Globe />}
-            {author ? `${author} · ` : ''}
+      <div className={styles.content}>
+        <div className={styles.morevert_container}>
+          <MoreVertButton onClick={onClickMore} />
+        </div>
+        <Link href={item.link}>
+          <div className={cn(styles.publisher, mode === "dark" && styles.dark)}>
+            {favicon ? (
+              <Image src={favicon} alt="favicon" width={16} height={16} />
+            ) : (
+              <Globe />
+            )}
+            {author ? `${author} · ` : ""}
             {name}
-          </Publisher>
-          <Title>{title}</Title>
-          <Body>{body}</Body>
+          </div>
+          <h2 className={cn(styles.title, mode === "dark" && styles.dark)}>
+            {title}
+          </h2>
+          <p className={cn(styles.body, mode === "dark" && styles.dark)}>
+            {body}
+          </p>
         </Link>
         <AnimatePresence initial={false}>
           {likes === 0 ? null : (
-            <LikesCount
+            <motion.div
+              className={cn(styles.likescount, mode === "dark" && styles.dark)}
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 26, opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
             >
               좋아요 {likes.toLocaleString()}개
-            </LikesCount>
+            </motion.div>
           )}
         </AnimatePresence>
-        <Footer>
-          <IconContainer>
+        <div className={styles.footer}>
+          <div className={styles.icon_container}>
             <LikeButton onClick={toggleLike} isLiked={isLiked} />
-            <BookmarkButton onClick={toggleBookmark} isBookmarked={isBookmarked} />
-          </IconContainer>
-          <UserInfo>
+            <BookmarkButton
+              onClick={toggleBookmark}
+              isBookmarked={isBookmarked}
+            />
+          </div>
+          <p className={cn(styles.user_info, mode === "dark" && styles.dark)}>
             by <b>{username}</b> · {dateDistance}
-          </UserInfo>
-        </Footer>
-      </Content>
-    </Block>
+          </p>
+        </div>
+      </div>
+    </div>
   );
 };
-
-const Content = styled.div`
-  padding: 16px;
-  border-bottom: 1px solid ${colors.gray0};
-  a {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-  }
-`;
-
-const Block = styled.div`
-  display: flex;
-  flex-direction: column;
-  a {
-    display: block;
-  }
-`;
-const Thumbnail = styled.img`
-  width: 100%;
-  height: auto;
-  max-height: 80vh;
-  object-fit: contain;
-  border-radius: 0px;
-`;
-
-const Publisher = styled.div`
-  display: flex;
-  align-items: center;
-  line-height: 1.5;
-  color: ${colors.gray3};
-  font-size: 14px;
-  margin-bottom: 4px;
-  img,
-  svg {
-    display: block;
-    margin-right: 8px;
-    width: 16px;
-    height: 16px;
-  }
-`;
-
-const Title = styled.h2`
-  margin-top: 0;
-  margin-bottom: 16px;
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1.5;
-  color: ${colors.gray5};
-`;
-
-const Body = styled.p`
-  line-height: 1.5;
-  font-size: 14px;
-  margin-top: 0;
-  margin-bottom: 32px;
-  color: ${colors.gray4};
-  white-space: pre-wrap;
-  word-break: keep-all;
-`;
-
-const LikesCount = styled(motion.div)`
-  font-size: 12px;
-  font-weight: 600;
-  color: ${colors.gray4};
-  line-height: 1.5;
-  height: 26px;
-  display: flex;
-  align-items: top;
-`;
-
-const Footer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const UserInfo = styled.p`
-  color: ${colors.gray2};
-  font-size: 14px;
-  margin-top: 0px;
-  margin-bottom: 0px;
-`;
-
-const IconContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`;
 
 export default ItemViewer;

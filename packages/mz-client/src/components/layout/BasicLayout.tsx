@@ -1,10 +1,9 @@
-import React from 'react';
-import FullHeightPage from '~/components/system/FullHeightPage';
-import { useGoBack } from '~/hooks/useGoback';
-import styled from 'styled-components';
-import HeaderBackButton from '~/components/base/HeaderBackButton';
-import MobileHeader from '~/components/base/MobileHeader';
-import DesktopHeader from '../base/DesktopHeader';
+import React from "react";
+import FullHeightPage from "@/components/system/FullHeightPage";
+import HeaderBackButton from "@/components/base/HeaderBackButton";
+import MobileHeader from "@/components/base/MobileHeader";
+import DesktopHeader from "../base/DesktopHeader";
+import styles from "@/styles/BasicLayout.module.scss";
 
 interface Props {
   hasBackButton: boolean;
@@ -20,29 +19,19 @@ const BasicLayout = ({
   headerRight,
   title,
   children,
-  onGoback,
   desktopHeaderVisible = true,
 }: Props) => {
-  const goBack = useGoBack();
-
   return (
     <FullHeightPage>
       <MobileHeader
         title={title}
-        headerLeft={hasBackButton ? <HeaderBackButton onClick={onGoback ?? goBack} /> : undefined}
+        headerLeft={hasBackButton ? <HeaderBackButton /> : undefined}
         headerRight={headerRight}
       />
       {desktopHeaderVisible && <DesktopHeader />}
-      <Content>{children}</Content>
+      <div className={styles.content}>{children}</div>
     </FullHeightPage>
   );
 };
-
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  overflow: scroll;
-`;
 
 export default BasicLayout;

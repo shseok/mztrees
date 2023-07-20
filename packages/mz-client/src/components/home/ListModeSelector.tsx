@@ -1,10 +1,9 @@
-import React, { useMemo } from 'react';
-import styled, { css } from 'styled-components';
-import { ListMode } from '~/lib/api/types';
-import { ReactComponent as Calendar } from '~/assets/calendar.svg';
-import { ReactComponent as TrendingOutline } from '~/assets/trendingOutline.svg';
-import { ReactComponent as Time } from '~/assets/time.svg';
-import { colors } from '~/lib/colors';
+import React, { useMemo } from "react";
+import { ListMode } from "@/types/db";
+import { Trending, History, Calendar } from "@/components/vectors";
+import styles from "@/styles/ListModeSelector.module.scss";
+import { cn } from "@/utils/common";
+import { useTheme } from "@/context/ThemeContext";
 
 const ModeWidth = 75;
 const ModeGap = 16;
@@ -18,24 +17,26 @@ const ListModeSelector = ({ mode, onSelectMode }: Props) => {
     () =>
       [
         {
-          mode: 'trending',
-          icon: <TrendingOutline />,
-          name: '트렌딩',
+          mode: "trending",
+          icon: <Trending />,
+          name: "트렌딩",
         },
         {
-          mode: 'recent',
-          icon: <Time />,
-          name: '최근',
+          mode: "recent",
+          icon: <History />,
+          name: "최근",
         },
         {
-          mode: 'past',
+          mode: "past",
           icon: <Calendar />,
-          name: '과거',
+          name: "과거",
         },
       ] as const,
-    [],
+    []
   );
-  const currentIndex = modeInfos.findIndex((modeInfo) => modeInfo.mode === mode);
+  const currentIndex = modeInfos.findIndex(
+    (modeInfo) => modeInfo.mode === mode
+  );
   const indicatorLeft = useMemo(() => {
     const gaps = currentIndex * ModeGap;
     const sizes = ModeWidth;
@@ -45,8 +46,8 @@ const ListModeSelector = ({ mode, onSelectMode }: Props) => {
   /** TODO: implements with link instead of onClick */
 
   return (
-    <Block>
-      <ModeContainer>
+    <div className={styles.block}>
+      <div className={styles.mode_container}>
         {modeInfos.map((modeInfo) => (
           <ListModeItem
             {...modeInfo}
@@ -55,9 +56,9 @@ const ListModeSelector = ({ mode, onSelectMode }: Props) => {
             key={modeInfo.name}
           />
         ))}
-        <Indicator style={{ left: indicatorLeft }} />
-      </ModeContainer>
-    </Block>
+        <div className={styles.indicator} style={{ left: indicatorLeft }} />
+      </div>
+    </div>
   );
 };
 
@@ -68,60 +69,20 @@ const ListModeItem = ({
   icon,
   currentMode,
 }: Props & { name: string; icon: React.ReactNode; currentMode: ListMode }) => {
+  const { mode: themeMode } = useTheme();
   return (
-    <Mode isActive={mode === currentMode} onClick={() => onSelectMode(mode)}>
+    <div
+      className={cn(
+        styles.mode,
+        mode === currentMode && styles.active,
+        themeMode === "dark" && styles.dark
+      )}
+      onClick={() => onSelectMode(mode)}
+    >
       {icon}
       {name}
-    </Mode>
+    </div>
   );
 };
-const Block = styled.div`
-  margin: 0 auto;
-  margin-bottom: 14px;
-`;
-
-const ModeContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  position: relative;
-`;
-
-const Mode = styled.div<{ isActive: boolean }>`
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: ${ModeWidth}px;
-  margin-bottom: 4px;
-  font-size: 16px;
-  line-height: 1.5;
-  color: ${colors.gray3};
-
-  ${(props) =>
-    props.isActive &&
-    css`
-      color: ${colors.primary};
-      font-weight: 600;
-    `}
-  svg {
-    display: block;
-    width: 24px;
-    height: 24px;
-    margin-right: 7px;
-  }
-`;
-
-const Indicator = styled.div`
-  width: 75px;
-  height: 3px;
-  border-radius: 1px;
-  background: ${colors.primary};
-  position: absolute;
-  left: 0;
-  bottom: -5px;
-
-  transition: left 0.2s ease-in-out;
-`;
 
 export default ListModeSelector;

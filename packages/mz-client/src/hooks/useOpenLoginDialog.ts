@@ -1,37 +1,43 @@
-import { useCallback } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useDialog } from '~/context/DialogContext';
-import { useLogout } from './useLogout';
+"use client";
+
+import { useCallback } from "react";
+import { useDialog } from "@/context/DialogContext";
+import { useLogout } from "./useLogout";
+import { usePathname, useRouter } from "next/navigation";
 
 const messageMap = {
-  itemLike: '이 글이 마음에 드시나요? 이 글을 다른 사람들에게도 추천하기 위해서 로그인을 해주세요.',
-  comment: '당신의 의견을 적고 싶으신가요? 로그인을 해주세요.',
-  commentLike: '이 댓글이 마음에 드세요? 로그인을 해주세요',
-  itemBookmark: '나중에 이 글을 또 보고 싶으신가요? 로그인하고 북마크를 추가해보세요.',
-  logout: '접속중인 기기에서 로그아웃 하시겠습니까?',
-  deleteAccount: '계정에 관련된 정보를 모두 삭제합니다. 계속할까요?',
+  itemLike:
+    "이 글이 마음에 드시나요? 이 글을 다른 사람들에게도 추천하기 위해서 로그인을 해주세요.",
+  comment: "당신의 의견을 적고 싶으신가요? 로그인을 해주세요.",
+  commentLike: "이 댓글이 마음에 드세요? 로그인을 해주세요",
+  itemBookmark:
+    "나중에 이 글을 또 보고 싶으신가요? 로그인하고 북마크를 추가해보세요.",
+  logout: "접속중인 기기에서 로그아웃 하시겠습니까?",
+  deleteAccount: "계정에 관련된 정보를 모두 삭제합니다. 계속할까요?",
+  edit: "세션이 만료되었습니다. 작성하신 내용은 저장됩니다. 다시 로그인하시겠습니까?",
+  sessionOut: "세션이 만료되었습니다. 로그인화면으로 이동합니다.",
 };
 
 export const useOpenLoginDialog = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const pathname = usePathname();
+  const router = useRouter();
   const { open } = useDialog();
 
   const openLoginDialog = useCallback(
     (type: keyof typeof messageMap) => {
       const description = messageMap[type];
       open({
-        title: '로그인 후 이용해 주세요.',
+        title: "로그인 후 이용해 주세요.",
         description,
-        confirmText: '로그인',
+        confirmText: "로그인",
         onConfirm: () => {
           /**@todos refactor like useProtectedRoute or use useProtectedRoute */
-          navigate('/login', { state: { from: location, redirect: '/' }, replace: true });
+          router.push(`/login?next=${pathname}`);
         },
-        mode: 'confirm',
+        mode: "confirm",
       });
     },
-    [navigate, open],
+    [pathname, router, open]
   );
 
   return openLoginDialog;
@@ -45,17 +51,17 @@ export const useOpenLogoutDialog = () => {
     (type: keyof typeof messageMap) => {
       const description = messageMap[type];
       open({
-        title: '로그아웃을 진행합니다.',
+        title: "로그아웃을 진행합니다.",
         description,
-        confirmText: '로그아웃',
+        confirmText: "로그아웃",
         onConfirm: () => {
           logout();
         },
-        mode: 'confirm',
-        cancelText: '취소',
+        mode: "confirm",
+        cancelText: "취소",
       });
     },
-    [open],
+    [logout, open]
   );
 
   return openLoginDialog;

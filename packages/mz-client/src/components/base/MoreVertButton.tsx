@@ -1,32 +1,21 @@
-import React from 'react';
-import styled from 'styled-components';
-import { ReactComponent as MoreVert } from '~/assets/more-vert.svg';
-import { colors } from '~/lib/colors';
-
+import styles from "@/styles/MoreVertButton.module.scss";
+import { MoreVert } from "@/components/vectors";
+import { useTheme } from "@/context/ThemeContext";
+import { cn } from "@/utils/common";
 interface Props {
   onClick: () => void;
 }
 
 const MoreVertButton = ({ onClick }: Props) => {
+  const { mode } = useTheme();
   return (
-    <StyledButton onClick={onClick}>
+    <button
+      className={cn(styles.styled_button, mode === "dark" && styles.dark)}
+      onClick={onClick}
+    >
       <MoreVert />
-    </StyledButton>
+    </button>
   );
 };
-
-const StyledButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px;
-  margin-right: -8px;
-  color: ${colors.gray5};
-  svg {
-    display: block;
-    width: 24px;
-    height: 24px;
-  }
-`;
 
 export default MoreVertButton;

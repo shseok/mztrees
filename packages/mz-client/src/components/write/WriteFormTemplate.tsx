@@ -1,8 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
-import { colors } from '~/lib/colors';
-import Button from '../system/Button';
-import { media } from '~/lib/media';
+import React from "react";
+import styles from "@/styles/WriteFormTemplate.module.scss";
+import Button from "../system/Button";
+import { useTheme } from "@/context/ThemeContext";
+import { cn } from "@/utils/common";
 
 interface Props {
   description?: string;
@@ -11,47 +11,24 @@ interface Props {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
-const WriteFormTemplate = ({ description, children, buttonText, onSubmit }: Props) => {
+const WriteFormTemplate = ({
+  description,
+  children,
+  buttonText,
+  onSubmit,
+}: Props) => {
+  const { mode } = useTheme();
   return (
-    <StyledForm method='POST' onSubmit={onSubmit}>
+    <form
+      className={cn(styles.styled_form, mode === "dark" && styles.dark)}
+      method="POST"
+      onSubmit={onSubmit}
+    >
       {description && <h3>{description}</h3>}
-      <Content>{children}</Content>
+      <div className={styles.content}>{children}</div>
       <Button>{buttonText}</Button>
-    </StyledForm>
+    </form>
   );
 };
-
-const StyledForm = styled.form`
-  flex: 1;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-
-  ${media.mobile} {
-    width: 478px;
-    align-self: center;
-    justify-content: center;
-  }
-
-  h3 {
-    color: ${colors.gray5};
-    line-height: 1.5;
-    font-size: 18px;
-    font-weight: 600;
-    margin-top: 0;
-    margin-bottom: 16px;
-  }
-`;
-
-const Content = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-
-  ${media.mobile} {
-    flex: initial;
-    padding-bottom: 24px;
-  }
-`;
 
 export default WriteFormTemplate;

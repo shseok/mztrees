@@ -1,6 +1,8 @@
-import React from 'react';
-import BottomSheetModal from './BottomSheetModal';
-import { useBottomSheetModalStore } from '~/hooks/stores/useBottomSheetModalStore';
+"use client";
+
+import React from "react";
+import BottomSheetModal from "./BottomSheetModal";
+import { useBottomSheetModalStore } from "@/hooks/stores/useBottomSheetModalStore";
 
 const GlobalBottomSheetModal = () => {
   const { items, visible, close } = useBottomSheetModalStore();

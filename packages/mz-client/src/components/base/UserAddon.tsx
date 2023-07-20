@@ -1,10 +1,10 @@
-import React, { useRef, useState } from 'react';
-import styled from 'styled-components';
-import { ReactComponent as User } from '~/assets/user.svg';
-import Button from '../system/Button';
-import UserMenu from './UserMenu';
-import { mediaQuery } from '~/lib/media';
-import { Link } from 'react-router-dom';
+"use client";
+
+import React, { useRef, useState } from "react";
+import Button from "../system/Button";
+import UserMenu from "./UserMenu";
+import styles from "@/styles/UserAddon.module.scss";
+import { User } from "@/components/vectors";
 
 interface Props {
   username: string;
@@ -19,51 +19,31 @@ const UserAddon = ({ username }: Props) => {
   };
   const onClose = (e?: Event) => {
     const buttonEl = buttonRef?.current;
-    const isButton = buttonEl === e?.target || buttonEl?.contains(e?.target as Node);
+    const isButton =
+      buttonEl === e?.target || buttonEl?.contains(e?.target as Node);
     if (isButton) return;
 
     setVisible(false);
   };
   return (
-    <Responsive>
-      <Link to='/write' style={{ textDecoration: 'none' }}>
-        <WriteButton size='small' variant='primary'>
-          새 글 작성
-        </WriteButton>
-      </Link>
-      <Button size='small' variant='tertiary' onClick={onOpen} ref={buttonRef}>
-        <Block>
+    <div className={styles.responsive}>
+      <Button
+        className="write_button"
+        to="/write"
+        size="small"
+        variant="primary"
+      >
+        새 글 작성
+      </Button>
+      <Button size="small" variant="tertiary" onClick={onOpen} ref={buttonRef}>
+        <span className={styles.block}>
           <User />
           {username}
-        </Block>
+        </span>
       </Button>
       <UserMenu visible={visible} onClose={onClose} />
-    </Responsive>
+    </div>
   );
 };
 
-const Responsive = styled.div`
-  position: relative;
-  display: flex;
-`;
-
-const WriteButton = styled(Button)`
-  display: none;
-  margin-right: 8px;
-
-  ${mediaQuery(700)} {
-    display: flex;
-  }
-`;
-
-const Block = styled.span`
-  display: flex;
-  align-items: center;
-  svg {
-    display: block;
-    margin-right: 8px;
-    width: 20px;
-    height: 20px;
-  }
-`;
 export default UserAddon;

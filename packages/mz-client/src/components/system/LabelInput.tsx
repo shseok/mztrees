@@ -1,48 +1,43 @@
-import React, { forwardRef, useState } from 'react';
-import styled, { css } from 'styled-components';
-import Input, { type Props as InputProps } from '~/components/system/Input';
-import { colors } from '~/lib/colors';
+"use client";
 
+import React, { forwardRef, useState } from "react";
+import Input, { type Props as InputProps } from "@/components/system/Input";
+import styles from "@/styles/LabelInput.module.scss";
+import { cn } from "@/utils/common";
+import { useTheme } from "@/context/ThemeContext";
 interface Props extends InputProps {
   label: string;
 }
 
-const LabelInput = forwardRef<HTMLInputElement, Props>(({ label, ...rest }: Props, ref) => {
-  const [focused, setFocused] = useState(false);
+const LabelInput = forwardRef<HTMLInputElement, Props>(
+  ({ label, ...rest }: Props, ref) => {
+    const [focused, setFocused] = useState(false);
+    const { mode } = useTheme();
+    const onFocus = () => {
+      setFocused(true);
+    };
 
-  const onFocus = () => {
-    setFocused(true);
-  };
+    const onBlur = () => {
+      setFocused(false);
+    };
 
-  const onBlur = () => {
-    setFocused(false);
-  };
+    return (
+      <div className={styles.block}>
+        <label
+          className={cn(
+            styles.label,
+            focused && styles.focused,
+            mode === "dark" && styles.dark
+          )}
+        >
+          {label}
+        </label>
+        <Input onFocus={onFocus} onBlur={onBlur} {...rest} ref={ref} />
+      </div>
+    );
+  }
+);
 
-  return (
-    <Block>
-      <Label focused={focused}>{label}</Label>
-      <Input onFocus={onFocus} onBlur={onBlur} {...rest} ref={ref} />
-    </Block>
-  );
-});
-const Block = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Label = styled.label<{ focused?: boolean }>`
-  font-size: 16px;
-  color: ${colors.gray4};
-  font-weight: 600;
-  line-height: 1.5;
-  margin-bottom: 8px;
-  transition: all 0.25s ease-in-out;
-
-  ${(props: { focused?: boolean }) =>
-    props.focused &&
-    css`
-      color: ${colors.primary};
-    `}
-`;
+LabelInput.displayName = "LabelInput";
 
 export default LabelInput;

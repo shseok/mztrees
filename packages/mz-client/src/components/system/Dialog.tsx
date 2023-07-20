@@ -1,8 +1,7 @@
-import React from 'react';
-import Modal from './Modal';
-import styled from 'styled-components';
-import { colors } from '~/lib/colors';
-import Button from './Button';
+import React from "react";
+import Modal from "./Modal";
+import Button from "./Button";
+import styles from "@/styles/Dialog.module.scss";
 
 interface Props {
   visible: boolean;
@@ -12,7 +11,7 @@ interface Props {
   cancelText: string;
   onClose(): void;
   onConfirm(): void;
-  mode?: 'alert' | 'confirm';
+  mode?: "alert" | "confirm";
 }
 
 const Dialog = ({
@@ -23,51 +22,22 @@ const Dialog = ({
   onConfirm,
   confirmText,
   cancelText,
-  mode = 'alert',
+  mode = "alert",
 }: Props) => {
   return (
-    <StyledModal visible={visible}>
-      <Title>{title}</Title>
-      <Description>{description}</Description>
-      <Footer>
-        {mode === 'confirm' && (
-          <Button onClick={onClose} variant='secondary'>
+    <Modal className="styled_modal" visible={visible}>
+      <h3 className={styles.title}>{title}</h3>
+      <p className={styles.description}>{description}</p>
+      <section className={styles.footer}>
+        {mode === "confirm" && (
+          <Button onClick={onClose} variant="secondary">
             {cancelText}
           </Button>
         )}
         <Button onClick={onConfirm}>{confirmText}</Button>
-      </Footer>
-    </StyledModal>
+      </section>
+    </Modal>
   );
 };
-
-const StyledModal = styled(Modal)`
-  width: 375px;
-  max-width: calc(100vw - 32px);
-  padding: 24px 16px 24px 16px;
-`;
-
-const Title = styled.h3`
-  margin-top: 0;
-  margin-bottom: 8px;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 1.5;
-  color: ${colors.gray5};
-`;
-const Description = styled.p`
-  margin-top: 0;
-  margin-bottom: 24px;
-  font-size: 16px;
-  line-height: 1.5;
-  color: ${colors.gray5};
-`;
-
-const Footer = styled.section`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  gap: 8px;
-`;
 
 export default Dialog;
