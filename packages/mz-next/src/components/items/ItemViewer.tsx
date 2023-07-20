@@ -15,12 +15,14 @@ import { Globe } from "@/components/vectors";
 import { useUser } from "@/context/UserContext";
 import { useTheme } from "@/context/ThemeContext";
 import { cn } from "@/utils/common";
+import MoreVertButton from "../base/MoreVertButton";
 
 interface Props {
   item: Item;
+  onClickMore(): void;
 }
 
-const ItemViewer = ({ item }: Props) => {
+const ItemViewer = ({ item, onClickMore }: Props) => {
   const {
     id,
     thumbnail,
@@ -78,6 +80,9 @@ const ItemViewer = ({ item }: Props) => {
         </Link>
       ) : null}
       <div className={styles.content}>
+        <div className={styles.morevert_container}>
+          <MoreVertButton onClick={onClickMore} />
+        </div>
         <Link href={item.link}>
           <div className={cn(styles.publisher, mode === "dark" && styles.dark)}>
             {favicon ? (

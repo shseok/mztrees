@@ -1,14 +1,4 @@
-@import "_var";
-
-.content {
-  padding: 16px;
-  border-bottom: 1px solid $gray0;
-  a {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-  }
-}
+@import "_var", "_module";
 
 .block {
   display: flex;
@@ -29,6 +19,29 @@
   img {
     border-radius: 0px;
     object-fit: contain;
+  }
+}
+
+.content {
+  padding: 16px;
+  border-bottom: 1px solid $gray0;
+  position: relative;
+
+  a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+.morevert_container {
+  display: none;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+
+  @include mobile {
+    display: block;
   }
 }
 

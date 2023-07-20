@@ -65,7 +65,7 @@ export default function Item({ item }: Props) {
       headerRight={isMyItem && <MoreVertButton onClick={onClickMore} />}
     >
       <div className={styles.content}>
-        <ItemViewer item={item} />
+        <ItemViewer item={item} onClickMore={onClickMore} />
         {status === "loading" ? (
           <Loading />
         ) : status === "error" ? (
