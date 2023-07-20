@@ -3,6 +3,11 @@ import { Suspense } from "react";
 import Loading from "@/components/system/PostLoading";
 import AuthForm from "@/components/auth/AuthForm";
 
+export const metadata = {
+  title: "login",
+  description: "mz register page",
+};
+
 export default function Register() {
   console.log("register");
   return (
