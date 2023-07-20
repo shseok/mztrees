@@ -26,7 +26,11 @@ async function rejectIfNeeded(response: Response) {
 }
 
 export const fetchClient = {
-  baseUrl: "http://localhost:4000",
+  // baseUrl:
+  //   (typeof window === "undefined"
+  //     ? process.env.API_BASE_URL
+  //     : process.env.LOCAL_API_BASE_URL) ?? "http://localhost:4000",
+  baseUrl: process.env.API_BASE_URL!
   async get<T>(url: string, config: RequestConfig = {}): Promise<T> {
     // const query = config?.params
     //   ? QueryString.stringify(config?.params, { addQueryPrefix: true })
