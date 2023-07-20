@@ -3,6 +3,8 @@ import React, { useMemo } from "react";
 import { addWeekToRange } from "@/lib/week";
 import styles from "@/styles/WeekSelector.module.scss";
 import useSetSearchParams from "@/hooks/useSetSearchParams";
+import { useTheme } from "@/context/ThemeContext";
+import { cn } from "@/utils/common";
 
 interface Props {
   dateRange: string[];
@@ -18,6 +20,7 @@ const WeekSelector = ({ dateRange }: Props) => {
     return [start, end];
   }, [dateRange]);
   const setSearchParams = useSetSearchParams();
+  const { mode } = useTheme();
 
   /** TODO: refactor to link */
   const onClickPrev = () => {
@@ -39,19 +42,19 @@ const WeekSelector = ({ dateRange }: Props) => {
 
   return (
     <div className={styles.block}>
-      <div className={styles.date_info}>
+      <div className={cn(styles.date_info, mode === "dark" && styles.dark)}>
         {startDate} ~ {endDate}
       </div>
       <div className={styles.week_navigator}>
         <button
-          className={styles.text_button}
+          className={cn(styles.text_button, mode === "dark" && styles.dark)}
           onClick={onClickPrev}
           disabled={prevDisabled}
         >
           이전 주
         </button>
         <button
-          className={styles.text_button}
+          className={cn(styles.text_button, mode === "dark" && styles.dark)}
           onClick={onClickNext}
           disabled={nextDisabled}
         >

@@ -25,5 +25,5 @@ export async function middleware(req: NextRequest) {
 // See "Matching Paths" below to learn more
 export const config = {
   // matcher: ["/dir/:path*/submit", "/dir/create"],
-  matcher: ["/setting", "/write", "/bookmark"],
+  matcher: ["/setting/:path*", "/write/:path*", "/bookmark"],
 };

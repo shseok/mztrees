@@ -8,11 +8,18 @@ interface Props {
   name: string;
   to: string;
   className?: string;
+  mode?: string;
 }
 
-const QuestionLink = ({ question, name, to, className }: Props) => {
+const QuestionLink = ({ question, name, to, className, mode }: Props) => {
   return (
-    <div className={cn(styles.block, className && styles[className])}>
+    <div
+      className={cn(
+        styles.block,
+        className && styles[className],
+        mode === "dark" && styles.dark
+      )}
+    >
       {question} <Link href={to}>{name}</Link>
     </div>
   );

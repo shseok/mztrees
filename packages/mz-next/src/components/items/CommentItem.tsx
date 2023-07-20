@@ -12,6 +12,8 @@ import { useCommentActions } from "@/hooks/useCommentActions";
 import styles from "@/styles/CommentItem.module.scss";
 import { MoreVert } from "@/components/vectors";
 import { useUser } from "@/context/UserContext";
+import { cn } from "@/utils/common";
+import { useTheme } from "@/context/ThemeContext";
 
 /**@todo isSubcomment 굳이 필요한가에 대한 고민 */
 interface Props {
@@ -41,6 +43,8 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
   const likes = commentLike?.likes ?? comment.likes;
   const isLiked = commentLike?.isLiked ?? comment.isLiked;
   const { useDeleteComment: deleteComment } = useCommentActions();
+  const { mode } = useTheme();
+
   const onClickMore = () => {
     openBottomSheetModal([
       {
@@ -83,7 +87,9 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
   if (isDeleted) {
     return (
       <div className={styles.block}>
-        <p className={styles.deleted_text}>삭제된 댓글입니다.</p>
+        <p className={cn(styles.deleted_text, mode === "dark" && styles.dark)}>
+          삭제된 댓글입니다.
+        </p>
         {!isSubcomment && subcomments && (
           <SubCommentList comments={subcomments} />
         )}
@@ -95,29 +101,41 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
     <div className={styles.block} data-comment-id={comment.id}>
       <div className={styles.comment_head}>
         <div className={styles.left_group}>
-          <div className={styles.user_name}>{username}</div>
-          <div className={styles.time}>{distance}</div>
+          <div className={cn(styles.user_name, mode === "dark" && styles.dark)}>
+            {username}
+          </div>
+          <div className={cn(styles.time, mode === "dark" && styles.dark)}>
+            {distance}
+          </div>
         </div>
         {isMyComment && (
-          <button className={styles.more_button} onClick={onClickMore}>
+          <button
+            className={cn(styles.more_button, mode === "dark" && styles.dark)}
+            onClick={onClickMore}
+          >
             <MoreVert />
           </button>
         )}
       </div>
-      <p className={styles.text}>
+      <p className={cn(styles.text, mode === "dark" && styles.dark)}>
         {mentionUser && (
           <span className={styles.mention}>@{mentionUser.username}</span>
         )}
         {text}
       </p>
-      <div className={styles.comment_footer}>
+      <div
+        className={cn(styles.comment_footer, mode === "dark" && styles.dark)}
+      >
         <div className={styles.like_block}>
           <LikeButton size="small" isLiked={isLiked} onClick={toggleLike} />
           <span className={styles.like_count}>
             {likes === 0 ? "" : likes.toLocaleString()}
           </span>
         </div>
-        <button className={styles.reply_button} onClick={onReply}>
+        <button
+          className={cn(styles.reply_button, mode === "dark" && styles.dark)}
+          onClick={onReply}
+        >
           답글 달기
         </button>
       </div>

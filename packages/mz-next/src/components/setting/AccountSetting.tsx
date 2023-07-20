@@ -9,6 +9,8 @@ import { changePassword, unregister } from "@/lib/api/me";
 import { extractNextError } from "@/lib/nextError";
 import styles from "@/styles/AccountSetting.module.scss";
 import { useUser } from "@/context/UserContext";
+import { useTheme } from "@/context/ThemeContext";
+import { cn } from "@/utils/common";
 
 const AccountSetting = () => {
   const { currentUser } = useUser();
@@ -26,6 +28,7 @@ const AccountSetting = () => {
     });
   };
   const { open } = useDialog();
+  const { mode: themeMode } = useTheme();
 
   // 실패할 일이 있기때문에 mutation 사용
   const { mutate } = useMutation(changePassword, {
@@ -99,12 +102,22 @@ const AccountSetting = () => {
   return (
     <div className={styles.block}>
       <div>
-        <h1 className={styles.title}>내 계정</h1>
-        <div className={styles.section}>
+        <h1 className={cn(styles.title, themeMode === "dark" && styles.dark)}>
+          내 계정
+        </h1>
+        <div
+          className={cn(styles.section, themeMode === "dark" && styles.dark)}
+        >
           <h4>아이디</h4>
-          <div className={styles.username}>{currentUser.username} 님</div>
+          <div
+            className={cn(styles.username, themeMode === "dark" && styles.dark)}
+          >
+            {currentUser.username} 님
+          </div>
         </div>
-        <div className={styles.section}>
+        <div
+          className={cn(styles.section, themeMode === "dark" && styles.dark)}
+        >
           <h4>비밀번호</h4>
           <form onSubmit={onSubmit}>
             <div className={styles.input_group}>

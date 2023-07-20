@@ -46,6 +46,10 @@
     width: 16px;
     height: 16px;
   }
+
+  &.dark {
+    color: white;
+  }
 }
 
 .title {
@@ -55,6 +59,10 @@
   font-weight: 600;
   line-height: 1.5;
   color: $gray5;
+
+  &.dark {
+    color: white;
+  }
 }
 
 .body {
@@ -65,6 +73,10 @@
   color: $gray4;
   white-space: pre-wrap;
   word-break: keep-all;
+
+  &.dark {
+    color: white;
+  }
 }
 
 .likescount {
@@ -75,6 +87,10 @@
   height: 26px;
   display: flex;
   align-items: top;
+
+  &.dark {
+    color: white;
+  }
 }
 
 .footer {
@@ -88,6 +104,10 @@
   font-size: 14px;
   margin-top: 0px;
   margin-bottom: 0px;
+
+  &.dark {
+    color: white;
+  }
 }
 
 .icon_container {

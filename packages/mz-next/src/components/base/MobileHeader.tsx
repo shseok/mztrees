@@ -1,7 +1,10 @@
+"use client";
+
 import React from "react";
 import { Logo } from "@/components/vectors";
 import styles from "@/styles/MobileHeader.module.scss";
 import { cn } from "@/utils/common";
+import { useTheme } from "@/context/ThemeContext";
 export interface HeaderProps {
   title?: React.ReactNode;
   headerLeft?: React.ReactNode;
@@ -15,12 +18,15 @@ const MobileHeader = ({
   headerRight,
   className,
 }: HeaderProps) => {
+  const { mode } = useTheme();
   return (
     <header className={cn(styles.block, className && styles[className])}>
       {headerLeft && (
         <div className={cn(styles.header_side, styles.left)}>{headerLeft}</div>
       )}
-      <div className={styles.title}>{title}</div>
+      <div className={cn(styles.title, mode === "dark" && styles.dark)}>
+        {title}
+      </div>
       {headerRight && (
         <div className={cn(styles.header_side, styles.right)}>
           {headerRight}

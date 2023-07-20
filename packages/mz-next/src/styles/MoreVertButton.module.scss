@@ -8,6 +8,10 @@
   margin-right: -8px;
   color: $gray5;
 
+  &.dark {
+    color: white;
+  }
+
   svg {
     display: block;
     width: 24px;

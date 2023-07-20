@@ -1,6 +1,8 @@
 import React from "react";
 import styles from "@/styles/WriteFormTemplate.module.scss";
 import Button from "../system/Button";
+import { useTheme } from "@/context/ThemeContext";
+import { cn } from "@/utils/common";
 
 interface Props {
   description?: string;
@@ -15,8 +17,13 @@ const WriteFormTemplate = ({
   buttonText,
   onSubmit,
 }: Props) => {
+  const { mode } = useTheme();
   return (
-    <form className={styles.styled_form} method="POST" onSubmit={onSubmit}>
+    <form
+      className={cn(styles.styled_form, mode === "dark" && styles.dark)}
+      method="POST"
+      onSubmit={onSubmit}
+    >
       {description && <h3>{description}</h3>}
       <div className={styles.content}>{children}</div>
       <Button>{buttonText}</Button>

@@ -7,6 +7,7 @@ import UserAddon from "./UserAddon";
 import Link from "next/link";
 import { Logo } from "@/components/vectors";
 import { useUser } from "@/context/UserContext";
+import ThemeToggleButton from "../system/ThemeToggleButton";
 
 const DesktopHeader = () => {
   const { currentUser } = useUser();
@@ -20,6 +21,7 @@ const DesktopHeader = () => {
       <div className={styles.content}>
         <div className={styles.addon}></div>
         <div className={styles.addon}>
+          <ThemeToggleButton />
           <SearchArea />
           {currentUser ? (
             <UserAddon username={currentUser.username} profileImage={""} />

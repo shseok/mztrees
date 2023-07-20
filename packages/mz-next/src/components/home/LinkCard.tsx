@@ -13,6 +13,8 @@ import styles from "@/styles/LinkCard.module.scss";
 import Link from "next/link";
 import { useUser } from "@/context/UserContext";
 import { useSearchParams } from "next/navigation";
+import { useTheme } from "@/context/ThemeContext";
+import { cn } from "@/utils/common";
 
 interface Props {
   item: Item;
@@ -42,6 +44,7 @@ const LinkCard = ({ item }: Props) => {
   /**TODO: 연타로 누르면 기존의 것이 잘 취소되어야함 */
   const openLoginDialog = useOpenLoginDialog();
   const { currentUser } = useUser();
+  const { mode } = useTheme();
   /**TODO: move to hooks */
   const toggleLike = async () => {
     if (!currentUser) {
@@ -79,7 +82,7 @@ const LinkCard = ({ item }: Props) => {
             <Image src={thumbnail} alt={title} fill priority sizes="100vw" />
           ) : null}
         </div>
-        <div className={styles.publisher}>
+        <div className={cn(styles.publisher, mode === "dark" && styles.dark)}>
           {favicon ? (
             <div className={styles.favicon}>
               <Image src={favicon} alt="favicon" fill />
@@ -90,14 +93,18 @@ const LinkCard = ({ item }: Props) => {
           {author ? `${author} · ` : ""}
           {name}
         </div>
-        <h3 className={styles.title}>{item.title}</h3>
-        <p className={styles.body}>{body}</p>
+        <h3 className={cn(styles.title, mode === "dark" && styles.dark)}>
+          {item.title}
+        </h3>
+        <p className={cn(styles.body, mode === "dark" && styles.dark)}>
+          {body}
+        </p>
       </Link>
       <div className={styles.likecount_wrapper}>
         <AnimatePresence initial={false}>
           {likes === 0 ? null : (
             <motion.div
-              className={styles.likescount}
+              className={cn(styles.likescount, mode === "dark" && styles.dark)}
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 26, opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
@@ -115,7 +122,7 @@ const LinkCard = ({ item }: Props) => {
             isBookmarked={isBookmarked}
           />
         </div>
-        <p className={styles.user_info}>
+        <p className={cn(styles.user_info, mode === "dark" && styles.dark)}>
           by <b>{username}</b> · {dateDistance}
         </p>
       </div>

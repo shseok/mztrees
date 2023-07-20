@@ -2,6 +2,7 @@ import React, { forwardRef } from "react";
 import Link from "next/link";
 import styles from "@/styles/Button.module.scss";
 import { cn } from "@/utils/common";
+import { useTheme } from "@/context/ThemeContext";
 
 interface ButtonProps {
   layoutmode?: "inline" | "fullWidth";
@@ -26,6 +27,7 @@ const Button = forwardRef<HTMLButtonElement, Props>(
     }: Props,
     ref
   ) => {
+    const { mode } = useTheme();
     return to ? (
       <Link
         ref={ref as any}
@@ -34,7 +36,8 @@ const Button = forwardRef<HTMLButtonElement, Props>(
           styles.linked_button,
           styles[layoutmode],
           styles[variant],
-          styles[size]
+          styles[size],
+          mode === "dark" && styles.dark
         )}
         // style={rest.style}
         href={to}
@@ -48,7 +51,8 @@ const Button = forwardRef<HTMLButtonElement, Props>(
           styles.styled_button,
           styles[layoutmode],
           styles[variant],
-          styles[size]
+          styles[size],
+          mode === "dark" && styles.dark
         )}
         {...rest}
       />

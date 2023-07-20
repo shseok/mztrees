@@ -62,9 +62,15 @@
   &.tertiary {
     background: transparent;
     color: $gray4;
+
+    @at-root #{&}.dark {
+      color: white; // 다크 모드에서의 color 스타일
+    }
+
     @media (hover: hover) {
       &:hover:not(:disabled) {
         background: $gray0;
+        color: $gray4;
       }
     }
   }

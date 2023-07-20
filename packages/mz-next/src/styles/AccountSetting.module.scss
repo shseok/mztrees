@@ -22,6 +22,10 @@
   color: $gray5;
   font-size: 36px;
   line-height: 1.5;
+
+  &.dark {
+    color: white;
+  }
 }
 
 .section {
@@ -32,6 +36,10 @@
     color: $gray3;
   }
 
+  &.dark h4 {
+    color: white;
+  }
+
   & + & {
     margin-top: 32px;
   }
@@ -40,6 +48,10 @@
 .username {
   font-size: 16px;
   color: $gray5;
+
+  &.dark {
+    color: white;
+  }
 }
 
 .input_group {

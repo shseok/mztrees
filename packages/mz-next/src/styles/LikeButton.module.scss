@@ -2,6 +2,10 @@
 
 .styled_like_outline {
   color: $gray3;
+
+  &.dark {
+    color: white;
+  }
 }
 
 .styled_like_fill {

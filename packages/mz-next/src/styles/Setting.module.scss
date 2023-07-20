@@ -3,6 +3,10 @@
 .block {
   background: $gray0;
   flex: 1;
+
+  &.dark {
+    background: $gray5;
+  }
 }
 
 .list_wrapper {
@@ -20,4 +24,9 @@
   display: block;
   text-decoration: none;
   @include ListItemStyle;
+
+  &.dark {
+    background: $gray4;
+    color: white;
+  }
 }

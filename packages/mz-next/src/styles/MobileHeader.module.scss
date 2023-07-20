@@ -25,6 +25,10 @@
   font-size: 18px;
   font-weight: 600;
 
+  &.dark {
+    color: white;
+  }
+
   svg {
     display: block;
     width: 84px;

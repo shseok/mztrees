@@ -1,6 +1,7 @@
 import { forwardRef, useState } from "react";
 import { cn } from "@/utils/common";
 import styles from "@/styles/LabelTextArea.module.scss";
+import { useTheme } from "@/context/ThemeContext";
 
 interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string;
@@ -9,6 +10,7 @@ interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
 const LabelTextArea = forwardRef<HTMLTextAreaElement, Props>(
   ({ label, onBlur, onFocus, className, ...rest }: Props, ref) => {
     const [focused, setFocused] = useState(false);
+    const { mode } = useTheme();
     const handleFocus = (e: React.FocusEvent<HTMLTextAreaElement>) => {
       onFocus?.(e);
       setFocused(true);
@@ -20,7 +22,13 @@ const LabelTextArea = forwardRef<HTMLTextAreaElement, Props>(
 
     return (
       <div className={cn(styles.block, className && styles[className])}>
-        <label className={cn(styles.label, focused && styles.focused)}>
+        <label
+          className={cn(
+            styles.label,
+            focused && styles.focused,
+            mode === "dark" && styles.dark
+          )}
+        >
           {label}
         </label>
         <textarea

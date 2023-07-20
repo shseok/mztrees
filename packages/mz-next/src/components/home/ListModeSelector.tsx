@@ -1,8 +1,9 @@
 import React, { useMemo } from "react";
 import { ListMode } from "@/types/db";
-import { Trending, Time, Calendar } from "@/components/vectors";
+import { Trending, History, Calendar } from "@/components/vectors";
 import styles from "@/styles/ListModeSelector.module.scss";
 import { cn } from "@/utils/common";
+import { useTheme } from "@/context/ThemeContext";
 
 const ModeWidth = 75;
 const ModeGap = 16;
@@ -22,7 +23,7 @@ const ListModeSelector = ({ mode, onSelectMode }: Props) => {
         },
         {
           mode: "recent",
-          icon: <Time />,
+          icon: <History />,
           name: "최근",
         },
         {
@@ -68,9 +69,14 @@ const ListModeItem = ({
   icon,
   currentMode,
 }: Props & { name: string; icon: React.ReactNode; currentMode: ListMode }) => {
+  const { mode: themeMode } = useTheme();
   return (
     <div
-      className={cn(styles.mode, mode === currentMode && styles.active)}
+      className={cn(
+        styles.mode,
+        mode === currentMode && styles.active,
+        themeMode === "dark" && styles.dark
+      )}
       onClick={() => onSelectMode(mode)}
     >
       {icon}

@@ -2,8 +2,14 @@
 
 .block {
   color: $gray3;
+
   a {
     color: $gray5;
     font-weight: 600;
+  }
+
+  &.dark,
+  &.dark a {
+    color: white;
   }
 }

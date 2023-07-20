@@ -13,6 +13,8 @@ import Link from "next/link";
 import { Logo } from "@/components/vectors";
 import { NextAppError, extractNextError } from "@/lib/nextError";
 import { useUser } from "@/context/UserContext";
+import { cn } from "@/utils/common";
+import { useTheme } from "@/context/ThemeContext";
 
 interface Props {
   mode: "login" | "register";
@@ -119,13 +121,18 @@ const AuthForm = ({ mode }: Props) => {
   // console.log(errors.username, errors.password, errors);
 
   // handleSubmit > e.preventDefault() 를 기본으로 적용된다.
+  const { mode: themeMode } = useTheme();
+
   return (
     <form
       className={styles.form}
       method="post"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <Link className={styles.desktop_logo} href="/">
+      <Link
+        className={cn(styles.desktop_logo, themeMode === "dark" && styles.dark)}
+        href="/"
+      >
         <Logo />
       </Link>
       <div className={styles.input_group}>
@@ -174,6 +181,7 @@ const AuthForm = ({ mode }: Props) => {
           question={question}
           name={actionText}
           to={next ? `${actionLink}/?next=${next}` : actionLink}
+          mode={themeMode}
         />
       </div>
     </form>

@@ -24,6 +24,10 @@
   line-height: 1.5;
   color: $gray3;
 
+  &.dark {
+    color: white;
+  }
+
   &.active {
     color: $primary;
     font-weight: 600;
