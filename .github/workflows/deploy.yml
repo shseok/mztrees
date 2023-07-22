@@ -26,7 +26,7 @@
 on:
   push:
     branches:
-      - feature/docker-deploy
+      - main
 
 name: Deploy to Amazon ECS
 
@@ -52,10 +52,10 @@ jobs:
 
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
-        working-directory: ./infrastructure/ecr/example-server
+        working-directory: ./packages/mz-server
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: aws-terraform-test/runner
+          ECR_REPOSITORY: mz-backend-app/runner
           IMAGE_TAG: ${{ github.sha }}
         run: |
           # Build a docker container and
@@ -69,8 +69,8 @@ jobs:
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: infrastructure/ecr/example-server/task-definition.json
-          container-name: aws-terraform-test-app
+          task-definition: infrastructure/backend-app/server-task-definition.json
+          container-name: mz-backend-app-app
           image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
@@ -78,6 +78,6 @@ jobs:
         with:
           # task-definition: task-definition.json
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: aws-terraform-test-service
-          cluster: aws-terraform-test-cluster
+          service: mz-backend-app-service
+          cluster: mz-backend-app-cluster
           wait-for-service-stability: true
