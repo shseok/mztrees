@@ -1,5 +1,6 @@
 # CI/CD
 
-### 백엔드 자동 배포
-1. local branch `feature/docker-deploy` to remote push
-2. 백엔드 앱 > docker 빌드 후 ecr에 올린 다음 ecs에 배포
+### 백엔드 서버 자동 배포
+
+1. main 브랜치에 변경사항 push
+2. 백엔드 앱 > docker 빌드 후 ecr 업로드 > ecs 배포
