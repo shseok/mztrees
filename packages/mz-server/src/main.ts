@@ -8,6 +8,7 @@ import { authPlugin } from './plugins/authPlugin.js'
 import fastifyCookie from '@fastify/cookie'
 import cors from '@fastify/cors'
 import { isAppError } from './lib/AppError.js'
+import packageJson from './lib/packageJsonInfo.js'
 
 const server: FastifyInstance = Fastify({
   logger: true,
@@ -25,6 +26,13 @@ if (process.env.NODE_ENV === 'development') {
 
   await server.register(fastifySwagger, swaggerConfig)
   await server.register(fastifySwaggerUi, swaggerUiConfig)
+} else {
+  // production
+  server.register(cors, {
+    origin: /mztrees.com/,
+    allowedHeaders: ['Cookie', 'Content-Type'],
+    credentials: true,
+  })
 }
 
 server.register(fastifyCookie)
@@ -50,6 +58,10 @@ server.setErrorHandler(async (error, request, reply) => {
   }
 
   return error
+})
+
+server.get('/', async () => {
+  return { version: packageJson.version }
 })
 
 server.register(authPlugin)
