@@ -18,6 +18,7 @@ export class FetchError extends Error {
   }
 }
 
+// http error (not network error)
 async function rejectIfNeeded(response: Response) {
   if (!response.ok) {
     const data = await response.json();
@@ -30,7 +31,7 @@ export const fetchClient = {
   //   (typeof window === "undefined"
   //     ? process.env.API_BASE_URL
   //     : process.env.LOCAL_API_BASE_URL) ?? "http://localhost:4000",
-  baseUrl: process.env.API_BASE_URL!
+  baseUrl: process.env.API_BASE_URL!,
   async get<T>(url: string, config: RequestConfig = {}): Promise<T> {
     // const query = config?.params
     //   ? QueryString.stringify(config?.params, { addQueryPrefix: true })
