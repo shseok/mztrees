@@ -27,11 +27,11 @@ async function rejectIfNeeded(response: Response) {
 }
 
 export const fetchClient = {
-  // baseUrl:
-  //   (typeof window === "undefined"
-  //     ? process.env.API_BASE_URL
-  //     : process.env.LOCAL_API_BASE_URL) ?? "http://localhost:4000",
-  baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL!,
+  baseUrl:
+    process.env.NODE_ENV === "development"
+      ? process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL!
+      : process.env.NEXT_PUBLIC_API_BASE_URL!,
+  // baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL!,
   async get<T>(url: string, config: RequestConfig = {}): Promise<T> {
     // const query = config?.params
     //   ? QueryString.stringify(config?.params, { addQueryPrefix: true })
