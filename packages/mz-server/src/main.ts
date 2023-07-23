@@ -69,8 +69,10 @@ server.register(routes)
 
 const start = async () => {
   try {
-    // await server.listen({ port: 4000, host: '0.0.0.0' }) // nextjs에서 auth에서는 localhost > 다른 요청에서 http://localhost:4000 > BUG
-    await server.listen({ port: 4000 })
+    // nextjs에서 개발모드에서 host: '0.0.0.0'설정시 auth에서는 localhost > 다른 요청에서 http://localhost:4000 > BUG
+    await server.listen({ port: 8080, host: '0.0.0.0' })
+    // await server.listen({ port: 8080, host: 'api.mztrees.com' }); // to
+    // await server.listen({ port: 4000 }) // for the server to handle only all requests sent from the client to the api.mztrees.com host
   } catch (err) {
     server.log.error(err)
   }
