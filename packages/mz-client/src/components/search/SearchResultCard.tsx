@@ -3,6 +3,7 @@ import Image from "next/image";
 import styles from "@/styles/SearchResultCard.module.scss";
 import DOMPurify from "dompurify";
 import { Globe } from "@/components/vectors";
+import Link from "next/link";
 
 interface Props {
   item: SearchItemResult;
@@ -17,9 +18,10 @@ const SearchResultCard = ({ item }: Props) => {
   } = item;
 
   const sanitizer = DOMPurify.sanitize;
+  const link = `/items/${item.id}`;
 
   return (
-    <div className={styles.block}>
+    <Link href={link} className={styles.block}>
       <div className={styles.publisher}>
         {favicon ? (
           <div className={styles.favicon}>
@@ -41,7 +43,7 @@ const SearchResultCard = ({ item }: Props) => {
         dangerouslySetInnerHTML={{ __html: sanitizer(body) }}
       />
       <div className={styles.likescount}>좋아요 {likes.toLocaleString()}개</div>
-    </div>
+    </Link>
   );
 };
 export default SearchResultCard;

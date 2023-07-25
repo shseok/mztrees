@@ -3,6 +3,7 @@
 .block {
   display: flex;
   flex-direction: column;
+  text-decoration: none;
 
   em {
     color: $primary;
