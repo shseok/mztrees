@@ -7,11 +7,6 @@ import styles from "@/styles/Setting.module.scss";
 import { cn } from "@/utils/common";
 import Link from "next/link";
 
-export const metadata = {
-  title: "설정",
-  robots: "noindex",
-};
-
 export default function Setting() {
   const logout = useLogout();
   const { mode } = useTheme();
