@@ -8,6 +8,11 @@ import { ErrorBoundary } from "react-error-boundary";
 import { useQueryErrorResetBoundary } from "@tanstack/react-query";
 import ErrorFallback from "@/components/system/ErrorFallback";
 
+export const metadata = {
+  title: "북마크",
+  robots: "noindex",
+};
+
 export default function BookmarkLayout({
   children,
 }: {

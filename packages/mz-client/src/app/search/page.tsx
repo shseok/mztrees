@@ -18,6 +18,11 @@ interface Props {
   searchParams: { [key: string]: string | undefined };
 }
 
+export const metadata = {
+  title: "검색",
+  robots: "noindex",
+};
+
 export default function Search({ searchParams }: Props) {
   const [searchText, setSearchText] = useState(searchParams?.["q"] ?? "");
   const [inputResult] = useDebounce(searchText, 300);

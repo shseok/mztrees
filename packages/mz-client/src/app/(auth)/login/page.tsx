@@ -4,8 +4,8 @@ import Loading from "@/components/system/PostLoading";
 import AuthForm from "@/components/auth/AuthForm";
 
 export const metadata = {
-  title: "login",
-  description: "mz login page",
+  title: "로그인",
+  robots: "noindex",
 };
 
 export default function Login() {

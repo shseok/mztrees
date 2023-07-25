@@ -4,9 +4,9 @@ import Providers from "@/utils/provider";
 import GlobalBottomSheetModal from "@/components/system/GlobalBottomSheetModal";
 
 export const metadata = {
-  title: "mz",
+  title: "엠제트리 - 하나로 연결된 지역소식",
   description:
-    "service to share information in each region of korea made with Next.js and TypeScript",
+    "각 지역의 축제, 맛집, 사회문제 관련 다양한 소식들을 엠제트리에서 확인하고 공유해보세요.",
 };
 
 const myFont = localFont({
@@ -38,8 +38,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  console.log("RootLayout");
-
   return (
     <html lang="en" className={myFont.className}>
       <body>
