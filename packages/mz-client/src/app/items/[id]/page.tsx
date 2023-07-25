@@ -27,7 +27,6 @@ export async function generateMetadata({
       description: shortenDescription,
       url: itemData.link,
       images: itemData.thumbnail ?? undefined,
-      type: "article",
       authors: itemData.author,
     },
   };
