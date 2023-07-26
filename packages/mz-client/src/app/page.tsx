@@ -14,39 +14,56 @@ type Props = {
 };
 
 export function generateMetadata({ searchParams }: Props) {
-  const mode = searchParams.mode;
-  const canonical = {
-    metadataBase: new URL("https://mztrees.com"),
-    alternates: {
-      canonical: "/",
-    },
-  };
-
-  if (mode === "recent") {
-    return {
-      title: "엠제트리 - 최근 소식",
-      description: "방금 엠제트리에 올라온 따끈따끈한 소식들을 확인해보세요.",
+  const info = (() => {
+    const mode = searchParams.mode;
+    const canonical = {
+      alternates: {
+        canonical: "https://mztrees.com/",
+      },
     };
-  }
 
-  if (mode === "past") {
-    const { start, end } = searchParams;
-    const range = getWeekRangeFromDate(new Date());
-    const startDate = start ?? range?.[0];
-    const endDate = end ?? range?.[1];
-    const formattedStart = format(new Date(startDate), "yyyy년 MM월 dd일");
-    const formattedEnd = format(new Date(endDate), "yyyy년 MM월 dd일");
+    if (mode === "recent") {
+      return {
+        title: "엠제트리 - 최근 소식",
+        description: "방금 엠제트리에 올라온 따끈따끈한 소식들을 확인해보세요.",
+      };
+    }
+
+    if (mode === "past") {
+      const { start, end } = searchParams;
+      const range = getWeekRangeFromDate(new Date());
+      const startDate = start ?? range?.[0];
+      const endDate = end ?? range?.[1];
+      const formattedStart = format(new Date(startDate), "yyyy년 MM월 dd일");
+      const formattedEnd = format(new Date(endDate), "yyyy년 MM월 dd일");
+      return {
+        title: `엠제트리 - 과거 뉴스 (${formattedStart} ~ ${formattedEnd})`,
+        description: `${formattedStart} ~ ${formattedEnd}에 올라온 엠제트리 소식들을 인기순으로 확인해보세요.`,
+      };
+    }
+
     return {
-      title: `엠제트리 - 과거 뉴스 (${formattedStart} ~ ${formattedEnd})`,
-      description: `${formattedStart} ~ ${formattedEnd}에 올라온 엠제트리 소식들을 인기순으로 확인해보세요.`,
+      title: "엠제트리 - 하나로 연결된 지역소식",
+      description:
+        "각 지역의 축제, 맛집, 사회문제 관련 다양한 소식들을 엠제트리에서 확인하고 공유해보세요.",
+      ...(mode === "trending" ? canonical : {}),
     };
-  }
+  })();
 
   return {
-    title: "엠제트리 - 하나로 연결된 지역소식",
-    description:
-      "각 지역의 축제, 맛집, 사회문제 관련 다양한 소식들을 엠제트리에서 확인하고 공유해보세요.",
-    ...(mode === "trending" ? canonical : {}),
+    ...info,
+    openGraph: {
+      title: info.title,
+      description: info.description,
+      images: "https://img.mztrees.com/og-image.png",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: info.title,
+      description: info.description,
+      creator: "@mztrees",
+      images: "https://img.mztrees.com/og-image.png",
+    },
   };
 
   // TODO: og - title, description, image
