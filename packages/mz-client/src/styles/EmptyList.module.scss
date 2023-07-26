@@ -1,0 +1,21 @@
+@import "_var", "_module";
+
+.block {
+  padding-top: 0;
+  padding-bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: $gray2;
+  white-space: pre-wrap;
+  line-height: 1.5;
+  text-align: center;
+  flex: 1;
+
+  @include mobile {
+    padding-top: 128px;
+    padding-bottom: 128px;
+    font-size: 21px;
+  }
+}

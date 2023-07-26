@@ -1,8 +1,6 @@
 "use client";
 
-import TabLayout from "@/components/layout/TabLayout";
 import styles from "@/styles/StyledTabLayout.module.scss";
-
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React, {
   useCallback,
@@ -18,12 +16,11 @@ import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { useSearchParams } from "next/navigation";
 import { getItems } from "@/lib/api/items";
 import { ListMode } from "@/types/db";
-// import { getMyAccountWithRefresh } from "@/lib/protectRoute";
 import { getWeekRangeFromDate } from "@/lib/week";
 import useSetSearchParams from "@/hooks/useSetSearchParams";
 import SkeletonUI from "@/components/system/SkeletonUI";
+import EmptyList from "../system/EmptyList";
 
-// export default function Home({searchParams}) {
 export default function Home() {
   const observerTargetEl = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
@@ -91,23 +88,24 @@ export default function Home() {
     }
   }, [startDate, endDate, defaultDateRange, mode]);
 
-  // if (typeof window !== 'undefined') {
-  //   (window as any).queryClient = useQueryClient();
-  // }
+  const items = infiniteData?.pages.flatMap((page) => page.list);
 
   return (
-    <div className={styles.content}>
-      <ListModeSelector mode={mode} onSelectMode={onselect} />
-      {mode === "past" && <WeekSelector dateRange={dateRange} />}
-      {status === "loading" ? (
-        <SkeletonUI />
-      ) : status === "error" ? (
-        // TODO: define error type
-        <div>Error: {(error as any).message}</div>
-      ) : (
-        <LinkCardList items={infiniteData.pages.flatMap((page) => page.list)} />
-      )}
-      <div ref={observerTargetEl} />
-    </div>
+    <>
+      <div className={styles.content}>
+        <ListModeSelector mode={mode} onSelectMode={onselect} />
+        {mode === "past" && <WeekSelector dateRange={dateRange} />}
+        {status === "loading" ? (
+          <SkeletonUI />
+        ) : status === "error" ? (
+          // TODO: define error type
+          <div>Error: {(error as any).message}</div>
+        ) : items ? (
+          <LinkCardList items={items} />
+        ) : null}
+        <div ref={observerTargetEl} />
+      </div>
+      {items?.length === 0 ? <EmptyList /> : null}
+    </>
   );
 }

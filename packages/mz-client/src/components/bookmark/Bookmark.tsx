@@ -6,6 +6,8 @@ import { getBookmarks } from "@/lib/api/bookmark";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useCallback, useRef } from "react";
 import SkeletonUI from "@/components/system/SkeletonUI";
+import styles from "@/styles/StyledTabLayout.module.scss";
+import EmptyList from "../system/EmptyList";
 
 export default function Bookmark() {
   console.log("bookmark");
@@ -43,14 +45,17 @@ export default function Bookmark() {
 
   return (
     <>
-      {status === "loading" ? (
-        <SkeletonUI />
-      ) : status === "error" ? (
-        <div>에러</div>
-      ) : items ? (
-        <LinkCardList items={items} />
-      ) : null}
-      <div ref={observerTargetEl} />
+      <div className={styles.content} style={{ height: "100%" }}>
+        {status === "loading" ? (
+          <SkeletonUI />
+        ) : status === "error" ? (
+          <div>에러</div>
+        ) : items ? (
+          <LinkCardList items={items} />
+        ) : null}
+        <div ref={observerTargetEl} />
+      </div>
+      {items?.length === 0 ? <EmptyList /> : null}
     </>
   );
 }
