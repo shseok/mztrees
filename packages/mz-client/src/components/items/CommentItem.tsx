@@ -14,6 +14,9 @@ import { MoreVert } from "@/components/vectors";
 import { useUser } from "@/context/UserContext";
 import { cn } from "@/utils/common";
 import { useTheme } from "@/context/ThemeContext";
+import { useEffect, useRef, useState } from "react";
+import ReplyComment from "./ReplyComment";
+import { isMobile } from "@/lib/isMobile";
 
 /**@todo isSubcomment 굳이 필요한가에 대한 고민 */
 interface Props {
@@ -43,6 +46,8 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
   const likes = commentLike?.likes ?? comment.likes;
   const isLiked = commentLike?.isLiked ?? comment.isLiked;
   const { useDeleteComment: deleteComment } = useCommentActions();
+  const [isReplying, setIsReplying] = useState(false);
+  const replyRef = useRef<HTMLInputElement>(null);
   const { mode } = useTheme();
 
   const onClickMore = () => {
@@ -75,15 +80,25 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
     }
   };
 
-  // TODO: 댓글을 열고 거기서 댓글 달 경우 처리하기
   const onReply = async () => {
     if (!currentUser) {
       openLoginDialog("comment");
       return;
     }
-
-    write(comment.id);
+    if (isMobile()) {
+      write(comment.id);
+    }
+    setIsReplying(true);
   };
+
+  const onClose = () => {
+    setIsReplying(false);
+  };
+
+  useEffect(() => {
+    replyRef.current?.focus();
+  }, [isReplying]);
+
   if (isDeleted) {
     return (
       <div className={styles.block}>
@@ -139,6 +154,13 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
           답글 달기
         </button>
       </div>
+      {isReplying && (
+        <ReplyComment
+          parentCommentId={comment.id}
+          onClose={onClose}
+          inputRef={replyRef}
+        />
+      )}
       {!isSubcomment && subcomments && (
         <SubCommentList comments={subcomments} />
       )}

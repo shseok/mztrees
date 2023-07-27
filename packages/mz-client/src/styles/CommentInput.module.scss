@@ -1,4 +1,4 @@
-@import "_var";
+@import "_var", "_module";
 
 .dummy_input {
   width: 100%;
@@ -10,4 +10,8 @@
   align-items: center;
   color: $gray1;
   font-size: 16px;
+
+  @include tablet {
+    display: none;
+  }
 }
