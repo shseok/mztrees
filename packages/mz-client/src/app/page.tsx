@@ -17,8 +17,9 @@ export function generateMetadata({ searchParams }: Props) {
   const info = (() => {
     const mode = searchParams.mode;
     const canonical = {
+      metadataBase: new URL("https://mztrees.com"),
       alternates: {
-        canonical: "https://mztrees.com/",
+        canonical: "/",
       },
     };
 
@@ -55,14 +56,14 @@ export function generateMetadata({ searchParams }: Props) {
     openGraph: {
       title: info.title,
       description: info.description,
-      images: "https://img.mztrees.com/og-image.png",
+      images: "/og-image.png",
     },
     twitter: {
       card: "summary_large_image",
       title: info.title,
       description: info.description,
       creator: "@mztrees",
-      images: "https://img.mztrees.com/og-image.png",
+      images: "/og-image.png",
     },
   };
 
