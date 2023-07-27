@@ -73,7 +73,7 @@ const CommentEditor = ({
               취소
             </Button>
             <Button size="small" onClick={handleSubmit} onFocus={onFocus}>
-              {isLoading ? <LoadingIndicator /> : "등록"}
+              {isLoading ? <LoadingIndicator color="white" /> : "등록"}
             </Button>
           </motion.div>
         )}
