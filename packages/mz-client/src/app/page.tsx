@@ -56,14 +56,14 @@ export function generateMetadata({ searchParams }: Props) {
     openGraph: {
       title: info.title,
       description: info.description,
-      images: "/og-image.png",
+      images: "https://img.mztrees.com/og-image.png",
     },
     twitter: {
       card: "summary_large_image",
       title: info.title,
       description: info.description,
       creator: "@mztrees",
-      images: "/og-image.png",
+      images: "https://img.mztrees.com/og-image.png",
     },
   };
 
