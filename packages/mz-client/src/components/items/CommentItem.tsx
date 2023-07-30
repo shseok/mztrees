@@ -17,6 +17,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { useEffect, useRef, useState } from "react";
 import ReplyComment from "./ReplyComment";
 import { isMobile } from "@/lib/isMobile";
+import CommentMenu from "./CommentMenu";
 
 /**@todo isSubcomment 굳이 필요한가에 대한 고민 */
 interface Props {
@@ -48,23 +49,28 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
   const { useDeleteComment: deleteComment } = useCommentActions();
   const [isReplying, setIsReplying] = useState(false);
   const replyRef = useRef<HTMLInputElement>(null);
+  const [visible, setVisible] = useState(false);
   const { mode } = useTheme();
 
   const onClickMore = () => {
-    openBottomSheetModal([
-      {
-        name: "수정",
-        onClick: () => {
-          edit(comment.id, text);
+    if (isMobile()) {
+      openBottomSheetModal([
+        {
+          name: "수정",
+          onClick: () => {
+            edit(comment.id, text);
+          },
         },
-      },
-      {
-        name: "삭제",
-        onClick: () => {
-          deleteComment(comment.id);
+        {
+          name: "삭제",
+          onClick: () => {
+            deleteComment(comment.id);
+          },
         },
-      },
-    ]);
+      ]);
+    } else {
+      setVisible(true);
+    }
   };
 
   const toggleLike = async () => {
@@ -93,6 +99,10 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
 
   const onClose = () => {
     setIsReplying(false);
+  };
+
+  const onCloseMenu = () => {
+    setVisible(false);
   };
 
   useEffect(() => {
@@ -124,12 +134,15 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
           </div>
         </div>
         {isMyComment && (
-          <button
-            className={cn(styles.more_button, mode === "dark" && styles.dark)}
-            onClick={onClickMore}
-          >
-            <MoreVert />
-          </button>
+          <>
+            <button
+              className={cn(styles.more_button, mode === "dark" && styles.dark)}
+              onClick={onClickMore}
+            >
+              <MoreVert />
+            </button>
+            <CommentMenu visible={visible} onClose={onCloseMenu} />
+          </>
         )}
       </div>
       <p className={cn(styles.text, mode === "dark" && styles.dark)}>
