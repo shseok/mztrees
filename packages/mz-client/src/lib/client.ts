@@ -101,7 +101,7 @@ export const fetchClient = {
 
     await rejectIfNeeded(response);
 
-    console.log("delete", response.headers.get("Content-Type"));
+    // for reply.status(204) > json x > so, response.text() > type error > as any
     const data: T = response.headers.get("Content-Type")?.includes("json")
       ? await response.json()
       : ((await response.text()) as any);
