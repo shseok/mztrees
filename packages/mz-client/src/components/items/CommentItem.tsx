@@ -141,7 +141,11 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
             >
               <MoreVert />
             </button>
-            <CommentMenu visible={visible} onClose={onCloseMenu} />
+            <CommentMenu
+              visible={visible}
+              onClose={onCloseMenu}
+              comment={comment}
+            />
           </>
         )}
       </div>

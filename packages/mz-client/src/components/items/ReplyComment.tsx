@@ -4,6 +4,8 @@ import { useItemId } from "@/hooks/useItemId";
 import { useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import CommentEditor from "./CommentEditor";
+import { useDeskTopCommentInputStore } from "@/hooks/stores/useDeskTopCommentInputStore";
+import { shallow } from "zustand/shallow";
 
 interface Props {
   parentCommentId: number;
@@ -13,7 +15,14 @@ interface Props {
 
 const ReplyComment = ({ parentCommentId, onClose, inputRef }: Props) => {
   const itemId = useItemId();
-  const [text, setText] = useState("");
+  const { defaultText } = useDeskTopCommentInputStore(
+    ({ defaultText, visible }) => ({
+      defaultText,
+      visible,
+    }),
+    shallow
+  );
+  const [text, setText] = useState(defaultText);
   const queryClient = useQueryClient();
 
   const { mutate: writeComment, isLoading } = useCreateCommentMutation({

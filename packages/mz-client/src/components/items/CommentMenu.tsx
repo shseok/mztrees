@@ -2,17 +2,23 @@ import { AnimatePresence, motion } from "framer-motion";
 import styles from "@/styles/CommentMenu.module.scss";
 import { useRef } from "react";
 import { useOnClickOutside } from "@/hooks/useOnClickOuteside";
-import { useRouter } from "next/navigation";
 import { useDialog } from "@/context/DialogContext";
+import { useCommentActions } from "@/hooks/useCommentActions";
+import { Comment } from "@/types/db";
+import { useDeskTopCommentInputStore } from "@/hooks/stores/useDeskTopCommentInputStore";
 
 interface Props {
   visible: boolean;
+  comment: Comment;
   onClose: (e?: Event) => void;
 }
 
-const CommentMenu = ({ visible, onClose }: Props) => {
+const CommentMenu = ({ visible, onClose, comment }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
-  const router = useRouter();
+  const { edit } = useDeskTopCommentInputStore();
+
+  const { id: commentId, text } = comment;
+  const { useDeleteComment: deleteComment } = useCommentActions();
   useOnClickOutside(ref, (e) => {
     onClose(e);
   });
@@ -36,7 +42,9 @@ const CommentMenu = ({ visible, onClose }: Props) => {
           {/* TODO: Add icon at each menu item */}
           <div
             className={styles.menu_item}
-            onClick={() => router.push("/setting/account")}
+            onClick={() => {
+              edit(text);
+            }}
           >
             수정
           </div>
@@ -49,6 +57,7 @@ const CommentMenu = ({ visible, onClose }: Props) => {
                 confirmText: "삭제",
                 onConfirm: () => {
                   console.log("댓글 삭제");
+                  deleteComment(commentId);
                   // TODO: Add Spinner & Toast
                 },
                 mode: "confirm",
