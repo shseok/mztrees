@@ -14,6 +14,8 @@ import { useBottomSheetModalStore } from "@/hooks/stores/useBottomSheetModalStor
 import { useRouter } from "next/navigation";
 import { Item } from "@/types/db";
 import Loading from "@/components/system/PostLoading";
+import { isMobile } from "@/lib/isMobile";
+import { useMemo } from "react";
 
 type Props = {
   item: Item;
@@ -27,8 +29,8 @@ export default function Item({ item }: Props) {
   const openBottomSheetModal = useBottomSheetModalStore((store) => store.open);
   const { open: openDialog } = useDialog();
   const router = useRouter();
-  const onClickMore = () => {
-    openBottomSheetModal([
+  const items = useMemo(
+    () => [
       {
         name: "수정",
         onClick: () => {
@@ -40,8 +42,8 @@ export default function Item({ item }: Props) {
         name: "삭제",
         onClick: () => {
           openDialog({
-            title: "삭제",
-            description: "정말로 글을 삭제하시겠습니까?",
+            title: "글 삭제",
+            description: "글을 삭제합니다. 정말로 글을 삭제하시겠습니까?",
             mode: "confirm",
             onConfirm: async () => {
               /** TODO: show fullscreen spinner on loading */
@@ -55,7 +57,13 @@ export default function Item({ item }: Props) {
           });
         },
       },
-    ]);
+    ],
+    [item.id, router, openDialog]
+  );
+  const onClickMore = () => {
+    if (isMobile()) {
+      openBottomSheetModal(items);
+    }
   };
 
   return (
@@ -65,7 +73,7 @@ export default function Item({ item }: Props) {
       headerRight={isMyItem && <MoreVertButton onClick={onClickMore} />}
     >
       <div className={styles.content}>
-        <ItemViewer item={item} onClickMore={onClickMore} />
+        <ItemViewer item={item} isMyItem={isMyItem} items={items} />
         {status === "loading" ? (
           <Loading />
         ) : status === "error" ? (

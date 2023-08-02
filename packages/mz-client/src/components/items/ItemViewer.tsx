@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Item } from "@/types/db";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
@@ -16,13 +16,15 @@ import { useUser } from "@/context/UserContext";
 import { useTheme } from "@/context/ThemeContext";
 import { cn } from "@/utils/common";
 import MoreVertButton from "../base/MoreVertButton";
+import PopperMenu, { PopperMenuItem } from "../system/PopperMenu";
 
 interface Props {
   item: Item;
-  onClickMore(): void;
+  items: PopperMenuItem[];
+  isMyItem: boolean;
 }
 
-const ItemViewer = ({ item, onClickMore }: Props) => {
+const ItemViewer = ({ item, isMyItem, items }: Props) => {
   const {
     id,
     thumbnail,
@@ -33,6 +35,7 @@ const ItemViewer = ({ item, onClickMore }: Props) => {
     user: { username },
     publisher: { favicon, name },
   } = item;
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
   const itemOverride = useItemOverrideById(id);
   const itemStats = itemOverride?.itemStats ?? item.itemStats;
   const dateDistance = useDateDistance(createdAt);
@@ -46,7 +49,6 @@ const ItemViewer = ({ item, onClickMore }: Props) => {
   const openLoginDialog = useOpenLoginDialog();
   const { currentUser } = useUser();
   const { mode } = useTheme();
-  const isMyItem = item.user.id === currentUser?.id;
   /**TODO: move to hooks */
   const toggleLike = async () => {
     if (!currentUser) {
@@ -71,6 +73,14 @@ const ItemViewer = ({ item, onClickMore }: Props) => {
       bookmark(id);
     }
   };
+
+  const onClickMore = () => {
+    setIsMenuVisible(true);
+  };
+
+  const onCloseMenu = () => {
+    setIsMenuVisible(false);
+  };
   return (
     <div className={styles.block}>
       {thumbnail ? (
@@ -81,7 +91,14 @@ const ItemViewer = ({ item, onClickMore }: Props) => {
       <div className={styles.content}>
         {isMyItem && (
           <div className={styles.morevert_container}>
+            {/* TODO: work on for desktop */}
             <MoreVertButton onClick={onClickMore} />
+            <PopperMenu
+              items={items}
+              visible={isMenuVisible}
+              mode="item"
+              onClose={onCloseMenu}
+            />
           </div>
         )}
         <div className={cn(styles.publisher, mode === "dark" && styles.dark)}>

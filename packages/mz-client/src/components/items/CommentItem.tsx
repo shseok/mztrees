@@ -14,11 +14,12 @@ import { MoreVert } from "@/components/vectors";
 import { useUser } from "@/context/UserContext";
 import { cn } from "@/utils/common";
 import { useTheme } from "@/context/ThemeContext";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ReplyComment from "./ReplyComment";
 import { isMobile } from "@/lib/isMobile";
-import CommentMenu from "./CommentMenu";
+import PopperMenu from "../system/PopperMenu";
 import ModifyComment from "./ModifyComment";
+import { useDialog } from "@/context/DialogContext";
 
 /**@todo isSubcomment 굳이 필요한가에 대한 고민 */
 interface Props {
@@ -54,23 +55,43 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
   const editRef = useRef<HTMLInputElement>(null);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const { mode } = useTheme();
+  const { open: openDialog } = useDialog();
 
+  const items = useMemo(
+    () => [
+      {
+        name: "수정",
+        onClick: () => {
+          // for popperMenu
+          if (isMobile()) {
+            edit(comment.id, text);
+          } else {
+            setIsEditing(true);
+          }
+        },
+      },
+      {
+        name: "삭제",
+        onClick: () => {
+          openDialog({
+            title: "댓글 삭제",
+            description: "댓글을 완전히 삭제합니다. 정말 삭제하시겠습니까?",
+            mode: "confirm",
+            onConfirm: () => {
+              deleteComment(comment.id);
+              // TODO: Add Spinner & Toast
+            },
+            confirmText: "삭제",
+            cancelText: "취소",
+          });
+        },
+      },
+    ],
+    [comment.id, text, deleteComment, edit, isMobile(), openDialog]
+  );
   const onClickMore = () => {
     if (isMobile()) {
-      openBottomSheetModal([
-        {
-          name: "수정",
-          onClick: () => {
-            edit(comment.id, text);
-          },
-        },
-        {
-          name: "삭제",
-          onClick: () => {
-            deleteComment(comment.id);
-          },
-        },
-      ]);
+      openBottomSheetModal(items);
     } else {
       setIsMenuVisible(true);
     }
@@ -177,11 +198,11 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
             >
               <MoreVert />
             </button>
-            <CommentMenu
+            <PopperMenu
+              items={items}
               visible={isMenuVisible}
+              mode="comment"
               onClose={onCloseMenu}
-              commentId={comment.id}
-              setIsEditing={setIsEditing}
             />
           </>
         )}
