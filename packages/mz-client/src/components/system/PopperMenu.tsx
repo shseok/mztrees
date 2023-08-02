@@ -3,6 +3,12 @@ import styles from "@/styles/PopperMenu.module.scss";
 import { useRef } from "react";
 import { useOnClickOutside } from "@/hooks/useOnClickOuteside";
 import { cn } from "@/utils/common";
+import { Delete, Edit } from "@/components/vectors/index";
+
+const IconMap = {
+  수정: <Edit />,
+  삭제: <Delete />,
+} as const;
 
 export interface PopperMenuItem {
   name: string;
@@ -47,6 +53,7 @@ const PopperMenu = ({ visible, mode, items, onClose }: Props) => {
                 item.onClick();
               }}
             >
+              {IconMap[item.name as keyof typeof IconMap]}
               {item.name}
             </div>
           ))}

@@ -26,6 +26,10 @@
 }
 
 .menu_item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
   color: $gray5;
   padding: 16px;
   cursor: pointer;
