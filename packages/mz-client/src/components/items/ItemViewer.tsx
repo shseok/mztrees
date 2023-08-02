@@ -46,6 +46,7 @@ const ItemViewer = ({ item, onClickMore }: Props) => {
   const openLoginDialog = useOpenLoginDialog();
   const { currentUser } = useUser();
   const { mode } = useTheme();
+  const isMyItem = item.user.id === currentUser?.id;
   /**TODO: move to hooks */
   const toggleLike = async () => {
     if (!currentUser) {
@@ -80,9 +81,11 @@ const ItemViewer = ({ item, onClickMore }: Props) => {
         </Link>
       ) : null}
       <div className={styles.content}>
-        <div className={styles.morevert_container}>
-          <MoreVertButton onClick={onClickMore} />
-        </div>
+        {isMyItem && (
+          <div className={styles.morevert_container}>
+            <MoreVertButton onClick={onClickMore} />
+          </div>
+        )}
         <Link href={item.link}>
           <div className={cn(styles.publisher, mode === "dark" && styles.dark)}>
             {favicon ? (
