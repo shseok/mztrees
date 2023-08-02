@@ -74,10 +74,8 @@ const ItemViewer = ({ item, onClickMore }: Props) => {
   return (
     <div className={styles.block}>
       {thumbnail ? (
-        <Link href={item.link}>
-          <div className={styles.thumbnail}>
-            <Image src={thumbnail} alt={title} fill priority sizes="100vw" />
-          </div>
+        <Link href={item.link} className={styles.thumbnail}>
+          <Image src={thumbnail} alt={title} fill priority sizes="100vw" />
         </Link>
       ) : null}
       <div className={styles.content}>
@@ -86,23 +84,21 @@ const ItemViewer = ({ item, onClickMore }: Props) => {
             <MoreVertButton onClick={onClickMore} />
           </div>
         )}
-        <Link href={item.link}>
-          <div className={cn(styles.publisher, mode === "dark" && styles.dark)}>
-            {favicon ? (
-              <Image src={favicon} alt="favicon" width={16} height={16} />
-            ) : (
-              <Globe />
-            )}
-            {author ? `${author} · ` : ""}
-            {name}
-          </div>
-          <h2 className={cn(styles.title, mode === "dark" && styles.dark)}>
-            {title}
-          </h2>
-          <p className={cn(styles.body, mode === "dark" && styles.dark)}>
-            {body}
-          </p>
-        </Link>
+        <div className={cn(styles.publisher, mode === "dark" && styles.dark)}>
+          {favicon ? (
+            <Image src={favicon} alt="favicon" width={16} height={16} />
+          ) : (
+            <Globe />
+          )}
+          {author ? `${author} · ` : ""}
+          {name}
+        </div>
+        <h2 className={cn(styles.title, mode === "dark" && styles.dark)}>
+          <Link href={item.link}>{title}</Link>
+        </h2>
+        <p className={cn(styles.body, mode === "dark" && styles.dark)}>
+          {body}
+        </p>
         <AnimatePresence initial={false}>
           {likes === 0 ? null : (
             <motion.div

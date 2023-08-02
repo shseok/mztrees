@@ -26,12 +26,6 @@
   padding: 16px;
   border-bottom: 1px solid $gray0;
   position: relative;
-
-  a {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-  }
 }
 
 .morevert_container {
@@ -72,6 +66,16 @@
   font-weight: 600;
   line-height: 1.5;
   color: $gray5;
+
+  a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+      color: $gray2;
+    }
+  }
 
   &.dark {
     color: white;
