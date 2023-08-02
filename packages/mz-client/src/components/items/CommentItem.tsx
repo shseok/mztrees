@@ -18,6 +18,7 @@ import { useEffect, useRef, useState } from "react";
 import ReplyComment from "./ReplyComment";
 import { isMobile } from "@/lib/isMobile";
 import CommentMenu from "./CommentMenu";
+import ModifyComment from "./ModifyComment";
 
 /**@todo isSubcomment 굳이 필요한가에 대한 고민 */
 interface Props {
@@ -36,7 +37,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
   } = comment;
   const commentLike = useCommentLikeById(comment.id);
   const { like, unlike } = useCommentLike();
-  const distance = useDateDistance(createdAt);
+  const dateDistance = useDateDistance(createdAt);
   const { write, edit } = useCommentInputStore();
   const openLoginDialog = useOpenLoginDialog();
   const itemId = useItemId();
@@ -48,8 +49,10 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
   const isLiked = commentLike?.isLiked ?? comment.isLiked;
   const { useDeleteComment: deleteComment } = useCommentActions();
   const [isReplying, setIsReplying] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const replyRef = useRef<HTMLInputElement>(null);
-  const [visible, setVisible] = useState(false);
+  const editRef = useRef<HTMLInputElement>(null);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
   const { mode } = useTheme();
 
   const onClickMore = () => {
@@ -69,7 +72,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
         },
       ]);
     } else {
-      setVisible(true);
+      setIsMenuVisible(true);
     }
   };
 
@@ -97,17 +100,25 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
     setIsReplying(true);
   };
 
-  const onClose = () => {
+  const onCloseReply = () => {
     setIsReplying(false);
   };
 
   const onCloseMenu = () => {
-    setVisible(false);
+    setIsMenuVisible(false);
+  };
+
+  const onCloseEdit = () => {
+    setIsEditing(false);
   };
 
   useEffect(() => {
     replyRef.current?.focus();
   }, [isReplying]);
+
+  useEffect(() => {
+    editRef.current?.focus();
+  }, [isEditing]);
 
   if (isDeleted) {
     return (
@@ -122,6 +133,31 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
     );
   }
 
+  if (isEditing) {
+    return (
+      <div className={styles.block}>
+        <div className={styles.comment_head}>
+          <div className={styles.left_group}>
+            <div
+              className={cn(styles.user_name, mode === "dark" && styles.dark)}
+            >
+              {username}
+            </div>
+            <div className={cn(styles.time, mode === "dark" && styles.dark)}>
+              {dateDistance}
+            </div>
+          </div>
+        </div>
+        <ModifyComment
+          commentId={comment.id}
+          initialText={text}
+          onClose={onCloseEdit}
+          inputRef={editRef}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className={styles.block} data-comment-id={comment.id}>
       <div className={styles.comment_head}>
@@ -130,7 +166,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
             {username}
           </div>
           <div className={cn(styles.time, mode === "dark" && styles.dark)}>
-            {distance}
+            {dateDistance}
           </div>
         </div>
         {isMyComment && (
@@ -142,9 +178,10 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
               <MoreVert />
             </button>
             <CommentMenu
-              visible={visible}
+              visible={isMenuVisible}
               onClose={onCloseMenu}
-              comment={comment}
+              commentId={comment.id}
+              setIsEditing={setIsEditing}
             />
           </>
         )}
@@ -174,7 +211,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
       {isReplying && (
         <ReplyComment
           parentCommentId={comment.id}
-          onClose={onClose}
+          onClose={onCloseReply}
           inputRef={replyRef}
         />
       )}

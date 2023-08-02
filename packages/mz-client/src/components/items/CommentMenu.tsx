@@ -4,20 +4,16 @@ import { useRef } from "react";
 import { useOnClickOutside } from "@/hooks/useOnClickOuteside";
 import { useDialog } from "@/context/DialogContext";
 import { useCommentActions } from "@/hooks/useCommentActions";
-import { Comment } from "@/types/db";
-import { useDeskTopCommentInputStore } from "@/hooks/stores/useDeskTopCommentInputStore";
 
 interface Props {
   visible: boolean;
-  comment: Comment;
+  commentId: number;
   onClose: (e?: Event) => void;
+  setIsEditing: (isEdit: boolean) => void;
 }
 
-const CommentMenu = ({ visible, onClose, comment }: Props) => {
+const CommentMenu = ({ visible, onClose, commentId, setIsEditing }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { edit } = useDeskTopCommentInputStore();
-
-  const { id: commentId, text } = comment;
   const { useDeleteComment: deleteComment } = useCommentActions();
   useOnClickOutside(ref, (e) => {
     onClose(e);
@@ -43,7 +39,7 @@ const CommentMenu = ({ visible, onClose, comment }: Props) => {
           <div
             className={styles.menu_item}
             onClick={() => {
-              edit(text);
+              setIsEditing(true);
             }}
           >
             수정
