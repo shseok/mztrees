@@ -67,6 +67,7 @@ export default function Intro() {
             name="body"
             value={form.body}
             onChange={onChange}
+            rows={8}
           />
           {errorMessage ? (
             <div className={styles.message}>{errorMessage}</div>
