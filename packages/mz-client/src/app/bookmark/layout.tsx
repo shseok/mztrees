@@ -1,6 +1,7 @@
 import TabLayout from "@/components/layout/TabLayout";
+import { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "북마크",
   robots: "noindex",
 };

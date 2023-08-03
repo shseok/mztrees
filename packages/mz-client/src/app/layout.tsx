@@ -2,8 +2,9 @@ import "../styles/global.scss";
 import localFont from "next/font/local";
 import Providers from "@/utils/provider";
 import GlobalBottomSheetModal from "@/components/system/GlobalBottomSheetModal";
+import { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "엠제트리 - 하나로 연결된 지역소식",
   description:
     "각 지역의 축제, 맛집, 사회문제 관련 다양한 소식들을 엠제트리에서 확인하고 공유해보세요.",

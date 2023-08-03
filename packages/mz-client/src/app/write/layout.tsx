@@ -1,6 +1,7 @@
 import { WriteProvider } from "@/context/WriteContext";
+import { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "새 글 작성",
   robots: "noindex",
 };
