@@ -17,6 +17,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { cn } from "@/utils/common";
 import MoreVertButton from "../base/MoreVertButton";
 import PopperMenu, { PopperMenuItem } from "../system/PopperMenu";
+import Button from "../system/Button";
 
 interface Props {
   item: Item;
@@ -101,18 +102,27 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
             />
           </div>
         )}
-        <div className={cn(styles.publisher, mode === "dark" && styles.dark)}>
-          {favicon ? (
-            <Image src={favicon} alt="favicon" width={16} height={16} />
-          ) : (
-            <Globe />
-          )}
-          {author ? `${author} · ` : ""}
-          {name}
+        <div className={styles.item_head}>
+          <div className={styles.item_info}>
+            <div
+              className={cn(styles.publisher, mode === "dark" && styles.dark)}
+            >
+              {favicon ? (
+                <Image src={favicon} alt="favicon" width={16} height={16} />
+              ) : (
+                <Globe />
+              )}
+              {author ? `${author} · ` : ""}
+              {name}
+            </div>
+            <h2 className={cn(styles.title, mode === "dark" && styles.dark)}>
+              <Link href={item.link}>{title}</Link>
+            </h2>
+          </div>
+          <Button to={item.link} variant="secondary">
+            방문
+          </Button>
         </div>
-        <h2 className={cn(styles.title, mode === "dark" && styles.dark)}>
-          <Link href={item.link}>{title}</Link>
-        </h2>
         <p className={cn(styles.body, mode === "dark" && styles.dark)}>
           {body}
         </p>

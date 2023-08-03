@@ -3,12 +3,10 @@
 .block {
   display: flex;
   flex-direction: column;
-  a {
-    display: block;
-  }
 }
 
 .thumbnail {
+  display: block;
   position: relative;
   width: 100%;
   // height: auto;
@@ -39,6 +37,21 @@
   }
 }
 
+.item_head {
+  display: flex;
+  margin-bottom: 16px;
+  word-break: break-word;
+  gap: 16px;
+
+  button {
+    flex-shrink: 0;
+  }
+}
+
+.item_info {
+  flex: 1;
+}
+
 .publisher {
   display: flex;
   align-items: center;
@@ -61,7 +74,7 @@
 
 .title {
   margin-top: 0;
-  margin-bottom: 16px;
+  margin-bottom: 0;
   font-size: 18px;
   font-weight: 600;
   line-height: 1.5;

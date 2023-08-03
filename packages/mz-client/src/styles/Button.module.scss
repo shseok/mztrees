@@ -52,6 +52,8 @@
   &.secondary {
     color: $primary;
     background: $secondary;
+    border-radius: 50px;
+    padding: 0 20px !important;
     @media (hover: hover) {
       &:hover:not(:disabled) {
         opacity: 0.8;
