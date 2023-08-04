@@ -1,5 +1,11 @@
+@import "_module";
+
 .block {
   padding: 16px;
+
+  @include tablet {
+    padding: 16px 0;
+  }
 }
 
 .comment_title {
