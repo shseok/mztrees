@@ -6,7 +6,7 @@ import { useTheme } from "@/context/ThemeContext";
 
 interface ButtonProps {
   layoutmode?: "inline" | "fullWidth";
-  variant?: "primary" | "secondary" | "tertiary" | "warning";
+  variant?: "primary" | "secondary" | "tertiary" | "visit" | "warning";
   size?: "small" | "medium";
 }
 
