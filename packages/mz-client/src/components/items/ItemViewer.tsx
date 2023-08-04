@@ -90,18 +90,6 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
         </Link>
       ) : null}
       <div className={styles.content}>
-        {isMyItem && (
-          <div className={styles.morevert_container}>
-            {/* TODO: work on for desktop */}
-            <MoreVertButton onClick={onClickMore} />
-            <PopperMenu
-              items={items}
-              visible={isMenuVisible}
-              mode="item"
-              onClose={onCloseMenu}
-            />
-          </div>
-        )}
         <div className={styles.item_head}>
           <div className={styles.item_info}>
             <div
@@ -145,6 +133,22 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
               onClick={toggleBookmark}
               isBookmarked={isBookmarked}
             />
+            {isMyItem && (
+              <div className={styles.morevert_container}>
+                {/* TODO: work on for desktop */}
+                <MoreVertButton
+                  onClickMore={onClickMore}
+                  style={{ padding: 0 }}
+                />
+                <PopperMenu
+                  items={items}
+                  visible={isMenuVisible}
+                  mode="item"
+                  location="right"
+                  onClose={onCloseMenu}
+                />
+              </div>
+            )}
           </div>
           <p className={cn(styles.user_info, mode === "dark" && styles.dark)}>
             by <b>{username}</b> · {dateDistance}

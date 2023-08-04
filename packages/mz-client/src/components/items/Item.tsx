@@ -70,7 +70,7 @@ export default function Item({ item }: Props) {
     <BasicLayout
       hasBackButton
       title={null}
-      headerRight={isMyItem && <MoreVertButton onClick={onClickMore} />}
+      headerRight={isMyItem && <MoreVertButton onClickMore={onClickMore} />}
     >
       <div className={styles.content}>
         <ItemViewer item={item} isMyItem={isMyItem} items={items} />

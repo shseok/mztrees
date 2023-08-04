@@ -5,7 +5,6 @@
   background: white;
   position: absolute;
   top: 48px;
-  right: 0;
   width: 100px;
   border-radius: 4px;
   // box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
@@ -23,44 +22,66 @@
       display: block;
     }
   }
-}
 
-.menu_item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  color: $gray5;
-  padding: 16px;
-  cursor: pointer;
-  text-align: center;
-
-  &:hover {
-    transition: all 0.125s ease-in;
-    background: $gray0;
+  &.left {
+    right: 0;
   }
-}
 
-.triangle {
-  position: absolute;
-  top: -8px;
-  right: 16px;
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-bottom: 8px solid white;
-  z-index: 2;
-}
+  &.right {
+    left: 0;
+  }
 
-.triangle_border {
-  position: absolute;
-  top: -10px;
-  right: 14px;
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 10px solid #e0e0e0;
-  z-index: 1;
+  .triangle {
+    position: absolute;
+    top: -8px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid white;
+    z-index: 2;
+  }
+
+  &.left .triangle {
+    right: 16px;
+  }
+
+  &.right .triangle {
+    left: 16px;
+  }
+
+  .triangle_border {
+    position: absolute;
+    top: -10px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #e0e0e0;
+    z-index: 1;
+  }
+
+  &.left .triangle_border {
+    right: 14px;
+  }
+
+  &.right .triangle_border {
+    left: 14px;
+  }
+
+  .menu_item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    color: $gray5;
+    padding: 16px;
+    cursor: pointer;
+    text-align: center;
+
+    &:hover {
+      transition: all 0.125s ease-in;
+      background: $gray0;
+    }
+  }
 }

@@ -19,10 +19,17 @@ interface Props {
   visible: boolean;
   items: PopperMenuItem[];
   mode: "comment" | "item";
+  location?: "right" | "left";
   onClose: (e?: Event) => void;
 }
 
-const PopperMenu = ({ visible, mode, items, onClose }: Props) => {
+const PopperMenu = ({
+  visible,
+  mode,
+  items,
+  location = "left",
+  onClose,
+}: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   useOnClickOutside(ref, (e) => {
     onClose(e);
@@ -32,7 +39,7 @@ const PopperMenu = ({ visible, mode, items, onClose }: Props) => {
     <AnimatePresence initial={false}>
       {visible && (
         <motion.div
-          className={cn(styles.block, styles[mode])}
+          className={cn(styles.block, styles[mode], styles[location])}
           onClick={() => {
             onClose();
           }}
