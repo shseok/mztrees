@@ -10,7 +10,6 @@ export const metadata: Metadata = {
 };
 
 export default function Login() {
-  console.log("login");
   return (
     <BasicLayout
       hasBackButton={true}

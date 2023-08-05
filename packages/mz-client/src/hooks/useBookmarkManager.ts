@@ -29,7 +29,6 @@ export const useBookmarkManager = () => {
         if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
           try {
             const tokens = await refreshToken();
-            console.log("request refresh api", tokens.accessToken);
             setClientCookie(`access_token=${tokens.accessToken}`);
 
             await createBookmark(itemId, controller);
@@ -74,7 +73,6 @@ export const useBookmarkManager = () => {
         if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
           try {
             const tokens = await refreshToken();
-            console.log("request refresh api", tokens.accessToken);
             setClientCookie(`access_token=${tokens.accessToken}`);
 
             await deleteBookmark(itemId, controller);

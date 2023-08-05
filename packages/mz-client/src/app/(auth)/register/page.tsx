@@ -10,7 +10,6 @@ export const metadata: Metadata = {
 };
 
 export default function Register() {
-  console.log("register");
   return (
     <BasicLayout
       hasBackButton={true}

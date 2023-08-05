@@ -80,6 +80,7 @@ const AuthForm = ({ mode }: Props) => {
         const from = next ?? "/";
         console.log(from);
         router.replace(from);
+        router.refresh();
       }
     } catch (e) {
       set(null);

@@ -10,7 +10,6 @@ import styles from "@/styles/StyledTabLayout.module.scss";
 import EmptyList from "../system/EmptyList";
 
 export default function Bookmark() {
-  console.log("bookmark");
   const observerTargetEl = useRef<HTMLDivElement>(null);
 
   const {
@@ -49,7 +48,7 @@ export default function Bookmark() {
         {status === "loading" ? (
           <SkeletonUI />
         ) : status === "error" ? (
-          <div>에러</div>
+          <div>페이지를 로딩중입니다. 잠시만 기다려주세요...</div>
         ) : items ? (
           <LinkCardList items={items} />
         ) : null}

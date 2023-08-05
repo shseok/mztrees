@@ -5,7 +5,10 @@ import LabelInput from "@/components/system/LabelInput";
 import LabelTextArea from "@/components/system/LabelTextArea";
 import WriteFormTemplate from "@/components/write/WriteFormTemplate";
 import { useWriteContext } from "@/context/WriteContext";
+import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
+import { refreshToken } from "@/lib/api/auth";
 import { createItem } from "@/lib/api/items";
+import { setClientCookie } from "@/lib/client";
 import { extractNextError } from "@/lib/nextError";
 import styles from "@/styles/WriteIntro.module.scss";
 import { useRouter } from "next/navigation";
@@ -16,6 +19,7 @@ export default function Intro() {
     state: { form },
     actions,
   } = useWriteContext();
+  const openLoginDialog = useOpenLoginDialog();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const router = useRouter();
 
@@ -40,10 +44,21 @@ export default function Intro() {
       router.push(`/items/${item.id}`);
     } catch (e) {
       const error = extractNextError(e);
-      if (error.statusCode === 422) {
+      if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
+        try {
+          const tokens = await refreshToken();
+          setClientCookie(`access_token=${tokens.accessToken}`);
+
+          const item = await createItem(form);
+          router.push(`/items/${item.id}`);
+        } catch (innerError) {
+          openLoginDialog("sessionOut");
+        }
+      } else if (error.statusCode === 422) {
         router.back();
         actions.setError(error);
       }
+      console.log(error);
     }
   };
 

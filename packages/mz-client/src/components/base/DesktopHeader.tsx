@@ -11,7 +11,6 @@ import ThemeToggleButton from "../system/ThemeToggleButton";
 
 const DesktopHeader = () => {
   const { currentUser } = useUser();
-  console.log("in desktop header", currentUser);
 
   return (
     <header className={styles.block}>

@@ -35,7 +35,6 @@ export const useLikeManager = () => {
         if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
           try {
             const tokens = await refreshToken();
-            console.log("request refresh api", tokens.accessToken);
             setClientCookie(`access_token=${tokens.accessToken}`);
 
             const result = await likeItem(id, controller);
@@ -83,7 +82,6 @@ export const useLikeManager = () => {
         if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
           try {
             const tokens = await refreshToken();
-            console.log("request refresh api", tokens.accessToken);
             setClientCookie(`access_token=${tokens.accessToken}`);
 
             const result = await unlikeItem(id, controller);

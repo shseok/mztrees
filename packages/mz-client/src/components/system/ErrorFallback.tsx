@@ -33,7 +33,6 @@ function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
       resetErrorBoundary();
       return;
     }
-    console.log("just login");
     router.push(`/login?next=${pathname}`);
   };
 

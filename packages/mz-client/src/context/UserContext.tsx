@@ -34,7 +34,7 @@ export function UserProvider({ children }: Props) {
         const user = await getMyAccountWithRefresh();
         setCurrentUser(user);
       } catch (e) {
-        console.log("in desktopheader", extractNextError(e));
+        console.log("in userContext", extractNextError(e));
         setCurrentUser(null);
       }
     }
