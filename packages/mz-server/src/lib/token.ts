@@ -2,8 +2,8 @@ import jwt from 'jsonwebtoken'
 
 const JWT_SECRET = process.env.JWT_SECRET ?? 'DevSecretKey'
 export const tokensDuration = {
-  access_token: '1m',
-  refresh_token: '7d',
+  access_token: '1h',
+  refresh_token: '10d',
 } as const
 
 if (process.env.JWT_SECRET === undefined) {

@@ -125,7 +125,7 @@ class UserService {
           user: true,
         },
       })
-      console.log(tokenItem, rotationCounter)
+      // console.log(tokenItem, rotationCounter)
       if (!tokenItem) {
         throw new Error('Token not found')
       }
@@ -134,26 +134,26 @@ class UserService {
         throw new Error('Token is blocked')
       }
       // refresh토큰으로 전달받은 것(rotationCnt)과 디비에 있는 것(rotationCnt)이 다르다면 에러처리
-      if (tokenItem.rotationCounter !== rotationCounter) {
-        await db.token.update({
-          where: {
-            id: tokenId,
-          },
-          data: {
-            blocked: true,
-          },
-        })
-        throw new Error('Rotation counter does not match')
-      }
-      tokenItem.rotationCounter += 1
-      await db.token.update({
-        where: {
-          id: tokenId,
-        },
-        data: {
-          rotationCounter: tokenItem.rotationCounter,
-        },
-      })
+      // if (tokenItem.rotationCounter !== rotationCounter) {
+      //   await db.token.update({
+      //     where: {
+      //       id: tokenId,
+      //     },
+      //     data: {
+      //       blocked: true,
+      //     },
+      //   })
+      //   throw new Error('Rotation counter does not match')
+      // }
+      // tokenItem.rotationCounter += 1
+      // await db.token.update({
+      //   where: {
+      //     id: tokenId,
+      //   },
+      //   data: {
+      //     rotationCounter: tokenItem.rotationCounter,
+      //   },
+      // })
 
       return this.generateTokens(tokenItem.user, tokenItem)
     } catch (e) {
