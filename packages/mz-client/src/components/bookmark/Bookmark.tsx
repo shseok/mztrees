@@ -50,11 +50,14 @@ export default function Bookmark() {
         ) : status === "error" ? (
           <div>페이지를 로딩중입니다. 잠시만 기다려주세요...</div>
         ) : items ? (
-          <LinkCardList items={items} />
+          items.length === 0 ? (
+            <EmptyList />
+          ) : (
+            <LinkCardList items={items} />
+          )
         ) : null}
         <div ref={observerTargetEl} />
       </div>
-      {items?.length === 0 ? <EmptyList /> : null}
     </>
   );
 }
