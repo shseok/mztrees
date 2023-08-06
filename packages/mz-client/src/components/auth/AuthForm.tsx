@@ -63,12 +63,11 @@ const AuthForm = ({ mode }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const next = searchParams.get("next");
-
-  // const [error, setError] = useState<AppError | undefined>();
   const [error, setError] = useState<NextAppError | undefined>();
-  // const set = useSetUser();
   const { setCurrentUser: set } = useUser();
-  const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
+
+  const onSubmit: SubmitHandler<Inputs> = async (data: Inputs, event) => {
+    event?.preventDefault();
     try {
       if (mode === "register") {
         const result = await userRegister(data);
@@ -78,7 +77,7 @@ const AuthForm = ({ mode }: Props) => {
         const result = await userLogin(data);
         set(result.user);
         const from = next ?? "/";
-        console.log(from);
+        // console.log(from);
         router.replace(from);
         router.refresh();
       }
@@ -97,7 +96,7 @@ const AuthForm = ({ mode }: Props) => {
         return "영문 소문자 또는 숫자를 입력해주세요.";
       }
     }
-    if (error?.name === "UserExists") {
+    if (error?.name === "AlreadyExists") {
       return "이미 존재하는 계정입니다.";
     }
     return undefined;
@@ -118,7 +117,6 @@ const AuthForm = ({ mode }: Props) => {
   // if (error) {
   //   return <h1>{error.message}</h1>;
   // }
-  console.log(error);
   // console.log(errors.username, errors.password, errors);
 
   // handleSubmit > e.preventDefault() 를 기본으로 적용된다.
