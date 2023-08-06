@@ -11,12 +11,16 @@ import styles from "@/styles/AccountSetting.module.scss";
 import { useUser } from "@/context/UserContext";
 import { useTheme } from "@/context/ThemeContext";
 import { cn } from "@/utils/common";
+import { refreshToken } from "@/lib/api/auth";
+import { setClientCookie } from "@/lib/client";
+import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
 
 const AccountSetting = () => {
   const { currentUser } = useUser();
 
   const oldPasswordInputRef = useRef<HTMLInputElement>(null);
   const newPasswordInputRef = useRef<HTMLInputElement>(null);
+  const openLoginDialog = useOpenLoginDialog();
   const [form, setForm] = useState({
     oldPassword: "",
     newPassword: "",
@@ -31,18 +35,17 @@ const AccountSetting = () => {
   const { mode: themeMode } = useTheme();
 
   // 실패할 일이 있기때문에 mutation 사용
-  const { mutate } = useMutation(changePassword, {
+  const { mutate: mutateChangePassword } = useMutation(changePassword, {
     onSuccess: () => {
+      reset();
       open({
-        title: "비밀번호 변경 완료",
+        title: "비밀번호 변경",
         description: "비밀번호 변경이 완료되었습니다.",
         mode: "alert",
       });
-      reset();
     },
-    onError: (error) => {
+    onError: async (error, variables) => {
       const extractedError = extractNextError(error);
-      console.log(extractedError);
       if (extractedError.name === "Forbidden") {
         open({
           title: "비밀번호 불일치",
@@ -64,6 +67,19 @@ const AccountSetting = () => {
             setForm((prev) => ({ ...prev, newPassword: "" }));
           },
         });
+      } else if (
+        extractedError.name === "Unauthorized" &&
+        extractedError.payload?.isExpiredToken
+      ) {
+        try {
+          const tokens = await refreshToken();
+          setClientCookie(`access_token=${tokens.accessToken}`);
+          const { newPassword, oldPassword } = variables;
+          mutateChangePassword({ newPassword, oldPassword });
+        } catch (innerError) {
+          // expire refresh
+          openLoginDialog("sessionOut");
+        }
       }
     },
   });
@@ -78,9 +94,23 @@ const AccountSetting = () => {
       confirmText: "탈퇴",
       cancelText: "취소",
       async onConfirm() {
-        await unregister();
         try {
-        } catch (e) {}
+          await unregister();
+        } catch (e) {
+          const error = extractNextError(e);
+          if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
+            try {
+              const tokens = await refreshToken();
+              setClientCookie(`access_token=${tokens.accessToken}`);
+
+              await unregister();
+            } catch (innerError) {
+              // expire refresh
+              openLoginDialog("sessionOut");
+            }
+          }
+          console.log(error);
+        }
         window.location.href = "/";
       },
     });
@@ -94,7 +124,7 @@ const AccountSetting = () => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutate(form);
+    mutateChangePassword(form);
   };
 
   if (!currentUser) return null;

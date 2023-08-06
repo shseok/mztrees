@@ -16,6 +16,10 @@ import { Item } from "@/types/db";
 import Loading from "@/components/system/PostLoading";
 import { isMobile } from "@/lib/isMobile";
 import { useMemo } from "react";
+import { extractNextError } from "@/lib/nextError";
+import { refreshToken } from "@/lib/api/auth";
+import { setClientCookie } from "@/lib/client";
+import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
 
 type Props = {
   item: Item;
@@ -28,6 +32,7 @@ export default function Item({ item }: Props) {
 
   const openBottomSheetModal = useBottomSheetModalStore((store) => store.open);
   const { open: openDialog } = useDialog();
+  const openLoginDialog = useOpenLoginDialog();
   const router = useRouter();
   const items = useMemo(
     () => [
@@ -48,9 +53,28 @@ export default function Item({ item }: Props) {
             onConfirm: async () => {
               /** TODO: show fullscreen spinner on loading */
               // if (!item.id) return;
-              await deleteItem(item.id);
-              router.push("/?mode=recent");
-              router.refresh();
+              try {
+                await deleteItem(item.id);
+                router.push("/?mode=recent");
+                router.refresh();
+              } catch (e) {
+                const error = extractNextError(e);
+                if (
+                  error.name === "Unauthorized" &&
+                  error.payload?.isExpiredToken
+                ) {
+                  try {
+                    const tokens = await refreshToken();
+                    setClientCookie(`access_token=${tokens.accessToken}`);
+                    await deleteItem(item.id);
+                  } catch (innerError) {
+                    // expire access
+                    openLoginDialog("sessionOut");
+                    // router.push('login?next=/items/${}?mode=${}')
+                  }
+                }
+                console.log(error);
+              }
             },
             confirmText: "삭제",
             cancelText: "취소",

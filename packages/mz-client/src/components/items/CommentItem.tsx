@@ -4,7 +4,7 @@ import SubCommentList from "./SubcommentList";
 import LikeButton from "../system/LikeButton";
 import { useCommentInputStore } from "@/hooks/stores/useCommentInputStore";
 import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
-import { useCommentLike } from "@/hooks/useCommentLike";
+import { useCommentLikeManager } from "@/hooks/useCommentLikeManager";
 import { useCommentLikeById } from "@/hooks/stores/useCommentLikesStore";
 import { useItemId } from "@/hooks/useItemId";
 import { useBottomSheetModalStore } from "@/hooks/stores/useBottomSheetModalStore";
@@ -20,6 +20,9 @@ import { isMobile } from "@/lib/isMobile";
 import PopperMenu from "../system/PopperMenu";
 import ModifyComment from "./ModifyComment";
 import { useDialog } from "@/context/DialogContext";
+import { extractNextError } from "@/lib/nextError";
+import { refreshToken } from "@/lib/api/auth";
+import { setClientCookie } from "@/lib/client";
 
 /**@todo isSubcomment 굳이 필요한가에 대한 고민 */
 interface Props {
@@ -37,7 +40,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
     isDeleted,
   } = comment;
   const commentLike = useCommentLikeById(comment.id);
-  const { like, unlike } = useCommentLike();
+  const { like, unlike } = useCommentLikeManager();
   const dateDistance = useDateDistance(createdAt);
   const { write, edit } = useCommentInputStore();
   const openLoginDialog = useOpenLoginDialog();
@@ -77,8 +80,27 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
             title: "댓글 삭제",
             description: "댓글을 완전히 삭제합니다. 정말 삭제하시겠습니까?",
             mode: "confirm",
-            onConfirm: () => {
-              deleteComment(comment.id);
+            onConfirm: async () => {
+              try {
+                await deleteComment(comment.id);
+              } catch (e) {
+                const error = extractNextError(e);
+                if (
+                  error.name === "Unauthorized" &&
+                  error.payload?.isExpiredToken
+                ) {
+                  try {
+                    const tokens = await refreshToken();
+                    setClientCookie(`access_token=${tokens.accessToken}`);
+
+                    deleteComment(comment.id);
+                  } catch (innerError) {
+                    // expire refresh
+                    openLoginDialog("sessionOut");
+                  }
+                }
+                console.log(error);
+              }
               // TODO: Add Spinner & Toast
             },
             confirmText: "삭제",

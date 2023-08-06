@@ -52,6 +52,7 @@ export default function Intro() {
           const item = await createItem(form);
           router.push(`/items/${item.id}`);
         } catch (innerError) {
+          // expire refresh
           openLoginDialog("sessionOut");
         }
       } else if (error.statusCode === 422) {

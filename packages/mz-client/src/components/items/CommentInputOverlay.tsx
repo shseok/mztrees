@@ -13,6 +13,10 @@ import { produce } from "immer";
 import { useDialog } from "@/context/DialogContext";
 import { editComment } from "@/lib/api/items";
 import styles from "@/styles/CommentInputOverlay.module.scss";
+import { extractNextError } from "@/lib/nextError";
+import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
+import { refreshToken } from "@/lib/api/auth";
+import { setClientCookie } from "@/lib/client";
 
 const CommentInputOverlay = () => {
   const { visible, close, parentCommentId, commentId, defaultText } =
@@ -31,6 +35,7 @@ const CommentInputOverlay = () => {
   const itemId = useItemId();
   const queryClient = useQueryClient();
   const buttonText = commentId ? "수정" : "등록";
+  const openLoginDialog = useOpenLoginDialog();
 
   const scrollToCommentId = (commentId: number) => {
     const commentElement = document.body.querySelector<HTMLDivElement>(
@@ -79,12 +84,29 @@ const CommentInputOverlay = () => {
         }, 0);
         close();
       },
-      onError: () => {
-        // 서버가 죽지 않는 이상 에러는 발생하지 않을 것
-        open({
-          title: "오류",
-          description: "댓글 작성 실패",
-        });
+      onError: async (e, variables) => {
+        const error = extractNextError(e);
+        if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
+          try {
+            const tokens = await refreshToken();
+            setClientCookie(`access_token=${tokens.accessToken}`);
+            const { itemId, text, parentCommentId } = variables;
+            write({
+              itemId,
+              text,
+              parentCommentId: parentCommentId ?? undefined,
+            });
+          } catch (innerError) {
+            // expire refresh
+            openLoginDialog("sessionOut");
+          }
+        } else {
+          // 서버가 죽지 않는 이상 에러는 발생하지 않을 것
+          open({
+            title: "오류",
+            description: "댓글 작성 실패",
+          });
+        }
       },
     }
   );
@@ -96,11 +118,29 @@ const CommentInputOverlay = () => {
       queryClient.invalidateQueries(useCommentsQuery.extractKey(itemId));
       close();
     },
-    onError: () => {
-      open({
-        title: "오류",
-        description: "댓글 수정 실패",
-      });
+    onError: async (e, variables) => {
+      const error = extractNextError(e);
+      if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
+        try {
+          const tokens = await refreshToken();
+          setClientCookie(`access_token=${tokens.accessToken}`);
+          const { itemId, commentId, text } = variables;
+          edit({
+            itemId,
+            commentId,
+            text,
+          });
+        } catch (innerError) {
+          // expire refresh
+          openLoginDialog("sessionOut");
+        }
+      } else {
+        // 서버가 죽지 않는 이상 에러는 발생하지 않을 것
+        open({
+          title: "오류",
+          description: "댓글 작성 실패",
+        });
+      }
     },
   });
 

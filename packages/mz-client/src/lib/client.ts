@@ -65,7 +65,13 @@ export const fetchClient = {
       body: body ? JSON.stringify(body) : JSON.stringify({}),
     });
     await rejectIfNeeded(response);
-    return response.json();
+
+    // for reply.status(204) > json x > so, response.text() > type error > as any
+    // 서버에서 reply.status(204)응답시 useMutation onSuccess 미동작 해결
+    const data: T = response.headers.get("Content-Type")?.includes("json")
+      ? await response.json()
+      : ((await response.text()) as any);
+    return data;
   },
   async patch<T>(
     url: string,
@@ -102,6 +108,7 @@ export const fetchClient = {
     await rejectIfNeeded(response);
 
     // for reply.status(204) > json x > so, response.text() > type error > as any
+    // 서버에서 reply.status(204)응답시 useMutation onSuccess 미동작 해결
     const data: T = response.headers.get("Content-Type")?.includes("json")
       ? await response.json()
       : ((await response.text()) as any);

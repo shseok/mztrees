@@ -1,5 +1,4 @@
 import { fetchClient } from "../client";
-import { extractNextError } from "../nextError";
 import { User } from "@/types/db";
 
 export async function getMyAccount(accessToken?: string) {
