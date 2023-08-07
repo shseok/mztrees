@@ -3,18 +3,19 @@ import { PaginationType } from './pagination.js'
 import { Publisher } from '@prisma/client'
 import { ItemType } from '../routes/api/items/schema.js'
 
+const isAlgoliaDisabled = process.env.ALGOLIA_DISABLED === 'true'
 const ApplicationID = process.env.ALGOLIA_APP_ID
 const AdminAPIKey = process.env.ALGOLIA_ADMIN_KEY
 
-if (!ApplicationID) {
+if (!ApplicationID && !isAlgoliaDisabled) {
   throw new Error('ALGOLIA_APP_ID is not defined in .env file')
 }
 
-if (!AdminAPIKey) {
+if (!AdminAPIKey && !isAlgoliaDisabled) {
   throw new Error('ALGOLIA_API_KEY is not defined in .env file')
 }
 
-const client = algoiasearch(ApplicationID, AdminAPIKey)
+const client = algoiasearch(ApplicationID!, AdminAPIKey!)
 
 const index = client.initIndex('mz_items')
 
@@ -23,6 +24,16 @@ const algolia = {
     query: string,
     { offset = 0, length = 20 }: SearchOption = {},
   ) => {
+    if (isAlgoliaDisabled) {
+      return {
+        list: [],
+        totalCount: 0,
+        pageInfo: {
+          nextOffset: null,
+          hasNextPage: false,
+        },
+      }
+    }
     const result = await index.search<ItemType>(query, {
       offset,
       length,
