@@ -1,7 +1,7 @@
 # Web Frontend
 
-### 로컬 환경에서 실행하기
+### Running on local environment
 
-1. pacakges/mz-client 디렉터리에서 .env.sample 파일을 .env로 이름을 변경하세요.
-2. `yarn install` 명령어를 사용하여 node_modules 설치하세요.
-3. `yarn dev` 명령어를 사용하여 개발 서버를 실행하세요. 개발 서버는 기본적으로 3000 포트로 실행됩니다. http://localhost:3000/ 에 들어가서 서버가 잘 실행되고 있는지 확인하세요.
+1. Rename .env.sample to .env in packages/mz-client directory.
+2. Use `yarn install` command to install node_modules.
+3. Use `yarn dev` command to run server. Server will run on port 3000. Go to http://localhost:3000/ to check if server is running.

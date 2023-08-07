@@ -1,18 +1,20 @@
 # Mztrees
 
-안녕하세요. 지역 축제, 지역 농산물 가격 추이 등 관련 이슈를 지역 사람과 외부 사람 모두가 확인하고 공유할 수 있는 웹사이트입니다.
+[ENGLISH](/README.md) | [한국어](/README-ko.md)
+
+Mztrees is a website where both locals and outsiders can check and share related issues such as local festivals and price trends of local agricultural products.
 
 [URL](https://www.mztrees.com)
 
 ![](https://img.mztrees.com/og-image.png)
 
-지역사회의 활성화를 위해 트렌디한 지역 이슈를 한 곳에서 확인할 수 있는 서비스 경험을 제공하고자 합니다.
+To revitalize the local community, we want to provide a service experience where you can check trendy local issues in one place.
 
-현재 반응형 레이아웃을 적용하였고 다음 스텝으로 모바일 앱 배포를 준비하고 있습니다.
+We have applied a responsive layout and are preparing for mobile app distribution as the next step.
 
-버그 발견시 [제보](https://github.com/shseok/mztrees/issues)해주시면 검토 후 빠른 대응하겠습니다. 감사합니다.
+If you find a bug, please [report](https://github.com/shseok/mztrees/issues) it and we will respond quickly after review. thank you!
 
-## Spec
+## Tech Stack
 
 ### Frontend
 
@@ -58,5 +60,5 @@
 
 # Plan
 
-- 지역별 카테고리 추가 후 분류
-- 모바일 버전 출시
+- After adding categories by region, sort them
+- Mobile version release
