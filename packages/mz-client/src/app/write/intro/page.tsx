@@ -13,12 +13,17 @@ import { extractNextError } from "@/lib/nextError";
 import styles from "@/styles/WriteIntro.module.scss";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 export default function Intro() {
   const {
     state: { form },
     actions,
   } = useWriteContext();
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<typeof form>();
   const openLoginDialog = useOpenLoginDialog();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const router = useRouter();
@@ -31,8 +36,8 @@ export default function Intro() {
     actions.change(key, value);
   };
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit: SubmitHandler<typeof form> = async (data, e) => {
+    e?.preventDefault();
     if (form.title === "" || form.body === "") {
       setErrorMessage("제목과 내용을 모두 입력해주세요.");
       return;
@@ -68,7 +73,8 @@ export default function Intro() {
       <WriteFormTemplate
         description="공유할 뉴스를 소개하세요"
         buttonText="등록하기"
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit(onSubmit)}
+        isLoading={isSubmitting}
       >
         <div className={styles.group}>
           <LabelInput

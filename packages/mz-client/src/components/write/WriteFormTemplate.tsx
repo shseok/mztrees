@@ -3,12 +3,14 @@ import styles from "@/styles/WriteFormTemplate.module.scss";
 import Button from "../system/Button";
 import { useTheme } from "@/context/ThemeContext";
 import { cn } from "@/utils/common";
+import LoadingIndicator from "../system/LoadingIndicator";
 
 interface Props {
   description?: string;
   children: React.ReactNode;
   buttonText: string;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  isLoading?: boolean;
 }
 
 const WriteFormTemplate = ({
@@ -16,6 +18,7 @@ const WriteFormTemplate = ({
   children,
   buttonText,
   onSubmit,
+  isLoading,
 }: Props) => {
   const { mode } = useTheme();
   return (
@@ -26,7 +29,9 @@ const WriteFormTemplate = ({
     >
       {description && <h3>{description}</h3>}
       <div className={styles.content}>{children}</div>
-      <Button>{buttonText}</Button>
+      <Button disabled={isLoading}>
+        {isLoading ? <LoadingIndicator color="white" /> : buttonText}
+      </Button>
     </form>
   );
 };
