@@ -16,7 +16,6 @@ export async function getMyAccountWithRefresh() {
     if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
       try {
         const tokens = await refreshToken();
-        console.log("request refresh api", tokens.accessToken);
         setClientCookie(`access_token=${tokens.accessToken}`);
         const me = await getMyAccount();
         return me;
