@@ -55,7 +55,7 @@ If you find a bug, please [report](https://github.com/shseok/mztrees/issues) it 
   - postgresql (EC2)
 - packages
   - mz-server
-  - mz-web(web / mobile)
+  - mz-web(responsive)
   - mz-mobile 🏃‍♀️
 
 # Plan

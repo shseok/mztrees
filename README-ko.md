@@ -55,7 +55,7 @@
   - postgresql (EC2)
 - packages
   - mz-server
-  - mz-web(web / mobile)
+  - mz-web(responsive)
   - mz-mobile 🏃‍♀️
 
 # Plan
