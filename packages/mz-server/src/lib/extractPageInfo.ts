@@ -40,11 +40,23 @@ export async function extractPageInfo(
     url: validatedUrl,
   })
   const domain = new URL(validatedUrl).hostname
+
+  const processedAuthor = (() => {
+    let value = data.author
+    if (!value) return null
+    const hasBracket = value.includes(')')
+    if (hasBracket) {
+      const [author] = value.split(')')
+      value = author.concat(')')
+    }
+    if (value.length > 20) return null
+    return value
+  })()
   // console.log(data, domain)
   return {
     url: validatedUrl,
     publisher: data.publisher ?? domain,
-    author: data.author,
+    author: processedAuthor !== data.publisher ? processedAuthor : null,
     favicon: data.logo,
     thumbnail: data.image,
     domain,
