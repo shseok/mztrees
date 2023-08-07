@@ -15,7 +15,7 @@ interface ItemOverrideStore {
   set: (itemId: number, overridableItem: OverridableItem) => void;
 }
 
-export const useItemOverrideStore = create<ItemOverrideStore>((set) => ({
+const useItemOverrideStore = create<ItemOverrideStore>((set) => ({
   overrides: {},
   set: (itemId, overridableItem) =>
     set((store) =>

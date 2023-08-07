@@ -97,13 +97,29 @@
   }
 }
 
-.likecount_wrapper {
+.like_comment_count_wrapper {
+  display: flex;
+  gap: 8px;
   @include tablet {
     height: 26px;
   }
 }
 // 12*1.5+8(height: font-size*line-height+padding-bottom)
 .likescount {
+  font-size: 12px;
+  font-weight: 600;
+  color: $gray4;
+  line-height: 1.5;
+  height: 26px;
+  display: flex;
+  align-items: top;
+
+  &.dark {
+    color: white;
+  }
+}
+
+.commentscount {
   font-size: 12px;
   font-weight: 600;
   color: $gray4;

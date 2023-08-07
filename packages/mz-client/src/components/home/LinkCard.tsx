@@ -40,6 +40,8 @@ const LinkCard = ({ item }: Props) => {
 
   const isLiked = itemOverride?.isLiked ?? item.isLiked;
   const likes = itemOverride?.itemStats?.likes ?? itemStats.likes;
+  const commentsCount =
+    itemOverride?.itemStats?.commentsCount ?? itemStats.commentsCount;
   const isBookmarked = itemOverride?.isBookmarked ?? item.isBookmarked;
   /**TODO: 연타로 누르면 기존의 것이 잘 취소되어야함 */
   const openLoginDialog = useOpenLoginDialog();
@@ -100,7 +102,7 @@ const LinkCard = ({ item }: Props) => {
           {body}
         </p>
       </Link>
-      <div className={styles.likecount_wrapper}>
+      <div className={styles.like_comment_count_wrapper}>
         <AnimatePresence initial={false}>
           {likes === 0 ? null : (
             <motion.div
@@ -113,6 +115,13 @@ const LinkCard = ({ item }: Props) => {
             </motion.div>
           )}
         </AnimatePresence>
+        {commentsCount === 0 ? null : (
+          <div
+            className={cn(styles.commentscount, mode === "dark" && styles.dark)}
+          >
+            댓글 {commentsCount.toLocaleString()}개
+          </div>
+        )}
       </div>
       <div className={styles.footer}>
         <div className={styles.icon_buttons}>
