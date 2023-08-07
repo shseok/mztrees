@@ -82,18 +82,15 @@
   margin-top: 0;
   margin-bottom: 16px;
   color: $gray4;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 84px;
 
   &.dark {
     color: white;
-  }
-
-  @include tablet {
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    height: 84px;
   }
 }
 
