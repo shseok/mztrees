@@ -43,7 +43,7 @@
   - ESR / ECS
   - EC2
 
-## How to run (local)
+## How to run
 
 - [Frontend](packages/mz-client/README-ko.md)
 - [Backend](packages/mz-server/README-ko.md)

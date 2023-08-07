@@ -43,7 +43,7 @@ If you find a bug, please [report](https://github.com/shseok/mztrees/issues) it 
   - ESR / ECS
   - EC2
 
-## How to run (local)
+## How to run
 
 - [Frontend](packages/mz-client/README.md)
 - [Backend](packages/mz-server/README.md)
