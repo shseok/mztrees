@@ -3,8 +3,8 @@
 .block {
   min-height: 64px;
   border-bottom: 1px solid $gray0;
-  padding: 0 16px;
-  display: flex;
+  padding-left: 16px;
+  padding-right: 16px;
   align-items: center;
   display: none;
 
@@ -12,14 +12,14 @@
     display: flex;
   }
 
-  @include widescreen {
-    padding: 0;
-  }
+  // @include widescreen {
+  //   padding: 0;
+  // }
 
-  width: 100%;
-  max-width: 1150px;
-  margin-right: auto;
-  margin-left: auto;
+  // width: 100%;
+  // max-width: 1150px;
+  // margin-right: auto;
+  // margin-left: auto;
 }
 
 .home_link {
