@@ -9,6 +9,20 @@
 .block {
   display: flex;
   flex-direction: column;
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 8px 20px 0px;
+  border-radius: 12px;
+
+  @include tablet {
+    box-shadow: none;
+    border-radius: 0px;
+    transition: box-shadow 0.25s ease-in 0s, transform 0.25s ease-in 0s;
+
+    &:hover {
+      box-shadow: rgba(0, 0, 0, 0.08) 0px 8px 20px 0px;
+      border-radius: 12px;
+    }
+  }
 }
 
 .thumbnail {
@@ -104,7 +118,7 @@
 // 12*1.5+8(height: font-size*line-height+padding-bottom)
 @mixin count_style {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   color: $gray4;
   line-height: 1.5;
   height: 26px;

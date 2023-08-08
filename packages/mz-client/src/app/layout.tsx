@@ -29,6 +29,10 @@ const myFont = localFont({
       weight: "600",
     },
     {
+      path: "../../public/fonts/Pretendard/Pretendard-Bold.subset.woff2",
+      weight: "700",
+    },
+    {
       path: "../../public/fonts/Pretendard/Pretendard-ExtraBold.subset.woff2",
       weight: "800",
     },
