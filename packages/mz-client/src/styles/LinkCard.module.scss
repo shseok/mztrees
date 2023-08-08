@@ -94,15 +94,15 @@
   }
 }
 
-.like_comment_count_wrapper {
+.count_wrapper {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   @include tablet {
     height: 26px;
   }
 }
 // 12*1.5+8(height: font-size*line-height+padding-bottom)
-.likescount {
+@mixin count_style {
   font-size: 12px;
   font-weight: 600;
   color: $gray4;
@@ -116,18 +116,12 @@
   }
 }
 
-.commentscount {
-  font-size: 12px;
-  font-weight: 600;
-  color: $gray4;
-  line-height: 1.5;
-  height: 26px;
-  display: flex;
-  align-items: top;
+.likescount {
+  @include count_style;
+}
 
-  &.dark {
-    color: white;
-  }
+.commentscount {
+  @include count_style;
 }
 
 .footer {

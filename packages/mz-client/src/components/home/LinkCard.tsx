@@ -102,14 +102,14 @@ const LinkCard = ({ item }: Props) => {
           {body}
         </p>
       </Link>
-      <div className={styles.like_comment_count_wrapper}>
+      <div className={styles.count_wrapper}>
         <AnimatePresence initial={false}>
           {likes === 0 ? null : (
             <motion.div
               className={cn(styles.likescount, mode === "dark" && styles.dark)}
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 26, opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
             >
               좋아요 {likes.toLocaleString()}개
             </motion.div>
