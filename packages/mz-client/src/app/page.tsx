@@ -1,5 +1,4 @@
 import Home from "@/components/home/Home";
-import TabLayout from "@/components/layout/TabLayout";
 import { getItems } from "@/lib/api/items";
 import { getWeekRangeFromDate } from "@/lib/week";
 import getQueryClient from "@/utils/getQueryClient";
@@ -82,9 +81,7 @@ export default async function Hydation() {
   );
   return (
     <Hydrate state={dehydratedState}>
-      <TabLayout className="layout_padding">
-        <Home />
-      </TabLayout>
+      <Home />
     </Hydrate>
   );
 }

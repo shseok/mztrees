@@ -20,6 +20,7 @@ import { getWeekRangeFromDate } from "@/lib/week";
 import useSetSearchParams from "@/hooks/useSetSearchParams";
 import SkeletonUI from "@/components/system/SkeletonUI";
 import EmptyList from "../system/EmptyList";
+import TabLayout from "../layout/TabLayout";
 
 export default function Home() {
   const observerTargetEl = useRef<HTMLDivElement>(null);
@@ -91,7 +92,7 @@ export default function Home() {
   const items = infiniteData?.pages.flatMap((page) => page.list);
 
   return (
-    <>
+    <TabLayout className="layout_padding">
       <div className={styles.content}>
         <ListModeSelector mode={mode} onSelectMode={onselect} />
         {mode === "past" && <WeekSelector dateRange={dateRange} />}
@@ -106,6 +107,6 @@ export default function Home() {
         <div ref={observerTargetEl} />
       </div>
       {items?.length === 0 ? <EmptyList /> : null}
-    </>
+    </TabLayout>
   );
 }

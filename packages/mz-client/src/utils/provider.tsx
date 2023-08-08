@@ -6,6 +6,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { DialogProvider } from "@/context/DialogContext";
 import { UserProvider } from "@/context/UserContext";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { TabScrollTopContextProvider } from "@/context/TabScrollTopContext";
 
 function Providers({ children }: React.PropsWithChildren) {
   const [client] = useState(
@@ -16,7 +17,9 @@ function Providers({ children }: React.PropsWithChildren) {
     <QueryClientProvider client={client}>
       <ThemeProvider>
         <DialogProvider>
-          <UserProvider>{children}</UserProvider>
+          <TabScrollTopContextProvider>
+            <UserProvider>{children}</UserProvider>
+          </TabScrollTopContextProvider>
         </DialogProvider>
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
