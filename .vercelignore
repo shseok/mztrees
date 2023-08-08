@@ -1,0 +1,5 @@
+.github
+.idea
+infrastructure
+*.md
+packages/mz-server
