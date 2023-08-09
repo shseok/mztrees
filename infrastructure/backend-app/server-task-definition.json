@@ -53,7 +53,7 @@
         }
       ],
       "mountPoints": [],
-      "memory": 512,
+      "memory": 1024,
       "secrets": [
         {
           "name": "DATABASE_URL",
