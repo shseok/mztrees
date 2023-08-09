@@ -35,6 +35,14 @@
         {
           "name": "NODE_ENV",
           "value": "production"
+        },
+        {
+          "name": "CF_ACCOUNT_ID",
+          "value": "6d95522e81b3caab9e6807c167b23d6f"
+        },
+        {
+          "name": "CF_ACCESS_KEY_ID",
+          "value": "aa49bf13df93eac1f0af835a4a73718b"
         }
       ],
       "ulimits": [
@@ -58,6 +66,10 @@
         {
           "name": "ALGOLIA_ADMIN_KEY",
           "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mz-backend-app/algolia_admin_key/v2-LeSZuE"
+        },
+        {
+          "name": "CF_ACCESS_KEY_SECRET",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mz-backend-app/cf_access_key_secret-wYad7l"
         }
       ],
       "volumesFrom": []
