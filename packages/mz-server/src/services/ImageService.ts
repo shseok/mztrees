@@ -22,6 +22,7 @@ const r2 = new S3({
   accessKeyId: CF_ACCESS_KEY_ID,
   secretAccessKey: CF_ACCESS_KEY_SECRET,
   signatureVersion: 'v4',
+  region: 'auto',
 })
 
 export class ImageService {
@@ -65,13 +66,3 @@ export class ImageService {
     return `${type}/${id}/${nanoid()}.${extension}`
   }
 }
-// export const uploadFile = async (file: any, folder: string) => {
-//   const { originalname, buffer } = file
-//   const params = {
-//     Bucket: process.env.AWS_BUCKET_NAME,
-//     Key: `${folder}/${originalname}`,
-//     Body: buffer,
-//   }
-//   const result = await s3.upload(params).promise()
-//   return result.Location
-// }
