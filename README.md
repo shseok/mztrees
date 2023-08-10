@@ -2,6 +2,8 @@
 
 [English](/README.md) | [한국어](/README-ko.md)
 
+![example workflow](https://github.com/shseok/mztrees/actions/workflows/deploy.yml/badge.svg)
+
 Mztrees is a website where both locals and outsiders can check and share related issues such as local festivals and price trends of local agricultural products.
 
 [URL](https://www.mztrees.com)

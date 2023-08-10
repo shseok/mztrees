@@ -2,6 +2,8 @@
 
 [ENGLISH](/README.md) | [한국어](/README-ko.md)
 
+![example workflow](https://github.com/shseok/mztrees/actions/workflows/deploy.yml/badge.svg)
+
 안녕하세요. Mztrees는 지역 축제, 지역 농산물 가격 추이 등 관련 이슈를 지역 사람과 외부 사람 모두가 확인하고 공유할 수 있는 웹사이트입니다.
 
 [URL](https://www.mztrees.com)
