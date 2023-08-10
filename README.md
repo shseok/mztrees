@@ -1,8 +1,6 @@
-# Mztrees
+# Mztrees ![License](https://img.shields.io/badge/license-MIT-blue)
 
 [English](/README.md) | [한국어](/README-ko.md)
-
-![example workflow](https://github.com/shseok/mztrees/actions/workflows/deploy.yml/badge.svg)
 
 Mztrees is a website where both locals and outsiders can check and share related issues such as local festivals and price trends of local agricultural products.
 
@@ -18,7 +16,7 @@ If you find a bug, please [report](https://github.com/shseok/mztrees/issues) it 
 
 ## Tech Stack
 
-### Frontend
+### Frontend ![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=mz-tau)
 
 - React
 - NextJS
@@ -27,7 +25,7 @@ If you find a bug, please [report](https://github.com/shseok/mztrees/issues) it 
 - Tanstack Query
 - Zustand
 
-### Backend
+### Backend ![example workflow](https://github.com/shseok/mztrees/actions/workflows/deploy.yml/badge.svg)
 
 - NodeJS
 - Fastify

@@ -1,8 +1,6 @@
-# Mztrees
+# Mztrees ![License](https://img.shields.io/badge/license-MIT-blue)
 
 [ENGLISH](/README.md) | [한국어](/README-ko.md)
-
-![example workflow](https://github.com/shseok/mztrees/actions/workflows/deploy.yml/badge.svg)
 
 안녕하세요. Mztrees는 지역 축제, 지역 농산물 가격 추이 등 관련 이슈를 지역 사람과 외부 사람 모두가 확인하고 공유할 수 있는 웹사이트입니다.
 
@@ -18,7 +16,7 @@
 
 ## 기술 스택
 
-### Frontend
+### Frontend ![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=mz-tau)
 
 - React
 - NextJS
@@ -27,7 +25,7 @@
 - Tanstack Query
 - Zustand
 
-### Backend
+### Backend ![example workflow](https://github.com/shseok/mztrees/actions/workflows/deploy.yml/badge.svg)
 
 - NodeJS
 - Fastify
