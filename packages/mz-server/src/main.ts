@@ -71,9 +71,12 @@ const start = async () => {
   try {
     // nextjs 개발모드에서 http://127.0.0.1:8080로 보내야 서버컴포넌트에서 에러 발생 x, localhost:8080 or 0.0.0.0:8080으로 보낼시 에러 발생.
     // 만약 host: '0.0.0.0'을 제거한다면 localhost:8080으로 보낼 때, 에러 발생 x
-    await server.listen({ port: 8080, host: '0.0.0.0' })
     // await server.listen({ port: 8080, host: 'api.mztrees.com' }); // to
-    // await server.listen({ port: 8080 }) // for the server to handle only all requests sent from the client to the api.mztrees.com host
+    if (process.env.NODE_ENV === 'development') {
+      await server.listen({ port: 8080 }) // for the server to handle only all requests sent from the client to the api.mztrees.com host
+    } else {
+      await server.listen({ port: 8080, host: '0.0.0.0' })
+    }
   } catch (err) {
     server.log.error(err)
   }
