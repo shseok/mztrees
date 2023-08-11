@@ -1,18 +1,18 @@
 {
-  "family": "mz-backend-app-task-family",
-  "executionRoleArn": "arn:aws:iam::350743031177:role/mz-backend-app-execution-role",
+  "family": "mztrees-backend-task-family",
+  "executionRoleArn": "arn:aws:iam::350743031177:role/mztrees-backend-execution-role",
   "networkMode": "awsvpc",
   "containerDefinitions": [
     {
-      "name": "mz-backend-app-app",
-      "image": "350743031177.dkr.ecr.ap-northeast-2.amazonaws.com/mz-backend-app/runner:latest",
+      "name": "mztrees-backend-app",
+      "image": "350743031177.dkr.ecr.ap-northeast-2.amazonaws.com/mztrees-backend/runner:latest",
       "essential": true,
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
+          "awslogs-group": "mztrees-backend-log-group",
           "awslogs-region": "ap-northeast-2",
-          "awslogs-stream-prefix": "mz-backend-app-service",
-          "awslogs-group": "mz-backend-app-log-group"
+          "awslogs-stream-prefix": "mztrees-backend-service"
         }
       },
       "portMappings": [
@@ -25,6 +25,10 @@
       "cpu": 1,
       "environment": [
         {
+          "name": "NODE_ENV",
+          "value": "production"
+        },
+        {
           "name": "PORT",
           "value": "8080"
         },
@@ -33,16 +37,12 @@
           "value": "ZDM9BZ8WCV"
         },
         {
-          "name": "NODE_ENV",
-          "value": "production"
+          "name": "CF_ACCESS_KEY_ID",
+          "value": "aa49bf13df93eac1f0af835a4a73718b"
         },
         {
           "name": "CF_ACCOUNT_ID",
           "value": "6d95522e81b3caab9e6807c167b23d6f"
-        },
-        {
-          "name": "CF_ACCESS_KEY_ID",
-          "value": "aa49bf13df93eac1f0af835a4a73718b"
         }
       ],
       "ulimits": [
@@ -53,29 +53,29 @@
         }
       ],
       "mountPoints": [],
-      "memory": 1024,
+      "memory": 512,
       "secrets": [
         {
           "name": "DATABASE_URL",
-          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mz-backend-app/database_url/v2-WDoltR"
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees-backend/database_url/v5-io8g1K"
         },
         {
           "name": "JWT_SECRET",
-          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mz-backend-app/jwt_secret/v2-ogZwoG"
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees-backend/jwt_secret/v5-sMr3BU"
         },
         {
           "name": "ALGOLIA_ADMIN_KEY",
-          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mz-backend-app/algolia_admin_key/v2-LeSZuE"
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees-backend/algolia_admin_key/v5-uZtk8x"
         },
         {
           "name": "CF_ACCESS_KEY_SECRET",
-          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mz-backend-app/cf_access_key_secret-wYad7l"
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees-backend/cf_access_key_secret/v5-sMr3BU"
         }
       ],
       "volumesFrom": []
     }
   ],
   "requiresCompatibilities": ["FARGATE"],
-  "cpu": "512",
-  "memory": "2048"
+  "cpu": "256",
+  "memory": "512"
 }
