@@ -11,7 +11,9 @@ interface Props {
 const CommentList = ({ comments }: Props) => {
   return (
     <div className={styles.block}>
-      <h3 className={styles.comment_title}>댓글 {comments.length}개</h3>
+      <h3 className={styles.comment_title}>
+        댓글 {comments.length.toLocaleString()}개
+      </h3>
       <CommentInput />
       <div className={styles.list}>
         {comments.map((comment) => (
