@@ -102,6 +102,7 @@ const LinkCard = ({ item }: Props) => {
           {body}
         </p>
       </Link>
+      <div className={styles.spacer} />
       <div className={styles.count_wrapper}>
         <AnimatePresence initial={false}>
           {likes === 0 ? null : (

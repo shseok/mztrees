@@ -101,11 +101,17 @@
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  height: 84px;
+  max-height: 84px;
+  word-break: break-word;
+  // overflow-wrap: break-word;
 
   &.dark {
     color: white;
   }
+}
+
+.spacer {
+  flex: 1;
 }
 
 .count_wrapper {

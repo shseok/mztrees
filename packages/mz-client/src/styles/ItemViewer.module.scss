@@ -103,7 +103,9 @@
   margin-bottom: 32px;
   color: $gray4;
   white-space: pre-wrap;
-  word-break: keep-all;
+  // word-break: keep-all;
+  // word-break: break-all;
+  overflow-wrap: break-word;
 
   &.dark {
     color: white;
