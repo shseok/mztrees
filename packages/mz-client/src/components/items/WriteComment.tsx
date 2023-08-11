@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useCreateCommentMutation } from "@/hooks/mutation/useCreateCommentMutations";
+import { useCreateCommentMutation } from "@/hooks/mutation/useCreateCommentMutation";
 import { useItemId } from "@/hooks/useItemId";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCommentsQuery } from "@/hooks/query/useCommentsQuery";

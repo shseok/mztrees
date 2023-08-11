@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useCommentInputStore } from "@/hooks/stores/useCommentInputStore";
 import { shallow } from "zustand/shallow";
 import { useItemId } from "@/hooks/useItemId";
-import { useCreateCommentMutation } from "@/hooks/mutation/useCreateCommentMutations";
+import { useCreateCommentMutation } from "@/hooks/mutation/useCreateCommentMutation";
 import LoadingIndicator from "../system/LoadingIndicator";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCommentsQuery } from "@/hooks/query/useCommentsQuery";

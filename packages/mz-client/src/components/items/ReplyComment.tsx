@@ -1,4 +1,4 @@
-import { useCreateCommentMutation } from "@/hooks/mutation/useCreateCommentMutations";
+import { useCreateCommentMutation } from "@/hooks/mutation/useCreateCommentMutation";
 import { useCommentsQuery } from "@/hooks/query/useCommentsQuery";
 import { useItemId } from "@/hooks/useItemId";
 import { useQueryClient } from "@tanstack/react-query";

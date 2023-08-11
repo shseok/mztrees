@@ -8,7 +8,6 @@ import { useCommentLikeManager } from "@/hooks/useCommentLikeManager";
 import { useCommentLikeById } from "@/hooks/stores/useCommentLikesStore";
 import { useItemId } from "@/hooks/useItemId";
 import { useBottomSheetModalStore } from "@/hooks/stores/useBottomSheetModalStore";
-import { useCommentActions } from "@/hooks/useCommentActions";
 import styles from "@/styles/CommentItem.module.scss";
 import { MoreVert } from "@/components/vectors";
 import { useUser } from "@/context/UserContext";
@@ -23,6 +22,7 @@ import { useDialog } from "@/context/DialogContext";
 import { extractNextError } from "@/lib/nextError";
 import { refreshToken } from "@/lib/api/auth";
 import { setClientCookie } from "@/lib/client";
+import { useDeleteCommentMutation } from "@/hooks/mutation/useDeleteCommentMutations";
 
 /**@todo isSubcomment 굳이 필요한가에 대한 고민 */
 interface Props {
@@ -51,7 +51,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
 
   const likes = commentLike?.likes ?? comment.likes;
   const isLiked = commentLike?.isLiked ?? comment.isLiked;
-  const { useDeleteComment: deleteComment } = useCommentActions();
+  const deleteComment = useDeleteCommentMutation();
   const [isReplying, setIsReplying] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const replyRef = useRef<HTMLInputElement>(null);
@@ -93,7 +93,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
                     const tokens = await refreshToken();
                     setClientCookie(`access_token=${tokens.accessToken}`);
 
-                    deleteComment(comment.id);
+                    await deleteComment(comment.id);
                   } catch (innerError) {
                     // expire refresh
                     openLoginDialog("sessionOut");
