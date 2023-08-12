@@ -1,4 +1,4 @@
-import bookmarkService from '../../../services/BookmarkService.js'
+import bookmarkService from '../../../services/bookmark.service.js'
 import { createAuthorizedRoute } from '../../../plugins/requireAuthPlugin.js'
 import { BookmarkRouteSchema } from './schema.js'
 

@@ -13,7 +13,7 @@ import { PaginationOptionType, createPagination } from '../lib/pagination.js'
 import algolia from '../lib/algolia.js'
 import { calculateScore } from '../lib/ranking.js'
 import { checkDateFormat, checkWeekRange } from '../lib/checkDate.js'
-import imageService from './ImageService.js'
+import imageService from './image.service.js'
 
 const isR2Disbled = process.env.R2_DISABLED === 'true'
 

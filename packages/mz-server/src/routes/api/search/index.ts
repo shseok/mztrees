@@ -1,6 +1,6 @@
 import { SearchRouteSchema } from './schema.js'
 import algolia from '../../../lib/algolia.js'
-import itemService from '../../../services/ItemService.js'
+import itemService from '../../../services/item.service.js'
 // import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox'
 import { FastifyPluginAsyncTypebox } from '../../../lib/types.js'
 

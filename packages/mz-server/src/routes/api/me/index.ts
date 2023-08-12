@@ -1,6 +1,6 @@
 import requireAuthPlugin from '../../../plugins/requireAuthPlugin.js'
 import { MeRouteSchema } from './schema.js'
-import userService from '../../../services/UserService.js'
+import userService from '../../../services/user.service.js'
 import { clearTokenCookie } from '../../../lib/cookies.js'
 import { FastifyPluginAsyncTypebox } from '../../../lib/types.js'
 

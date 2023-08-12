@@ -1,4 +1,4 @@
-import userService from '../../../services/UserService.js'
+import userService from '../../../services/user.service.js'
 import AppError from '../../../lib/AppError.js'
 import { clearTokenCookie, setTokenCookie } from '../../../lib/cookies.js'
 import { AuthRouteSchema } from './schema.js'

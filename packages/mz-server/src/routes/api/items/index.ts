@@ -1,5 +1,5 @@
 import { createAuthorizedRoute } from '../../../plugins/requireAuthPlugin.js'
-import itemService from '../../../services/ItemService.js'
+import itemService from '../../../services/item.service.js'
 import { commentsRoute } from './comments/index.js'
 import { ItemRouteSchema } from './schema.js'
 import { FastifyPluginAsyncTypebox } from '../../../lib/types.js'

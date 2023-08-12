@@ -1,6 +1,6 @@
 import { CommentsRouteSchema } from './schema.js'
 import { createAuthorizedRoute } from '../../../../plugins/requireAuthPlugin.js'
-import commentService from '../../../../services/CommentService.js'
+import commentService from '../../../../services/comment.service.js'
 import { FastifyPluginAsyncTypebox } from '../../../../lib/types.js'
 
 export const commentsRoute: FastifyPluginAsyncTypebox = async (fastify) => {

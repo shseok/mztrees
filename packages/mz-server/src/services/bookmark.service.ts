@@ -1,8 +1,8 @@
 import AppError from '../lib/AppError.js'
 import db from '../lib/db.js'
-import itemService from './ItemService.js'
+import itemService from './item.service.js'
 
-const BookmarkService = {
+const bookmarkService = {
   async createBookmark({ userId, itemId }: { userId: number; itemId: number }) {
     // 중복으로 인해 오류가 날 수 있다.
     // 중복 요청에 대한 오류 처리 > 나중에 중복해서 만드는 시도를 해서 그때 어떤 오류가 나오는지 봐서 try catch를 해줄 것이다.
@@ -122,4 +122,4 @@ const BookmarkService = {
   },
 }
 
-export default BookmarkService
+export default bookmarkService
