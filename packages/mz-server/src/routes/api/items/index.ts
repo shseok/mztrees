@@ -1,11 +1,10 @@
 import { createAuthorizedRoute } from '../../../plugins/requireAuthPlugin.js'
-import ItemService from '../../../services/ItemService.js'
+import itemService from '../../../services/ItemService.js'
 import { commentsRoute } from './comments/index.js'
-import { ItemRoute, ItemRouteSchema } from './schema.js'
+import { ItemRouteSchema } from './schema.js'
 import { FastifyPluginAsyncTypebox } from '../../../lib/types.js'
 
 export const itemsRoute: FastifyPluginAsyncTypebox = async (fastify) => {
-  const itemService = ItemService.getInstance()
   // fastify.register(async (fastify) => {
   //   fastify.register(requireAuthPlugin)
   //   fastify.post<WriteItemRoute>(
@@ -16,7 +15,7 @@ export const itemsRoute: FastifyPluginAsyncTypebox = async (fastify) => {
   //     },
   //   )
   // })
-  fastify.register(authorizedItemRoute(itemService)) // refactoring above code
+  fastify.register(authorizedItemRoute) // refactoring above code
   fastify.get('/:id', { schema: ItemRouteSchema.GetItem }, async (request) => {
     const { id } = request.params
     const item = await itemService.getItem(id, request.user?.id)
@@ -38,64 +37,58 @@ export const itemsRoute: FastifyPluginAsyncTypebox = async (fastify) => {
   fastify.register(commentsRoute, { prefix: '/:id/comments' })
 }
 
-const authorizedItemRoute = (itemService: ItemService) =>
-  createAuthorizedRoute(async (fastify) => {
-    // const itemService = ItemService.getInstance()
-    fastify.post(
-      '/',
-      { schema: ItemRouteSchema.WriteItem },
-      async (request) => {
-        const item = await itemService.createItem(
-          request.user!.id, // authorizedItemRoute때문에 무조건 존재 => !
-          request.body,
-        )
-        return item as any
-      },
+const authorizedItemRoute = createAuthorizedRoute(async (fastify) => {
+  fastify.post('/', { schema: ItemRouteSchema.WriteItem }, async (request) => {
+    const item = await itemService.createItem(
+      request.user!.id, // authorizedItemRoute때문에 무조건 존재 => !
+      request.body,
     )
-
-    fastify.patch(
-      '/:id',
-      { schema: ItemRouteSchema.UpdateItem },
-      async (request) => {
-        const { id: itemId } = request.params
-        const userId = request.user!.id
-        const { title, body } = request.body
-        return itemService.updateItem({ userId, itemId, title, body }) as any
-      },
-    )
-
-    fastify.delete(
-      '/:id',
-      { schema: ItemRouteSchema.DeleteItem },
-      async (request, reply) => {
-        const { id: itemId } = request.params
-        const userId = request.user!.id
-        await itemService.deleteItem({ userId, itemId })
-        reply.status(204)
-      },
-    )
-
-    fastify.post(
-      '/:id/likes',
-      { schema: ItemRouteSchema.LikeItem },
-      async (request) => {
-        const { id: itemId } = request.params
-        const userId = request.user!.id
-        const itemStats = await itemService.likeItem({ userId, itemId })
-        return { id: itemId, itemStats, isLiked: true }
-      },
-    )
-
-    fastify.delete(
-      '/:id/likes',
-      { schema: ItemRouteSchema.UnlikeItem },
-      async (request) => {
-        const { id: itemId } = request.params
-        const userId = request.user!.id
-        const itemStats = await itemService.unlikeItem({ userId, itemId })
-        return { id: itemId, itemStats, isLiked: false }
-      },
-    )
-
-    // items/(itemId)/bookmarks/(bookmarkId) 이렇게 해줘도 괜찮겠다
+    return item as any
   })
+
+  fastify.patch(
+    '/:id',
+    { schema: ItemRouteSchema.UpdateItem },
+    async (request) => {
+      const { id: itemId } = request.params
+      const userId = request.user!.id
+      const { title, body } = request.body
+      return itemService.updateItem({ userId, itemId, title, body }) as any
+    },
+  )
+
+  fastify.delete(
+    '/:id',
+    { schema: ItemRouteSchema.DeleteItem },
+    async (request, reply) => {
+      const { id: itemId } = request.params
+      const userId = request.user!.id
+      await itemService.deleteItem({ userId, itemId })
+      reply.status(204)
+    },
+  )
+
+  fastify.post(
+    '/:id/likes',
+    { schema: ItemRouteSchema.LikeItem },
+    async (request) => {
+      const { id: itemId } = request.params
+      const userId = request.user!.id
+      const itemStats = await itemService.likeItem({ userId, itemId })
+      return { id: itemId, itemStats, isLiked: true }
+    },
+  )
+
+  fastify.delete(
+    '/:id/likes',
+    { schema: ItemRouteSchema.UnlikeItem },
+    async (request) => {
+      const { id: itemId } = request.params
+      const userId = request.user!.id
+      const itemStats = await itemService.unlikeItem({ userId, itemId })
+      return { id: itemId, itemStats, isLiked: false }
+    },
+  )
+
+  // items/(itemId)/bookmarks/(bookmarkId) 이렇게 해줘도 괜찮겠다
+})

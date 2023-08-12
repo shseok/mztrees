@@ -1,11 +1,10 @@
 import requireAuthPlugin from '../../../plugins/requireAuthPlugin.js'
 import { MeRouteSchema } from './schema.js'
-import UserService from '../../../services/UserService.js'
+import userService from '../../../services/UserService.js'
 import { clearTokenCookie } from '../../../lib/cookies.js'
 import { FastifyPluginAsyncTypebox } from '../../../lib/types.js'
 
 export const meRoute: FastifyPluginAsyncTypebox = async (fastify) => {
-  const userService = UserService.getInstance()
   fastify.register(requireAuthPlugin)
   fastify.get('/', { schema: MeRouteSchema.GetAccount }, async (request) => {
     return request.user!

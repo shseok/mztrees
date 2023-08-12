@@ -25,25 +25,17 @@ const r2 = new S3({
   region: 'auto',
 })
 
-export class ImageService {
-  private static instance: ImageService
-  public static getInstance() {
-    if (!ImageService.instance) {
-      ImageService.instance = new ImageService()
-    }
-    return ImageService.instance
-  }
-
-  public async listBuckets() {
+const imageService = {
+  async listBuckets() {
     return r2.listBuckets().promise()
-  }
+  },
 
   async downloadFile(url: string) {
     const response = await axios.get(url, { responseType: 'arraybuffer' })
     const buffer = Buffer.from(response.data, 'binary')
     const extension = mimeTypes.extension(response.headers['content-type'])
     return { buffer, extension }
-  }
+  },
 
   async uploadFile(key: string, file: Buffer) {
     const mimeType = mimeTypes.lookup(key) || 'image/png'
@@ -60,9 +52,11 @@ export class ImageService {
     }
 
     return r2.upload(params).promise()
-  }
+  },
 
   createFileKey({ type, id, extension }: CreateFileKeyParams) {
     return `${type}/${id}/${nanoid()}.${extension}`
-  }
+  },
 }
+
+export default imageService

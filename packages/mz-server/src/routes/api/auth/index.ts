@@ -1,11 +1,10 @@
-import UserService from '../../../services/UserService.js'
+import userService from '../../../services/UserService.js'
 import AppError from '../../../lib/AppError.js'
 import { clearTokenCookie, setTokenCookie } from '../../../lib/cookies.js'
 import { AuthRouteSchema } from './schema.js'
 import { FastifyPluginAsyncTypebox } from '../../../lib/types.js'
 
 const authRoute: FastifyPluginAsyncTypebox = async (fastify) => {
-  const userService = UserService.getInstance()
   fastify.post(
     '/login',
     {

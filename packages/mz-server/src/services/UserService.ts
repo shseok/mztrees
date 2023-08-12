@@ -16,15 +16,7 @@ export interface AuthParams {
 
 const SAULT_ROUNDS = 10
 
-class UserService {
-  private static instance: UserService
-  public static getInstance() {
-    if (!UserService.instance) {
-      UserService.instance = new UserService()
-    }
-    return UserService.instance
-  }
-
+const userService = {
   async createTokenId(userId: number) {
     const token = await db.token.create({
       data: {
@@ -32,7 +24,7 @@ class UserService {
       },
     })
     return token
-  }
+  },
 
   async generateTokens(user: User, existingToken?: Token) {
     const { id: userId, username } = user
@@ -55,7 +47,7 @@ class UserService {
       accessToken,
       refreshToken,
     }
-  }
+  },
 
   async register({ username, password }: AuthParams) {
     const exists = await db.user.findUnique({
@@ -79,7 +71,7 @@ class UserService {
       tokens,
       user,
     }
-  }
+  },
 
   async login({ username, password }: AuthParams) {
     const user = await db.user.findUnique({
@@ -111,7 +103,7 @@ class UserService {
       tokens,
       user,
     }
-  }
+  },
 
   async refreshToken(token: string) {
     try {
@@ -160,7 +152,7 @@ class UserService {
       console.error(e)
       throw new AppError('RefreshFailure')
     }
-  }
+  },
 
   async changePassword({
     userId,
@@ -209,7 +201,7 @@ class UserService {
     })
 
     return true
-  }
+  },
 
   async unregister(userId: number) {
     await db.user.delete({
@@ -218,7 +210,7 @@ class UserService {
       },
     })
     return true
-  }
+  },
 }
 
-export default UserService
+export default userService

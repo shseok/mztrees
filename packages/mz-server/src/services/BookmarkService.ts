@@ -1,16 +1,8 @@
 import AppError from '../lib/AppError.js'
 import db from '../lib/db.js'
-import ItemService from './ItemService.js'
+import itemService from './ItemService.js'
 
-class BookmarkService {
-  private static instance: BookmarkService
-  public static getInstance(): BookmarkService {
-    if (!BookmarkService.instance) {
-      BookmarkService.instance = new BookmarkService()
-    }
-    return BookmarkService.instance
-  }
-
+const BookmarkService = {
   async createBookmark({ userId, itemId }: { userId: number; itemId: number }) {
     // 중복으로 인해 오류가 날 수 있다.
     // 중복 요청에 대한 오류 처리 > 나중에 중복해서 만드는 시도를 해서 그때 어떤 오류가 나오는지 봐서 try catch를 해줄 것이다.
@@ -31,7 +23,6 @@ class BookmarkService {
           },
         },
       })
-      const itemService = ItemService.getInstance()
       return {
         ...bookmark,
         item: { ...itemService.serialize(bookmark.item), isBookmarked: true },
@@ -42,7 +33,7 @@ class BookmarkService {
       }
       throw e
     }
-  }
+  },
 
   async getBookmarks({
     userId,
@@ -88,8 +79,6 @@ class BookmarkService {
       },
       take: limit,
     })
-
-    const itemService = ItemService.getInstance()
     const list = bookmarks.map((b) => ({
       ...b,
       item: { ...itemService.serialize(b.item), isBookmarked: true },
@@ -102,7 +91,7 @@ class BookmarkService {
         })) > 0
       : false
     return { totalCount, list, pageInfo: { endCursor, hasNextPage } }
-  }
+  },
 
   async deleteBookmark({ userId, itemId }: { userId: number; itemId: number }) {
     const bookmark = await db.bookmark.findUnique({
@@ -130,7 +119,7 @@ class BookmarkService {
         },
       },
     })
-  }
+  },
 }
 
 export default BookmarkService

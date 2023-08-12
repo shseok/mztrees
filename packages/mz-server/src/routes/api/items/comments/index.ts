@@ -1,10 +1,9 @@
-import { CommentsRoute, CommentsRouteSchema } from './schema.js'
+import { CommentsRouteSchema } from './schema.js'
 import { createAuthorizedRoute } from '../../../../plugins/requireAuthPlugin.js'
-import CommentService from '../../../../services/CommentService.js'
+import commentService from '../../../../services/CommentService.js'
 import { FastifyPluginAsyncTypebox } from '../../../../lib/types.js'
 
 export const commentsRoute: FastifyPluginAsyncTypebox = async (fastify) => {
-  const commentService = CommentService.getInstance()
   fastify.get(
     '/',
     { schema: CommentsRouteSchema.GetComments },
@@ -46,7 +45,6 @@ export const commentsRoute: FastifyPluginAsyncTypebox = async (fastify) => {
 }
 
 const authorizedItemRoute = createAuthorizedRoute(async (fastify) => {
-  const commentService = CommentService.getInstance()
   fastify.post(
     '/',
     { schema: CommentsRouteSchema.CreateComment },

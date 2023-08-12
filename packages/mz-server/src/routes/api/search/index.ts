@@ -1,12 +1,10 @@
 import { SearchRouteSchema } from './schema.js'
 import algolia from '../../../lib/algolia.js'
-import ItemService from '../../../services/ItemService.js'
+import itemService from '../../../services/ItemService.js'
 // import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox'
 import { FastifyPluginAsyncTypebox } from '../../../lib/types.js'
 
 export const searchRoute: FastifyPluginAsyncTypebox = async (fastify) => {
-  const itemService = ItemService.getInstance()
-
   fastify.get('/', { schema: SearchRouteSchema }, async (request) => {
     const { q, limit, offset } = request.query
     const hits = await algolia.search(q, { length: limit, offset })

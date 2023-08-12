@@ -1,10 +1,8 @@
-import BookmarkService from '../../../services/BookmarkService.js'
+import bookmarkService from '../../../services/BookmarkService.js'
 import { createAuthorizedRoute } from '../../../plugins/requireAuthPlugin.js'
 import { BookmarkRouteSchema } from './schema.js'
 
 export const bookmarkRoute = createAuthorizedRoute(async (fastify) => {
-  const bookmarkService = BookmarkService.getInstance()
-
   fastify.post(
     '/',
     { schema: BookmarkRouteSchema.CreateBookmark },
