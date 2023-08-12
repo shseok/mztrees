@@ -41,13 +41,12 @@ export const useBookmarkManager = () => {
             set(itemId, {
               isBookmarked: false,
             });
-            openLoginDialog("itemLike");
+            openLoginDialog("sessionOut");
           }
         } else {
           set(itemId, {
             isBookmarked: false,
           });
-          openLoginDialog("itemLike");
         }
         // TODO: fail api -> handle error (rollback state)
         console.log(extractNextError(e));
@@ -85,13 +84,12 @@ export const useBookmarkManager = () => {
             set(itemId, {
               isBookmarked: true,
             });
-            openLoginDialog("itemLike");
+            openLoginDialog("sessionOut");
           }
         } else {
           set(itemId, {
             isBookmarked: true,
           });
-          openLoginDialog("itemLike");
         }
         // TODO: fail api -> handle error (rollback state)
         console.log(extractNextError(e));

@@ -20,10 +20,8 @@ export const deleteBookmark = async (
   itemId: number,
   contorller?: AbortController
 ) => {
-  await fetchClient.delete(`/api/bookmark/`, {
-    params: {
-      itemId,
-    },
+  const query = stringify({ itemId }, { addQueryPrefix: true });
+  await fetchClient.delete(`/api/bookmark/`.concat(query), {
     signal: contorller?.signal,
   });
 };
