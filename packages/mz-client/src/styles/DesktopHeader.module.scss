@@ -21,13 +21,14 @@
   .block_inner {
     display: flex;
     align-items: center;
-    padding-left: 16px;
-    padding-right: 16px;
     width: 100%;
+    // padding: 0;
+    padding: 0 26px;
 
     @include widescreen {
       max-width: 1150px;
       margin: 0 auto;
+      padding: 0 16px;
     }
   }
 }
