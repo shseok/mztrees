@@ -12,6 +12,12 @@ export const metadata: Metadata = {
   openGraph: {
     images: "/og-image.png",
   },
+  icons: {
+    icon: ["/favicon/favicon.ico"],
+    apple: ["/favicon/apple-touch-icon.png"],
+    shortcut: ["/favicon/apple-touch-icon.png"],
+  },
+  manifest: "/favicon/site.webmanifest",
 };
 
 const myFont = localFont({
