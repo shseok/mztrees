@@ -4,15 +4,15 @@ import { Trending, History, Calendar } from "@/components/vectors";
 import styles from "@/styles/ListModeSelector.module.scss";
 import { cn } from "@/utils/common";
 import { useTheme } from "@/context/ThemeContext";
+import Link from "next/link";
 
 const ModeWidth = 75;
 const ModeGap = 16;
 
 interface Props {
   mode: ListMode;
-  onSelectMode: (mode: ListMode) => void;
 }
-const ListModeSelector = ({ mode, onSelectMode }: Props) => {
+const ListModeSelector = ({ mode }: Props) => {
   const modeInfos = useMemo(
     () =>
       [
@@ -49,12 +49,7 @@ const ListModeSelector = ({ mode, onSelectMode }: Props) => {
     <div className={styles.block}>
       <div className={styles.mode_container}>
         {modeInfos.map((modeInfo) => (
-          <ListModeItem
-            {...modeInfo}
-            currentMode={mode}
-            onSelectMode={onSelectMode}
-            key={modeInfo.name}
-          />
+          <ListModeItem {...modeInfo} currentMode={mode} key={modeInfo.name} />
         ))}
         <div className={styles.indicator} style={{ left: indicatorLeft }} />
       </div>
@@ -64,24 +59,23 @@ const ListModeSelector = ({ mode, onSelectMode }: Props) => {
 
 const ListModeItem = ({
   mode,
-  onSelectMode,
   name,
   icon,
   currentMode,
 }: Props & { name: string; icon: React.ReactNode; currentMode: ListMode }) => {
   const { mode: themeMode } = useTheme();
   return (
-    <div
+    <Link
       className={cn(
         styles.mode,
         mode === currentMode && styles.active,
         themeMode === "dark" && styles.dark
       )}
-      onClick={() => onSelectMode(mode)}
+      href={`/?mode=${mode}`}
     >
       {icon}
       {name}
-    </div>
+    </Link>
   );
 };
 

@@ -25,7 +25,6 @@ import TabLayout from "../layout/TabLayout";
 export default function Home() {
   const observerTargetEl = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
-  const setSearchParams = useSetSearchParams();
   const [mode, setMode] = useState<ListMode>(
     (searchParams.get("mode") as ListMode | null) ?? "trending"
   );
@@ -70,10 +69,6 @@ export default function Home() {
 
   useInfiniteScroll(observerTargetEl, fetchNextData);
 
-  const onselect = (mode: ListMode) => {
-    setSearchParams({ mode });
-  };
-
   useEffect(() => {
     const nextMode = (searchParams.get("mode") as ListMode) ?? "trending";
     if (nextMode !== mode) {
@@ -94,7 +89,7 @@ export default function Home() {
   return (
     <TabLayout className="layout_padding">
       <div className={styles.content}>
-        <ListModeSelector mode={mode} onSelectMode={onselect} />
+        <ListModeSelector mode={mode} />
         {mode === "past" && <WeekSelector dateRange={dateRange} />}
         {status === "loading" ? (
           <SkeletonUI />
