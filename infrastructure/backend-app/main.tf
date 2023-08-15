@@ -409,7 +409,7 @@ resource "aws_ecs_service" "staging" {
   name            = "${var.prefix}-service"
   cluster         = aws_ecs_cluster.staging.id
   task_definition = aws_ecs_task_definition.service.arn
-  desired_count   = 2
+  desired_count   = 1
   launch_type     = "FARGATE"
 
   network_configuration {
@@ -467,8 +467,8 @@ resource "aws_iam_role_policy_attachment" "ecs-autoscale" {
 
 // TODO: required > depends_on = [aws_ecs_service.staging]
 resource "aws_appautoscaling_target" "ecs_target" {
-  max_capacity       = 10
-  min_capacity       = 2
+  max_capacity       = 2
+  min_capacity       = 1
   resource_id        = "service/${var.prefix}-cluster/${var.prefix}-service"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
@@ -487,7 +487,7 @@ resource "aws_appautoscaling_policy" "ecs_target_cpu" {
     predefined_metric_specification {
       predefined_metric_type = "ECSServiceAverageCPUUtilization"
     }
-    target_value = 80
+    target_value = 40
   }
   depends_on = [aws_appautoscaling_target.ecs_target]
 }
@@ -518,11 +518,12 @@ resource "aws_cloudwatch_log_group" "ranking-worker-cluster" {
   retention_in_days = 1
 }
 
+# schedule_expression = "rate(5 minutes)"
 
 module "ecs_scheduled_task" {
   source              = "git::https://github.com/tmknom/terraform-aws-ecs-scheduled-task.git?ref=tags/2.0.0"
   name                = "${var.prefix}-ranking-worker"
-  schedule_expression = "rate(5 minutes)"
+  schedule_expression = "rate(5 days)"
   cluster_arn         = aws_ecs_cluster.ranking-worker-cluster.arn
   subnets             = data.aws_subnets.default.ids
 
