@@ -305,6 +305,8 @@ const commentService = {
         deletedAt: new Date(),
       },
     })
+
+    this.countAndSyncComments(comment.itemId)
   },
 
   async updateComment({ commentId, userId, text }: UpdateCommentParams) {
