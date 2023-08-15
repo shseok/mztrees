@@ -9,11 +9,13 @@ interface Props {
 }
 
 const CommentList = ({ comments }: Props) => {
+  const totalComments = (
+    comments.length +
+    comments.reduce((prev, cur) => prev + cur.subcommentsCount, 0)
+  ).toLocaleString();
   return (
     <div className={styles.block}>
-      <h3 className={styles.comment_title}>
-        댓글 {comments.length.toLocaleString()}개
-      </h3>
+      <h3 className={styles.comment_title}>댓글 {totalComments}개</h3>
       <CommentInput />
       <div className={styles.list}>
         {comments.map((comment) => (
