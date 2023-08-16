@@ -49,7 +49,7 @@ const ListModeSelector = ({ mode }: Props) => {
     <div className={styles.block}>
       <div className={styles.mode_container}>
         {modeInfos.map((modeInfo) => (
-          <ListModeItem {...modeInfo} currentMode={mode} key={modeInfo.name} />
+          <ListModeItem currentMode={mode} key={modeInfo.name} {...modeInfo} />
         ))}
         <div className={styles.indicator} style={{ left: indicatorLeft }} />
       </div>
