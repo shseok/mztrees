@@ -3,7 +3,7 @@ import { getItems } from "@/lib/api/items";
 import { getWeekRangeFromDate } from "@/lib/week";
 import getQueryClient from "@/utils/getQueryClient";
 import Hydrate from "@/utils/hydrate.client";
-import { dehydrate } from "@tanstack/query-core";
+import { dehydrate } from "@tanstack/react-query";
 import { format } from "date-fns";
 
 // export const dynamic = "force-dynamic";
