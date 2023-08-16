@@ -29,6 +29,13 @@ export async function generateMetadata({
       images: itemData.thumbnail ?? undefined,
       authors: itemData.author,
     },
+    twitter: {
+      card: itemData.thumbnail ? "summary_large_image" : "summary",
+      title: itemData.title,
+      description: shortenDescription,
+      creator: "@mztrees",
+      images: itemData.thumbnail ?? undefined,
+    },
   };
 }
 export const dynamic = "force-dynamic";
