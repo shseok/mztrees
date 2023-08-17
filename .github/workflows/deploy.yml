@@ -34,7 +34,7 @@ on:
     paths-ignore:
       - "packages/mz-server/src/workers/**"
 
-name: Deploy to Amazon ECS
+name: Deploy to Amazon ECS (worker)
 
 jobs:
   deploy:

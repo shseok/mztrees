@@ -16,7 +16,7 @@ on:
       - "packages/mz-server/src/workers/**"
       - ".github/workflows/deploy-worker.yml"
 
-name: Deploy to Amazon ECS
+name: Deploy to Amazon ECR (server)
 
 jobs:
   deploy:
