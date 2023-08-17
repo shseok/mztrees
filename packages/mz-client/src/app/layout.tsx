@@ -53,7 +53,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={myFont.className}>
+    <html lang="ko" className={myFont.className}>
       <body>
         <Providers>{children}</Providers>
         <GlobalBottomSheetModal />
