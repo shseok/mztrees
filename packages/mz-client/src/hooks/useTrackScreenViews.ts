@@ -20,11 +20,10 @@ export function useTrackScreenViews() {
       page_title: title,
       page_path: pathname,
     });
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     initializeAnalytics();
     onRouteChangeComplete();
-    console.log("이벤트 로그");
-  }, [pathname]);
+  }, [pathname, onRouteChangeComplete]);
 }

@@ -22,7 +22,6 @@ let isInitialized = false;
 // Initialize Firebase > 최초 한 번 실행 (앱 진입 or 새로고침)
 export function initializeAnalytics() {
   if (isInitialized) return;
-  console.log("최초 한 번 실행");
   const app =
     getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
   analytics = getAnalytics(app);

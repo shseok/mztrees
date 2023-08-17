@@ -82,7 +82,7 @@ export default function Item({ item }: Props) {
         },
       },
     ],
-    [item.id, router, openDialog]
+    [item.id, router, openDialog, openLoginDialog]
   );
   const onClickMore = () => {
     if (isMobile()) {
