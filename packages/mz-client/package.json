@@ -18,6 +18,7 @@
     "dompurify": "^3.0.3",
     "eslint": "8.43.0",
     "eslint-config-next": "13.4.7",
+    "firebase": "^10.1.0",
     "framer-motion": "^10.12.17",
     "immer": "^10.0.2",
     "next": "13.4.7",

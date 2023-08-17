@@ -7,6 +7,7 @@ import { DialogProvider } from "@/context/DialogContext";
 import { UserProvider } from "@/context/UserContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { TabScrollTopContextProvider } from "@/context/TabScrollTopContext";
+import AnalyticsTrackingEventsProvider from "./AnalyticsTrackingEventsProvider";
 
 function Providers({ children }: React.PropsWithChildren) {
   const [client] = useState(
@@ -14,16 +15,18 @@ function Providers({ children }: React.PropsWithChildren) {
   );
 
   return (
-    <QueryClientProvider client={client}>
-      <ThemeProvider>
-        <DialogProvider>
-          <TabScrollTopContextProvider>
-            <UserProvider>{children}</UserProvider>
-          </TabScrollTopContextProvider>
-        </DialogProvider>
-      </ThemeProvider>
-      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-    </QueryClientProvider>
+    <AnalyticsTrackingEventsProvider>
+      <QueryClientProvider client={client}>
+        <ThemeProvider>
+          <DialogProvider>
+            <TabScrollTopContextProvider>
+              <UserProvider>{children}</UserProvider>
+            </TabScrollTopContextProvider>
+          </DialogProvider>
+        </ThemeProvider>
+        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+      </QueryClientProvider>
+    </AnalyticsTrackingEventsProvider>
   );
 }
 

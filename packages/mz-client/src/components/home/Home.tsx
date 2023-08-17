@@ -17,7 +17,6 @@ import { useSearchParams } from "next/navigation";
 import { getItems } from "@/lib/api/items";
 import { ListMode } from "@/types/db";
 import { getWeekRangeFromDate } from "@/lib/week";
-import useSetSearchParams from "@/hooks/useSetSearchParams";
 import SkeletonUI from "@/components/system/SkeletonUI";
 import EmptyList from "../system/EmptyList";
 import TabLayout from "../layout/TabLayout";
