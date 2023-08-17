@@ -10,10 +10,10 @@
 on:
   push:
     branches:
-      - deploy-worker # to main
+      - main
     paths:
       - "infrastructure/backend-app/**"
-      - "packages/veltrends-server/workers/**"
+      - "packages/mz-server/src/workers/**"
       - ".github/workflows/deploy-worker.yml"
 
 name: Deploy to Amazon ECS
@@ -43,7 +43,7 @@ jobs:
         working-directory: ./packages/mz-server
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: mz-backend-app/repo-ranking-worker
+          ECR_REPOSITORY: mztrees-backend/repo-ranking-worker
           IMAGE_TAG: ${{ github.sha }}
         run: |
           # Build a docker container and
