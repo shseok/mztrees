@@ -31,10 +31,8 @@ on:
       - "infrastructure/backend-app/**"
       - "packages/mz-server/**"
       - ".github/workflows/deploy.yml"
-    paths-ignore:
-      - "packages/mz-server/src/workers/**"
 
-name: Deploy to Amazon ECS (worker)
+name: Deploy to Amazon ECS (server)
 
 jobs:
   deploy:
