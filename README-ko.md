@@ -25,7 +25,7 @@
 - Tanstack Query
 - Zustand
 
-### Backend ![example workflow](https://github.com/shseok/mztrees/actions/workflows/deploy.yml/badge.svg)
+### Backend ![example workflow](https://github.com/shseok/mztrees/actions/workflows/deploy.yml/badge.svg) ![example workflow](https://github.com/shseok/mztrees/actions/workflows/deploy-worker.yml/badge.svg)
 
 - NodeJS
 - Fastify
