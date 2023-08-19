@@ -5,6 +5,8 @@ import authRule from 'metascraper-author'
 import imageRule from 'metascraper-image'
 import publisherRule from 'metascraper-publisher'
 import logoRule from 'metascraper-logo-favicon'
+import { parse } from 'parse5'
+import urlString from 'url'
 
 type ValidateResult = {
   url: string
@@ -101,4 +103,36 @@ async function validateUrl(url: string): Promise<ValidateResult> {
   }
 
   throw new AppError('InvalidURL')
+}
+
+export async function extractImageSrc(url: string) {
+  const { url: validatedUrl, html } = await validateUrl(url)
+  const parsed = parse(html)
+  const urlObject = new URL(validatedUrl)
+  const domain = urlObject.hostname
+
+  const images: string[] = []
+
+  function extractImagesFromNode(node: any) {
+    if (node.nodeName === 'img' && 'attrs' in node) {
+      const srcAttr = node.attrs.find((attr: any) => attr.name === 'src')
+      if (srcAttr) {
+        // 상대경로 절대경로 파악
+        const parsedUrl = urlString.parse(srcAttr.value)
+        parsedUrl.pathname?.startsWith('/')
+          ? images.push(domain + srcAttr.value)
+          : images.push(srcAttr.value)
+      }
+    }
+
+    if ('childNodes' in node) {
+      for (const childNode of node.childNodes) {
+        extractImagesFromNode(childNode)
+      }
+    }
+  }
+
+  extractImagesFromNode(parsed)
+
+  console.log(domain, images)
 }

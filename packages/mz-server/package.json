@@ -41,7 +41,8 @@
     "mime-types": "^2.1.35",
     "nanoid": "^4.0.2",
     "node-cron": "^3.0.2",
-    "p-queue": "^7.3.4"
+    "p-queue": "^7.3.4",
+    "parse5": "^7.1.2"
   },
   "scripts": {
     "start": "cross-env NODE_ENV=production ts-node-esm --transpileOnly ./src/main.ts | pino-pretty",
