@@ -34,6 +34,16 @@ export const itemsRoute: FastifyPluginAsyncTypebox = async (fastify) => {
     }) as any
   })
 
+  fastify.post(
+    '/urls',
+    { schema: ItemRouteSchema.GetImageUrls },
+    async (request) => {
+      const { link } = request.body
+      const imageUrls = await itemService.getImageUrls(link)
+      return { urls: imageUrls } as any
+    },
+  )
+
   fastify.register(commentsRoute, { prefix: '/:id/comments' })
 }
 

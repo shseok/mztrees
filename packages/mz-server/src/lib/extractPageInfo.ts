@@ -105,7 +105,7 @@ async function validateUrl(url: string): Promise<ValidateResult> {
   throw new AppError('InvalidURL')
 }
 
-export async function extractImageSrc(url: string) {
+export async function extractImageUrls(url: string) {
   const { url: validatedUrl, html } = await validateUrl(url)
   const parsed = parse(html)
   const urlObject = new URL(validatedUrl)
@@ -134,5 +134,5 @@ export async function extractImageSrc(url: string) {
 
   extractImagesFromNode(parsed)
 
-  console.log(domain, images)
+  return images
 }

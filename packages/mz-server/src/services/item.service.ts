@@ -8,7 +8,7 @@ import {
 } from '@prisma/client'
 import AppError from '../lib/AppError.js'
 import db from '../lib/db.js'
-import { extractPageInfo } from '../lib/extractPageInfo.js'
+import { extractImageUrls, extractPageInfo } from '../lib/extractPageInfo.js'
 import { PaginationOptionType, createPagination } from '../lib/pagination.js'
 import algolia from '../lib/algolia.js'
 import { calculateScore } from '../lib/ranking.js'
@@ -57,6 +57,12 @@ const itemService = {
     }
 
     return publisher
+  },
+
+  async getImageUrls(link: string) {
+    const urls = await extractImageUrls(link)
+    const info = await extractPageInfo(link)
+    return [...urls, info.thumbnail]
   },
 
   async createItem(

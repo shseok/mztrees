@@ -87,6 +87,14 @@ export const ItemParamsSchema = Type.Object({
 
 export type ItemParamsType = Static<typeof ItemParamsSchema>
 
+const ImageUrlsSchame = Type.Object({
+  urls: Type.Array(Type.String()),
+})
+
+ImageUrlsSchame.example = {
+  urls: ['www.mztrees.com', 'image.mztrees.com'],
+}
+
 export const ItemRouteSchema = createRouteSchema({
   GetItem: {
     tags: ['item'],
@@ -156,6 +164,15 @@ export const ItemRouteSchema = createRouteSchema({
     params: ItemParamsSchema,
     response: {
       200: ItemLikeSchema,
+    },
+  },
+  GetImageUrls: {
+    tags: ['item'],
+    body: Type.Object({
+      link: Type.String(),
+    }),
+    response: {
+      200: ImageUrlsSchame,
     },
   },
 })
