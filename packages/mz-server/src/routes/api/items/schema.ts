@@ -127,6 +127,7 @@ export const ItemRouteSchema = createRouteSchema({
       title: Type.String(),
       body: Type.String(),
       link: Type.String(),
+      thumbnail: Type.Optional(Type.String()),
       tags: Type.Optional(Type.Array(Type.String())),
     }),
     response: {

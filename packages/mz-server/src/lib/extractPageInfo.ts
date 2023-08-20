@@ -109,6 +109,7 @@ export async function extractImageUrls(url: string) {
   const { url: validatedUrl, html } = await validateUrl(url)
   const parsed = parse(html)
   const urlObject = new URL(validatedUrl)
+  const protocol = urlObject.protocol
   const domain = urlObject.hostname
 
   const images: string[] = []
@@ -120,7 +121,7 @@ export async function extractImageUrls(url: string) {
         // 상대경로 절대경로 파악
         const parsedUrl = urlString.parse(srcAttr.value)
         parsedUrl.pathname?.startsWith('/')
-          ? images.push(domain + srcAttr.value)
+          ? images.push(`${protocol}//${domain}${srcAttr.value}`)
           : images.push(srcAttr.value)
       }
     }

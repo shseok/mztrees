@@ -62,7 +62,8 @@ const itemService = {
   async getImageUrls(link: string) {
     const urls = await extractImageUrls(link)
     const info = await extractPageInfo(link)
-    return [...urls, info.thumbnail]
+    const concatedArr = info.thumbnail ? [...urls, info.thumbnail] : urls
+    return [...new Set(concatedArr)]
   },
 
   async createItem(
@@ -71,8 +72,15 @@ const itemService = {
       title,
       body,
       link,
+      thumbnail,
       tags,
-    }: { title: string; body: string; link: string; tags?: string[] },
+    }: {
+      title: string
+      body: string
+      link: string
+      thumbnail?: string
+      tags?: string[]
+    },
   ) {
     const info = await extractPageInfo(link)
     const publisher = await this.getPublisher({
@@ -86,7 +94,7 @@ const itemService = {
         body,
         link: info.url,
         userId,
-        thumbnail: info.thumbnail,
+        thumbnail,
         author: info.author ?? undefined,
         publisherId: publisher.id,
       },
