@@ -2,18 +2,25 @@
 
 import { createContext, useContext, useMemo, useState } from "react";
 import { NextAppError } from "@/lib/nextError";
+import { produce } from "immer";
+
+interface Thumbnail {
+  extracted: string[];
+  selected: string;
+}
 
 interface WriteContextState {
   form: {
     link: string;
     title: string;
     body: string;
+    thumbnail: Thumbnail;
   };
   error?: NextAppError;
 }
 
 interface WriteContextActions {
-  change(key: keyof WriteContextState["form"], value: string): void;
+  change(key: keyof WriteContextState["form"], value: string | Thumbnail): void;
   reset(): void;
   setError(error?: NextAppError): void;
 }
@@ -34,6 +41,10 @@ const initialState = {
     link: "",
     title: "",
     body: "",
+    thumbnail: {
+      extracted: [],
+      selected: "",
+    },
   },
   error: undefined,
 };
@@ -43,14 +54,25 @@ export const WriteProvider = ({ children }: Props) => {
   // TODO: refactoring with immer
   const actions: WriteContextActions = useMemo(() => {
     return {
+      // change(key, value) {
+      //   setState((prev) => ({
+      //     ...prev,
+      //     form: {
+      //       ...prev.form,
+      //       [key]: value,
+      //     },
+      //   }));
+      // },
       change(key, value) {
-        setState((prev) => ({
-          ...prev,
-          form: {
-            ...prev.form,
-            [key]: value,
-          },
-        }));
+        setState((prev) =>
+          produce(prev, (draft) => {
+            if (key === "thumbnail") {
+              draft.form.thumbnail = value as Thumbnail;
+            } else {
+              draft.form[key] = value as string;
+            }
+          })
+        );
       },
       reset() {
         setState(initialState);

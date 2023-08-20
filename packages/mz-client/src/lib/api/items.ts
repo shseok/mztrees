@@ -2,6 +2,7 @@ import { stringify } from "qs";
 import { fetchClient } from "../client";
 import {
   Comment,
+  ExtractedUrlsResult,
   GetItemsResult,
   Item,
   LikeCommentResult,
@@ -90,6 +91,7 @@ interface CreateItemParams {
   title: string;
   body: string;
   link: string;
+  thumbnail?: string;
 }
 
 export async function getComments(itemId: number) {
@@ -179,5 +181,16 @@ export async function unlikeComment({
     `/api/items/${itemId}/comments/${commentId}/likes`,
     { signal: controller?.signal }
   );
+  return response;
+}
+
+export async function getImageUrl(link: string) {
+  const response = await fetchClient.post<ExtractedUrlsResult>(
+    "/api/items/urls",
+    {
+      link,
+    }
+  );
+
   return response;
 }

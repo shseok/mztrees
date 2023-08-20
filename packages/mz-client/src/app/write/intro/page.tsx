@@ -42,10 +42,19 @@ export default function Intro() {
       setErrorMessage("제목과 내용을 모두 입력해주세요.");
       return;
     }
-
+    if (form.thumbnail.extracted.length > 1 && !form.thumbnail.selected) {
+      // TODO: toast ui로 이미지 선택하라고 알려주기
+      router.back();
+    }
+    const ItemInfo = {
+      title: form.title,
+      body: form.body,
+      link: form.link,
+      thumbnail: form.thumbnail.selected,
+    };
     // request & error
     try {
-      const item = await createItem(form);
+      const item = await createItem(ItemInfo);
       router.push(`/items/${item.id}`);
     } catch (e) {
       const error = extractNextError(e);
@@ -54,13 +63,14 @@ export default function Intro() {
           const tokens = await refreshToken();
           setClientCookie(`access_token=${tokens.accessToken}`);
 
-          const item = await createItem(form);
+          const item = await createItem(ItemInfo);
           router.push(`/items/${item.id}`);
         } catch (innerError) {
           // expire refresh
           openLoginDialog("sessionOut");
         }
       } else if (error.statusCode === 422) {
+        router.back();
         router.back();
         actions.setError(error);
       }

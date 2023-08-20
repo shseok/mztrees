@@ -91,8 +91,8 @@ export interface Hightlight {
 
 export type SearchItemsResult = Pagination<SearchItemResult>;
 
-export type ListMode = 'recent' | 'trending' | 'past';
-export type Size = 'small' | 'medium' | 'large';
+export type ListMode = "recent" | "trending" | "past";
+export type Size = "small" | "medium" | "large";
 
 export interface Bookmark {
   id: number;
@@ -101,3 +101,7 @@ export interface Bookmark {
 }
 
 export type GetBookmarksResult = Pagination<Bookmark>;
+
+export interface ExtractedUrlsResult {
+  urls: string[];
+}
