@@ -84,11 +84,19 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
   };
   return (
     <div className={styles.block}>
-      {thumbnail ? (
-        <Link href={item.link} className={styles.thumbnail}>
-          <Image src={thumbnail} alt={title} fill priority sizes="100vw" />
-        </Link>
-      ) : null}
+      <Link href={item.link} className={styles.thumbnail}>
+        <Image
+          src={
+            thumbnail === "" || !thumbnail
+              ? "https://img.mztrees.com/not-fount-image.svg"
+              : thumbnail
+          }
+          alt={title}
+          fill
+          priority
+          sizes="100vw"
+        />
+      </Link>
       <div className={styles.content}>
         <div className={styles.item_head}>
           <div className={styles.item_info}>

@@ -80,9 +80,17 @@ const LinkCard = ({ item }: Props) => {
     <div className={styles.block}>
       <Link href={link} className={styles.styled_link}>
         <div className={styles.thumbnail}>
-          {thumbnail ? (
-            <Image src={thumbnail} alt={title} fill priority sizes="100vw" />
-          ) : null}
+          <Image
+            src={
+              thumbnail === "" || !thumbnail
+                ? "https://img.mztrees.com/not-fount-image.svg"
+                : thumbnail
+            }
+            alt={title}
+            fill
+            priority
+            sizes="100vw"
+          />
         </div>
         <div className={cn(styles.publisher, mode === "dark" && styles.dark)}>
           {favicon ? (
