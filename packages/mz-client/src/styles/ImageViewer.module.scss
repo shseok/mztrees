@@ -1,0 +1,36 @@
+@import "_var", "_module";
+
+.image {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1200/630;
+  transition: all 1s ease;
+  cursor: pointer;
+
+  img {
+    border-radius: 0px;
+    // object-fit: contain;
+    object-fit: none;
+  }
+}
+
+.notification {
+  color: $gray2;
+  margin: 0;
+  margin-bottom: 14px;
+  text-align: center;
+  font-size: 16px;
+  @include mobile {
+    font-size: 13px;
+  }
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 8px;
+  padding-bottom: 5px;
+  padding-top: 10px;
+}

@@ -7,13 +7,14 @@ interface Props {
   visible: boolean;
   className?: string;
   children: React.ReactNode;
+  fullWidth?: boolean;
 }
 
-const Modal = ({ visible, children, className }: Props) => {
+const Modal = ({ visible, children, className, fullWidth = false }: Props) => {
   return (
     <>
       <Overlay visible={visible} />
-      <div className={styles.positioner}>
+      <div className={cn(styles.positioner, fullWidth && styles.fullWidth)}>
         <AnimatePresence>
           {visible && (
             <motion.div

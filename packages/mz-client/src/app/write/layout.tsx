@@ -1,3 +1,4 @@
+import { ImageViewerProvider } from "@/context/ImageViewerContext";
 import { WriteProvider } from "@/context/WriteContext";
 import { checkIsLoggedIn } from "@/lib/applyAuth";
 import { Metadata } from "next";
@@ -18,5 +19,9 @@ export default async function WriteLayout({
   if (!isLoggedIn) {
     return redirect(`/login?next=/write`);
   }
-  return <WriteProvider>{children}</WriteProvider>;
+  return (
+    <ImageViewerProvider>
+      <WriteProvider>{children}</WriteProvider>
+    </ImageViewerProvider>
+  );
 }

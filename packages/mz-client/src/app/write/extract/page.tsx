@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import styles from "@/styles/WriteExtract.module.scss";
 import Image from "next/image";
 import { cn } from "@/utils/common";
+import { useImageViewer } from "@/context/ImageViewerContext";
 
 export default function Extract() {
   const {
@@ -15,8 +16,17 @@ export default function Extract() {
   } = useWriteContext();
   const router = useRouter();
   const imageUrls = form.thumbnail.extracted;
+  const { open } = useImageViewer();
   const selectThumbnail = (url: string) => {
-    actions.change("thumbnail", { extracted: imageUrls, selected: url });
+    open({
+      url,
+      onClose: () => {
+        actions.change("thumbnail", { extracted: imageUrls, selected: "" });
+      },
+      onConfirm: () => {
+        actions.change("thumbnail", { extracted: imageUrls, selected: url });
+      },
+    });
   };
   return (
     <BasicLayout title="이미지 선택" hasBackButton>
