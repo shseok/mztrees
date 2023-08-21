@@ -120,7 +120,7 @@ export async function extractImageUrls(url: string) {
       if (srcAttr) {
         // 상대경로 절대경로 파악
         const parsedUrl = urlString.parse(srcAttr.value)
-        parsedUrl.pathname?.startsWith('/')
+        !parsedUrl.hostname && parsedUrl.pathname?.startsWith('/')
           ? images.push(`${protocol}//${domain}${srcAttr.value}`)
           : images.push(srcAttr.value)
       }
