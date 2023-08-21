@@ -4,6 +4,7 @@ import {
   ItemLike,
   ItemStats,
   Publisher,
+  Thumbnail,
   User,
 } from '@prisma/client'
 import AppError from '../lib/AppError.js'
@@ -18,6 +19,25 @@ import imageService from './image.service.js'
 const isR2Disbled = process.env.R2_DISABLED === 'true'
 
 const itemService = {
+  async makeImageUrl({
+    url,
+    type,
+    id,
+  }: {
+    url: string
+    type: 'item' | 'publisher'
+    id: number
+  }) {
+    const { buffer, extension } = await imageService.downloadFile(url)
+    const key = imageService.createFileKey({
+      type,
+      id,
+      extension: extension || 'png',
+    })
+
+    await imageService.uploadFile(key, buffer)
+    return { key, imageUrl: `https://img.mztrees.com/${key}` }
+  },
   async getPublisher({ domain, name, favicon }: GetPublisherParams) {
     const exists = await db.publisher.findUnique({
       where: {
@@ -36,15 +56,11 @@ const itemService = {
     })
 
     if (favicon && !isR2Disbled) {
-      const { buffer, extension } = await imageService.downloadFile(favicon)
-      const key = imageService.createFileKey({
+      const { imageUrl } = await this.makeImageUrl({
+        url: favicon,
         type: 'publisher',
         id: publisher.id,
-        extension: extension || 'png',
       })
-
-      await imageService.uploadFile(key, buffer)
-      const imageUrl = `https://img.mztrees.com/${key}`
       publisher.favicon = imageUrl
       await db.publisher.update({
         where: {
@@ -108,20 +124,15 @@ const itemService = {
       },
     })
     const itemWithItemStats = { ...item, itemStats }
-    let thumbnailInfo = { ref: '', url: '', key: '' }
+    let thumbnailInfo: Thumbnail | null = null
     try {
       if (refUrl && !isR2Disbled) {
-        const { buffer, extension } = await imageService.downloadFile(refUrl)
-        const key = imageService.createFileKey({
+        const { imageUrl, key } = await this.makeImageUrl({
+          url: refUrl,
           type: 'item',
           id: item.id,
-          extension: extension || 'png',
         })
-
-        await imageService.uploadFile(key, buffer)
-
-        const imageUrl = `https://img.mztrees.com/${key}`
-        const thumbnailInfo = await db.thumbnail.create({
+        thumbnailInfo = await db.thumbnail.create({
           data: {
             ref: refUrl,
             url: imageUrl,
@@ -147,7 +158,7 @@ const itemService = {
         body: item.body,
         author: item.author,
         link: item.link,
-        thumbnail: thumbnailInfo.url === '' ? null : thumbnailInfo.url,
+        thumbnail: thumbnailInfo?.url ?? refUrl ?? null,
         username: item.user.username,
         publisher: item.publisher,
       })
@@ -551,33 +562,26 @@ const itemService = {
       },
     })
 
-    // TODO: 리팩토링하기
-    let imageUrl = ''
+    let thumbnailInfo: Thumbnail | null = null
+    // TODO: refactoring
     if (updatedItem.thumbnailId) {
-      // get thumbnail info
-      const thumbnailInfo = await db.thumbnail.findUnique({
+      thumbnailInfo = await db.thumbnail.findUnique({
         where: {
           id: updatedItem.thumbnailId,
         },
       })
-      if (thumbnailInfo) {
+      // 받은 urlRef와 같다면 아래 로직 실행 x
+      if (thumbnailInfo && thumbnailInfo.url !== refUrl) {
         try {
           if (refUrl && !isR2Disbled) {
             // delete img object in r2
             await imageService.deleteFile(thumbnailInfo.key!)
 
-            const { buffer, extension } = await imageService.downloadFile(
-              refUrl,
-            )
-            const key = imageService.createFileKey({
+            const { imageUrl, key } = await this.makeImageUrl({
+              url: refUrl,
               type: 'item',
               id: item.id,
-              extension: extension || 'png',
             })
-
-            await imageService.uploadFile(key, buffer)
-
-            imageUrl = `https://img.mztrees.com/${key}`
 
             await db.thumbnail.update({
               where: {
@@ -596,17 +600,12 @@ const itemService = {
       // 이전에 thumnail이 없던 경우
       try {
         if (refUrl && !isR2Disbled) {
-          const { buffer, extension } = await imageService.downloadFile(refUrl)
-          const key = imageService.createFileKey({
+          const { imageUrl, key } = await this.makeImageUrl({
+            url: refUrl,
             type: 'item',
             id: item.id,
-            extension: extension || 'png',
           })
-
-          await imageService.uploadFile(key, buffer)
-
-          imageUrl = `https://img.mztrees.com/${key}`
-          const thumbnailInfo = await db.thumbnail.create({
+          thumbnailInfo = await db.thumbnail.create({
             data: {
               ref: refUrl,
               url: imageUrl,
@@ -633,7 +632,7 @@ const itemService = {
         body,
         author: item.author,
         link: item.link,
-        thumbnail: imageUrl === '' ? null : imageUrl,
+        thumbnail: thumbnailInfo?.url ?? item.thumbnail?.url ?? refUrl ?? null,
         username: item.user.username,
         publisher: item.publisher,
       })
