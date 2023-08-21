@@ -15,16 +15,18 @@ export default function Extract() {
     actions,
   } = useWriteContext();
   const router = useRouter();
-  const imageUrls = form.thumbnail.extracted;
+  const { extracted, selected } = form.thumbnail;
   const { open } = useImageViewer();
   const selectThumbnail = (url: string) => {
     open({
       url,
       onClose: () => {
-        actions.change("thumbnail", { extracted: imageUrls, selected: "" });
+        if (selected === url) {
+          actions.change("thumbnail", { extracted, selected: "" });
+        }
       },
       onConfirm: () => {
-        actions.change("thumbnail", { extracted: imageUrls, selected: url });
+        actions.change("thumbnail", { extracted, selected: url });
       },
     });
   };
@@ -39,12 +41,12 @@ export default function Extract() {
         }}
       >
         <div className={styles.group}>
-          {imageUrls.length > 0 ? (
-            imageUrls.map((imageUrl, index) => (
+          {extracted.length > 0 ? (
+            extracted.map((imageUrl, index) => (
               <div
                 className={cn([
                   styles.thumbnail,
-                  form.thumbnail.selected === imageUrl && styles["active"],
+                  selected === imageUrl && styles["active"],
                 ])}
                 key={index}
                 onClick={() => selectThumbnail(imageUrl)}

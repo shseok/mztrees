@@ -11,7 +11,10 @@
   img {
     border-radius: 0px;
     // object-fit: contain;
-    object-fit: none;
+    object-fit: scale-down;
+    @include tablet {
+      object-fit: none;
+    }
   }
 }
 

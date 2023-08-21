@@ -1,3 +1,5 @@
+@import "_module";
+
 .positioner {
   position: fixed;
   left: 50%;
@@ -6,6 +8,10 @@
 
   &.fullWidth {
     width: 90%;
+
+    @include xwidescreen {
+      width: 80%;
+    }
   }
 }
 
