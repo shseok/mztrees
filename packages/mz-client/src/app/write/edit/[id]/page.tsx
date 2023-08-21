@@ -1,18 +1,13 @@
 "use client";
 
 import BasicLayout from "@/components/layout/BasicLayout";
-import React, { useEffect, useState } from "react";
-import styles from "@/styles/EditForm.module.scss";
-import { useRouter } from "next/navigation";
-import { getItem, updateItem } from "@/lib/api/items";
-import { extractNextError } from "@/lib/nextError";
-import { refreshToken } from "@/lib/api/auth";
-import { setClientCookie } from "@/lib/client";
-import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
-import WriteFormTemplate from "@/components/write/WriteFormTemplate";
 import LabelInput from "@/components/system/LabelInput";
-import LabelTextArea from "@/components/system/LabelTextArea";
-import { useDialog } from "@/context/DialogContext";
+import WriteFormTemplate from "@/components/write/WriteFormTemplate";
+import { useWriteContext } from "@/context/WriteContext";
+import { getImageUrl, getItem } from "@/lib/api/items";
+import { extractNextError } from "@/lib/nextError";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 type Params = {
   params: {
@@ -22,94 +17,80 @@ type Params = {
 
 export default function Edit({ params: { id } }: Params) {
   const router = useRouter();
-  const [form, setForm] = useState({
-    title: "",
-    body: "",
-  });
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const openLoginDialog = useOpenLoginDialog();
-
-  const onChange: React.ChangeEventHandler<
-    HTMLTextAreaElement | HTMLInputElement
-  > = (e) => {
-    const key = e.target.name as keyof typeof form;
-    const { value } = e.target;
-    setForm({ ...form, [key]: value });
-  };
-
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (form.title === "" || form.body === "") {
-      setErrorMessage("제목과 내용을 모두 입력해주세요.");
-      return;
-    }
-
-    try {
-      await updateItem({
-        itemId: parseInt(id),
-        ...form,
-      });
-      // router.push(`/items/${item.id}`);
-      router.back();
-      router.refresh();
-    } catch (e) {
-      // TODO: refactor erorr like "getMyAccountWithRefresh"
-      const error = extractNextError(e);
-      // access token expired
-      if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
-        try {
-          const tokens = await refreshToken();
-          setClientCookie(`access_token=${tokens.accessToken}`);
-
-          await updateItem({
-            itemId: parseInt(id),
-            ...form,
-          });
-          router.back();
-        } catch (innerError) {
-          openLoginDialog("edit");
-        }
-      } else {
-        openLoginDialog("edit");
-      }
-      console.log(extractNextError(e));
-    }
-  };
+  const {
+    state: { form, error },
+    actions,
+  } = useWriteContext();
+  const [currentLink, setCurrentLink] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     async function fetchItemData() {
       try {
-        const { title, body } = await getItem(parseInt(id));
-        setForm({ title, body });
+        const { title, body, link, thumbnail } = await getItem(parseInt(id));
+        setCurrentLink(link);
+        actions.change("title", title);
+        actions.change("body", body);
+        actions.change("link", link);
+        actions.change("thumbnail", {
+          extracted: [],
+          selected: thumbnail?.url ?? undefined,
+        });
+        actions.change("id", id);
       } catch (e) {
         console.log(extractNextError(e));
       }
     }
     fetchItemData();
-  }, [id]);
+  }, [id, actions]);
 
   return (
-    <BasicLayout title="수정" hasBackButton>
-      <WriteFormTemplate buttonText="수정하기" onSubmit={onSubmit}>
-        <div className={styles.group}>
-          <LabelInput
-            label="제목"
-            name="title"
-            onChange={onChange}
-            value={form.title}
-          />
-          <LabelTextArea
-            className="styled_label_textarea"
-            label="내용"
-            name="body"
-            onChange={onChange}
-            value={form.body}
-          />
-          {errorMessage ? (
-            <div className={styles.message}>{errorMessage}</div>
-          ) : null}
-        </div>
+    <BasicLayout title="링크 입력" hasBackButton>
+      <WriteFormTemplate
+        description="공유하고 싶은 URL을 입력하세요"
+        buttonText="다음"
+        onSubmit={async (e) => {
+          e.preventDefault();
+          setIsLoading(true);
+          try {
+            // Refactor: 만약 이전의 url에서 변경되지 않는 다면 해당 작업을 건너뛰기
+            const { urls } = await getImageUrl(form.link);
+            // 해당 url 중 type "image/svg+xml" 이라면 즉, svg 이미지를 로드하려면, dangerouslyAllowSVG를 활성화 시켜야하지만, XSS 공격 위험을 가지므로 고려 x
+            if (form.link === currentLink) {
+              actions.change("thumbnail", {
+                extracted: urls,
+                selected: form.thumbnail.selected,
+              });
+            } else {
+              actions.change("link", currentLink);
+              actions.change("thumbnail", {
+                extracted: urls,
+              });
+            }
+            console.log(urls);
+            router.push(`/write/edit/${id}/extract`);
+          } catch (e) {
+            const error = extractNextError(e);
+            if (error.statusCode === 422) {
+              router.refresh();
+              actions.setError(error);
+            }
+            console.log(error);
+          } finally {
+            setIsLoading(false);
+          }
+        }}
+        isLoading={isLoading}
+      >
+        <LabelInput
+          label="url"
+          placeholder="https://example.com"
+          // defaultValue={state.url}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setCurrentLink(e.target.value);
+          }}
+          value={form.link}
+        />
       </WriteFormTemplate>
     </BasicLayout>
   );

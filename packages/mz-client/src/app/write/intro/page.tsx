@@ -42,11 +42,11 @@ export default function Intro() {
       setErrorMessage("제목과 내용을 모두 입력해주세요.");
       return;
     }
-    if (form.thumbnail.extracted.length > 1 && !form.thumbnail.selected) {
-      // TODO: toast ui로 이미지 선택하라고 알려주기
-      router.back();
-      router.refresh();
-    }
+    // if (form.thumbnail.extracted.length > 1 && !form.thumbnail.selected) {
+    //   // TODO: toast ui로 이미지 선택하라고 알려주기
+    //   router.back();
+    //   router.refresh();
+    // }
     const ItemInfo = {
       title: form.title,
       body: form.body,

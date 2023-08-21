@@ -12,14 +12,21 @@ export interface Item {
   body: string;
   link: string;
   author: string;
-  thumbnail: string | null;
   createdAt: string;
   updatedAt: string;
   user: User;
   publisher: Publisher;
+  thumbnail: Thumbnail | null;
   itemStats: ItemStats;
   isLiked: boolean;
   isBookmarked: boolean;
+}
+
+export interface Thumbnail {
+  id: number;
+  key: string;
+  url: string;
+  ref: string;
 }
 export interface Publisher {
   id?: number;
