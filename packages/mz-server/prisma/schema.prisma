@@ -34,15 +34,23 @@ model Token {
   blocked         Boolean  @default(false)
 }
 
+model Thumbnail {
+  id    Int    @id @default(autoincrement())
+  key   String
+  url   String
+  ref   String
+  items Item[]
+}
+
 model Item {
-  id        Int       @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   title     String
   body      String
-  author    String    @default("")
+  author    String     @default("")
   link      String?
-  thumbnail String?
+  thumbnail Thumbnail? @relation(fields: [thumbnailId], references: [id], onDelete: Cascade)
   tags      Tag[]
-  publisher Publisher @relation(fields: [publisherId], references: [id], onDelete: Cascade)
+  publisher Publisher  @relation(fields: [publisherId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -50,6 +58,7 @@ model Item {
   user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
   publisherId Int
+  thumbnailId Int?
 
   itemsTags ItemsTags[]
   itemStats ItemStats?

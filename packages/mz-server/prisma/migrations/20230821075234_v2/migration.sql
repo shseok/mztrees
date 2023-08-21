@@ -20,17 +20,26 @@ CREATE TABLE "Token" (
 );
 
 -- CreateTable
+CREATE TABLE "Thumbnail" (
+    "id" SERIAL NOT NULL,
+    "key" TEXT,
+    "url" TEXT NOT NULL,
+
+    CONSTRAINT "Thumbnail_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Item" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
     "body" TEXT NOT NULL,
     "author" TEXT NOT NULL DEFAULT '',
     "link" TEXT,
-    "thumbnail" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "userId" INTEGER NOT NULL,
     "publisherId" INTEGER NOT NULL,
+    "thumbnailId" INTEGER NOT NULL,
 
     CONSTRAINT "Item_pkey" PRIMARY KEY ("id")
 );
@@ -198,6 +207,9 @@ CREATE UNIQUE INDEX "Bookmark_userId_itemId_key" ON "Bookmark"("userId", "itemId
 
 -- AddForeignKey
 ALTER TABLE "Token" ADD CONSTRAINT "Token_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Item" ADD CONSTRAINT "Item_thumbnailId_fkey" FOREIGN KEY ("thumbnailId") REFERENCES "Thumbnail"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Item" ADD CONSTRAINT "Item_publisherId_fkey" FOREIGN KEY ("publisherId") REFERENCES "Publisher"("id") ON DELETE CASCADE ON UPDATE CASCADE;
