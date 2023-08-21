@@ -86,11 +86,7 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
     <div className={styles.block}>
       <Link href={item.link} className={styles.thumbnail}>
         <Image
-          src={
-            thumbnail === "" || !thumbnail
-              ? "https://img.mztrees.com/not-fount-image.svg"
-              : thumbnail
-          }
+          src={thumbnail?.url ?? "https://img.mztrees.com/not-fount-image.svg"}
           alt={title}
           fill
           priority

@@ -82,9 +82,7 @@ const LinkCard = ({ item }: Props) => {
         <div className={styles.thumbnail}>
           <Image
             src={
-              thumbnail === "" || !thumbnail
-                ? "https://img.mztrees.com/not-fount-image.svg"
-                : thumbnail
+              thumbnail?.url ?? "https://img.mztrees.com/not-fount-image.svg"
             }
             alt={title}
             fill

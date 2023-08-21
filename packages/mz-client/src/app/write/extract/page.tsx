@@ -22,7 +22,7 @@ export default function Extract() {
       url,
       onClose: () => {
         if (selected === url) {
-          actions.change("thumbnail", { extracted, selected: "" });
+          actions.change("thumbnail", { extracted });
         }
       },
       onConfirm: () => {

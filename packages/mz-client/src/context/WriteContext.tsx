@@ -6,7 +6,7 @@ import { produce } from "immer";
 
 interface Thumbnail {
   extracted: string[];
-  selected: string;
+  selected?: string;
 }
 
 interface WriteContextState {
@@ -15,6 +15,7 @@ interface WriteContextState {
     title: string;
     body: string;
     thumbnail: Thumbnail;
+    id?: string;
   };
   error?: NextAppError;
 }
@@ -43,7 +44,6 @@ const initialState = {
     body: "",
     thumbnail: {
       extracted: [],
-      selected: "",
     },
   },
   error: undefined,

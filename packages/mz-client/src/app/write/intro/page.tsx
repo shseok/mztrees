@@ -45,6 +45,7 @@ export default function Intro() {
     if (form.thumbnail.extracted.length > 1 && !form.thumbnail.selected) {
       // TODO: toast ui로 이미지 선택하라고 알려주기
       router.back();
+      router.refresh();
     }
     const ItemInfo = {
       title: form.title,

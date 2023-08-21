@@ -26,7 +26,9 @@ export async function generateMetadata({
       title: itemData.title,
       description: shortenDescription,
       url: itemData.link,
-      images: itemData.thumbnail ?? undefined,
+      images:
+        itemData.thumbnail?.url ??
+        "https://img.mztrees.com/not-fount-image.svg",
       authors: itemData.author,
     },
     twitter: {
@@ -34,7 +36,9 @@ export async function generateMetadata({
       title: itemData.title,
       description: shortenDescription,
       creator: "@mztrees",
-      images: itemData.thumbnail ?? undefined,
+      images:
+        itemData.thumbnail?.url ??
+        "https://img.mztrees.com/not-fount-image.svg",
     },
   };
 }

@@ -26,9 +26,11 @@ export default function Write() {
           e.preventDefault();
           setIsLoading(true);
           try {
-            // TODO: 만약 이전의 url에서 변경되지 않는 다면 해당 작업을 건너뛰기
+            // Refactor: 만약 이전의 url에서 변경되지 않는 다면 해당 작업을 건너뛰기
             const { urls } = await getImageUrl(form.link);
-            actions.change("thumbnail", { extracted: urls, selected: "" });
+            // 해당 url 중 type "image/svg+xml" 이라면 즉, svg 이미지를 로드하려면, dangerouslyAllowSVG를 활성화 시켜야하지만, XSS 공격 위험을 가지므로 고려 x
+            console.log(urls);
+            actions.change("thumbnail", { extracted: urls });
             router.push("/write/extract");
           } catch (e) {
             const error = extractNextError(e);

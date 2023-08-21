@@ -55,14 +55,20 @@ export async function updateItem({
   itemId,
   title,
   body,
+  link,
+  thumbnail,
 }: {
   itemId: number;
   title: string;
   body: string;
+  link: string;
+  thumbnail?: string;
 }) {
   const response = await fetchClient.patch(`/api/items/${itemId}`, {
     title,
     body,
+    link,
+    thumbnail,
     tags: [],
   });
   return response;
