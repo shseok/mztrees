@@ -62,8 +62,16 @@ const authorizedItemRoute = createAuthorizedRoute(async (fastify) => {
     async (request) => {
       const { id: itemId } = request.params
       const userId = request.user!.id
-      const { title, body } = request.body
-      return itemService.updateItem({ userId, itemId, title, body }) as any
+      const { title, body, link, thumbnail } = request.body
+      const item = await itemService.updateItem({
+        userId,
+        itemId,
+        title,
+        body,
+        link,
+        thumbnail,
+      })
+      return item as any
     },
   )
 

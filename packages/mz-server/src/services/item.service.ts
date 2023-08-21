@@ -72,7 +72,7 @@ const itemService = {
       title,
       body,
       link,
-      thumbnail,
+      thumbnail: refUrl,
       tags,
     }: {
       title: string
@@ -94,7 +94,6 @@ const itemService = {
         body,
         link: info.url,
         userId,
-        thumbnail,
         author: info.author ?? undefined,
         publisherId: publisher.id,
       },
@@ -109,12 +108,10 @@ const itemService = {
       },
     })
     const itemWithItemStats = { ...item, itemStats }
-
+    let thumbnailInfo = { ref: '', url: '', key: '' }
     try {
-      if (item.thumbnail && !isR2Disbled) {
-        const { buffer, extension } = await imageService.downloadFile(
-          item.thumbnail,
-        )
+      if (refUrl && !isR2Disbled) {
+        const { buffer, extension } = await imageService.downloadFile(refUrl)
         const key = imageService.createFileKey({
           type: 'item',
           id: item.id,
@@ -124,13 +121,20 @@ const itemService = {
         await imageService.uploadFile(key, buffer)
 
         const imageUrl = `https://img.mztrees.com/${key}`
-        itemWithItemStats.thumbnail = imageUrl
+        const thumbnailInfo = await db.thumbnail.create({
+          data: {
+            ref: refUrl,
+            url: imageUrl,
+            key,
+          },
+        })
+        itemWithItemStats.thumbnailId = thumbnailInfo.id
         await db.item.update({
           where: {
             id: item.id,
           },
           data: {
-            thumbnail: imageUrl,
+            thumbnailId: thumbnailInfo.id,
           },
         })
       }
@@ -143,7 +147,7 @@ const itemService = {
         body: item.body,
         author: item.author,
         link: item.link,
-        thumbnail: item.thumbnail,
+        thumbnail: thumbnailInfo.url === '' ? null : thumbnailInfo.url,
         username: item.user.username,
         publisher: item.publisher,
       })
@@ -161,6 +165,7 @@ const itemService = {
         user: true,
         publisher: true,
         itemStats: true,
+        thumbnail: true,
         itemLikes: userId ? { where: { userId } } : false,
         bookmarks: userId ? { where: { userId } } : false,
       },
@@ -207,6 +212,7 @@ const itemService = {
           user: true,
           publisher: true,
           itemStats: true,
+          thumbnail: true,
           itemLikes: userId ? { where: { userId } } : false,
           bookmarks: userId ? { where: { userId } } : false,
         },
@@ -303,6 +309,7 @@ const itemService = {
           user: true,
           publisher: true,
           itemStats: true,
+          thumbnail: true,
           itemLikes: userId ? { where: { userId } } : false,
           bookmarks: userId ? { where: { userId } } : false,
         },
@@ -400,6 +407,7 @@ const itemService = {
         user: true,
         publisher: true,
         itemStats: true,
+        thumbnail: true,
         itemLikes: userId ? { where: { userId } } : false,
         bookmarks: userId ? { where: { userId } } : false,
       },
@@ -512,7 +520,14 @@ const itemService = {
     return itemMap
   },
 
-  async updateItem({ itemId, userId, title, body }: UpdateItemParams) {
+  async updateItem({
+    itemId,
+    userId,
+    title,
+    body,
+    link,
+    thumbnail: refUrl,
+  }: UpdateItemParams) {
     const item = await this.getItem(itemId)
     if (item.userId !== userId) {
       throw new AppError('Forbidden')
@@ -524,15 +539,92 @@ const itemService = {
       data: {
         title,
         body,
+        link,
       },
       include: {
         user: true,
         publisher: true,
         itemStats: true,
+        thumbnail: true,
         itemLikes: userId ? { where: { userId } } : false,
         bookmarks: userId ? { where: { userId } } : false,
       },
     })
+
+    // TODO: 리팩토링하기
+    let imageUrl = ''
+    if (updatedItem.thumbnailId) {
+      // get thumbnail info
+      const thumbnailInfo = await db.thumbnail.findUnique({
+        where: {
+          id: updatedItem.thumbnailId,
+        },
+      })
+      if (thumbnailInfo) {
+        try {
+          if (refUrl && !isR2Disbled) {
+            // delete img object in r2
+            await imageService.deleteFile(thumbnailInfo.key!)
+
+            const { buffer, extension } = await imageService.downloadFile(
+              refUrl,
+            )
+            const key = imageService.createFileKey({
+              type: 'item',
+              id: item.id,
+              extension: extension || 'png',
+            })
+
+            await imageService.uploadFile(key, buffer)
+
+            imageUrl = `https://img.mztrees.com/${key}`
+
+            await db.thumbnail.update({
+              where: {
+                id: thumbnailInfo.id,
+              },
+              data: {
+                key,
+                ref: refUrl,
+                url: imageUrl,
+              },
+            })
+          }
+        } catch (e) {}
+      }
+    } else {
+      // 이전에 thumnail이 없던 경우
+      try {
+        if (refUrl && !isR2Disbled) {
+          const { buffer, extension } = await imageService.downloadFile(refUrl)
+          const key = imageService.createFileKey({
+            type: 'item',
+            id: item.id,
+            extension: extension || 'png',
+          })
+
+          await imageService.uploadFile(key, buffer)
+
+          imageUrl = `https://img.mztrees.com/${key}`
+          const thumbnailInfo = await db.thumbnail.create({
+            data: {
+              ref: refUrl,
+              url: imageUrl,
+              key,
+            },
+          })
+
+          await db.item.update({
+            where: {
+              id: item.id,
+            },
+            data: {
+              thumbnailId: thumbnailInfo.id,
+            },
+          })
+        }
+      } catch (e) {}
+    }
 
     algolia
       .update({
@@ -541,7 +633,7 @@ const itemService = {
         body,
         author: item.author,
         link: item.link,
-        thumbnail: item.thumbnail,
+        thumbnail: imageUrl === '' ? null : imageUrl,
         username: item.user.username,
         publisher: item.publisher,
       })
@@ -664,6 +756,8 @@ interface UpdateItemParams {
   userId: number
   title: string
   body: string
+  link: string
+  thumbnail?: string
 }
 
 interface ItemActionParams {

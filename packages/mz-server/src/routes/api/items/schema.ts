@@ -22,7 +22,6 @@ export const ItemSchema = Type.Object({
   body: Type.String(),
   link: Nullable(Type.String()),
   author: Type.String(),
-  thumbnail: Nullable(Type.String()),
   createdAt: Type.String(),
   updatedAt: Type.String(),
   user: UserSchema,
@@ -32,6 +31,16 @@ export const ItemSchema = Type.Object({
     domain: Type.String(),
     favicon: Nullable(Type.String()),
   }),
+  thumbnail: Type.Optional(
+    Nullable(
+      Type.Object({
+        id: Type.Integer(),
+        key: Type.String(),
+        url: Type.String(),
+        ref: Type.String(),
+      }),
+    ),
+  ),
   itemStats: ItemStatsSchema,
   isLiked: Type.Boolean(),
   isBookmarked: Type.Boolean(),
@@ -140,6 +149,8 @@ export const ItemRouteSchema = createRouteSchema({
     body: Type.Object({
       title: Type.String(),
       body: Type.String(),
+      link: Type.String(),
+      thumbnail: Type.Optional(Type.String()),
       tags: Type.Array(Type.String()),
     }),
     response: {

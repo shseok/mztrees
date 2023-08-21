@@ -54,6 +54,19 @@ const imageService = {
     return r2.upload(params).promise()
   },
 
+  async deleteFile(key: string) {
+    if (!PUBLIC_S3_BUCKET_NAME) {
+      throw new Error('PUBLIC_S3_BUCKET_NAME is not defined')
+    }
+
+    return r2
+      .deleteObject({
+        Bucket: PUBLIC_S3_BUCKET_NAME,
+        Key: key,
+      })
+      .promise()
+  },
+
   createFileKey({ type, id, extension }: CreateFileKeyParams) {
     return `${type}/${id}/${nanoid()}.${extension}`
   },
