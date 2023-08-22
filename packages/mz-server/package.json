@@ -51,5 +51,8 @@
     "dev": "cross-env NODE_ENV=development nodemon --watch ./src --exec \"ts-node-esm --transpileOnly ./src/main.ts | pino-pretty\" -e ts",
     "build": "tsc",
     "start:pm2": "yarn pm2-runtime deploy.config.json"
+  },
+  "prisma": {
+    "seed": "node --loader ts-node/esm prisma/seed.ts"
   }
 }

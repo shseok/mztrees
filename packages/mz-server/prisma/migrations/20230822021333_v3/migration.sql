@@ -20,15 +20,6 @@ CREATE TABLE "Token" (
 );
 
 -- CreateTable
-CREATE TABLE "Thumbnail" (
-    "id" SERIAL NOT NULL,
-    "key" TEXT,
-    "url" TEXT NOT NULL,
-
-    CONSTRAINT "Thumbnail_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Item" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
@@ -39,9 +30,21 @@ CREATE TABLE "Item" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "userId" INTEGER NOT NULL,
     "publisherId" INTEGER NOT NULL,
-    "thumbnailId" INTEGER NOT NULL,
+    "thumbnailId" INTEGER,
+    "areaId" INTEGER NOT NULL,
+    "regionCategoryId" INTEGER NOT NULL,
 
     CONSTRAINT "Item_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Thumbnail" (
+    "id" SERIAL NOT NULL,
+    "key" TEXT NOT NULL,
+    "url" TEXT NOT NULL,
+    "ref" TEXT NOT NULL,
+
+    CONSTRAINT "Thumbnail_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -52,6 +55,23 @@ CREATE TABLE "Publisher" (
     "domain" TEXT NOT NULL,
 
     CONSTRAINT "Publisher_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "RegionCategory" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+
+    CONSTRAINT "RegionCategory_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Area" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "regionCategoryId" INTEGER NOT NULL,
+
+    CONSTRAINT "Area_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -209,13 +229,22 @@ CREATE UNIQUE INDEX "Bookmark_userId_itemId_key" ON "Bookmark"("userId", "itemId
 ALTER TABLE "Token" ADD CONSTRAINT "Token_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Item" ADD CONSTRAINT "Item_thumbnailId_fkey" FOREIGN KEY ("thumbnailId") REFERENCES "Thumbnail"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Item" ADD CONSTRAINT "Item_thumbnailId_fkey" FOREIGN KEY ("thumbnailId") REFERENCES "Thumbnail"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Item" ADD CONSTRAINT "Item_publisherId_fkey" FOREIGN KEY ("publisherId") REFERENCES "Publisher"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Item" ADD CONSTRAINT "Item_areaId_fkey" FOREIGN KEY ("areaId") REFERENCES "Area"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Item" ADD CONSTRAINT "Item_regionCategoryId_fkey" FOREIGN KEY ("regionCategoryId") REFERENCES "RegionCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Item" ADD CONSTRAINT "Item_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Area" ADD CONSTRAINT "Area_regionCategoryId_fkey" FOREIGN KEY ("regionCategoryId") REFERENCES "RegionCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Tag" ADD CONSTRAINT "Tag_itemId_fkey" FOREIGN KEY ("itemId") REFERENCES "Item"("id") ON DELETE CASCADE ON UPDATE CASCADE;

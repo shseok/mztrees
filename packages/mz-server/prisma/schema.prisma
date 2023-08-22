@@ -34,31 +34,27 @@ model Token {
   blocked         Boolean  @default(false)
 }
 
-model Thumbnail {
-  id    Int    @id @default(autoincrement())
-  key   String
-  url   String
-  ref   String
-  items Item[]
-}
-
 model Item {
-  id        Int        @id @default(autoincrement())
-  title     String
-  body      String
-  author    String     @default("")
-  link      String?
-  thumbnail Thumbnail? @relation(fields: [thumbnailId], references: [id], onDelete: Cascade)
-  tags      Tag[]
-  publisher Publisher  @relation(fields: [publisherId], references: [id], onDelete: Cascade)
+  id             Int            @id @default(autoincrement())
+  title          String
+  body           String
+  author         String         @default("")
+  link           String?
+  thumbnail      Thumbnail?     @relation(fields: [thumbnailId], references: [id])
+  tags           Tag[]
+  publisher      Publisher      @relation(fields: [publisherId], references: [id], onDelete: Cascade)
+  area           Area           @relation(fields: [areaId], references: [id])
+  regionCategory RegionCategory @relation(fields: [regionCategoryId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      Int
-  publisherId Int
-  thumbnailId Int?
+  user             User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           Int
+  publisherId      Int
+  thumbnailId      Int?
+  areaId           Int
+  regionCategoryId Int
 
   itemsTags ItemsTags[]
   itemStats ItemStats?
@@ -69,6 +65,14 @@ model Item {
   @@index([createdAt(sort: Desc)])
 }
 
+model Thumbnail {
+  id    Int    @id @default(autoincrement())
+  key   String
+  url   String
+  ref   String
+  items Item[]
+}
+
 model Publisher {
   id      Int     @id @default(autoincrement())
   name    String
@@ -76,6 +80,23 @@ model Publisher {
   domain  String  @unique
 
   items Item[]
+}
+
+// 대분류(서울,부산,대구,인천,광주...)
+model RegionCategory {
+  id   Int    @id @default(autoincrement())
+  name String
+  Item Item[]
+  Area Area[]
+}
+
+// 중분류(강남구,강동구,강북구,강서구,관악구,광진구...)
+model Area {
+  id               Int            @id @default(autoincrement())
+  name             String
+  regionCategory   RegionCategory @relation(fields: [regionCategoryId], references: [id])
+  regionCategoryId Int
+  Item             Item[]
 }
 
 model Tag {
