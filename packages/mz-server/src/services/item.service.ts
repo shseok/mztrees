@@ -698,6 +698,15 @@ const itemService = {
     if (item.userId !== userId) {
       throw new AppError('Forbidden')
     }
+    if (item.thumbnail) {
+      console.log('test', item.thumbnail.key)
+      await imageService.deleteFile(item.thumbnail.key)
+      await db.thumbnail.delete({
+        where: {
+          id: item.thumbnailId!,
+        },
+      })
+    }
     await db.item.delete({
       where: {
         id: itemId,
