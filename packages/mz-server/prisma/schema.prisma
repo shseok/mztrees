@@ -101,16 +101,17 @@ model Area {
   @@unique([name, regionCategoryId])
 }
 
+// item이 삭제되면 tag도 삭제되는가? x > onDelete: Cascade x
 model Tag {
   id        Int         @id @default(autoincrement())
   name      String      @unique
-  Item      Item?       @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  Item      Item?       @relation(fields: [itemId], references: [id])
   itemId    Int?
   itemsTags ItemsTags[]
 }
 
 model ItemsTags {
-  item   Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  item   Item @relation(fields: [itemId], references: [id])
   itemId Int
   tag    Tag  @relation(fields: [tagId], references: [id])
   tagId  Int

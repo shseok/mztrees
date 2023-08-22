@@ -172,6 +172,12 @@ CREATE INDEX "Item_createdAt_idx" ON "Item"("createdAt" DESC);
 CREATE UNIQUE INDEX "Publisher_domain_key" ON "Publisher"("domain");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "RegionCategory_name_key" ON "RegionCategory"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Area_name_regionCategoryId_key" ON "Area"("name", "regionCategoryId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Tag_name_key" ON "Tag"("name");
 
 -- CreateIndex
@@ -229,7 +235,7 @@ CREATE UNIQUE INDEX "Bookmark_userId_itemId_key" ON "Bookmark"("userId", "itemId
 ALTER TABLE "Token" ADD CONSTRAINT "Token_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Item" ADD CONSTRAINT "Item_thumbnailId_fkey" FOREIGN KEY ("thumbnailId") REFERENCES "Thumbnail"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Item" ADD CONSTRAINT "Item_thumbnailId_fkey" FOREIGN KEY ("thumbnailId") REFERENCES "Thumbnail"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Item" ADD CONSTRAINT "Item_publisherId_fkey" FOREIGN KEY ("publisherId") REFERENCES "Publisher"("id") ON DELETE CASCADE ON UPDATE CASCADE;
