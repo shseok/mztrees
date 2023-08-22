@@ -38,6 +38,32 @@ const itemService = {
     await imageService.uploadFile(key, buffer)
     return { key, imageUrl: `https://img.mztrees.com/${key}` }
   },
+  async getRegionInfo(regionCategory: string, area: string) {
+    const regionInfo = await db.regionCategory.findUnique({
+      where: {
+        name: regionCategory,
+      },
+    })
+
+    if (!regionInfo) {
+      throw new AppError('NotFound')
+    }
+
+    const areaInfo = await db.area.findUnique({
+      where: {
+        name_regionCategoryId: {
+          regionCategoryId: regionInfo.id,
+          name: area,
+        },
+      },
+    })
+
+    if (!areaInfo) {
+      throw new AppError('NotFound')
+    }
+
+    return { regionCategoryId: regionInfo.id, areaId: areaInfo.id }
+  },
   async getPublisher({ domain, name, favicon }: GetPublisherParams) {
     const exists = await db.publisher.findUnique({
       where: {
@@ -89,14 +115,10 @@ const itemService = {
       body,
       link,
       thumbnail: refUrl,
+      regionCategory,
+      area,
       tags,
-    }: {
-      title: string
-      body: string
-      link: string
-      thumbnail?: string
-      tags?: string[]
-    },
+    }: mutateItemParams,
   ) {
     const info = await extractPageInfo(link)
     const publisher = await this.getPublisher({
@@ -104,6 +126,11 @@ const itemService = {
       name: info.publisher,
       favicon: info.favicon,
     })
+    const { regionCategoryId, areaId } = await this.getRegionInfo(
+      regionCategory,
+      area,
+    )
+
     const item = await db.item.create({
       data: {
         title,
@@ -112,10 +139,14 @@ const itemService = {
         userId,
         author: info.author ?? undefined,
         publisherId: publisher.id,
+        regionCategoryId,
+        areaId,
       },
       include: {
         user: true,
         publisher: true,
+        regionCategory: true,
+        area: true,
       },
     })
     const itemStats = await db.itemStats.create({
@@ -177,6 +208,8 @@ const itemService = {
         publisher: true,
         itemStats: true,
         thumbnail: true,
+        regionCategory: true,
+        area: true,
         itemLikes: userId ? { where: { userId } } : false,
         bookmarks: userId ? { where: { userId } } : false,
       },
@@ -224,6 +257,8 @@ const itemService = {
           publisher: true,
           itemStats: true,
           thumbnail: true,
+          regionCategory: true,
+          area: true,
           itemLikes: userId ? { where: { userId } } : false,
           bookmarks: userId ? { where: { userId } } : false,
         },
@@ -321,6 +356,8 @@ const itemService = {
           publisher: true,
           itemStats: true,
           thumbnail: true,
+          regionCategory: true,
+          area: true,
           itemLikes: userId ? { where: { userId } } : false,
           bookmarks: userId ? { where: { userId } } : false,
         },
@@ -419,6 +456,8 @@ const itemService = {
         publisher: true,
         itemStats: true,
         thumbnail: true,
+        regionCategory: true,
+        area: true,
         itemLikes: userId ? { where: { userId } } : false,
         bookmarks: userId ? { where: { userId } } : false,
       },
@@ -531,18 +570,27 @@ const itemService = {
     return itemMap
   },
 
-  async updateItem({
-    itemId,
-    userId,
-    title,
-    body,
-    link,
-    thumbnail: refUrl,
-  }: UpdateItemParams) {
+  async updateItem(
+    userId: number,
+    itemId: number,
+    {
+      title,
+      body,
+      link,
+      thumbnail: refUrl,
+      regionCategory,
+      area,
+      tags,
+    }: mutateItemParams,
+  ) {
     const item = await this.getItem(itemId)
     if (item.userId !== userId) {
       throw new AppError('Forbidden')
     }
+    const { regionCategoryId, areaId } = await this.getRegionInfo(
+      regionCategory,
+      area,
+    )
     const updatedItem = await db.item.update({
       where: {
         id: itemId,
@@ -551,12 +599,16 @@ const itemService = {
         title,
         body,
         link,
+        regionCategoryId,
+        areaId,
       },
       include: {
         user: true,
         publisher: true,
         itemStats: true,
         thumbnail: true,
+        regionCategory: true,
+        area: true,
         itemLikes: userId ? { where: { userId } } : false,
         bookmarks: userId ? { where: { userId } } : false,
       },
@@ -750,13 +802,14 @@ type GetItemsParams = {
   endDate?: string
 }
 
-interface UpdateItemParams {
-  itemId: number
-  userId: number
+interface mutateItemParams {
   title: string
   body: string
   link: string
   thumbnail?: string
+  regionCategory: string
+  area: string
+  tags?: string[]
 }
 
 interface ItemActionParams {

@@ -85,7 +85,7 @@ model Publisher {
 // 대분류(서울,부산,대구,인천,광주...)
 model RegionCategory {
   id   Int    @id @default(autoincrement())
-  name String
+  name String @unique
   Item Item[]
   Area Area[]
 }
@@ -97,6 +97,8 @@ model Area {
   regionCategory   RegionCategory @relation(fields: [regionCategoryId], references: [id])
   regionCategoryId Int
   Item             Item[]
+
+  @@unique([name, regionCategoryId])
 }
 
 model Tag {

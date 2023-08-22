@@ -21,7 +21,6 @@ export const itemsRoute: FastifyPluginAsyncTypebox = async (fastify) => {
     const item = await itemService.getItem(id, request.user?.id)
     return item as any
   })
-
   fastify.get('/', { schema: ItemRouteSchema.GetItems }, async (request) => {
     const { cursor, mode, startDate, endDate } = request.query
     return itemService.getItems({
@@ -49,28 +48,20 @@ export const itemsRoute: FastifyPluginAsyncTypebox = async (fastify) => {
 
 const authorizedItemRoute = createAuthorizedRoute(async (fastify) => {
   fastify.post('/', { schema: ItemRouteSchema.WriteItem }, async (request) => {
+    const userId = request.user!.id
     const item = await itemService.createItem(
-      request.user!.id, // authorizedItemRoute때문에 무조건 존재 => !
+      userId, // authorizedItemRoute때문에 무조건 존재 => !
       request.body,
     )
     return item as any
   })
-
   fastify.patch(
     '/:id',
     { schema: ItemRouteSchema.UpdateItem },
     async (request) => {
       const { id: itemId } = request.params
       const userId = request.user!.id
-      const { title, body, link, thumbnail } = request.body
-      const item = await itemService.updateItem({
-        userId,
-        itemId,
-        title,
-        body,
-        link,
-        thumbnail,
-      })
+      const item = await itemService.updateItem(userId, itemId, request.body)
       return item as any
     },
   )

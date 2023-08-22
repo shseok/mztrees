@@ -41,6 +41,15 @@ export const ItemSchema = Type.Object({
       }),
     ),
   ),
+  regionCategory: Type.Object({
+    id: Type.Integer(),
+    name: Type.String(),
+  }),
+  area: Type.Object({
+    id: Type.Integer(),
+    name: Type.String(),
+    regionCategoryId: Type.Integer(),
+  }),
   itemStats: ItemStatsSchema,
   isLiked: Type.Boolean(),
   isBookmarked: Type.Boolean(),
@@ -137,6 +146,8 @@ export const ItemRouteSchema = createRouteSchema({
       body: Type.String(),
       link: Type.String(),
       thumbnail: Type.Optional(Type.String()),
+      regionCategory: Type.String(),
+      area: Type.String(),
       tags: Type.Optional(Type.Array(Type.String())),
     }),
     response: {
@@ -151,7 +162,9 @@ export const ItemRouteSchema = createRouteSchema({
       body: Type.String(),
       link: Type.String(),
       thumbnail: Type.Optional(Type.String()),
-      tags: Type.Array(Type.String()),
+      regionCategory: Type.String(),
+      area: Type.String(),
+      tags: Type.Optional(Type.Array(Type.String())),
     }),
     response: {
       200: ItemSchema,
