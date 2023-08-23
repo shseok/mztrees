@@ -3,12 +3,14 @@
 import BasicLayout from "@/components/layout/BasicLayout";
 import LabelInput from "@/components/system/LabelInput";
 import LabelTextArea from "@/components/system/LabelTextArea";
+import Select from "@/components/system/Select";
 import WriteFormTemplate from "@/components/write/WriteFormTemplate";
 import { useWriteContext } from "@/context/WriteContext";
 import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
 import { refreshToken } from "@/lib/api/auth";
 import { createItem } from "@/lib/api/items";
 import { setClientCookie } from "@/lib/client";
+import { regionCategoryList } from "@/lib/const";
 import { extractNextError } from "@/lib/nextError";
 import styles from "@/styles/WriteIntro.module.scss";
 import { useRouter } from "next/navigation";
@@ -87,6 +89,7 @@ export default function Intro() {
         onSubmit={handleSubmit(onSubmit)}
         isLoading={isSubmitting}
       >
+        <Select list={regionCategoryList} />
         <div className={styles.group}>
           <LabelInput
             label="제목"

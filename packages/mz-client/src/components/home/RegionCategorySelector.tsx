@@ -8,27 +8,7 @@ import "swiper/css/navigation";
 import { cn } from "@/utils/common";
 import { ChevronLeft, ChevronRight } from "../vectors";
 import styles from "@/styles/RegionCategorySelector.module.scss";
-
-const list = [
-  "전체",
-  "서울",
-  "부산",
-  "대구",
-  "인천",
-  "광주",
-  "대전",
-  "울산",
-  "세종",
-  "경기",
-  "강원",
-  "충북",
-  "충남",
-  "전북",
-  "전남",
-  "경북",
-  "경남",
-  "제주",
-];
+import { regionCategoryList } from "@/lib/const";
 
 const RegionCategorySelector = () => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -115,7 +95,7 @@ const RegionCategorySelector = () => {
       }}
       className={styles.scroll_container}
     >
-      {list.map((regionCategory, idx) => (
+      {regionCategoryList.map((regionCategory, idx) => (
         <SwiperSlide key={idx}>
           <AnimatePresence initial={false}>
             <motion.div
