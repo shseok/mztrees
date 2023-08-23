@@ -2,13 +2,13 @@
 
 .block {
   display: flex;
-  justify-content: center;
+  // justify-content: center;
   margin-bottom: 24px;
 }
 
 .mode_container {
   display: flex;
-  gap: 16px;
+  gap: 3px;
   position: relative;
 }
 
@@ -17,10 +17,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  // width: ${ModeWidth}px;
-  width: 75px;
+  width: 86px;
   margin-bottom: 4px;
-  font-size: 16px;
+  font-size: 20px;
   line-height: 1.5;
   color: $gray3;
   text-decoration: none;
@@ -43,7 +42,7 @@
 }
 
 .indicator {
-  width: 75px;
+  width: 86px;
   height: 3px;
   border-radius: 1px;
   background: $primary;

@@ -6,8 +6,8 @@ import { cn } from "@/utils/common";
 import { useTheme } from "@/context/ThemeContext";
 import Link from "next/link";
 
-const ModeWidth = 75;
-const ModeGap = 16;
+const ModeWidth = 86;
+const ModeGap = 3;
 
 interface Props {
   mode: ListMode;
