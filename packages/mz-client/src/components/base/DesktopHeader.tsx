@@ -8,18 +8,19 @@ import Link from "next/link";
 import { Logo } from "@/components/vectors";
 import { useUser } from "@/context/UserContext";
 import ThemeToggleButton from "../system/ThemeToggleButton";
+import RegionCategorySelector from "../home/RegionCategorySelector";
 
 const DesktopHeader = () => {
   const { currentUser } = useUser();
 
   return (
     <header className={styles.block}>
-      <div className={styles.block_inner}>
-        <Link className={styles.home_link} href="/">
-          <Logo className={styles.styled_logo} />
-        </Link>
+      <div className={styles.block_top}>
         <div className={styles.content}>
-          <div className={styles.addon}></div>
+          <Link className={styles.home_link} href="/">
+            <Logo className={styles.styled_logo} />
+          </Link>
+          <div className={styles.addon} />
           <div className={styles.addon}>
             <ThemeToggleButton />
             <SearchArea />
@@ -36,6 +37,11 @@ const DesktopHeader = () => {
               </div>
             )}
           </div>
+        </div>
+      </div>
+      <div className={styles.block_bottom}>
+        <div className={styles.content}>
+          <RegionCategorySelector />
         </div>
       </div>
     </header>

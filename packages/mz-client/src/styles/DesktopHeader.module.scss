@@ -7,6 +7,7 @@
 
   @include mobile {
     display: flex;
+    flex-direction: column;
   }
 
   // @include widescreen {
@@ -18,18 +19,16 @@
   // margin-right: auto;
   // margin-left: auto;
 
-  .block_inner {
+  .block_top {
     display: flex;
     align-items: center;
     width: 100%;
+    height: 72px;
     // padding: 0;
-    padding: 0 26px;
+  }
 
-    @include widescreen {
-      max-width: 1150px;
-      margin: 0 auto;
-      padding: 0 16px;
-    }
+  .block_bottom {
+    width: 100%;
   }
 }
 
@@ -49,6 +48,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  margin: 0 26px;
+
+  @include widescreen {
+    max-width: 1150px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
 }
 
 .addon {

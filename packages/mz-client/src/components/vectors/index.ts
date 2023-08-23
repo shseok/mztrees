@@ -19,3 +19,5 @@ export { default as Moon } from "../../../public/assets/moon.svg";
 export { default as Sun } from "../../../public/assets/sun.svg";
 export { default as Delete } from "../../../public/assets/delete.svg";
 export { default as Edit } from "../../../public/assets/edit.svg";
+export { default as ChevronLeft } from "../../../public/assets/chevron-left.svg";
+export { default as ChevronRight } from "../../../public/assets/chevron-Right.svg";
