@@ -2,26 +2,19 @@
 
 .block {
   display: flex;
-  // justify-content: center;
-  margin-bottom: 24px;
-}
-
-.mode_container {
-  display: flex;
-  gap: 3px;
   position: relative;
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
 .mode {
   cursor: pointer;
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: 86px;
-  margin-bottom: 4px;
-  font-size: 20px;
+  font-size: 22px;
   line-height: 1.5;
-  color: $gray3;
+  color: $gray2;
+  font-weight: 600;
   text-decoration: none;
 
   &.dark {
@@ -30,24 +23,22 @@
 
   &.active {
     color: $primary;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   svg {
     display: block;
     width: 24px;
     height: 24px;
-    margin-right: 7px;
+    margin-right: 8px;
   }
 }
 
 .indicator {
-  width: 86px;
-  height: 3px;
+  height: 2px;
   border-radius: 1px;
   background: $primary;
   position: absolute;
-  left: 0;
   bottom: -5px;
 
   transition: left 0.2s ease-in-out;

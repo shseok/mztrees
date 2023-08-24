@@ -1,4 +1,10 @@
-import React, { useMemo } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { ListMode } from "@/types/db";
 import { Trending, History, Calendar } from "@/components/vectors";
 import styles from "@/styles/ListModeSelector.module.scss";
@@ -6,13 +12,20 @@ import { cn } from "@/utils/common";
 import { useTheme } from "@/context/ThemeContext";
 import Link from "next/link";
 
-const ModeWidth = 86;
-const ModeGap = 3;
+const GAP = 16;
 
 interface Props {
   mode: ListMode;
 }
 const ListModeSelector = ({ mode }: Props) => {
+  const [elementSizes, setElementSizes] = useState([0, 0, 0]);
+  const setElementSizeOfIndex = useCallback((index: number, size: number) => {
+    setElementSizes((prev) => {
+      const next = [...prev];
+      next[index] = size;
+      return next;
+    });
+  }, []);
   const modeInfos = useMemo(
     () =>
       [
@@ -38,21 +51,31 @@ const ListModeSelector = ({ mode }: Props) => {
     (modeInfo) => modeInfo.mode === mode
   );
   const indicatorLeft = useMemo(() => {
-    const gaps = currentIndex * ModeGap;
-    const sizes = ModeWidth;
-    return gaps + currentIndex * sizes;
-  }, [currentIndex]);
+    const gaps = currentIndex * GAP;
+    const sizes = elementSizes
+      .slice(0, currentIndex)
+      .reduce((a, b) => a + b, 0);
+    return gaps + sizes;
+  }, [currentIndex, elementSizes]);
 
-  /** TODO: implements with link instead of onClick */
+  const indicatorWidth = elementSizes[currentIndex];
+  console.log(elementSizes);
 
   return (
     <div className={styles.block}>
-      <div className={styles.mode_container}>
-        {modeInfos.map((modeInfo) => (
-          <ListModeItem currentMode={mode} key={modeInfo.name} {...modeInfo} />
-        ))}
-        <div className={styles.indicator} style={{ left: indicatorLeft }} />
-      </div>
+      {modeInfos.map((modeInfo, index) => (
+        <ListModeItem
+          currentMode={mode}
+          key={modeInfo.name}
+          index={index}
+          onUpdateSize={setElementSizeOfIndex}
+          {...modeInfo}
+        />
+      ))}
+      <div
+        className={styles.indicator}
+        style={{ left: indicatorLeft + 0.3, width: indicatorWidth }}
+      />
     </div>
   );
 };
@@ -62,8 +85,21 @@ const ListModeItem = ({
   name,
   icon,
   currentMode,
-}: Props & { name: string; icon: React.ReactNode; currentMode: ListMode }) => {
+  onUpdateSize,
+  index,
+}: Props & {
+  name: string;
+  icon: React.ReactNode;
+  currentMode: ListMode;
+  index: number;
+  onUpdateSize(index: number, size: number): void;
+}) => {
   const { mode: themeMode } = useTheme();
+  const ref = useRef<HTMLAnchorElement>(null);
+  useEffect(() => {
+    if (!ref.current) return;
+    onUpdateSize(index, ref.current.clientWidth);
+  }, [onUpdateSize, index]);
   return (
     <Link
       className={cn(
@@ -73,6 +109,7 @@ const ListModeItem = ({
       )}
       href={`/?mode=${mode}`}
       prefetch={mode !== "past"}
+      ref={ref}
     >
       {icon}
       {name}
