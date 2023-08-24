@@ -47,15 +47,14 @@
       max-height: 400px;
       overflow-y: scroll;
       scroll-behavior: smooth;
-    }
-
-    &::-webkit-scrollbar {
-      width: 0; /* Hide scrollbar */
+      &::-webkit-scrollbar {
+        width: 0; /* Hide scrollbar */
+      }
     }
 
     &.active {
       display: block;
-      z-index: 999;
+      z-index: 2;
       pointer-events: auto;
     }
 
