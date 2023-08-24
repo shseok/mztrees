@@ -10,8 +10,9 @@ import {
   ListMode,
   UnlikeCommentResult,
 } from "@/types/db";
+import { RegionType } from "../const";
 
-export async function createItem(params: CreateItemParams) {
+export async function createItem(params: MutateItemParams) {
   const response = await fetchClient.post<Item>("/api/items", params);
   return response;
 }
@@ -51,26 +52,8 @@ export async function deleteItem(itemId: number) {
   return fetchClient.delete(`/api/items/${itemId}`);
 }
 
-export async function updateItem({
-  itemId,
-  title,
-  body,
-  link,
-  thumbnail,
-}: {
-  itemId: number;
-  title: string;
-  body: string;
-  link: string;
-  thumbnail?: string;
-}) {
-  const response = await fetchClient.patch(`/api/items/${itemId}`, {
-    title,
-    body,
-    link,
-    thumbnail,
-    tags: [],
-  });
+export async function updateItem(itemId: number, params: MutateItemParams) {
+  const response = await fetchClient.patch(`/api/items/${itemId}`, params);
   return response;
 }
 
@@ -93,12 +76,12 @@ export async function unlikeItem(itemId: number, controller?: AbortController) {
   return response;
 }
 
-interface CreateItemParams {
+type MutateItemParams = {
   title: string;
   body: string;
   link: string;
   thumbnail?: string;
-}
+} & RegionType;
 
 export async function getComments(itemId: number) {
   const response = await fetchClient.get<Comment[]>(

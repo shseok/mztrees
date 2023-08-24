@@ -95,7 +95,7 @@ const RegionCategorySelector = () => {
       }}
       className={styles.scroll_container}
     >
-      {regionCategoryList.map((regionCategory, idx) => (
+      {["전체", ...regionCategoryList].map((regionCategory, idx) => (
         <SwiperSlide key={idx}>
           <AnimatePresence initial={false}>
             <motion.div

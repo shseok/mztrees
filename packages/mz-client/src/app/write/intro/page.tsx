@@ -44,6 +44,10 @@ export default function Intro() {
       setErrorMessage("제목과 내용을 모두 입력해주세요.");
       return;
     }
+    if (!form.region || !form.region.regionCategory || !form.region.area) {
+      setErrorMessage("지역을 선택해주세요.");
+      return;
+    }
     // if (form.thumbnail.extracted.length > 1 && !form.thumbnail.selected) {
     //   // TODO: toast ui로 이미지 선택하라고 알려주기
     //   router.back();
@@ -54,6 +58,7 @@ export default function Intro() {
       body: form.body,
       link: form.link,
       thumbnail: form.thumbnail.selected,
+      ...form.region,
     };
     // request & error
     try {
@@ -89,7 +94,7 @@ export default function Intro() {
         onSubmit={handleSubmit(onSubmit)}
         isLoading={isSubmitting}
       >
-        <Select list={regionCategoryList} />
+        <Select list={["지역", ...regionCategoryList]} />
         <div className={styles.group}>
           <LabelInput
             label="제목"

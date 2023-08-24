@@ -3,25 +3,30 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import { NextAppError } from "@/lib/nextError";
 import { produce } from "immer";
+import { RegionType } from "@/lib/const";
 
-interface Thumbnail {
+type ThumbnailType = {
   extracted: string[];
   selected?: string;
-}
+};
 
 interface WriteContextState {
   form: {
     link: string;
     title: string;
     body: string;
-    thumbnail: Thumbnail;
+    thumbnail: ThumbnailType;
     id?: string;
+    region?: RegionType;
   };
   error?: NextAppError;
 }
 
 interface WriteContextActions {
-  change(key: keyof WriteContextState["form"], value: string | Thumbnail): void;
+  change(
+    key: keyof WriteContextState["form"],
+    value: string | ThumbnailType | RegionType
+  ): void;
   reset(): void;
   setError(error?: NextAppError): void;
 }
@@ -67,7 +72,9 @@ export const WriteProvider = ({ children }: Props) => {
         setState((prev) =>
           produce(prev, (draft) => {
             if (key === "thumbnail") {
-              draft.form.thumbnail = value as Thumbnail;
+              draft.form.thumbnail = value as ThumbnailType;
+            } else if (key === "region") {
+              draft.form.region = value as RegionType;
             } else {
               draft.form[key] = value as string;
             }

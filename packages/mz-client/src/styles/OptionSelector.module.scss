@@ -1,0 +1,54 @@
+@import "_var", "_module";
+
+.title {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.5;
+  color: $gray5;
+}
+
+.listContainer {
+  margin-bottom: 16px;
+  .list {
+    width: 100%;
+    background: #fff;
+    gap: 10px;
+
+    @include mobile {
+      max-height: 400px;
+      overflow-y: scroll;
+      scroll-behavior: smooth;
+      &::-webkit-scrollbar {
+        width: 0; /* Hide scrollbar */
+      }
+    }
+
+    .item {
+      display: block;
+      padding: 10px;
+      cursor: pointer;
+      font-weight: 500;
+      color: #2e2e2e;
+      transition: all 0.2s ease;
+      border-radius: 6px;
+
+      &:hover {
+        background: $gray0;
+      }
+
+      &:focus {
+        background: $primary;
+        color: white;
+      }
+    }
+  }
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 8px;
+}
