@@ -10,7 +10,11 @@ import { useUser } from "@/context/UserContext";
 import ThemeToggleButton from "../system/ThemeToggleButton";
 import RegionCategorySelector from "../home/RegionCategorySelector";
 
-const DesktopHeader = () => {
+interface Props {
+  showRegionCategorySelector?: boolean;
+}
+
+const DesktopHeader = ({ showRegionCategorySelector = false }: Props) => {
   const { currentUser } = useUser();
 
   return (
@@ -39,11 +43,13 @@ const DesktopHeader = () => {
           </div>
         </div>
       </div>
-      <div className={styles.block_bottom}>
-        <div className={styles.content}>
-          <RegionCategorySelector />
+      {showRegionCategorySelector && (
+        <div className={styles.block_bottom}>
+          <div className={styles.content}>
+            <RegionCategorySelector />
+          </div>
         </div>
-      </div>
+      )}
     </header>
   );
 };

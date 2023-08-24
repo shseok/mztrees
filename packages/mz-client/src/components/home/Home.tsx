@@ -20,6 +20,8 @@ import { getWeekRangeFromDate } from "@/lib/week";
 import SkeletonUI from "@/components/system/SkeletonUI";
 import EmptyList from "../system/EmptyList";
 import TabLayout from "../layout/TabLayout";
+import { isMobile } from "@/lib/isMobile";
+import RegionCategorySelector from "./RegionCategorySelector";
 
 export default function Home() {
   const observerTargetEl = useRef<HTMLDivElement>(null);
@@ -86,10 +88,15 @@ export default function Home() {
   const items = infiniteData?.pages.flatMap((page) => page.list);
 
   return (
-    <TabLayout className="layout_padding">
+    <TabLayout className="layout_padding" showRegionCategorySelector>
       <div className={styles.content}>
         <ListModeSelector mode={mode} />
         {mode === "past" && <WeekSelector dateRange={dateRange} />}
+        {isMobile() && (
+          <div className={styles.category_wrapper}>
+            <RegionCategorySelector />
+          </div>
+        )}
         {status === "loading" ? (
           <SkeletonUI />
         ) : status === "error" ? (

@@ -15,7 +15,7 @@ import { cn } from "@/utils/common";
 import { useTheme } from "@/context/ThemeContext";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ReplyComment from "./ReplyComment";
-import { isMobile } from "@/lib/isMobile";
+import { isTablet } from "@/lib/isMobile";
 import PopperMenu from "../system/PopperMenu";
 import ModifyComment from "./ModifyComment";
 import { useDialog } from "@/context/DialogContext";
@@ -59,7 +59,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const { mode } = useTheme();
   const { open: openDialog } = useDialog();
-  const isMobileWidth = isMobile();
+  const isTabletWidth = isTablet();
 
   const items = useMemo(
     () => [
@@ -67,7 +67,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
         name: "수정",
         onClick: () => {
           // for popperMenu
-          if (isMobileWidth) {
+          if (isTabletWidth) {
             edit(comment.id, text);
           } else {
             setIsEditing(true);
@@ -115,13 +115,13 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
       text,
       deleteComment,
       edit,
-      isMobileWidth,
+      isTabletWidth,
       openDialog,
       openLoginDialog,
     ]
   );
   const onClickMore = () => {
-    if (isMobileWidth) {
+    if (isTabletWidth) {
       openBottomSheetModal(items);
     } else {
       setIsMenuVisible(true);
@@ -146,7 +146,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
       openLoginDialog("comment");
       return;
     }
-    if (isMobileWidth) {
+    if (isTabletWidth) {
       write(comment.id);
     }
     setIsReplying(true);

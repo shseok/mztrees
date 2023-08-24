@@ -14,7 +14,7 @@ import { useBottomSheetModalStore } from "@/hooks/stores/useBottomSheetModalStor
 import { useRouter } from "next/navigation";
 import { Item } from "@/types/db";
 import Loading from "@/components/system/PostLoading";
-import { isMobile } from "@/lib/isMobile";
+import { isTablet } from "@/lib/isMobile";
 import { useMemo } from "react";
 import { extractNextError } from "@/lib/nextError";
 import { refreshToken } from "@/lib/api/auth";
@@ -85,7 +85,7 @@ export default function Item({ item }: Props) {
     [item.id, router, openDialog, openLoginDialog]
   );
   const onClickMore = () => {
-    if (isMobile()) {
+    if (isTablet()) {
       openBottomSheetModal(items);
     }
   };
