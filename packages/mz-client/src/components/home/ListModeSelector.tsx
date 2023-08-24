@@ -59,7 +59,6 @@ const ListModeSelector = ({ mode }: Props) => {
   }, [currentIndex, elementSizes]);
 
   const indicatorWidth = elementSizes[currentIndex];
-  console.log(elementSizes);
 
   return (
     <div className={styles.block}>
