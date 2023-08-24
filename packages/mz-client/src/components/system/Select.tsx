@@ -55,6 +55,7 @@ const Select = ({ list, initialTitle }: Props) => {
           }}
           className={styles.button}
           ref={buttonRef}
+          type="button"
         >
           {title}
           <motion.div

@@ -44,9 +44,11 @@ const OptionSelector = ({
         </ul>
       </section>
       <section className={styles.footer}>
-        <Button onClick={onConfirm}>{confirmText}</Button>
+        <Button onClick={onConfirm} type="button">
+          {confirmText}
+        </Button>
         {mode === "confirm" && (
-          <Button onClick={onClose} variant="secondary">
+          <Button onClick={onClose} variant="secondary" type="button">
             {cancelText}
           </Button>
         )}
