@@ -3,7 +3,7 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import { NextAppError } from "@/lib/nextError";
 import { produce } from "immer";
-import { RegionType } from "@/lib/const";
+import { RegionType } from "@/types/db";
 
 type ThumbnailType = {
   extracted: string[];

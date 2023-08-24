@@ -6,12 +6,13 @@ import styles from "@/styles/Select.module.scss";
 import { ChevronDown } from "../vectors";
 import { cn } from "@/utils/common";
 import OptionSelector from "./OptionSelector";
-import { RegionCategoryType, areaList } from "@/lib/const";
+import { areaList } from "@/lib/const";
 import { useWriteContext } from "@/context/WriteContext";
-import { useDialog } from "@/context/DialogContext";
+import { RegionCategoryType } from "@/types/db";
 
 interface Props {
   list: Array<RegionCategoryType | "지역">;
+  initialTitle: string;
 }
 
 const itemVariants: Variants = {
@@ -23,18 +24,15 @@ const itemVariants: Variants = {
   closed: { opacity: 0, y: 20, transition: { duration: 0.2 } },
 };
 
-const Select = ({ list }: Props) => {
+const Select = ({ list, initialTitle }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const [selectedArea, setSelectedArea] = useState<string | null>(null);
   const [selectedRegion, setSelectedRegion] =
     useState<RegionCategoryType | null>(null);
-  const [title, setTitle] = useState("지역");
+  const [title, setTitle] = useState(initialTitle);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
-  const {
-    state: { form },
-    actions,
-  } = useWriteContext();
+  const { actions } = useWriteContext();
 
   const handleClick = (value: RegionCategoryType) => {
     setSelectedRegion(value);
@@ -51,7 +49,10 @@ const Select = ({ list }: Props) => {
       >
         <motion.button
           whileTap={{ scale: 0.97 }}
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={(e) => {
+            e.preventDefault();
+            setIsOpen(true);
+          }}
           className={styles.button}
           ref={buttonRef}
         >
@@ -131,9 +132,7 @@ const Select = ({ list }: Props) => {
             });
             setSelectedArea(null);
             setSelectedRegion(null);
-            console.log("test");
             setVisible(false);
-            console.log("test2");
             buttonRef.current?.focus();
           }}
           onClose={() => {

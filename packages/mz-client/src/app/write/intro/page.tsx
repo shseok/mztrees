@@ -94,7 +94,7 @@ export default function Intro() {
         onSubmit={handleSubmit(onSubmit)}
         isLoading={isSubmitting}
       >
-        <Select list={["지역", ...regionCategoryList]} />
+        <Select list={["지역", ...regionCategoryList]} initialTitle="지역" />
         <div className={styles.group}>
           <LabelInput
             label="제목"

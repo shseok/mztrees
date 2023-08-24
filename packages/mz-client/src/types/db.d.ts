@@ -1,3 +1,5 @@
+import { RegionType, areaList } from "@/lib/const";
+
 interface Pagination<T> {
   list: T[];
   totalCount: number;
@@ -17,6 +19,8 @@ export interface Item {
   user: User;
   publisher: Publisher;
   thumbnail: Thumbnail | null;
+  regionCategory: RegionCategory;
+  area: Area;
   itemStats: ItemStats;
   isLiked: boolean;
   isBookmarked: boolean;
@@ -112,3 +116,35 @@ export type GetBookmarksResult = Pagination<Bookmark>;
 export interface ExtractedUrlsResult {
   urls: string[];
 }
+
+export type RegionCategoryType = keyof typeof areaList;
+// type RegionType = {
+//   [category in RegionCategoryType]: (typeof areaList)[category];
+// };
+
+export type RegionType = {
+  regionCategory: RegionCategoryType;
+  area: string;
+};
+
+// export type AreaType = {
+//   region: RegionCategoryType;
+//   area: (typeof areaList)[RegionCategoryType][number]; // areaList의 값 추론
+// };
+
+type RegionCategory = {
+  id: number;
+  name: RegionCategoryType;
+};
+
+type Area = {
+  id: number;
+  name: string;
+};
+
+export type MutateItemParams = {
+  title: string;
+  body: string;
+  link: string;
+  thumbnail?: string;
+} & RegionType;

@@ -1,6 +1,8 @@
 // 전반적으로 각 Route에 대하여 사이즈가 1kb씩 늘었다.
 // TODO: areaList는 서버에서 불러오는게 맞는걸까?
 
+import { RegionCategoryType } from "@/types/db";
+
 export const regionCategoryList: RegionCategoryType[] = [
   "서울",
   "부산",
@@ -20,21 +22,6 @@ export const regionCategoryList: RegionCategoryType[] = [
   "경남",
   "제주",
 ];
-
-export type RegionCategoryType = keyof typeof areaList;
-// type RegionType = {
-//   [category in RegionCategoryType]: (typeof areaList)[category];
-// };
-
-export type RegionType = {
-  regionCategory: RegionCategoryType;
-  area: string;
-};
-
-// export type AreaType = {
-//   region: RegionCategoryType;
-//   area: (typeof areaList)[RegionCategoryType][number]; // areaList의 값 추론
-// };
 
 export const areaList = {
   서울: [

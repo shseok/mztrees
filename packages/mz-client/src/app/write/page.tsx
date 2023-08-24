@@ -24,6 +24,10 @@ export default function Write() {
         buttonText="다음"
         onSubmit={async (e) => {
           e.preventDefault();
+          if (!form.link) {
+            alert("공유할 주소를 입력해주세요.");
+            return;
+          }
           setIsLoading(true);
           try {
             // Refactor: 만약 이전의 url에서 변경되지 않는 다면 해당 작업을 건너뛰기
@@ -32,8 +36,8 @@ export default function Write() {
             console.log(urls);
             actions.change("thumbnail", { extracted: urls });
             router.push("/write/extract");
-          } catch (e) {
-            const error = extractNextError(e);
+          } catch (innerError) {
+            const error = extractNextError(innerError);
             if (error.statusCode === 422) {
               router.refresh();
               actions.setError(error);

@@ -13,6 +13,8 @@ import WriteFormTemplate from "@/components/write/WriteFormTemplate";
 import LabelInput from "@/components/system/LabelInput";
 import LabelTextArea from "@/components/system/LabelTextArea";
 import { useWriteContext } from "@/context/WriteContext";
+import Select from "@/components/system/Select";
+import { regionCategoryList } from "@/lib/const";
 
 export default function EditIntro() {
   const {
@@ -38,19 +40,22 @@ export default function EditIntro() {
       setErrorMessage("제목과 내용을 모두 입력해주세요.");
       return;
     }
+    if (!form.region || !form.region.regionCategory || !form.region.area) {
+      setErrorMessage("지역을 선택해주세요.");
+      return;
+    }
 
     if (!form.id) return;
-
     const ItemInfo = {
       title: form.title,
       body: form.body,
       link: form.link,
       thumbnail: form.thumbnail.selected,
-      itemId: parseInt(form.id),
+      ...form.region,
     };
 
     try {
-      await updateItem(ItemInfo);
+      await updateItem(parseInt(form.id), ItemInfo);
       router.push(`/items/${form.id}`);
       router.refresh();
     } catch (e) {
@@ -62,7 +67,7 @@ export default function EditIntro() {
           const tokens = await refreshToken();
           setClientCookie(`access_token=${tokens.accessToken}`);
 
-          await updateItem(ItemInfo);
+          await updateItem(parseInt(form.id), ItemInfo);
           router.back();
         } catch (innerError) {
           openLoginDialog("edit");
@@ -77,6 +82,10 @@ export default function EditIntro() {
   return (
     <BasicLayout title="수정" hasBackButton>
       <WriteFormTemplate buttonText="수정하기" onSubmit={onSubmit}>
+        <Select
+          list={["지역", ...regionCategoryList]}
+          initialTitle={`${form.region?.regionCategory} - ${form.region?.area}`}
+        />
         <div className={styles.group}>
           <LabelInput
             label="제목"

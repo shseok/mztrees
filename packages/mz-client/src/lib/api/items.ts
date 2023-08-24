@@ -8,9 +8,9 @@ import {
   LikeCommentResult,
   LikeItemResult,
   ListMode,
+  MutateItemParams,
   UnlikeCommentResult,
 } from "@/types/db";
-import { RegionType } from "../const";
 
 export async function createItem(params: MutateItemParams) {
   const response = await fetchClient.post<Item>("/api/items", params);
@@ -75,13 +75,6 @@ export async function unlikeItem(itemId: number, controller?: AbortController) {
   );
   return response;
 }
-
-type MutateItemParams = {
-  title: string;
-  body: string;
-  link: string;
-  thumbnail?: string;
-} & RegionType;
 
 export async function getComments(itemId: number) {
   const response = await fetchClient.get<Comment[]>(
