@@ -36,6 +36,7 @@ export default function Home() {
   const [dateRange, setDateRange] = useState(
     startDate && endDate ? [startDate, endDate] : defaultDateRange
   );
+  const [isMobileMode, setIsMobileMode] = useState(isMobile());
 
   const {
     status,
@@ -85,6 +86,19 @@ export default function Home() {
     }
   }, [startDate, endDate, defaultDateRange, mode]);
 
+  // just for responsive design
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileMode(isMobile());
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const items = infiniteData?.pages.flatMap((page) => page.list);
 
   return (
@@ -92,7 +106,7 @@ export default function Home() {
       <div className={styles.content}>
         <ListModeSelector mode={mode} />
         {mode === "past" && <WeekSelector dateRange={dateRange} />}
-        {isMobile() && (
+        {isMobileMode && (
           <div className={styles.category_wrapper}>
             <RegionCategorySelector />
           </div>

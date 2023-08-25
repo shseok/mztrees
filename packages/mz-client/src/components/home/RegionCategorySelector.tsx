@@ -60,7 +60,7 @@ const RegionCategorySelector = () => {
   return (
     <Swiper
       modules={[Navigation]}
-      spaceBetween={30}
+      spaceBetween={20}
       navigation={{
         // apply prev, next button
         prevEl: navigationPrevRef.current,
