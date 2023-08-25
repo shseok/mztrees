@@ -10,6 +10,7 @@ export default function useSetSearchParams() {
   const pathname = usePathname();
   // const searchParams = useSearchParams();
 
+  // REFACTOR: useSearchParams를 사용하여 getAll, entries등을 이용
   const setSearchParams = useCallback(
     (obj: Record<string, string>) => {
       const createQueryString = (name: string, value: string) => {

@@ -1,25 +1,37 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { cn } from "@/utils/common";
+import { ChevronLeft, ChevronRight } from "../vectors";
+import styles from "@/styles/RegionCategorySelector.module.scss";
+import { regionCategoryList } from "@/lib/const";
+import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
+import { EnglishRegionNameType, RegionCategoryType } from "@/types/db";
+import { koreanToEnglish, getRegionIndex } from "@/utils/translate";
 import { AnimatePresence, motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import SwiperCore from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
-import { cn } from "@/utils/common";
-import { ChevronLeft, ChevronRight } from "../vectors";
-import styles from "@/styles/RegionCategorySelector.module.scss";
-import { regionCategoryList } from "@/lib/const";
+
+const MotionLink = motion(Link);
 
 const RegionCategorySelector = () => {
-  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const searchParams = useSearchParams();
+  const regionIndex = getRegionIndex(
+    (searchParams.get("region") as EnglishRegionNameType | null) ?? "all"
+  );
+  const [activeIndex, setActiveIndex] = useState<number>(regionIndex);
   const [swiperLoaded, setSwiperLoaded] = useState(false);
   const navigationPrevRef = useRef<HTMLButtonElement | null>(null);
   const navigationNextRef = useRef<HTMLButtonElement | null>(null);
-  // SwiperCore.use([Navigation]);
   const swiperRef = useRef<SwiperCore>();
+  const pathname = usePathname();
+  const mode = searchParams.get("mode") ?? "trending";
 
+  // SwiperCore.use([Navigation]);
   const handleClick = (index: number) => {
     setActiveIndex(index);
   };
@@ -31,7 +43,17 @@ const RegionCategorySelector = () => {
           {["전체", ...regionCategoryList].map((regionCategory, idx) => (
             <SwiperSlide key={idx}>
               <AnimatePresence initial={false}>
-                <motion.div
+                <MotionLink
+                  href={{
+                    pathname,
+                    query: {
+                      mode,
+                      region: koreanToEnglish(
+                        regionCategory as RegionCategoryType
+                      ),
+                    },
+                  }}
+                  prefetch={false}
                   className={cn(
                     styles.region,
                     idx === activeIndex && styles.active
@@ -46,7 +68,7 @@ const RegionCategorySelector = () => {
                   onClick={() => handleClick(idx)}
                 >
                   {regionCategory}
-                </motion.div>
+                </MotionLink>
               </AnimatePresence>
             </SwiperSlide>
           ))}
@@ -109,6 +131,8 @@ const RegionCategorySelector = () => {
         swiper.navigation.destroy();
         swiper.navigation.init();
         swiper.navigation.update();
+        swiper.navigation.prevEl.style.display = "none";
+        swiper.navigation.nextEl.style.display = "flex";
         // js로드가 끝나면 렌더링
         swiper.on("reachBeginning", (swiper) => {
           console.log("begin");

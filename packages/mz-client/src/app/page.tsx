@@ -77,7 +77,7 @@ export default async function Hydation() {
   const queryClient = getQueryClient();
   const dehydratedState = dehydrate(queryClient);
   await queryClient.prefetchInfiniteQuery(["items"], () =>
-    getItems({ mode: "trending" })
+    getItems({ mode: "trending", region: "all" })
   );
   return (
     <Hydrate state={dehydratedState}>

@@ -2,6 +2,7 @@ import { stringify } from "qs";
 import { fetchClient } from "../client";
 import {
   Comment,
+  EnglishRegionNameType,
   ExtractedUrlsResult,
   GetItemsResult,
   Item,
@@ -11,6 +12,7 @@ import {
   MutateItemParams,
   UnlikeCommentResult,
 } from "@/types/db";
+import { getRegionIndex } from "@/utils/translate";
 
 export async function createItem(params: MutateItemParams) {
   const response = await fetchClient.post<Item>("/api/items", params);
@@ -19,17 +21,19 @@ export async function createItem(params: MutateItemParams) {
 
 export async function getItems({
   mode,
+  region,
   cursor,
   startDate,
   endDate,
 }: {
   mode: ListMode;
+  region: EnglishRegionNameType;
   cursor?: number;
   startDate?: string;
   endDate?: string;
 }) {
   const query = stringify(
-    { mode, cursor, startDate, endDate },
+    { mode, cursor, regionIdx: getRegionIndex(region), startDate, endDate },
     { addQueryPrefix: true }
   );
   const resonse = await fetchClient.get<GetItemsResult>(

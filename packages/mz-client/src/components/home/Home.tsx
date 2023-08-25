@@ -15,7 +15,7 @@ import WeekSelector from "@/components/home/WeekSelector";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { useSearchParams } from "next/navigation";
 import { getItems } from "@/lib/api/items";
-import { ListMode } from "@/types/db";
+import { EnglishRegionNameType, ListMode } from "@/types/db";
 import { getWeekRangeFromDate } from "@/lib/week";
 import SkeletonUI from "@/components/system/SkeletonUI";
 import EmptyList from "../system/EmptyList";
@@ -29,6 +29,11 @@ export default function Home() {
   const [mode, setMode] = useState<ListMode>(
     (searchParams.get("mode") as ListMode | null) ?? "trending"
   );
+  const [region, setRegion] = useState<EnglishRegionNameType>(
+    (searchParams.get("region") as EnglishRegionNameType | null) ?? "all"
+  );
+
+  // console.log(mode, region);
 
   const defaultDateRange = useMemo(() => getWeekRangeFromDate(new Date()), []);
   const startDate = searchParams.get("start");
@@ -36,7 +41,7 @@ export default function Home() {
   const [dateRange, setDateRange] = useState(
     startDate && endDate ? [startDate, endDate] : defaultDateRange
   );
-  const [isMobileMode, setIsMobileMode] = useState(isMobile());
+  const [isMobileMode, setIsMobileMode] = useState(false);
 
   const {
     status,
@@ -45,12 +50,13 @@ export default function Home() {
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery(
-    ["Items", mode, mode === "past" ? dateRange : undefined].filter(
+    ["Items", mode, region, mode === "past" ? dateRange : undefined].filter(
       (item) => !!item
     ),
     ({ pageParam = undefined }) =>
       getItems({
         mode,
+        region,
         cursor: pageParam,
         ...(mode === "past"
           ? { startDate: dateRange[0], endDate: dateRange[1] }
@@ -73,10 +79,15 @@ export default function Home() {
 
   useEffect(() => {
     const nextMode = (searchParams.get("mode") as ListMode) ?? "trending";
+    const nextRegion =
+      (searchParams.get("region") as EnglishRegionNameType) ?? "all";
     if (nextMode !== mode) {
       setMode(nextMode);
     }
-  }, [searchParams, mode]);
+    if (nextRegion !== region) {
+      setRegion(nextRegion);
+    }
+  }, [searchParams, mode, region]);
 
   useEffect(() => {
     if (mode === "past") {
@@ -89,7 +100,9 @@ export default function Home() {
   // just for responsive design
   useEffect(() => {
     const handleResize = () => {
-      setIsMobileMode(isMobile());
+      if (typeof window !== undefined) {
+        setIsMobileMode(isMobile());
+      }
     };
 
     window.addEventListener("resize", handleResize);

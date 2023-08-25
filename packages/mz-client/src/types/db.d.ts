@@ -1,4 +1,4 @@
-import { RegionType, areaList } from "@/lib/const";
+import { RegionType, areaList, englishRegionName } from "@/lib/const";
 
 interface Pagination<T> {
   list: T[];
@@ -118,6 +118,7 @@ export interface ExtractedUrlsResult {
 }
 
 export type RegionCategoryType = keyof typeof areaList;
+export type RegionCategoryTypeWithAll = RegionCategoryType | "전체";
 // type RegionType = {
 //   [category in RegionCategoryType]: (typeof areaList)[category];
 // };
@@ -126,6 +127,9 @@ export type RegionType = {
   regionCategory: RegionCategoryType;
   area: string;
 };
+
+export type EnglishRegionNameType =
+  (typeof englishRegionName)[keyof typeof englishRegionName];
 
 // export type AreaType = {
 //   region: RegionCategoryType;
