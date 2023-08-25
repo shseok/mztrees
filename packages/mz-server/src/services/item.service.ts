@@ -234,10 +234,12 @@ const itemService = {
     limit,
     cursor,
     userId,
+    regionIdx,
   }: {
     limit: number
     cursor?: number | null
     userId?: number
+    regionIdx: number
   }) {
     const [totalCount, list] = await Promise.all([
       db.item.count(),
@@ -251,6 +253,7 @@ const itemService = {
                 lt: cursor,
               }
             : undefined,
+          ...(regionIdx && { regionCategoryId: regionIdx }),
         },
         include: {
           user: true,
@@ -283,12 +286,14 @@ const itemService = {
     startDate,
     endDate,
     userId,
+    regionIdx,
   }: {
     limit: number
     cursor?: number | null
     startDate?: string
     endDate?: string
     userId?: number
+    regionIdx: number
   }) {
     if (!startDate || !endDate) {
       throw new AppError('BadRequest', {
@@ -320,6 +325,7 @@ const itemService = {
             gte: startedAt,
             lte: endedAt,
           },
+          ...(regionIdx && { regionCategoryId: regionIdx }),
         },
       }),
       db.item.findMany({
@@ -394,10 +400,12 @@ const itemService = {
     limit,
     cursor,
     userId,
+    regionIdx,
   }: {
     limit: number
     cursor?: number | null
     userId?: number
+    regionIdx: number
   }) {
     // TODO: 당장 많은 데이터를 트렌딩으로 보여주는게 아니므로 몇 점이상 부터 노출시킬지는 나중에 정하자
     const totalCount = await db.itemStats.count({
@@ -438,6 +446,7 @@ const itemService = {
               : {}),
           },
         },
+        ...(regionIdx && { regionCategoryId: regionIdx }),
       },
       orderBy: [
         {
@@ -499,6 +508,7 @@ const itemService = {
   async getItems(
     {
       mode,
+      regionIdx,
       cursor,
       limit,
       userId,
@@ -506,13 +516,14 @@ const itemService = {
       endDate,
     }: GetItemsParams & PaginationOptionType & { userId?: number } = {
       mode: 'recent',
+      regionIdx: 0,
     },
   ) {
     const _limit = limit ?? 20
 
     const { totalCount, endCursor, hasNextPage, list } = await (() => {
       if (mode === 'recent') {
-        return this.getRecentItems({ limit: _limit, cursor, userId })
+        return this.getRecentItems({ limit: _limit, cursor, userId, regionIdx })
       }
       if (mode === 'past') {
         return this.getPastItems({
@@ -521,11 +532,12 @@ const itemService = {
           startDate,
           endDate,
           userId,
+          regionIdx,
         })
       }
 
       // mode === 'trending'
-      return this.getTrendingItems({ limit: _limit, cursor, userId })
+      return this.getTrendingItems({ limit: _limit, cursor, userId, regionIdx })
     })()
 
     const serializedList = list.map(this.serialize)
@@ -807,6 +819,7 @@ export default itemService
 
 type GetItemsParams = {
   mode: 'trending' | 'recent' | 'past'
+  regionIdx: number
   startDate?: string
   endDate?: string
 }

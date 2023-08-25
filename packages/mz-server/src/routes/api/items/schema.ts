@@ -132,6 +132,7 @@ export const ItemRouteSchema = createRouteSchema({
           Type.Literal('past'),
         ]),
       ),
+      regionIdx: Type.Optional(Type.Number()),
       startDate: Type.Optional(Type.String()),
       endDate: Type.Optional(Type.String()),
     }),

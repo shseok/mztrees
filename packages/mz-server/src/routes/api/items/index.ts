@@ -22,9 +22,10 @@ export const itemsRoute: FastifyPluginAsyncTypebox = async (fastify) => {
     return item as any
   })
   fastify.get('/', { schema: ItemRouteSchema.GetItems }, async (request) => {
-    const { cursor, mode, startDate, endDate } = request.query
+    const { cursor, mode, regionIdx, startDate, endDate } = request.query
     return itemService.getItems({
       mode: mode ?? 'recent',
+      regionIdx: regionIdx ?? 0, // 0 === 전체
       cursor: cursor ?? null,
       userId: request.user?.id,
       limit: 20,
