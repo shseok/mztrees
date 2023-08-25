@@ -23,9 +23,9 @@ datasource db {
 
 3. Delete packages/mz-server/prisma/migrations directory.
 4. Use `yarn install` command to install node_modules.
-5. Use `yarn prisma migrate dev` command to initialize database.
-6. Use `npx prisma db seed` command to seed data(ex. region, area)
-7. Use `yarn prisma generate` command to generate Prisma Client.
+5. Use `npx prisma migrate dev` command to initialize database.
+6. Use `yarn prisma(npx prisma db seed)` command to seed data(ex. region, area)
+7. Use `npx prisma generate` command to generate Prisma Client.
 8. Use `yarn dev` command to run server. Server will run on port 8080. Go to http://localhost:8080/ to check if server is running .
 
 API Documentation is available at http://localhost:8080/documentation.

@@ -23,6 +23,7 @@ async function main() {
       { name: '경북' },
       { name: '경남' },
       { name: '제주' },
+      { name: '전체' },
       // 다른 지역 정보도 추가
     ],
   })
