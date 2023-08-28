@@ -1,0 +1,54 @@
+* {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root,
+.app {
+  height: 100%;
+  margin: 0;
+}
+
+.theme {
+  transition: 1s all ease;
+}
+// body {
+//   font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+//     "Pretendard Variable", Pretendard, Roboto, "Noto Sans KR", "Segoe UI",
+//     "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+//     sans-serif;
+//   margin: 0;
+// }
+
+button,
+input {
+  font-family: inherit;
+}
+
+button {
+  background: none;
+  border: none;
+  outline: none;
+  padding: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.light {
+  background: white;
+  color: black;
+}
+
+.dark {
+  background: black;
+  color: white;
+}

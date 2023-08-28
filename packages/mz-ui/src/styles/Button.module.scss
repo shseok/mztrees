@@ -1,0 +1,130 @@
+@import "_var";
+
+@mixin sizeStyled {
+  &.small {
+    height: 36px;
+    font-size: 14px;
+    padding: 0 12px;
+  }
+
+  &.medium {
+    height: 48px;
+    font-size: 16px;
+    padding: 0 16px;
+  }
+}
+
+@mixin full-width {
+  width: 100%;
+}
+
+@mixin sharedStyles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  transition: filter 0.25s ease-in-out;
+
+  &:disabled {
+    filter: grayscale(0.6);
+  }
+
+  // layoutmode
+  &.fullWidth {
+    @include full-width;
+  }
+
+  // variantStyled
+  &.primary {
+    color: white;
+    background: $primary;
+    @media (hover: hover) {
+      &:hover:not(:disabled) {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  &.secondary {
+    color: $primary;
+    background: $secondary;
+    @media (hover: hover) {
+      &:hover:not(:disabled) {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  &.tertiary {
+    background: transparent;
+    color: $gray4;
+
+    @at-root #{&}.dark {
+      color: white; // 다크 모드에서의 color 스타일
+    }
+
+    @media (hover: hover) {
+      &:hover:not(:disabled) {
+        background: $gray0;
+        color: $gray4;
+      }
+    }
+  }
+
+  &.visit {
+    color: $primary;
+    background: $secondary;
+    border-radius: 50px;
+    padding: 0 20px;
+
+    @media (hover: hover) {
+      &:hover:not(:disabled) {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  &.warning {
+    background: $destructive;
+    color: white;
+    @media (hover: hover) {
+      &:hover:not(:disabled) {
+        opacity: 0.8;
+      }
+    }
+  }
+  // sizeStyled
+  &.small {
+    height: 36px;
+    font-size: 14px;
+    padding: 0 12px;
+  }
+
+  &.medium {
+    height: 48px;
+    font-size: 16px;
+    padding: 0 16px;
+  }
+}
+
+.styled_button {
+  @include sharedStyles;
+}
+
+.linked_button {
+  @include sharedStyles;
+  text-decoration: none;
+
+  &.write_button {
+    display: none;
+    margin-right: 8px;
+
+    @media (min-width: 700px) {
+      display: flex;
+    }
+  }
+}
