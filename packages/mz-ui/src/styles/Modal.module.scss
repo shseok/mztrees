@@ -1,0 +1,29 @@
+@import "_module";
+
+.positioner {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 4;
+  transform: translate(-50%, -50%);
+
+  &.fullWidth {
+    width: 90%;
+
+    @include xwidescreen {
+      width: 80%;
+    }
+  }
+}
+
+.block {
+  background: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+
+  &.styled_modal {
+    width: 375px;
+    max-width: calc(100vw - 32px);
+    padding: 24px 16px 24px 16px;
+  }
+}
