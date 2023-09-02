@@ -37,15 +37,15 @@ export function generateMetadata({ searchParams }: Props) {
       const formattedStart = format(new Date(startDate), "yyyy년 MM월 dd일");
       const formattedEnd = format(new Date(endDate), "yyyy년 MM월 dd일");
       return {
-        title: `엠제트리 - 과거 뉴스 (${formattedStart} ~ ${formattedEnd})`,
+        title: `엠제트리 - 과거 소식 (${formattedStart} ~ ${formattedEnd})`,
         description: `${formattedStart} ~ ${formattedEnd}에 올라온 엠제트리 소식들을 인기순으로 확인해보세요.`,
       };
     }
 
     return {
-      title: "엠제트리 - 하나로 연결된 지역소식",
+      title: "엠제트리 - Mztrees, 웹 사이트 공유의 장",
       description:
-        "각 지역의 축제, 맛집, 사회문제 관련 다양한 소식들을 엠제트리에서 확인하고 공유해보세요.",
+        "인터넷에 흩어져있는 트렌디하거나 유용한 사이트들을 엠제트리에서 확인하고 공유해보세요.",
       ...(mode === "trending" ? canonical : {}),
     };
   })();
@@ -65,13 +65,7 @@ export function generateMetadata({ searchParams }: Props) {
       images: "https://img.mztrees.com/og-image.png",
     },
   };
-
-  // TODO: og - title, description, image
 }
-// export const metadata = {
-//   title: "엠제트리 - 하나로 연결된 지역소식",
-//   description: "test",
-// };
 
 export default async function Hydation() {
   const queryClient = getQueryClient();

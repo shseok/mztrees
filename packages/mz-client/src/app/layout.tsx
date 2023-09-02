@@ -5,9 +5,9 @@ import GlobalBottomSheetModal from "@/components/system/GlobalBottomSheetModal";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "엠제트리 - 하나로 연결된 지역소식",
+  title: "엠제트리 - Mztrees, 웹 사이트 공유의 장",
   description:
-    "각 지역의 축제, 맛집, 사회문제 관련 다양한 소식들을 엠제트리에서 확인하고 공유해보세요.",
+    "인터넷에 흩어져있는 트렌디하거나 유용한 사이트들을 엠제트리에서 확인하고 공유해보세요.",
   metadataBase: new URL("https://img.mztrees.com"),
   openGraph: {
     images: "/og-image.png",
