@@ -2,17 +2,19 @@
 
 [English](/README.md) | [한국어](/README-ko.md)
 
-Mztrees is a website where both locals and outsiders can check and share related issues such as local festivals and price trends of local agricultural products.
+Mztrees is a website where anyone can share and check out unique or useful sites.
 
 [URL](https://www.mztrees.com)
 
 ![](https://img.mztrees.com/og-image.png)
 
-To revitalize the local community, we want to provide a service experience where you can check trendy local issues in one place.
+We want to share trendy or useful sites scattered across the vast Internet, exchange feedback, and provide diversity of information.
 
-We have applied a responsive layout and are preparing for mobile app distribution as the next step.
+Since we have currently applied a responsive layout, you can access the site and experience the service on mobile devices.
 
-If you find a bug, please [report](https://github.com/shseok/mztrees/issues) it and we will respond quickly after review. thank you!
+- If you would like to contribute to the project, please use [Discussions](https://github.com/shseok/mztrees/discussions/categories/announcements).
+
+- If you find a bug, please [Report](https://github.com/shseok/mztrees/issues) and we will review it and respond quickly.
 
 ## Tech Stack
 
@@ -60,5 +62,4 @@ If you find a bug, please [report](https://github.com/shseok/mztrees/issues) it 
 
 # Plan
 
-- After adding categories by region, sort them
-- Mobile version release
+- Mobile version release(RN)
