@@ -20,67 +20,62 @@
 //   color: #fff;
 // }
 
-@import "_var";
+@import "_var", "_module";
 
 .container {
-  margin-right: 11px;
-  .checkbox {
-    opacity: 0;
-    position: absolute;
+  border-radius: 100px;
+  font-size: 12px;
+  // filter: drop-shadow( );
+  background-color: white;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
+  padding: 16px 20px;
+  position: fixed;
+  right: 16px;
+  bottom: 72px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+
+  @include mobile {
+    right: 26px;
+    bottom: 26px;
   }
 
-  .checkbox_label {
-    background: white;
-    box-shadow: 0px 10px 25px #e4e7ec;
-    width: 55px;
-    height: 30px;
-    border: 1px solid #e4e7ec;
-    border-radius: 50px;
-    position: relative;
-    padding: 5px;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  svg {
+    width: 20px;
+    height: 20px;
+  }
 
-    &.dark {
-      background: $gray4;
-      box-shadow: 0px 2px 15px #e4e7ec;
+  span {
+    color: $gray4;
+  }
+
+  &.dark_mode {
+    background-color: rgb(41, 42, 45);
+    color: rgb(221, 227, 243);
+
+    span {
+      color: inherit;
     }
 
-    .moon_wrapper {
-      color: white;
-      svg {
-        width: 20px;
-        height: 20px;
+    &:hover {
+      background-color: white;
+
+      span {
+        color: $gray4;
       }
     }
+  }
 
-    .sun_wrapper {
-      color: $sunny;
-      svg {
-        width: 20px;
-        height: 20px;
-      }
+  &:hover {
+    background-color: rgb(41, 42, 45);
+
+    svg {
+      color: $primary;
     }
-
-    .ball {
-      width: 22px;
-      height: 22px;
-      position: absolute;
-      left: 4px;
-      top: 3px;
-      border-radius: 50%;
-      transition: transform 0.2s linear;
-      box-shadow: inset 0px 0px 0px 0.75px $sunny;
-      background-color: #ffeccf;
-      // transform: translateX(-24px);
-    }
-
-    &.dark .ball {
-      transform: translateX(24px);
-      background: $gray3;
-      box-shadow: inset 0px 0px 0px 0.75px white;
+    span {
+      color: rgb(221, 227, 243);
     }
   }
 }

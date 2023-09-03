@@ -8,26 +8,22 @@ import { cn } from "@/utils/common";
 const ThemeToggleButton = () => {
   const { toggle, mode } = useTheme();
   return (
-    <div className={styles.container}>
-      <input
-        type="checkbox"
-        className={styles.checkbox}
-        id="checkbox"
-        onClick={toggle}
-      />
-      <label
-        htmlFor="checkbox"
-        className={cn(styles.checkbox_label, styles[mode])}
-      >
-        <div className={styles.moon_wrapper}>
-          <Moon />
-        </div>
-        <div className={styles.sun_wrapper}>
+    <button
+      className={cn(styles.container, mode === "dark" && styles.dark_mode)}
+      onClick={toggle}
+    >
+      {mode === "dark" ? (
+        <>
           <Sun />
-        </div>
-        <span className={styles.ball} />
-      </label>
-    </div>
+          <span className={styles.dark_mode}>라이트 모드로 전환</span>
+        </>
+      ) : (
+        <>
+          <Moon />
+          <span className={styles.light_mode}>다크 모드로 전환</span>
+        </>
+      )}
+    </button>
   );
 };
 

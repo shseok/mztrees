@@ -7,7 +7,6 @@ import UserAddon from "./UserAddon";
 import Link from "next/link";
 import { Logo } from "@/components/vectors";
 import { useUser } from "@/context/UserContext";
-import ThemeToggleButton from "../system/ThemeToggleButton";
 import RegionCategorySelector from "../home/RegionCategorySelector";
 
 interface Props {
@@ -26,7 +25,6 @@ const DesktopHeader = ({ showRegionCategorySelector = false }: Props) => {
           </Link>
           <div className={styles.addon} />
           <div className={styles.addon}>
-            <ThemeToggleButton />
             <SearchArea />
             {currentUser ? (
               <UserAddon username={currentUser.username} profileImage={""} />

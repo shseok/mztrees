@@ -14,9 +14,6 @@ body,
   margin: 0;
 }
 
-.theme {
-  transition: 1s all ease;
-}
 // body {
 //   font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
 //     "Pretendard Variable", Pretendard, Roboto, "Noto Sans KR", "Segoe UI",
@@ -43,12 +40,22 @@ ul {
   list-style: none;
 }
 
+.theme {
+  transition: 0.2s all ease;
+}
+
 .light {
   background: white;
   color: black;
 }
 
 .dark {
-  background: black;
+  background-color: rgb(30, 31, 33);
   color: white;
+
+  header,
+  footer {
+    background-color: rgb(41, 42, 45);
+    border: 1px solid rgb(58, 59, 61);
+  }
 }

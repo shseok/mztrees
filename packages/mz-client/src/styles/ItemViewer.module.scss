@@ -27,6 +27,24 @@
   @include tablet {
     padding: 16px 0;
   }
+
+  &.dark_mode {
+    border-bottom: 1px solid rgb(58, 59, 61);
+    p {
+      color: white;
+    }
+    h2 {
+      color: white;
+    }
+
+    .publisher {
+      color: white;
+    }
+
+    .likescount {
+      color: white;
+    }
+  }
 }
 
 .morevert_container {
@@ -67,10 +85,6 @@
     width: 16px;
     height: 16px;
   }
-
-  &.dark {
-    color: white;
-  }
 }
 
 .title {
@@ -90,10 +104,6 @@
       color: $gray2;
     }
   }
-
-  &.dark {
-    color: white;
-  }
 }
 
 .body {
@@ -106,10 +116,6 @@
   // word-break: keep-all;
   // word-break: break-all;
   overflow-wrap: break-word;
-
-  &.dark {
-    color: white;
-  }
 }
 
 .likescount {
@@ -120,10 +126,6 @@
   height: 26px;
   display: flex;
   align-items: top;
-
-  &.dark {
-    color: white;
-  }
 }
 
 .footer {
@@ -137,10 +139,6 @@
   font-size: 14px;
   margin-top: 0px;
   margin-bottom: 0px;
-
-  &.dark {
-    color: white;
-  }
 }
 
 .icon_container {

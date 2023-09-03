@@ -8,6 +8,7 @@ import styles from "@/styles/TabLayout.module.scss";
 import DesktopHeader from "../base/DesktopHeader";
 import { cn } from "@/utils/common";
 import { useTabScrollTop } from "@/context/TabScrollTopContext";
+import ThemeToggleButton from "../system/ThemeToggleButton";
 
 interface Props {
   className?: string;
@@ -40,6 +41,7 @@ const TabLayout = ({
       >
         {children}
       </div>
+      <ThemeToggleButton />
       <Footer />
     </FullHeightPage>
   );

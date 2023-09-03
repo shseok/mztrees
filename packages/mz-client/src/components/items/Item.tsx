@@ -20,6 +20,7 @@ import { extractNextError } from "@/lib/nextError";
 import { refreshToken } from "@/lib/api/auth";
 import { setClientCookie } from "@/lib/client";
 import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
+import ThemeToggleButton from "../system/ThemeToggleButton";
 
 type Props = {
   item: Item;
@@ -106,6 +107,7 @@ export default function Item({ item }: Props) {
           comments && <CommentList comments={comments} />
         )}
       </div>
+      <ThemeToggleButton />
       <CommentInputOverlay />
     </BasicLayout>
   );

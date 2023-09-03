@@ -93,12 +93,10 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
           sizes="100vw"
         />
       </Link>
-      <div className={styles.content}>
+      <div className={cn(styles.content, mode === "dark" && styles.dark_mode)}>
         <div className={styles.item_head}>
           <div className={styles.item_info}>
-            <div
-              className={cn(styles.publisher, mode === "dark" && styles.dark)}
-            >
+            <div className={styles.publisher}>
               {favicon ? (
                 <Image src={favicon} alt="favicon" width={16} height={16} />
               ) : (
