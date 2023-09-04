@@ -7,13 +7,8 @@ import UserAddon from "./UserAddon";
 import Link from "next/link";
 import { Logo } from "@/components/vectors";
 import { useUser } from "@/context/UserContext";
-import RegionCategorySelector from "../home/RegionCategorySelector";
 
-interface Props {
-  showRegionCategorySelector?: boolean;
-}
-
-const DesktopHeader = ({ showRegionCategorySelector = false }: Props) => {
+const DesktopHeader = () => {
   const { currentUser } = useUser();
 
   return (
@@ -41,13 +36,6 @@ const DesktopHeader = ({ showRegionCategorySelector = false }: Props) => {
           </div>
         </div>
       </div>
-      {showRegionCategorySelector && (
-        <div className={styles.block_bottom}>
-          <div className={styles.content}>
-            <RegionCategorySelector />
-          </div>
-        </div>
-      )}
     </header>
   );
 };

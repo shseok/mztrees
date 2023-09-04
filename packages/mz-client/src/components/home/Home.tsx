@@ -15,13 +15,11 @@ import WeekSelector from "@/components/home/WeekSelector";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { useSearchParams } from "next/navigation";
 import { getItems } from "@/lib/api/items";
-import { EnglishRegionNameType, ListMode } from "@/types/db";
+import { ListMode, TagList } from "@/types/db";
 import { getWeekRangeFromDate } from "@/lib/week";
 import SkeletonUI from "@/components/system/SkeletonUI";
 import EmptyList from "../system/EmptyList";
 import TabLayout from "../layout/TabLayout";
-import { isMobile } from "@/lib/isMobile";
-import RegionCategorySelector from "./RegionCategorySelector";
 
 export default function Home() {
   const observerTargetEl = useRef<HTMLDivElement>(null);
@@ -29,11 +27,10 @@ export default function Home() {
   const [mode, setMode] = useState<ListMode>(
     (searchParams.get("mode") as ListMode | null) ?? "trending"
   );
-  const [region, setRegion] = useState<EnglishRegionNameType>(
-    (searchParams.get("region") as EnglishRegionNameType | null) ?? "all"
+  const tagsResult = searchParams.getAll("tag") as TagList;
+  const [tags, setTags] = useState<TagList>(
+    tagsResult.length > 0 ? tagsResult : ["전체"]
   );
-
-  // console.log(mode, region);
 
   const defaultDateRange = useMemo(() => getWeekRangeFromDate(new Date()), []);
   const startDate = searchParams.get("start");
@@ -41,7 +38,7 @@ export default function Home() {
   const [dateRange, setDateRange] = useState(
     startDate && endDate ? [startDate, endDate] : defaultDateRange
   );
-  const [isMobileMode, setIsMobileMode] = useState(false);
+  // const [isMobileMode, setIsMobileMode] = useState(false);
 
   const {
     status,
@@ -50,13 +47,16 @@ export default function Home() {
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery(
-    ["Items", mode, region, mode === "past" ? dateRange : undefined].filter(
-      (item) => !!item
-    ),
+    [
+      "Items",
+      mode,
+      tags.join("+"),
+      mode === "past" ? dateRange : undefined,
+    ].filter((item) => !!item),
     ({ pageParam = undefined }) =>
       getItems({
         mode,
-        region,
+        tags,
         cursor: pageParam,
         ...(mode === "past"
           ? { startDate: dateRange[0], endDate: dateRange[1] }
@@ -79,15 +79,15 @@ export default function Home() {
 
   useEffect(() => {
     const nextMode = (searchParams.get("mode") as ListMode) ?? "trending";
-    const nextRegion =
-      (searchParams.get("region") as EnglishRegionNameType) ?? "all";
+    const tagsResult = searchParams.getAll("tag");
+    const nextTag = (tagsResult.length > 0 ? tagsResult : ["전체"]) as TagList;
     if (nextMode !== mode) {
       setMode(nextMode);
     }
-    if (nextRegion !== region) {
-      setRegion(nextRegion);
+    if (nextTag.join("+") !== tags.join("+")) {
+      setTags(nextTag);
     }
-  }, [searchParams, mode, region]);
+  }, [searchParams, mode, tags]);
 
   useEffect(() => {
     if (mode === "past") {
@@ -98,32 +98,27 @@ export default function Home() {
   }, [startDate, endDate, defaultDateRange, mode]);
 
   // just for responsive design
-  useEffect(() => {
-    const handleResize = () => {
-      if (typeof window !== undefined) {
-        setIsMobileMode(isMobile());
-      }
-    };
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     if (typeof window !== undefined) {
+  //       setIsMobileMode(isMobile());
+  //     }
+  //   };
 
-    window.addEventListener("resize", handleResize);
+  //   window.addEventListener("resize", handleResize);
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("resize", handleResize);
+  //   };
+  // }, []);
 
   const items = infiniteData?.pages.flatMap((page) => page.list);
 
   return (
-    <TabLayout className="layout_padding" showRegionCategorySelector>
+    <TabLayout className="layout_padding">
       <div className={styles.content}>
         <ListModeSelector mode={mode} />
         {mode === "past" && <WeekSelector dateRange={dateRange} />}
-        {isMobileMode && (
-          <div className={styles.category_wrapper}>
-            <RegionCategorySelector />
-          </div>
-        )}
         {status === "loading" ? (
           <SkeletonUI />
         ) : status === "error" ? (

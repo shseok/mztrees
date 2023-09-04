@@ -3,14 +3,12 @@
 import BasicLayout from "@/components/layout/BasicLayout";
 import LabelInput from "@/components/system/LabelInput";
 import LabelTextArea from "@/components/system/LabelTextArea";
-import Select from "@/components/system/Select";
 import WriteFormTemplate from "@/components/write/WriteFormTemplate";
 import { useWriteContext } from "@/context/WriteContext";
 import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
 import { refreshToken } from "@/lib/api/auth";
 import { createItem } from "@/lib/api/items";
 import { setClientCookie } from "@/lib/client";
-import { regionCategoryList } from "@/lib/const";
 import { extractNextError } from "@/lib/nextError";
 import styles from "@/styles/WriteIntro.module.scss";
 import { useRouter } from "next/navigation";
@@ -44,8 +42,8 @@ export default function Intro() {
       setErrorMessage("제목과 내용을 모두 입력해주세요.");
       return;
     }
-    if (!form.region || !form.region.regionCategory || !form.region.area) {
-      setErrorMessage("지역을 선택해주세요.");
+    if (!form.tags || !form.tags.length) {
+      setErrorMessage("해당 웹사이트의 태그를 입력해 주세요");
       return;
     }
     // if (form.thumbnail.extracted.length > 1 && !form.thumbnail.selected) {
@@ -58,7 +56,7 @@ export default function Intro() {
       body: form.body,
       link: form.link,
       thumbnail: form.thumbnail.selected,
-      ...form.region,
+      tags: form.tags,
     };
     // request & error
     try {
@@ -87,14 +85,13 @@ export default function Intro() {
   };
 
   return (
-    <BasicLayout title="뉴스 소개" hasBackButton>
+    <BasicLayout title="웹사이트 소개" hasBackButton>
       <WriteFormTemplate
-        description="공유할 뉴스를 소개하세요"
+        description="공유할 웹사이트를 소개하세요"
         buttonText="등록하기"
         onSubmit={handleSubmit(onSubmit)}
         isLoading={isSubmitting}
       >
-        <Select list={["지역", ...regionCategoryList]} initialTitle="지역" />
         <div className={styles.group}>
           <LabelInput
             label="제목"

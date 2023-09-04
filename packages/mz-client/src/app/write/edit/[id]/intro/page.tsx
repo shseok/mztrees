@@ -13,8 +13,6 @@ import WriteFormTemplate from "@/components/write/WriteFormTemplate";
 import LabelInput from "@/components/system/LabelInput";
 import LabelTextArea from "@/components/system/LabelTextArea";
 import { useWriteContext } from "@/context/WriteContext";
-import Select from "@/components/system/Select";
-import { regionCategoryList } from "@/lib/const";
 
 export default function EditIntro() {
   const {
@@ -40,8 +38,8 @@ export default function EditIntro() {
       setErrorMessage("제목과 내용을 모두 입력해주세요.");
       return;
     }
-    if (!form.region || !form.region.regionCategory || !form.region.area) {
-      setErrorMessage("지역을 선택해주세요.");
+    if (!form.tags || !form.tags.length) {
+      setErrorMessage("해당 웹사이트의 태그를 입력해 주세요");
       return;
     }
 
@@ -51,7 +49,7 @@ export default function EditIntro() {
       body: form.body,
       link: form.link,
       thumbnail: form.thumbnail.selected,
-      ...form.region,
+      tags: form.tags,
     };
 
     try {
@@ -82,10 +80,6 @@ export default function EditIntro() {
   return (
     <BasicLayout title="수정" hasBackButton>
       <WriteFormTemplate buttonText="수정하기" onSubmit={onSubmit}>
-        <Select
-          list={["지역", ...regionCategoryList]}
-          initialTitle={`${form.region?.regionCategory} - ${form.region?.area}`}
-        />
         <div className={styles.group}>
           <LabelInput
             label="제목"

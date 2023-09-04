@@ -14,15 +14,9 @@ interface Props {
   className?: string;
   children?: React.ReactNode;
   header?: React.ReactNode;
-  showRegionCategorySelector?: boolean;
 }
 
-const TabLayout = ({
-  className,
-  children,
-  header,
-  showRegionCategorySelector,
-}: Props) => {
+const TabLayout = ({ className, children, header }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   useTabScrollTop(ref);
   return (
@@ -30,9 +24,7 @@ const TabLayout = ({
       {header ?? (
         <>
           <MobileHeader />
-          <DesktopHeader
-            showRegionCategorySelector={showRegionCategorySelector}
-          />
+          <DesktopHeader />
         </>
       )}
       <div

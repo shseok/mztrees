@@ -1,4 +1,4 @@
-import { RegionType, areaList, englishRegionName } from "@/lib/const";
+import { tagList } from "@/lib/const";
 
 interface Pagination<T> {
   list: T[];
@@ -19,7 +19,7 @@ export interface Item {
   user: User;
   publisher: Publisher;
   thumbnail: Thumbnail | null;
-  regionCategory: RegionCategory;
+  tags: TagList;
   area: Area;
   itemStats: ItemStats;
   isLiked: boolean;
@@ -117,38 +117,16 @@ export interface ExtractedUrlsResult {
   urls: string[];
 }
 
-export type RegionCategoryType = keyof typeof areaList;
-export type RegionCategoryTypeWithAll = RegionCategoryType | "전체";
-// type RegionType = {
-//   [category in RegionCategoryType]: (typeof areaList)[category];
-// };
-
-export type RegionType = {
-  regionCategory: RegionCategoryType;
-  area: string;
-};
-
-export type EnglishRegionNameType =
-  (typeof englishRegionName)[keyof typeof englishRegionName];
-
-// export type AreaType = {
-//   region: RegionCategoryType;
-//   area: (typeof areaList)[RegionCategoryType][number]; // areaList의 값 추론
-// };
-
-type RegionCategory = {
-  id: number;
-  name: RegionCategoryType;
-};
-
-type Area = {
-  id: number;
-  name: string;
-};
-
 export type MutateItemParams = {
   title: string;
   body: string;
   link: string;
   thumbnail?: string;
-} & RegionType;
+} & TagType;
+
+export type Tag = (typeof tagList)[number];
+export type TagList = Tag[];
+
+type TagType = {
+  tags: TagList;
+};

@@ -27,14 +27,9 @@ export default function Edit({ params: { id } }: Params) {
   useEffect(() => {
     async function fetchItemData() {
       try {
-        const {
-          title,
-          body,
-          link,
-          thumbnail,
-          regionCategory: { name: rname },
-          area: { name: aname },
-        } = await getItem(parseInt(id));
+        const { title, body, link, thumbnail, tags } = await getItem(
+          parseInt(id)
+        );
         setCurrentLink(link);
         actions.change("title", title);
         actions.change("body", body);
@@ -43,7 +38,7 @@ export default function Edit({ params: { id } }: Params) {
           extracted: [],
           selected: thumbnail?.url ?? undefined,
         });
-        actions.change("region", { regionCategory: rname, area: aname });
+        actions.change("tags", tags);
         actions.change("id", id);
       } catch (e) {
         console.log(extractNextError(e));
