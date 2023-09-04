@@ -1,19 +1,5 @@
 @import "_var";
 
-@mixin sizeStyled {
-  &.small {
-    height: 36px;
-    font-size: 14px;
-    padding: 0 12px;
-  }
-
-  &.medium {
-    height: 48px;
-    font-size: 16px;
-    padding: 0 16px;
-  }
-}
-
 @mixin full-width {
   width: 100%;
 }
@@ -108,6 +94,13 @@
     height: 48px;
     font-size: 16px;
     padding: 0 16px;
+  }
+
+  &.large {
+    width: 100%;
+    height: 36px;
+    font-size: 14px;
+    padding: 0 12px;
   }
 }
 

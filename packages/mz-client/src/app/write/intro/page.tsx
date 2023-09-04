@@ -3,6 +3,7 @@
 import BasicLayout from "@/components/layout/BasicLayout";
 import LabelInput from "@/components/system/LabelInput";
 import LabelTextArea from "@/components/system/LabelTextArea";
+import TagInput from "@/components/system/TagInput";
 import WriteFormTemplate from "@/components/write/WriteFormTemplate";
 import { useWriteContext } from "@/context/WriteContext";
 import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
@@ -42,7 +43,7 @@ export default function Intro() {
       setErrorMessage("제목과 내용을 모두 입력해주세요.");
       return;
     }
-    if (!form.tags || !form.tags.length) {
+    if (!form.tags.length) {
       setErrorMessage("해당 웹사이트의 태그를 입력해 주세요");
       return;
     }
@@ -93,6 +94,7 @@ export default function Intro() {
         isLoading={isSubmitting}
       >
         <div className={styles.group}>
+          <TagInput />
           <LabelInput
             label="제목"
             name="title"

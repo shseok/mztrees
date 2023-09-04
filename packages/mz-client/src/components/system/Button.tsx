@@ -7,7 +7,7 @@ import { useTheme } from "@/context/ThemeContext";
 interface ButtonProps {
   layoutmode?: "inline" | "fullWidth";
   variant?: "primary" | "secondary" | "tertiary" | "visit" | "warning";
-  size?: "small" | "medium";
+  size?: "small" | "medium" | "large";
 }
 
 interface Props

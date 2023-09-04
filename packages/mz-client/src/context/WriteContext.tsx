@@ -17,7 +17,7 @@ interface WriteContextState {
     body: string;
     thumbnail: ThumbnailType;
     id?: string;
-    tags?: TagList;
+    tags: TagList;
   };
   error?: NextAppError;
 }
@@ -50,6 +50,7 @@ const initialState = {
     thumbnail: {
       extracted: [],
     },
+    tags: [],
   },
   error: undefined,
 };
