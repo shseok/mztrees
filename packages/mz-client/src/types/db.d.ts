@@ -20,7 +20,6 @@ export interface Item {
   publisher: Publisher;
   thumbnail: Thumbnail | null;
   tags: TagList;
-  area: Area;
   itemStats: ItemStats;
   isLiked: boolean;
   isBookmarked: boolean;

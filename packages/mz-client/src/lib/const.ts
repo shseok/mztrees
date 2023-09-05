@@ -1,5 +1,4 @@
 export const tagList = [
-  "전체",
   "요리",
   "스포츠",
   "디자인",

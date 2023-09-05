@@ -33,16 +33,13 @@ export async function getItems({
 }) {
   const query = stringify(
     { mode, cursor, tags, startDate, endDate },
-    { addQueryPrefix: true }
+    { addQueryPrefix: true, arrayFormat: "repeat" }
   );
+  console.log(query);
+  // 빈 배열은 처리 x
   const resonse = await fetchClient.get<GetItemsResult>(
     "/api/items".concat(query)
   );
-  // const resonse = await fetchClient.get<GetItemsResult>(
-  //   '/api/items'.concat(
-  //     qs.stringify({ mode, cursor, startDate, endDate }, { addQueryPrefix: true }),
-  //   ),
-  // );
   return resonse;
 }
 

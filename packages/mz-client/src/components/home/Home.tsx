@@ -29,7 +29,7 @@ export default function Home() {
   );
   const tagsResult = searchParams.getAll("tag") as TagList;
   const [tags, setTags] = useState<TagList>(
-    tagsResult.length > 0 ? tagsResult : ["전체"]
+    tagsResult.length > 0 ? tagsResult : []
   );
 
   const defaultDateRange = useMemo(() => getWeekRangeFromDate(new Date()), []);
@@ -80,7 +80,7 @@ export default function Home() {
   useEffect(() => {
     const nextMode = (searchParams.get("mode") as ListMode) ?? "trending";
     const tagsResult = searchParams.getAll("tag");
-    const nextTag = (tagsResult.length > 0 ? tagsResult : ["전체"]) as TagList;
+    const nextTag = (tagsResult.length > 0 ? tagsResult : []) as TagList;
     if (nextMode !== mode) {
       setMode(nextMode);
     }
