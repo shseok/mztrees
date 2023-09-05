@@ -12,7 +12,10 @@ interface Props {
   confirmText: string;
   cancelText: string;
   selected: TagList;
-  onSelect(item: string): void;
+  onSelect(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    item: string
+  ): void;
   onClose(): void;
   onConfirm(): void;
   mode?: "alert" | "confirm";
@@ -41,7 +44,7 @@ const OptionSelector = ({
               selected.includes(item as Tag) && styles.selected
             )}
             key={index}
-            onClick={() => onSelect(item)}
+            onClick={(e) => onSelect(e, item)}
             tabIndex={0}
           >
             # {item}

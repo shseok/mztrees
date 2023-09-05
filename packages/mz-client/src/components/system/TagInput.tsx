@@ -28,8 +28,10 @@ const TagInput = () => {
     setFocused(false);
   };
 
-  const openTagSelector = () => {
-    console.log("open");
+  const openTagSelector = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
     setVisible(true);
     onFocus();
   };
@@ -74,7 +76,11 @@ const TagInput = () => {
         list={[...tagList]}
         visible={visible}
         selected={selectedTags}
-        onSelect={(value: Tag) => {
+        onSelect={(
+          e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+          value: Tag
+        ) => {
+          e.preventDefault();
           if (selectedTags.includes(value)) {
             setSelectedTags(selectedTags.filter((tag) => tag !== value));
           } else {
