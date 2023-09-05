@@ -31,8 +31,6 @@ CREATE TABLE "Item" (
     "userId" INTEGER NOT NULL,
     "publisherId" INTEGER NOT NULL,
     "thumbnailId" INTEGER,
-    "areaId" INTEGER NOT NULL,
-    "regionCategoryId" INTEGER NOT NULL,
 
     CONSTRAINT "Item_pkey" PRIMARY KEY ("id")
 );
@@ -55,23 +53,6 @@ CREATE TABLE "Publisher" (
     "domain" TEXT NOT NULL,
 
     CONSTRAINT "Publisher_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "RegionCategory" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-
-    CONSTRAINT "RegionCategory_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Area" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-    "regionCategoryId" INTEGER NOT NULL,
-
-    CONSTRAINT "Area_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -172,12 +153,6 @@ CREATE INDEX "Item_createdAt_idx" ON "Item"("createdAt" DESC);
 CREATE UNIQUE INDEX "Publisher_domain_key" ON "Publisher"("domain");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "RegionCategory_name_key" ON "RegionCategory"("name");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Area_name_regionCategoryId_key" ON "Area"("name", "regionCategoryId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "Tag_name_key" ON "Tag"("name");
 
 -- CreateIndex
@@ -241,16 +216,7 @@ ALTER TABLE "Item" ADD CONSTRAINT "Item_thumbnailId_fkey" FOREIGN KEY ("thumbnai
 ALTER TABLE "Item" ADD CONSTRAINT "Item_publisherId_fkey" FOREIGN KEY ("publisherId") REFERENCES "Publisher"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Item" ADD CONSTRAINT "Item_areaId_fkey" FOREIGN KEY ("areaId") REFERENCES "Area"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Item" ADD CONSTRAINT "Item_regionCategoryId_fkey" FOREIGN KEY ("regionCategoryId") REFERENCES "RegionCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "Item" ADD CONSTRAINT "Item_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Area" ADD CONSTRAINT "Area_regionCategoryId_fkey" FOREIGN KEY ("regionCategoryId") REFERENCES "RegionCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Tag" ADD CONSTRAINT "Tag_itemId_fkey" FOREIGN KEY ("itemId") REFERENCES "Item"("id") ON DELETE SET NULL ON UPDATE CASCADE;

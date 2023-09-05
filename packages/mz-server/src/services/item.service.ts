@@ -4,6 +4,7 @@ import {
   ItemLike,
   ItemStats,
   Publisher,
+  Tag,
   Thumbnail,
   User,
 } from '@prisma/client'
@@ -38,31 +39,82 @@ const itemService = {
     await imageService.uploadFile(key, buffer)
     return { key, imageUrl: `https://img.mztrees.com/${key}` }
   },
-  async getRegionInfo(regionCategory: string, area: string) {
-    const regionInfo = await db.regionCategory.findUnique({
-      where: {
-        name: regionCategory,
-      },
+  async getTagsForItem(itemId: number) {
+    console.log(itemId)
+    const tags = await db.itemsTags.findMany({
+      where: { itemId },
+      include: { tag: true },
     })
 
-    if (!regionInfo) {
-      throw new AppError('NotFound')
+    return tags.map((tag) => tag.tag.name)
+  },
+  async createTagsForItem({
+    item,
+    tags,
+  }: {
+    item: Item & {
+      user: User
+      publisher: Publisher
     }
+    tags?: string[]
+  }) {
+    const createdTags = []
+    if (!tags) return
+    for (const tagName of tags) {
+      // 태그가 이미 존재하는지 확인
+      let tag = await db.tag.findUnique({
+        where: { name: tagName },
+      })
 
-    const areaInfo = await db.area.findUnique({
-      where: {
-        name_regionCategoryId: {
-          regionCategoryId: regionInfo.id,
-          name: area,
+      if (!tag) {
+        // 태그가 존재하지 않으면 새로운 태그 생성
+        tag = await db.tag.create({
+          data: { name: tagName },
+        })
+      }
+
+      // 아이템과 태그를 연결
+      await db.itemsTags.create({
+        data: {
+          itemId: item.id,
+          tagId: tag.id,
         },
-      },
-    })
+      })
 
-    if (!areaInfo) {
-      throw new AppError('NotFound')
+      createdTags.push(tag.name)
     }
 
-    return { regionCategoryId: regionInfo.id, areaId: areaInfo.id }
+    return createdTags
+  },
+  async updateTagsForItem({
+    itemId,
+    tags,
+  }: {
+    itemId: number
+    tags?: string[]
+  }) {
+    if (!tags) return
+    // 이전에 연결된 아이템과 태그의 연결을 제거
+    await db.itemsTags.deleteMany({
+      where: { itemId },
+    })
+    // 새로운 태그 배열을 사용하여 아이템과 태그를 새로 연결
+    for (const tagName of tags) {
+      const tag = await db.tag.findUnique({
+        where: { name: tagName },
+      })
+
+      if (tag) {
+        // 이미 존재하는 태그와 아이템을 연결
+        await db.itemsTags.create({
+          data: {
+            itemId: itemId,
+            tagId: tag.id,
+          },
+        })
+      }
+    }
+    return tags
   },
   async getPublisher({ domain, name, favicon }: GetPublisherParams) {
     const exists = await db.publisher.findUnique({
@@ -110,15 +162,7 @@ const itemService = {
 
   async createItem(
     userId: number,
-    {
-      title,
-      body,
-      link,
-      thumbnail: refUrl,
-      regionCategory,
-      area,
-      tags,
-    }: mutateItemParams,
+    { title, body, link, thumbnail: refUrl, tags }: mutateItemParams,
   ) {
     const info = await extractPageInfo(link)
     const publisher = await this.getPublisher({
@@ -126,10 +170,6 @@ const itemService = {
       name: info.publisher,
       favicon: info.favicon,
     })
-    const { regionCategoryId, areaId } = await this.getRegionInfo(
-      regionCategory,
-      area,
-    )
 
     const item = await db.item.create({
       data: {
@@ -139,22 +179,22 @@ const itemService = {
         userId,
         author: info.author ?? undefined,
         publisherId: publisher.id,
-        regionCategoryId,
-        areaId,
       },
       include: {
         user: true,
         publisher: true,
-        regionCategory: true,
-        area: true,
       },
     })
+    const createdTags =
+      tags === undefined || tags.length === 0
+        ? []
+        : await this.createTagsForItem({ item, tags })
     const itemStats = await db.itemStats.create({
       data: {
         itemId: item.id,
       },
     })
-    const itemWithItemStats = { ...item, itemStats }
+    const itemWithItemStats = { ...item, itemStats, tags: createdTags }
     let thumbnailInfo: Thumbnail | null = null
     try {
       if (refUrl && !isR2Disbled) {
@@ -181,7 +221,7 @@ const itemService = {
         })
       }
     } catch (e) {}
-
+    // TODO: add tags
     algolia
       .sync({
         id: item.id,
@@ -208,8 +248,7 @@ const itemService = {
         publisher: true,
         itemStats: true,
         thumbnail: true,
-        regionCategory: true,
-        area: true,
+        itemsTags: true,
         itemLikes: userId ? { where: { userId } } : false,
         bookmarks: userId ? { where: { userId } } : false,
       },
@@ -217,11 +256,15 @@ const itemService = {
     if (!item) {
       throw new AppError('NotFound')
     }
-    return this.serialize(item)
+    const tags = item.itemsTags.length > 0 ? await this.getTagsForItem(id) : []
+    return this.serialize({ ...item, tags })
   },
 
   serialize<
-    T extends Item & { itemLikes?: ItemLike[]; bookmarks?: Bookmark[] },
+    T extends Item & {
+      itemLikes?: ItemLike[]
+      bookmarks?: Bookmark[]
+    },
   >(item: T) {
     return {
       ...item,
@@ -234,13 +277,25 @@ const itemService = {
     limit,
     cursor,
     userId,
-    regionIdx,
+    tags,
   }: {
     limit: number
     cursor?: number | null
     userId?: number
-    regionIdx: number
+    tags?: string[]
   }) {
+    // const tagIds = await db.tag.findMany({
+    //   where: {
+    //     name: {
+    //       in: tags, // tags 배열에 포함된 태그들만 가져옴
+    //     },
+    //   },
+    //   select: {
+    //     id: true, // 태그의 ID만 선택
+    //   },
+    // })
+
+    // TODO: 왜 안되니..?? >> tags 배열에 포함된 태그 중 하나라도 일치하는 item을 가져옴
     const [totalCount, list] = await Promise.all([
       db.item.count(),
       db.item.findMany({
@@ -253,22 +308,31 @@ const itemService = {
                 lt: cursor,
               }
             : undefined,
-          ...(regionIdx && { regionCategoryId: regionIdx }),
+          ...(tags && tags.length > 0
+            ? {
+                itemsTags: {
+                  some: {
+                    tag: {
+                      name: {
+                        in: tags, // tags 배열에 포함된 태그 중 하나라도 일치하는 item을 가져옴
+                      },
+                    },
+                  },
+                },
+              }
+            : {}),
         },
         include: {
           user: true,
           publisher: true,
           itemStats: true,
           thumbnail: true,
-          regionCategory: true,
-          area: true,
           itemLikes: userId ? { where: { userId } } : false,
           bookmarks: userId ? { where: { userId } } : false,
         },
         take: limit,
       }),
     ])
-
     const endCursor = list.at(-1)?.id ?? null
     const hasNextPage = endCursor
       ? (await db.item.count({
@@ -276,7 +340,6 @@ const itemService = {
           orderBy: { id: 'desc' },
         })) > 0
       : false
-
     return { totalCount, endCursor, hasNextPage, list }
   },
 
@@ -286,14 +349,14 @@ const itemService = {
     startDate,
     endDate,
     userId,
-    regionIdx,
+    tags,
   }: {
     limit: number
     cursor?: number | null
     startDate?: string
     endDate?: string
     userId?: number
-    regionIdx: number
+    tags?: string[]
   }) {
     if (!startDate || !endDate) {
       throw new AppError('BadRequest', {
@@ -325,7 +388,6 @@ const itemService = {
             gte: startedAt,
             lte: endedAt,
           },
-          ...(regionIdx && { regionCategoryId: regionIdx }),
         },
       }),
       db.item.findMany({
@@ -356,14 +418,25 @@ const itemService = {
                 },
               }
             : undefined,
+          ...(tags && tags.length > 0
+            ? {
+                itemsTags: {
+                  some: {
+                    tag: {
+                      name: {
+                        in: tags, // tags 배열에 포함된 태그 중 하나라도 일치하는 item을 가져옴
+                      },
+                    },
+                  },
+                },
+              }
+            : {}),
         },
         include: {
           user: true,
           publisher: true,
           itemStats: true,
           thumbnail: true,
-          regionCategory: true,
-          area: true,
           itemLikes: userId ? { where: { userId } } : false,
           bookmarks: userId ? { where: { userId } } : false,
         },
@@ -400,12 +473,12 @@ const itemService = {
     limit,
     cursor,
     userId,
-    regionIdx,
+    tags,
   }: {
     limit: number
     cursor?: number | null
     userId?: number
-    regionIdx: number
+    tags?: string[]
   }) {
     // TODO: 당장 많은 데이터를 트렌딩으로 보여주는게 아니므로 몇 점이상 부터 노출시킬지는 나중에 정하자
     const totalCount = await db.itemStats.count({
@@ -446,7 +519,19 @@ const itemService = {
               : {}),
           },
         },
-        ...(regionIdx && { regionCategoryId: regionIdx }),
+        ...(tags && tags.length > 0
+          ? {
+              itemsTags: {
+                some: {
+                  tag: {
+                    name: {
+                      in: tags, // tags 배열에 포함된 태그 중 하나라도 일치하는 item을 가져옴
+                    },
+                  },
+                },
+              },
+            }
+          : {}),
       },
       orderBy: [
         {
@@ -465,8 +550,6 @@ const itemService = {
         publisher: true,
         itemStats: true,
         thumbnail: true,
-        regionCategory: true,
-        area: true,
         itemLikes: userId ? { where: { userId } } : false,
         bookmarks: userId ? { where: { userId } } : false,
       },
@@ -508,7 +591,7 @@ const itemService = {
   async getItems(
     {
       mode,
-      regionIdx,
+      tags,
       cursor,
       limit,
       userId,
@@ -516,14 +599,13 @@ const itemService = {
       endDate,
     }: GetItemsParams & PaginationOptionType & { userId?: number } = {
       mode: 'recent',
-      regionIdx: 0,
     },
   ) {
     const _limit = limit ?? 20
 
     const { totalCount, endCursor, hasNextPage, list } = await (() => {
       if (mode === 'recent') {
-        return this.getRecentItems({ limit: _limit, cursor, userId, regionIdx })
+        return this.getRecentItems({ limit: _limit, cursor, userId, tags })
       }
       if (mode === 'past') {
         return this.getPastItems({
@@ -532,18 +614,23 @@ const itemService = {
           startDate,
           endDate,
           userId,
-          regionIdx,
+          tags,
         })
       }
 
       // mode === 'trending'
-      return this.getTrendingItems({ limit: _limit, cursor, userId, regionIdx })
+      return this.getTrendingItems({ limit: _limit, cursor, userId, tags })
     })()
 
     const serializedList = list.map(this.serialize)
-
+    const serializedListWithTags = await Promise.all(
+      serializedList.map(async (item) => ({
+        ...item,
+        tags: tags && tags.length > 0 ? await this.getTagsForItem(item.id) : [],
+      })),
+    )
     return createPagination({
-      list: serializedList,
+      list: serializedListWithTags,
       totalCount,
       pageInfo: {
         endCursor,
@@ -585,24 +672,12 @@ const itemService = {
   async updateItem(
     userId: number,
     itemId: number,
-    {
-      title,
-      body,
-      link,
-      thumbnail: refUrl,
-      regionCategory,
-      area,
-      tags,
-    }: mutateItemParams,
+    { title, body, link, thumbnail: refUrl, tags }: mutateItemParams,
   ) {
     const item = await this.getItem(itemId)
     if (item.userId !== userId) {
       throw new AppError('Forbidden')
     }
-    const { regionCategoryId, areaId } = await this.getRegionInfo(
-      regionCategory,
-      area,
-    )
     const updatedItem = await db.item.update({
       where: {
         id: itemId,
@@ -611,21 +686,23 @@ const itemService = {
         title,
         body,
         link,
-        regionCategoryId,
-        areaId,
       },
       include: {
         user: true,
         publisher: true,
         itemStats: true,
         thumbnail: true,
-        regionCategory: true,
-        area: true,
         itemLikes: userId ? { where: { userId } } : false,
         bookmarks: userId ? { where: { userId } } : false,
       },
     })
-
+    const updatedTags =
+      tags === undefined || tags.length === 0
+        ? await this.getTagsForItem(updatedItem.id)
+        : await this.updateTagsForItem({
+            itemId: updatedItem.id,
+            tags,
+          })
     let thumbnailInfo: Thumbnail | null = null
     // TODO: refactoring
     if (updatedItem.thumbnailId) {
@@ -688,7 +765,7 @@ const itemService = {
         }
       } catch (e) {}
     }
-
+    // TODO: add tags
     algolia
       .update({
         id: item.id,
@@ -702,7 +779,7 @@ const itemService = {
       })
       .catch(console.error)
 
-    return this.serialize(updatedItem)
+    return this.serialize({ ...updatedItem, tags: updatedTags })
   },
 
   async deleteItem({ itemId, userId }: ItemActionParams) {
@@ -711,7 +788,7 @@ const itemService = {
       throw new AppError('Forbidden')
     }
     if (item.thumbnail) {
-      console.log('test', item.thumbnail.key)
+      // console.log('test', item.thumbnail.key)
       await imageService.deleteFile(item.thumbnail.key)
       await db.thumbnail.delete({
         where: {
@@ -819,7 +896,7 @@ export default itemService
 
 type GetItemsParams = {
   mode: 'trending' | 'recent' | 'past'
-  regionIdx: number
+  tags?: string[]
   startDate?: string
   endDate?: string
 }
@@ -829,8 +906,6 @@ interface mutateItemParams {
   body: string
   link: string
   thumbnail?: string
-  regionCategory: string
-  area: string
   tags?: string[]
 }
 

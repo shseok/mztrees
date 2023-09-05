@@ -35,32 +35,29 @@ model Token {
 }
 
 model Item {
-  id             Int            @id @default(autoincrement())
-  title          String
-  body           String
-  author         String         @default("")
-  link           String?
-  thumbnail      Thumbnail?     @relation(fields: [thumbnailId], references: [id])
-  tags           Tag[]
-  publisher      Publisher      @relation(fields: [publisherId], references: [id], onDelete: Cascade)
-  area           Area           @relation(fields: [areaId], references: [id])
-  regionCategory RegionCategory @relation(fields: [regionCategoryId], references: [id])
+  id        Int        @id @default(autoincrement())
+  title     String
+  body      String
+  author    String     @default("")
+  link      String?
+  thumbnail Thumbnail? @relation(fields: [thumbnailId], references: [id])
+  // tags      Tag[]
+  publisher Publisher  @relation(fields: [publisherId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user             User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId           Int
-  publisherId      Int
-  thumbnailId      Int?
-  areaId           Int
-  regionCategoryId Int
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int
+  publisherId Int
+  thumbnailId Int?
 
   itemsTags ItemsTags[]
   itemStats ItemStats?
   comments  Comment[]
   itemLikes ItemLike[]
-  bookmarks Bookmark[]
+  bookmarks Bookmark[] // [] > 여러 bookmark들이 item를 가리키고 있다. 
+  Tag       Tag[]
 
   @@index([createdAt(sort: Desc)])
 }
@@ -82,32 +79,15 @@ model Publisher {
   items Item[]
 }
 
-// 대분류(서울,부산,대구,인천,광주...)
-model RegionCategory {
-  id   Int    @id @default(autoincrement())
-  name String @unique
-  Item Item[]
-  Area Area[]
-}
-
-// 중분류(강남구,강동구,강북구,강서구,관악구,광진구...)
-model Area {
-  id               Int            @id @default(autoincrement())
-  name             String
-  regionCategory   RegionCategory @relation(fields: [regionCategoryId], references: [id])
-  regionCategoryId Int
-  Item             Item[]
-
-  @@unique([name, regionCategoryId])
-}
-
 // item이 삭제되면 tag도 삭제되는가? x > onDelete: Cascade x
 model Tag {
   id        Int         @id @default(autoincrement())
   name      String      @unique
+  // Item      Item?       @relation(fields: [itemId], references: [id])
+  // itemId    Int?
+  itemsTags ItemsTags[]
   Item      Item?       @relation(fields: [itemId], references: [id])
   itemId    Int?
-  itemsTags ItemsTags[]
 }
 
 model ItemsTags {
