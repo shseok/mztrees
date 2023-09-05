@@ -9,6 +9,15 @@
     color: $primary;
     font-style: normal;
   }
+
+  &.dark {
+    .publisher,
+    .title,
+    .body,
+    .likescount {
+      color: white;
+    }
+  }
 }
 
 .publisher {

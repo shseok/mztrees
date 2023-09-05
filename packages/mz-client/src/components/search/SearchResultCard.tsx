@@ -4,6 +4,8 @@ import styles from "@/styles/SearchResultCard.module.scss";
 import DOMPurify from "dompurify";
 import { Globe } from "@/components/vectors";
 import Link from "next/link";
+import { useTheme } from "@/context/ThemeContext";
+import { cn } from "@/utils/common";
 
 interface Props {
   item: SearchItemResult;
@@ -17,11 +19,15 @@ const SearchResultCard = ({ item }: Props) => {
     hightlight: { title, body },
   } = item;
 
+  const { mode } = useTheme();
   const sanitizer = DOMPurify.sanitize;
   const link = `/items/${item.id}`;
 
   return (
-    <Link href={link} className={styles.block}>
+    <Link
+      href={link}
+      className={cn(styles.block, mode === "dark" && styles.dark)}
+    >
       <div className={styles.publisher}>
         {favicon ? (
           <div className={styles.favicon}>
