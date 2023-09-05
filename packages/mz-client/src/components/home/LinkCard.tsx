@@ -78,7 +78,8 @@ const LinkCard = ({ item }: Props) => {
 
   return (
     <div className={styles.block}>
-      <Link href={link} prefetch={false} className={styles.styled_link}>
+      {/* TODO: prefetch={false} > detailed item 클릭시 느리지만 비용 절약(초기 렌더링x) > 나중에 부담되면 적용 */}
+      <Link href={link} className={styles.styled_link}>
         <div className={styles.thumbnail}>
           <Image
             src={
