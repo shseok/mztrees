@@ -78,7 +78,7 @@ const LinkCard = ({ item }: Props) => {
 
   return (
     <div className={styles.block}>
-      <Link href={link} className={styles.styled_link}>
+      <Link href={link} prefetch={false} className={styles.styled_link}>
         <div className={styles.thumbnail}>
           <Image
             src={
