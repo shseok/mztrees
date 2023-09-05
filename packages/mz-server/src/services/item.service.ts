@@ -164,6 +164,7 @@ const itemService = {
     userId: number,
     { title, body, link, thumbnail: refUrl, tags }: mutateItemParams,
   ) {
+    console.log('createItem', refUrl)
     const info = await extractPageInfo(link)
     const publisher = await this.getPublisher({
       domain: info.domain,
@@ -195,6 +196,7 @@ const itemService = {
       },
     })
     const itemWithItemStats = { ...item, itemStats, tags: createdTags }
+
     let thumbnailInfo: Thumbnail | null = null
     try {
       if (refUrl && !isR2Disbled) {
@@ -796,6 +798,11 @@ const itemService = {
         },
       })
     }
+    await db.itemsTags.deleteMany({
+      where: {
+        itemId,
+      },
+    })
     await db.item.delete({
       where: {
         id: itemId,
