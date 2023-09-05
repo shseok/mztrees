@@ -118,6 +118,29 @@
   overflow-wrap: break-word;
 }
 
+.tag_container {
+  margin-bottom: 11px;
+}
+
+.tag_title {
+  margin: 0;
+  margin-bottom: 16px;
+}
+
+.tag {
+  background: white;
+  display: inline-block;
+  padding: 5px 15px;
+  color: $primary;
+  border: 1px solid $primary;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 15px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
 .likescount {
   font-size: 12px;
   font-weight: 600;

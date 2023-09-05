@@ -116,6 +116,16 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
         <p className={cn(styles.body, mode === "dark" && styles.dark)}>
           {body}
         </p>
+        <div className={styles.tag_container}>
+          <h4 className={styles.tag_title}>태그</h4>
+          <div>
+            {item.tags.map((tag, index) => (
+              <div className={styles.tag} key={index}>
+                # {tag}
+              </div>
+            ))}
+          </div>
+        </div>
         <AnimatePresence initial={false}>
           {likes === 0 ? null : (
             <motion.div
