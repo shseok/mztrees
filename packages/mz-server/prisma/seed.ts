@@ -31,6 +31,7 @@ async function main() {
       { name: '동물' },
       { name: '환경' },
     ],
+    skipDuplicates: true,
   })
 }
 
