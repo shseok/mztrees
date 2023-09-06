@@ -77,7 +77,9 @@ async function validateUrl(url: string): Promise<ValidateResult> {
         html: data,
       }
     } catch (error) {
-      throw new AppError('InvalidURL')
+      throw new AppError('InvalidURL', {
+        message: `1 ${JSON.stringify(error)}`,
+      })
     }
   }
 
@@ -102,7 +104,13 @@ async function validateUrl(url: string): Promise<ValidateResult> {
     }
   }
 
-  throw new AppError('InvalidURL')
+  throw new AppError('InvalidURL', {
+    message: `2 ${JSON.stringify(withHttp)} ${JSON.stringify(
+      withHttps,
+    )} ${JSON.stringify(http)} ${JSON.stringify(https)} ${JSON.stringify(
+      withHttp,
+    )}`,
+  })
 }
 
 export async function extractImageUrls(url: string) {
