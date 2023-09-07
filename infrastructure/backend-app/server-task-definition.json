@@ -70,6 +70,10 @@
         {
           "name": "CF_ACCESS_KEY_SECRET",
           "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees-backend/cf_access_key_secret/v5-sMr3BU"
+        },
+        {
+          "name": "PUBLIC_S3_BUCKET_NAME",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees-backend/public_s3_bucket_name/v5-JQSJ3t"
         }
       ],
       "volumesFrom": []

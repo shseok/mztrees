@@ -72,6 +72,10 @@
       {
         "name": "CF_ACCESS_KEY_SECRET",
         "valueFrom": "${cf_access_key_secret}"
+      },
+      {
+        "name": "PUBLIC_S3_BUCKET_NAME",
+        "valueFrom": "${public_s3_bucket_name}"
       }
     ],
     "volumesFrom": []

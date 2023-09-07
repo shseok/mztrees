@@ -86,6 +86,11 @@ variable "cf_access_key_secret" {
   default     = ""
 }
 
+variable "public_s3_bucket_name" {
+  description = "Cloudflare R2 bucket name"
+  default     = ""
+}
+
 
 
 # Error: creating Secrets Manager Secret: InvalidRequestException: You can't create this secret because a secret with this name is already scheduled for deletion.
@@ -127,6 +132,15 @@ resource "aws_secretsmanager_secret_version" "cf_access_key_secret_version" {
   secret_string = var.cf_access_key_secret
 }
 
+resource "aws_secretsmanager_secret" "public_s3_bucket_name" {
+  name = "/${var.prefix}/public_s3_bucket_name/v5"
+}
+
+resource "aws_secretsmanager_secret_version" "public_s3_bucket_name_version" {
+  secret_id     = aws_secretsmanager_secret.public_s3_bucket_name.id
+  secret_string = var.public_s3_bucket_name
+}
+
 
 
 resource "aws_iam_role_policy" "password_policy_secretsmanager" {
@@ -146,7 +160,8 @@ resource "aws_iam_role_policy" "password_policy_secretsmanager" {
           "${aws_secretsmanager_secret.database_url.arn}",
           "${aws_secretsmanager_secret.jwt_secret.arn}",
           "${aws_secretsmanager_secret.algolia_admin_key.arn}",
-          "${aws_secretsmanager_secret.cf_access_key_secret.arn}"
+          "${aws_secretsmanager_secret.cf_access_key_secret.arn}",
+          "${aws_secretsmanager_secret.public_s3_bucket_name.arn}"
         ]
       }
     ]
@@ -383,14 +398,15 @@ resource "aws_ecs_task_definition" "service" {
   memory                   = 512
   requires_compatibilities = ["FARGATE"]
   container_definitions = templatefile("./app.json.tpl", {
-    aws_ecr_repository   = aws_ecr_repository.repo.repository_url
-    database_url         = aws_secretsmanager_secret.database_url.arn
-    jwt_secret           = aws_secretsmanager_secret.jwt_secret.arn
-    algolia_admin_key    = aws_secretsmanager_secret.algolia_admin_key.arn
-    cf_access_key_secret = aws_secretsmanager_secret.cf_access_key_secret.arn
-    algolia_app_id       = "${var.algolia_app_id}"
-    cf_account_id        = "${var.cf_account_id}"
-    cf_access_key_id     = "${var.cf_access_key_id}"
+    aws_ecr_repository    = aws_ecr_repository.repo.repository_url
+    database_url          = aws_secretsmanager_secret.database_url.arn
+    jwt_secret            = aws_secretsmanager_secret.jwt_secret.arn
+    algolia_admin_key     = aws_secretsmanager_secret.algolia_admin_key.arn
+    cf_access_key_secret  = aws_secretsmanager_secret.cf_access_key_secret.arn
+    public_s3_bucket_name = aws_secretsmanager_secret.public_s3_bucket_name.arn
+    algolia_app_id        = "${var.algolia_app_id}"
+    cf_account_id         = "${var.cf_account_id}"
+    cf_access_key_id      = "${var.cf_access_key_id}"
 
     tag      = "latest"
     app_port = 80
