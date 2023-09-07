@@ -77,7 +77,7 @@ const LinkCard = ({ item }: Props) => {
   }`;
 
   return (
-    <div className={styles.block}>
+    <div className={cn(styles.block, mode === "dark" && styles.dark)}>
       {/* TODO: prefetch={false} > detailed item 클릭시 느리지만 비용 절약(초기 렌더링x) > 나중에 부담되면 적용 */}
       <Link href={link} className={styles.styled_link}>
         <div className={styles.thumbnail}>
@@ -91,7 +91,7 @@ const LinkCard = ({ item }: Props) => {
             sizes="100vw"
           />
         </div>
-        <div className={cn(styles.publisher, mode === "dark" && styles.dark)}>
+        <div className={styles.publisher}>
           {favicon ? (
             <div className={styles.favicon}>
               <Image src={favicon} alt="favicon" fill />
@@ -102,19 +102,15 @@ const LinkCard = ({ item }: Props) => {
           {author ? `${author} · ` : ""}
           {name}
         </div>
-        <h3 className={cn(styles.title, mode === "dark" && styles.dark)}>
-          {item.title}
-        </h3>
-        <p className={cn(styles.body, mode === "dark" && styles.dark)}>
-          {body}
-        </p>
+        <h3 className={styles.title}>{item.title}</h3>
+        <p className={styles.body}>{body}</p>
       </Link>
       <div className={styles.spacer} />
       <div className={styles.count_wrapper}>
         <AnimatePresence initial={false}>
           {likes === 0 ? null : (
             <motion.div
-              className={cn(styles.likescount, mode === "dark" && styles.dark)}
+              className={styles.likescount}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -124,9 +120,7 @@ const LinkCard = ({ item }: Props) => {
           )}
         </AnimatePresence>
         {commentsCount === 0 ? null : (
-          <div
-            className={cn(styles.commentscount, mode === "dark" && styles.dark)}
-          >
+          <div className={styles.commentscount}>
             댓글 {commentsCount.toLocaleString()}개
           </div>
         )}
@@ -139,7 +133,7 @@ const LinkCard = ({ item }: Props) => {
             isBookmarked={isBookmarked}
           />
         </div>
-        <p className={cn(styles.user_info, mode === "dark" && styles.dark)}>
+        <p className={styles.user_info}>
           by <b>{username}</b> · {dateDistance}
         </p>
       </div>

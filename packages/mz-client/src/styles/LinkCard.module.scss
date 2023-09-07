@@ -20,7 +20,21 @@
 
     &:hover {
       box-shadow: rgba(0, 0, 0, 0.08) 0px 8px 20px 0px;
+      &.dark {
+        box-shadow: rgba(255, 255, 255, 0.12) 0px 8px 20px 0px;
+      }
       border-radius: 12px;
+    }
+  }
+
+  &.dark {
+    .publisher,
+    .title,
+    .body,
+    .likescount,
+    .commentscount,
+    .user_info {
+      color: white;
     }
   }
 }
@@ -51,10 +65,6 @@
   font-size: 14px;
   margin-bottom: 4px;
 
-  &.dark {
-    color: white;
-  }
-
   svg {
     margin-right: 8px;
     display: block;
@@ -78,10 +88,6 @@
   line-height: 1.5;
   color: $gray5;
 
-  &.dark {
-    color: white;
-  }
-
   display: -webkit-box;
   text-overflow: ellipsis;
   -webkit-line-clamp: 1;
@@ -104,10 +110,6 @@
   max-height: 84px;
   word-break: break-word;
   // overflow-wrap: break-word;
-
-  &.dark {
-    color: white;
-  }
 }
 
 .spacer {
@@ -130,10 +132,6 @@
   height: 26px;
   display: flex;
   align-items: top;
-
-  &.dark {
-    color: white;
-  }
 }
 
 .likescount {
@@ -155,10 +153,6 @@
   font-size: 14px;
   margin-top: 0px;
   margin-bottom: 0px;
-
-  &.dark {
-    color: white;
-  }
 }
 
 .icon_buttons {
