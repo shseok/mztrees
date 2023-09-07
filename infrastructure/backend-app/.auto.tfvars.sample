@@ -1,0 +1,8 @@
+database_url=
+jwt_secret=
+algolia_admin_key=
+algolia_app_id=
+cf_account_id=
+cf_access_key_id=
+cf_access_key_secret=
+public_s3_bucket_name=
