@@ -79,10 +79,10 @@ model Publisher {
   items Item[]
 }
 
-// item이 삭제되면 tag도 삭제되는가? x > onDelete: Cascade x
 model Tag {
   id        Int         @id @default(autoincrement())
   name      String      @unique
+  // item이 삭제되면 tag도 삭제되는가? x > onDelete: Cascade x
   // Item      Item?       @relation(fields: [itemId], references: [id])
   // itemId    Int?
   itemsTags ItemsTags[]

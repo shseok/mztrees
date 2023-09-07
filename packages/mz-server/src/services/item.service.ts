@@ -40,7 +40,6 @@ const itemService = {
     return { key, imageUrl: `https://img.mztrees.com/${key}` }
   },
   async getTagsForItem(itemId: number) {
-    console.log(itemId)
     const tags = await db.itemsTags.findMany({
       where: { itemId },
       include: { tag: true },
@@ -154,8 +153,9 @@ const itemService = {
   },
 
   async getImageUrls(link: string) {
-    const urls = await extractImageUrls(link)
+    //TODO: refactor using duplicated validateUrl function
     const info = await extractPageInfo(link)
+    const urls = await extractImageUrls(link)
     const concatedArr = info.thumbnail ? [...urls, info.thumbnail] : urls
     return [...new Set(concatedArr)]
   },
@@ -164,7 +164,6 @@ const itemService = {
     userId: number,
     { title, body, link, thumbnail: refUrl, tags }: mutateItemParams,
   ) {
-    console.log('createItem', refUrl)
     const info = await extractPageInfo(link)
     const publisher = await this.getPublisher({
       domain: info.domain,
@@ -222,7 +221,9 @@ const itemService = {
           },
         })
       }
-    } catch (e) {}
+    } catch (e) {
+      console.log(e)
+    }
     // TODO: add tags
     algolia
       .sync({

@@ -57,6 +57,11 @@ export default function Write() {
             actions.change("link", e.target.value);
           }}
           value={form.link}
+          errorMessage={
+            error?.statusCode === 422
+              ? "유효하지 않은 URL입니다. 다른 URL을 입력해주세요."
+              : undefined
+          }
         />
       </WriteFormTemplate>
     </BasicLayout>

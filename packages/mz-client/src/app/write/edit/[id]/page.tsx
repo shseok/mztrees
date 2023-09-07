@@ -97,6 +97,11 @@ export default function Edit({ params: { id } }: Params) {
             setCurrentLink(e.target.value);
           }}
           value={currentLink}
+          errorMessage={
+            error?.statusCode === 422
+              ? "유효하지 않은 URL입니다. 다른 URL을 입력해주세요."
+              : undefined
+          }
         />
       </WriteFormTemplate>
     </BasicLayout>
