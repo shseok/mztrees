@@ -93,8 +93,9 @@ export default function EditIntro() {
             className="styled_label_textarea"
             label="내용"
             name="body"
-            onChange={onChange}
             value={form.body}
+            onChange={onChange}
+            rows={8}
           />
           {errorMessage ? (
             <div className={styles.message}>{errorMessage}</div>
