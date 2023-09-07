@@ -714,7 +714,7 @@ const itemService = {
           id: updatedItem.thumbnailId,
         },
       })
-      // 받은 urlRef와 같다면 아래 로직 실행 x
+      // 받은 Url와 이전 Url이 다른 경우 업데이트
       if (thumbnailInfo && thumbnailInfo.url !== refUrl) {
         try {
           if (refUrl && !isR2Disbled) {
@@ -727,7 +727,7 @@ const itemService = {
               id: item.id,
             })
 
-            await db.thumbnail.update({
+            thumbnailInfo = await db.thumbnail.update({
               where: {
                 id: thumbnailInfo.id,
               },
