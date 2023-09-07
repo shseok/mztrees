@@ -21,6 +21,7 @@ export default function EditIntro() {
     actions,
   } = useWriteContext();
   const openLoginDialog = useOpenLoginDialog();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const router = useRouter();
 
@@ -54,6 +55,7 @@ export default function EditIntro() {
     };
 
     try {
+      setIsSubmitting(true);
       await updateItem(parseInt(form.id), ItemInfo);
       router.push(`/items/${form.id}`);
       router.refresh();
@@ -75,12 +77,18 @@ export default function EditIntro() {
         openLoginDialog("edit");
       }
       console.log(extractNextError(e));
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <BasicLayout title="수정" hasBackButton>
-      <WriteFormTemplate buttonText="수정하기" onSubmit={onSubmit}>
+      <WriteFormTemplate
+        buttonText="수정하기"
+        onSubmit={onSubmit}
+        isLoading={isSubmitting}
+      >
         <div className={styles.group}>
           <TagInput />
           <LabelInput
