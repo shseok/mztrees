@@ -20,6 +20,7 @@ import { getWeekRangeFromDate } from "@/lib/week";
 import SkeletonUI from "@/components/system/SkeletonUI";
 import EmptyList from "../system/EmptyList";
 import TabLayout from "../layout/TabLayout";
+import TagSelector from "./TagSelector";
 
 export default function Home() {
   const observerTargetEl = useRef<HTMLDivElement>(null);
@@ -118,6 +119,7 @@ export default function Home() {
     <TabLayout className="layout_padding">
       <div className={styles.content}>
         <ListModeSelector mode={mode} />
+        <TagSelector />
         {mode === "past" && <WeekSelector dateRange={dateRange} />}
         {status === "loading" ? (
           <SkeletonUI />
