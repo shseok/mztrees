@@ -15,7 +15,7 @@ import WeekSelector from "@/components/home/WeekSelector";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { useSearchParams } from "next/navigation";
 import { getItems } from "@/lib/api/items";
-import { ListMode, TagList } from "@/types/db";
+import { ListMode, Tag } from "@/types/db";
 import { getWeekRangeFromDate } from "@/lib/week";
 import SkeletonUI from "@/components/system/SkeletonUI";
 import EmptyList from "../system/EmptyList";
@@ -28,9 +28,8 @@ export default function Home() {
   const [mode, setMode] = useState<ListMode>(
     (searchParams.get("mode") as ListMode | null) ?? "trending"
   );
-  const tagsResult = searchParams.getAll("tag") as TagList;
-  const [tags, setTags] = useState<TagList>(
-    tagsResult.length > 0 ? tagsResult : []
+  const [tag, setTag] = useState<Tag | null>(
+    searchParams.get("tag") as Tag | null
   );
 
   const defaultDateRange = useMemo(() => getWeekRangeFromDate(new Date()), []);
@@ -39,7 +38,6 @@ export default function Home() {
   const [dateRange, setDateRange] = useState(
     startDate && endDate ? [startDate, endDate] : defaultDateRange
   );
-  // const [isMobileMode, setIsMobileMode] = useState(false);
 
   const {
     status,
@@ -48,16 +46,13 @@ export default function Home() {
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery(
-    [
-      "Items",
-      mode,
-      tags.join("+"),
-      mode === "past" ? dateRange : undefined,
-    ].filter((item) => !!item),
+    ["Items", mode, tag, mode === "past" ? dateRange : undefined].filter(
+      (item) => !!item
+    ),
     ({ pageParam = undefined }) =>
       getItems({
         mode,
-        tags,
+        tag: tag ?? undefined,
         cursor: pageParam,
         ...(mode === "past"
           ? { startDate: dateRange[0], endDate: dateRange[1] }
@@ -80,15 +75,10 @@ export default function Home() {
 
   useEffect(() => {
     const nextMode = (searchParams.get("mode") as ListMode) ?? "trending";
-    const tagsResult = searchParams.getAll("tag");
-    const nextTag = (tagsResult.length > 0 ? tagsResult : []) as TagList;
     if (nextMode !== mode) {
       setMode(nextMode);
     }
-    if (nextTag.join("+") !== tags.join("+")) {
-      setTags(nextTag);
-    }
-  }, [searchParams, mode, tags]);
+  }, [searchParams, mode]);
 
   useEffect(() => {
     if (mode === "past") {
@@ -98,28 +88,17 @@ export default function Home() {
     }
   }, [startDate, endDate, defaultDateRange, mode]);
 
-  // just for responsive design
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     if (typeof window !== undefined) {
-  //       setIsMobileMode(isMobile());
-  //     }
-  //   };
-
-  //   window.addEventListener("resize", handleResize);
-
-  //   return () => {
-  //     window.removeEventListener("resize", handleResize);
-  //   };
-  // }, []);
-
   const items = infiniteData?.pages.flatMap((page) => page.list);
 
   return (
     <TabLayout className="layout_padding">
       <div className={styles.content}>
-        <ListModeSelector mode={mode} />
-        <TagSelector />
+        <ListModeSelector mode={mode} tag={tag} />
+        <TagSelector
+          listMode={mode}
+          selectedTag={tag}
+          setSelectedTag={setTag}
+        />
         {mode === "past" && <WeekSelector dateRange={dateRange} />}
         {status === "loading" ? (
           <SkeletonUI />

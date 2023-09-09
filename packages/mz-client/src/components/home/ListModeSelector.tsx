@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { ListMode } from "@/types/db";
+import { ListMode, Tag } from "@/types/db";
 import { Trending, History, Calendar } from "@/components/vectors";
 import styles from "@/styles/ListModeSelector.module.scss";
 import { cn } from "@/utils/common";
@@ -16,8 +16,9 @@ const GAP = 16;
 
 interface Props {
   mode: ListMode;
+  tag: Tag | null;
 }
-const ListModeSelector = ({ mode }: Props) => {
+const ListModeSelector = ({ mode, tag }: Props) => {
   const [elementSizes, setElementSizes] = useState([0, 0, 0]);
   const setElementSizeOfIndex = useCallback((index: number, size: number) => {
     setElementSizes((prev) => {
@@ -65,6 +66,7 @@ const ListModeSelector = ({ mode }: Props) => {
       {modeInfos.map((modeInfo, index) => (
         <ListModeItem
           currentMode={mode}
+          tag={tag}
           key={modeInfo.name}
           index={index}
           onUpdateSize={setElementSizeOfIndex}
@@ -83,6 +85,7 @@ const ListModeItem = ({
   mode,
   name,
   icon,
+  tag,
   currentMode,
   onUpdateSize,
   index,
@@ -95,6 +98,7 @@ const ListModeItem = ({
 }) => {
   const { mode: themeMode } = useTheme();
   const ref = useRef<HTMLAnchorElement>(null);
+  const link = tag ? `/?mode=${mode}&tag=${tag}` : `/?mode=${mode}`;
   useEffect(() => {
     if (!ref.current) return;
     onUpdateSize(index, ref.current.clientWidth);
@@ -106,7 +110,7 @@ const ListModeItem = ({
         mode === currentMode && styles.active,
         themeMode === "dark" && styles.dark
       )}
-      href={`/?mode=${mode}`}
+      href={link}
       prefetch={mode !== "past"}
       ref={ref}
     >

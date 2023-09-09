@@ -9,7 +9,7 @@ import {
   LikeItemResult,
   ListMode,
   MutateItemParams,
-  TagList,
+  Tag,
   UnlikeCommentResult,
 } from "@/types/db";
 
@@ -20,23 +20,21 @@ export async function createItem(params: MutateItemParams) {
 
 export async function getItems({
   mode,
-  tags,
+  tag,
   cursor,
   startDate,
   endDate,
 }: {
   mode: ListMode;
-  tags: TagList;
+  tag?: Tag;
   cursor?: number;
   startDate?: string;
   endDate?: string;
 }) {
   const query = stringify(
-    { mode, cursor, tags, startDate, endDate },
-    { addQueryPrefix: true, arrayFormat: "repeat" }
+    { mode, cursor, tag, startDate, endDate },
+    { addQueryPrefix: true } //  tags > arrayFormat: "repeat"
   );
-  console.log(query);
-  // 빈 배열은 처리 x
   const resonse = await fetchClient.get<GetItemsResult>(
     "/api/items".concat(query)
   );
