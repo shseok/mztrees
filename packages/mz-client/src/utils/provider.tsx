@@ -11,7 +11,7 @@ import AnalyticsTrackingEventsProvider from "./AnalyticsTrackingEventsProvider";
 
 function Providers({ children }: React.PropsWithChildren) {
   const [client] = useState(
-    new QueryClient({ defaultOptions: { queries: { staleTime: 1000 * 5 } } })
+    new QueryClient({ defaultOptions: { queries: { staleTime: 1000 * 60 } } })
   );
 
   return (
