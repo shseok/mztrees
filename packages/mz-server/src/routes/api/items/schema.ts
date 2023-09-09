@@ -124,7 +124,7 @@ export const ItemRouteSchema = createRouteSchema({
           Type.Literal('past'),
         ]),
       ),
-      tags: Type.Optional(Type.Array(Type.String())),
+      tag: Type.Optional(Type.String()),
       startDate: Type.Optional(Type.String()),
       endDate: Type.Optional(Type.String()),
     }),

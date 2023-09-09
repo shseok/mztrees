@@ -280,12 +280,12 @@ const itemService = {
     limit,
     cursor,
     userId,
-    tags,
+    tag,
   }: {
     limit: number
     cursor?: number | null
     userId?: number
-    tags?: string[]
+    tag?: string
   }) {
     // const tagIds = await db.tag.findMany({
     //   where: {
@@ -298,7 +298,6 @@ const itemService = {
     //   },
     // })
 
-    // TODO: 왜 안되니..?? >> tags 배열에 포함된 태그 중 하나라도 일치하는 item을 가져옴
     const [totalCount, list] = await Promise.all([
       db.item.count(),
       db.item.findMany({
@@ -311,19 +310,17 @@ const itemService = {
                 lt: cursor,
               }
             : undefined,
-          ...(tags && tags.length > 0
-            ? {
-                itemsTags: {
-                  some: {
-                    tag: {
-                      name: {
-                        in: tags, // tags 배열에 포함된 태그 중 하나라도 일치하는 item을 가져옴
-                      },
-                    },
+          ...(tag && {
+            itemsTags: {
+              some: {
+                tag: {
+                  name: {
+                    equals: tag, // 같은 태그의 item을 가져옴
                   },
                 },
-              }
-            : {}),
+              },
+            },
+          }),
         },
         include: {
           user: true,
@@ -352,14 +349,14 @@ const itemService = {
     startDate,
     endDate,
     userId,
-    tags,
+    tag,
   }: {
     limit: number
     cursor?: number | null
     startDate?: string
     endDate?: string
     userId?: number
-    tags?: string[]
+    tag?: string
   }) {
     if (!startDate || !endDate) {
       throw new AppError('BadRequest', {
@@ -421,19 +418,17 @@ const itemService = {
                 },
               }
             : undefined,
-          ...(tags && tags.length > 0
-            ? {
-                itemsTags: {
-                  some: {
-                    tag: {
-                      name: {
-                        in: tags, // tags 배열에 포함된 태그 중 하나라도 일치하는 item을 가져옴
-                      },
-                    },
+          ...(tag && {
+            itemsTags: {
+              some: {
+                tag: {
+                  name: {
+                    equals: tag, // 같은 태그의 item을 가져옴
                   },
                 },
-              }
-            : {}),
+              },
+            },
+          }),
         },
         include: {
           user: true,
@@ -476,12 +471,12 @@ const itemService = {
     limit,
     cursor,
     userId,
-    tags,
+    tag,
   }: {
     limit: number
     cursor?: number | null
     userId?: number
-    tags?: string[]
+    tag?: string
   }) {
     // TODO: 당장 많은 데이터를 트렌딩으로 보여주는게 아니므로 몇 점이상 부터 노출시킬지는 나중에 정하자
     const totalCount = await db.itemStats.count({
@@ -522,19 +517,17 @@ const itemService = {
               : {}),
           },
         },
-        ...(tags && tags.length > 0
-          ? {
-              itemsTags: {
-                some: {
-                  tag: {
-                    name: {
-                      in: tags, // tags 배열에 포함된 태그 중 하나라도 일치하는 item을 가져옴
-                    },
-                  },
+        ...(tag && {
+          itemsTags: {
+            some: {
+              tag: {
+                name: {
+                  equals: tag, // 같은 태그의 item을 가져옴
                 },
               },
-            }
-          : {}),
+            },
+          },
+        }),
       },
       orderBy: [
         {
@@ -594,7 +587,7 @@ const itemService = {
   async getItems(
     {
       mode,
-      tags,
+      tag,
       cursor,
       limit,
       userId,
@@ -608,7 +601,7 @@ const itemService = {
 
     const { totalCount, endCursor, hasNextPage, list } = await (() => {
       if (mode === 'recent') {
-        return this.getRecentItems({ limit: _limit, cursor, userId, tags })
+        return this.getRecentItems({ limit: _limit, cursor, userId, tag })
       }
       if (mode === 'past') {
         return this.getPastItems({
@@ -617,19 +610,19 @@ const itemService = {
           startDate,
           endDate,
           userId,
-          tags,
+          tag,
         })
       }
 
       // mode === 'trending'
-      return this.getTrendingItems({ limit: _limit, cursor, userId, tags })
+      return this.getTrendingItems({ limit: _limit, cursor, userId, tag })
     })()
 
     const serializedList = list.map(this.serialize)
     const serializedListWithTags = await Promise.all(
       serializedList.map(async (item) => ({
         ...item,
-        tags: tags && tags.length > 0 ? await this.getTagsForItem(item.id) : [],
+        tag: await this.getTagsForItem(item.id),
       })),
     )
     return createPagination({
@@ -904,7 +897,7 @@ export default itemService
 
 type GetItemsParams = {
   mode: 'trending' | 'recent' | 'past'
-  tags?: string[]
+  tag?: string
   startDate?: string
   endDate?: string
 }
