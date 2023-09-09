@@ -15,9 +15,10 @@ const DesktopHeader = () => {
     <header className={styles.block}>
       <div className={styles.block_top}>
         <div className={styles.content}>
-          <Link className={styles.home_link} href="/">
+          {/* tag 도입 후 params이 남아있기 때문에 Link -> a */}
+          <a className={styles.home_link} href="/">
             <Logo className={styles.styled_logo} />
-          </Link>
+          </a>
           <div className={styles.addon} />
           <div className={styles.addon}>
             <SearchArea />

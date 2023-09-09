@@ -128,12 +128,12 @@ const AuthForm = ({ mode }: Props) => {
       method="post"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <Link
+      <a
         className={cn(styles.desktop_logo, themeMode === "dark" && styles.dark)}
         href="/"
       >
         <Logo />
-      </Link>
+      </a>
       <div className={styles.input_group}>
         <LabelInput
           label="아이디"
