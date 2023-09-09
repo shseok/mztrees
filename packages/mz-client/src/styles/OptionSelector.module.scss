@@ -10,42 +10,10 @@
 }
 
 .listContainer {
-  margin-bottom: 16px;
-  // .list {
-  //   width: 100%;
-  //   background: #fff;
-  //   gap: 10px;
-
-  //   @include mobile {
-  //     max-height: 400px;
-  //     overflow-y: scroll;
-  //     scroll-behavior: smooth;
-  //     &::-webkit-scrollbar {
-  //       width: 0; /* Hide scrollbar */
-  //     }
-  //   }
-
-  //   .item {
-  //     display: block;
-  //     padding: 10px;
-  //     cursor: pointer;
-  //     font-weight: 500;
-  //     color: #2e2e2e;
-  //     transition: all 0.2s ease;
-  //     border-radius: 6px;
-
-  //     &.active {
-  //       background: $primary;
-  //       color: white;
-  //     }
-
-  //     &:hover {
-  //       background: $gray0;
-  //     }
-  //   }
-  // }
-
-  min-height: 300px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 116px;
 
   .item {
     background: #fff;
@@ -58,8 +26,8 @@
     border-radius: 14px;
     font-weight: 700;
     border-radius: 15px;
-    margin-right: 8px;
-    margin-bottom: 8px;
+    // margin-right: 8px;
+    // margin-bottom: 8px;
 
     &:hover {
       background: #017a5978;
