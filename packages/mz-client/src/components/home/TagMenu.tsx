@@ -43,7 +43,7 @@ const TagMenu = ({ listMode, onClose, visible, selected, onSelect }: Props) => {
                 }}
                 key={idx}
               >
-                <Link href={link(item)}>{item}</Link>
+                {item}
               </li>
             ))}
           </ul>

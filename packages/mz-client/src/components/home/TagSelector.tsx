@@ -1,22 +1,23 @@
 import React, { useRef, useState } from "react";
 import styles from "@/styles/TagSelector.module.scss";
-import { ChevronDown, ChevronUp } from "../vectors";
+import { ChevronDown, ChevronUp, Close } from "../vectors";
 import { useTheme } from "@/context/ThemeContext";
 import { cn } from "@/utils/common";
 import TagMenu from "./TagMenu";
 import { ListMode, Tag } from "@/types/db";
+import useSetSearchParams from "@/hooks/useSetSearchParams";
 
 interface Props {
   listMode: ListMode;
   selectedTag: Tag | null;
-  setSelectedTag: (tag: Tag) => void;
+  setSelectedTag: (tag: Tag | null) => void;
 }
 
 const TagSelector = ({ listMode, selectedTag, setSelectedTag }: Props) => {
   const { mode } = useTheme();
   const [visible, setVisible] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  // const searchParams = useSearchParams();
+  const setSearchParams = useSetSearchParams();
   const onToggle = () => {
     setVisible(!visible);
   };
@@ -28,7 +29,6 @@ const TagSelector = ({ listMode, selectedTag, setSelectedTag }: Props) => {
 
     setVisible(false);
   };
-
   return (
     <div className={cn(styles.container, mode === "dark" && styles.dark)}>
       <button
@@ -39,6 +39,21 @@ const TagSelector = ({ listMode, selectedTag, setSelectedTag }: Props) => {
         <span>태그 목록</span>
         {visible ? <ChevronUp /> : <ChevronDown />}
       </button>
+      {selectedTag && (
+        <div className={styles.current_tag}>
+          <span className={styles.tag_text}># {selectedTag}</span>
+          <button
+            className={styles.close_btn}
+            onClick={() => {
+              setSelectedTag(null);
+              setSearchParams({ mode: listMode, tag: null });
+            }}
+          >
+            <Close />
+          </button>
+        </div>
+      )}
+
       <TagMenu
         listMode={listMode}
         visible={visible}
@@ -49,11 +64,8 @@ const TagSelector = ({ listMode, selectedTag, setSelectedTag }: Props) => {
           value: Tag
         ) => {
           e.preventDefault();
-          // const nextTag = (searchParams.get("tag") as Tag) ?? "전체";
           setSelectedTag(value);
-          // if (nextTag !== tag) {
-          //   setTag(nextTag);
-          // }
+          setSearchParams({ mode: listMode, tag: value });
         }}
       />
     </div>

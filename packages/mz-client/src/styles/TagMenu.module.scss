@@ -33,22 +33,15 @@
       // border: 1px solid $primary;
       font-weight: 700;
       border-radius: 8px;
+      color: $gray4;
 
       &:hover {
         background: $gray0;
-        color: white;
       }
 
       &.selected {
         background: #017a5ae4;
-        a {
-          color: white;
-        }
-      }
-
-      a {
-        text-decoration: none;
-        color: $gray4;
+        color: white;
       }
     }
   }

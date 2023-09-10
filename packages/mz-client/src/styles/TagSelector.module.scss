@@ -3,6 +3,9 @@
 .container {
   margin-bottom: 24px;
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 
   .inner_container {
     width: 140px;
@@ -26,6 +29,32 @@
       color: $gray1;
       width: 20px;
       height: 20px;
+    }
+  }
+  .current_tag {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 5px 10px;
+    transition: all 0.2s ease;
+    border: 1.5px solid $primary;
+    border-radius: 15px;
+    gap: 4px;
+
+    .tag_text {
+      color: $gray4;
+      font-weight: 700;
+    }
+
+    .close_btn {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      svg {
+        color: $gray2;
+        width: 12px;
+        height: 12px;
+      }
     }
   }
 
