@@ -8,6 +8,7 @@ import { UserProvider } from "@/context/UserContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { TabScrollTopContextProvider } from "@/context/TabScrollTopContext";
 import AnalyticsTrackingEventsProvider from "./AnalyticsTrackingEventsProvider";
+import { SearchModalProvider } from "@/context/SearchModalContext";
 
 function Providers({ children }: React.PropsWithChildren) {
   const [client] = useState(
@@ -18,11 +19,13 @@ function Providers({ children }: React.PropsWithChildren) {
     <AnalyticsTrackingEventsProvider>
       <QueryClientProvider client={client}>
         <ThemeProvider>
-          <DialogProvider>
-            <TabScrollTopContextProvider>
-              <UserProvider>{children}</UserProvider>
-            </TabScrollTopContextProvider>
-          </DialogProvider>
+          <SearchModalProvider>
+            <DialogProvider>
+              <TabScrollTopContextProvider>
+                <UserProvider>{children}</UserProvider>
+              </TabScrollTopContextProvider>
+            </DialogProvider>
+          </SearchModalProvider>
         </ThemeProvider>
         <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       </QueryClientProvider>

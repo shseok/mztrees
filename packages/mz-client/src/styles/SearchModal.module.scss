@@ -1,0 +1,201 @@
+@import "_var", "_module";
+
+.search_modal {
+  display: none;
+
+  @media (max-width: 728px) {
+    // min-width: 729px 일때 해주면 overlay가 #fff로 덮임
+    height: 100%;
+  }
+
+  &.active {
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: #fff;
+    z-index: 2;
+
+    .search_part {
+      border-bottom: 1px solid #e0e0e0;
+
+      .container {
+        display: flex;
+        align-items: center;
+
+        @include widescreen {
+          max-width: 1150px;
+          margin: 0 auto;
+          // padding: 0 16px;
+        }
+
+        svg {
+          color: #9e9e9e;
+        }
+
+        .search_icon {
+          width: 25px;
+          height: 25px;
+        }
+
+        @media (max-width: 728px) {
+          padding: 0 16px;
+        }
+
+        .news_search_input {
+          width: 100%;
+          margin: 0 12px;
+          border: none;
+          font-size: 16px;
+          padding: 20px 0 19px;
+          font-weight: normal;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: 1.63;
+          letter-spacing: normal;
+          color: #616161;
+          outline: none;
+
+          &::placeholder {
+            color: rgba(97, 97, 97, 0.4);
+          }
+        }
+
+        .close_icon {
+          width: 29px;
+          height: 29px;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .search_sub_part {
+      position: relative;
+      z-index: 2;
+      padding: 32px 0 60px;
+
+      @media (max-width: 728px) {
+        padding: 24px 8px;
+      }
+
+      .container {
+        @media (max-width: 728px) {
+          padding: 0 16px;
+        }
+
+        @include widescreen {
+          max-width: 1150px;
+          margin: 0 auto;
+          // padding: 0 16px;
+        }
+
+        .recent_keyword_part {
+          .title {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.63;
+            letter-spacing: normal;
+            color: #212121;
+
+            .sub_action {
+              &.active {
+                display: block;
+              }
+
+              display: none;
+              border: none;
+              outline: none;
+              background-color: transparent;
+              font-size: 13px;
+              font-weight: 500;
+              font-stretch: normal;
+              font-style: normal;
+              line-height: 1.54;
+              letter-spacing: normal;
+              color: #9e9e9e;
+              margin-left: auto;
+              cursor: pointer;
+            }
+          }
+
+          .recent_keyword_part_wrapper.empty {
+            margin-top: 28px;
+
+            .empty_recent_keyword {
+              &.active {
+                display: block;
+              }
+
+              display: none;
+              font-size: 14px;
+              font-weight: normal;
+              font-stretch: normal;
+              font-style: normal;
+              line-height: 1.71;
+              letter-spacing: normal;
+              text-align: center;
+              color: #9e9e9e;
+            }
+
+            .recent_keyword_list {
+              .recent_keyword {
+                display: flex;
+                align-items: center;
+
+                .keyword_title {
+                  border: none;
+                  outline: none;
+                  background-color: transparent;
+                  cursor: pointer;
+                  color: #616161;
+                  font-size: 14px;
+                  line-height: 1.71;
+                }
+
+                .icon_delete_wrapper {
+                  border: none;
+                  outline: none;
+                  background-color: transparent;
+                  cursor: pointer;
+                  display: flex;
+                  margin-left: auto;
+                  margin-right: 3px;
+
+                  .icon_delete {
+                    width: 19px;
+                    height: 19px;
+                    color: #9e9e9e;
+                  }
+                }
+
+                &:not(:first-child) {
+                  margin-top: 10px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .background_overlay {
+      z-index: 1;
+      content: "";
+      display: block;
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.4);
+
+      @media (max-width: 728px) {
+        display: none;
+      }
+    }
+  }
+}

@@ -4,12 +4,14 @@ import { useRef } from "react";
 import styles from "@/styles/SearchArea.module.scss";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search } from "@/components/vectors";
+import useSearchModal from "@/context/SearchModalContext";
 
 const SearchArea = () => {
   const ref = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialKeyword = searchParams.get("q") ?? "";
+  const { setOpenModal } = useSearchModal();
 
   const onKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -17,7 +19,8 @@ const SearchArea = () => {
     }
   };
   const onClick = () => {
-    ref.current?.focus();
+    // ref.current?.focus();
+    setOpenModal((prev) => !prev);
   };
 
   return (
@@ -25,7 +28,7 @@ const SearchArea = () => {
       <div
         className={styles.search_input_wrapper}
         onClick={onClick}
-        onKeyUp={onKeyUp}
+        // onKeyUp={onKeyUp}
       >
         <Search />
         <input ref={ref} type="text" defaultValue={initialKeyword} />
