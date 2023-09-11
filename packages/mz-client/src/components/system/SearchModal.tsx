@@ -3,6 +3,7 @@ import styles from "@/styles/SearchModal.module.scss";
 import { Close, Search, TrashCan } from "../vectors";
 import { useRouter } from "next/navigation";
 import { cn } from "@/utils/common";
+import { useTheme } from "@/context/ThemeContext";
 
 interface Props {
   open: boolean;
@@ -13,6 +14,7 @@ const SearchModal = ({ open, setOpen }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputVal, setInputVal] = useState<string>("");
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  const { mode } = useTheme();
   const router = useRouter();
   useEffect(() => {
     const searches = localStorage.getItem("recentSearches");
@@ -93,7 +95,13 @@ const SearchModal = ({ open, setOpen }: Props) => {
     // <Overlay visible={visible} />
     <div
       className={
-        open ? cn(styles.search_modal, styles.active) : styles.search_modal
+        open
+          ? cn(
+              styles.search_modal,
+              styles.active,
+              mode === "dark" && styles.dark
+            )
+          : styles.search_modal
       }
     >
       <div className={styles.search_part}>

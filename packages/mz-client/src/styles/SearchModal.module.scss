@@ -202,5 +202,56 @@
         display: none;
       }
     }
+
+    &.dark {
+      background: rgb(40, 41, 43);
+
+      .search_part {
+        border: 1px solid rgb(58, 59, 61);
+        .container {
+          svg {
+            color: white;
+          }
+          .news_search_input {
+            background-color: transparent;
+            color: white;
+
+            &::placeholder {
+              color: $gray2;
+            }
+          }
+        }
+      }
+
+      .search_sub_part {
+        .container {
+          .recent_keyword_part {
+            .title {
+              color: white;
+
+              .sub_action {
+                color: white;
+              }
+            }
+            .recent_keyword_part_wrapper {
+              .empty_recent_keyword {
+                color: white;
+              }
+
+              .recent_keyword_list {
+                .recent_keyword {
+                  .keyword_title {
+                    color: white;
+                  }
+                  &:hover {
+                    background: rgb(36, 37, 39);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
