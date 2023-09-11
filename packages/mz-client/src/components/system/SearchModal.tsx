@@ -48,13 +48,9 @@ const SearchModal = ({ open, setOpen }: Props) => {
   };
 
   const viewNavigate = (newRoute: string) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     if (!document.startViewTransition) {
       return router.push(newRoute);
     } else {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       return document.startViewTransition(() => {
         router.push(newRoute);
       });
@@ -62,13 +58,9 @@ const SearchModal = ({ open, setOpen }: Props) => {
   };
 
   const handleClose = () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     if (!document.startViewTransition) {
       setOpen((prev) => !prev);
     } else {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       return document.startViewTransition(() => {
         setOpen((prev) => !prev);
       });
@@ -87,7 +79,6 @@ const SearchModal = ({ open, setOpen }: Props) => {
       setOpen((prev) => !prev);
       setInputVal("");
       viewNavigate(`/search?q=${q}`);
-      // router.push(`/search?q=${q}`);
     }
   };
 
