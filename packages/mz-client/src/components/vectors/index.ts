@@ -24,3 +24,4 @@ export { default as ChevronRight } from "../../../public/assets/chevron-right.sv
 export { default as ChevronUp } from "../../../public/assets/chevron-up.svg";
 export { default as ChevronDown } from "../../../public/assets/chevron-down.svg";
 export { default as Close } from "../../../public/assets/close.svg";
+export { default as TrashCan } from "../../../public/assets/trashcan.svg";

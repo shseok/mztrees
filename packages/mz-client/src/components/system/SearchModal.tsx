@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "@/styles/SearchModal.module.scss";
-import { Close, Search } from "../vectors";
+import { Close, Search, TrashCan } from "../vectors";
 import { useRouter } from "next/navigation";
 import { cn } from "@/utils/common";
 
@@ -45,19 +45,19 @@ const SearchModal = ({ open, setOpen }: Props) => {
     console.log(inputVal);
   };
 
-  // const viewNavigate = (newRoute: string) => {
-  //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //   // @ts-ignore
-  //   if (!document.startViewTransition) {
-  //     return navigate(newRoute);
-  //   } else {
-  //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //     // @ts-ignore
-  //     return document.startViewTransition(() => {
-  //       navigate(newRoute);
-  //     });
-  //   }
-  // };
+  const viewNavigate = (newRoute: string) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (!document.startViewTransition) {
+      return router.push(newRoute);
+    } else {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      return document.startViewTransition(() => {
+        router.push(newRoute);
+      });
+    }
+  };
 
   const handleClose = () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -78,14 +78,14 @@ const SearchModal = ({ open, setOpen }: Props) => {
     if (e.key === "Enter") {
       if (q === "" || q.trim() === "") return;
       // store searched word in localstorage
-      // maximum 5 words
+      // maximum 6 words
       const newSearches = [q, ...recentSearches.slice(0, 5)];
       setRecentSearches(newSearches);
       localStorage.setItem("recentSearches", JSON.stringify(newSearches));
       setOpen((prev) => !prev);
       setInputVal("");
-      // viewNavigate(`/search?keyword=${q}`);
-      router.push(`/search?q=${q}`);
+      viewNavigate(`/search?q=${q}`);
+      // router.push(`/search?q=${q}`);
     }
   };
 
@@ -144,18 +144,25 @@ const SearchModal = ({ open, setOpen }: Props) => {
                 id="recentKeywordList"
               >
                 {recentSearches.map((recentKeywords, idx) => (
-                  <div className={styles.recent_keyword} key={idx}>
-                    <button
-                      className={styles.keyword_title}
-                      onClick={() => console.log("search")}
-                    >
+                  <div
+                    className={styles.recent_keyword}
+                    key={idx}
+                    onClick={() => {
+                      router.push(`/search?q=${recentKeywords}`);
+                      handleClose();
+                    }}
+                  >
+                    <span className={styles.keyword_title}>
                       {recentKeywords}
-                    </button>
+                    </span>
                     <button
                       className={styles.icon_delete_wrapper}
-                      onClick={() => handleKeywordDelete(recentKeywords)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleKeywordDelete(recentKeywords);
+                      }}
                     >
-                      <Close className={styles.icon_delete} />
+                      <TrashCan className={styles.icon_delete} />
                     </button>
                   </div>
                 ))}

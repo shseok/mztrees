@@ -2,10 +2,10 @@
 
 .search_modal {
   display: none;
-
-  @media (max-width: 728px) {
+  height: 100%;
+  @include tablet {
     // min-width: 729px 일때 해주면 overlay가 #fff로 덮임
-    height: 100%;
+    height: auto;
   }
 
   &.active {
@@ -23,12 +23,8 @@
       .container {
         display: flex;
         align-items: center;
-
-        @include widescreen {
-          max-width: 1150px;
-          margin: 0 auto;
-          // padding: 0 16px;
-        }
+        margin: 0 26px;
+        padding: 0 16px;
 
         svg {
           color: #9e9e9e;
@@ -37,10 +33,6 @@
         .search_icon {
           width: 25px;
           height: 25px;
-        }
-
-        @media (max-width: 728px) {
-          padding: 0 16px;
         }
 
         .news_search_input {
@@ -67,6 +59,16 @@
           height: 29px;
           cursor: pointer;
         }
+
+        @include tablet {
+          padding: 0;
+        }
+
+        @include widescreen {
+          max-width: 1150px;
+          margin: 0 auto;
+          // padding: 0 16px;
+        }
       }
     }
 
@@ -83,6 +85,7 @@
         @media (max-width: 728px) {
           padding: 0 16px;
         }
+        margin: 0 26px;
 
         @include widescreen {
           max-width: 1150px;
@@ -146,12 +149,13 @@
               .recent_keyword {
                 display: flex;
                 align-items: center;
+                padding: 7px 0;
+                cursor: pointer;
 
                 .keyword_title {
                   border: none;
                   outline: none;
                   background-color: transparent;
-                  cursor: pointer;
                   color: #616161;
                   font-size: 14px;
                   line-height: 1.71;
@@ -173,8 +177,9 @@
                   }
                 }
 
-                &:not(:first-child) {
-                  margin-top: 10px;
+                &:hover {
+                  background: #f7f7f7;
+                  border-radius: 4px;
                 }
               }
             }

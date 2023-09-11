@@ -1,32 +1,32 @@
 @import "_var";
-.block {
-}
 
 .search_input_wrapper {
   display: flex;
   align-items: center;
   width: 200px;
   height: 36px;
-  padding: 0 8px;
+  padding: 4px 9px;
   // border: 1px solid ${colors.gray1};
-  border-radius: 5px;
+  border-radius: 18px;
   margin-right: 8px;
   background: #f6f6f6;
+  cursor: pointer;
 
   svg {
     width: 20px;
     height: 20px;
-    color: $gray4;
+    color: $gray3;
     flex-shrink: 0;
     margin-right: 8px;
   }
 
-  input {
-    flex: 1;
-    background: none;
-    border: none;
-    outline: none;
-    padding: 0;
-    min-width: 0;
+  p {
+    margin: 0;
+    color: $gray2;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }

@@ -1,39 +1,23 @@
 "use client";
 
-import { useRef } from "react";
 import styles from "@/styles/SearchArea.module.scss";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Search } from "@/components/vectors";
 import useSearchModal from "@/context/SearchModalContext";
 
 const SearchArea = () => {
-  const ref = useRef<HTMLInputElement>(null);
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const initialKeyword = searchParams.get("q") ?? "";
+  const initialKeyword = searchParams.get("q") ?? "궁금한 것을 검색해보세요";
   const { setOpenModal } = useSearchModal();
-
-  const onKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      router.push(`/search?q=${ref.current?.value}`);
-    }
-  };
   const onClick = () => {
-    // ref.current?.focus();
     setOpenModal((prev) => !prev);
   };
 
   return (
-    <div className={styles.block}>
-      <div
-        className={styles.search_input_wrapper}
-        onClick={onClick}
-        // onKeyUp={onKeyUp}
-      >
-        <Search />
-        <input ref={ref} type="text" defaultValue={initialKeyword} />
-      </div>
-    </div>
+    <button className={styles.search_input_wrapper} onClick={onClick}>
+      <Search />
+      <p>{initialKeyword}</p>
+    </button>
   );
 };
 
