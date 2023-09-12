@@ -48,6 +48,9 @@
 - AWS
   - ESR / ECS
   - EC2
+- [Infrastructure](infrastructure/README.md)
+
+![](https://img.mztrees.com/infra-architecture.png)
 
 ## How to run
 

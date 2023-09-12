@@ -42,8 +42,13 @@ Since we have currently applied a responsive layout, you can access the site and
 
 - Terraform
 - AWS
+
   - ESR / ECS
   - EC2
+
+- [Infrastructure](infrastructure/README.md)
+
+![](https://img.mztrees.com/infra-architecture.png)
 
 ## How to run
 
