@@ -10,7 +10,7 @@ const SearchArea = () => {
   const initialKeyword = searchParams.get("q") ?? "궁금한 것을 검색해보세요";
   const { setOpenModal } = useSearchModal();
   const onClick = () => {
-    setOpenModal((prev) => !prev);
+    setOpenModal(true);
   };
 
   return (

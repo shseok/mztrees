@@ -6,11 +6,12 @@ import { cn } from "@/utils/common";
 import { useTheme } from "@/context/ThemeContext";
 
 interface Props {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  close: () => void;
 }
 
-const SearchModal = ({ open, setOpen }: Props) => {
+const SearchModal = ({ isOpen, setIsOpen, close }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputVal, setInputVal] = useState<string>("");
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
@@ -24,10 +25,10 @@ const SearchModal = ({ open, setOpen }: Props) => {
   }, []);
 
   useEffect(() => {
-    if (open && inputRef.current) {
+    if (isOpen && inputRef.current) {
       inputRef.current.focus();
     }
-  }, [open]);
+  }, [isOpen]);
 
   const handleKeywordDelete = (value: string) => {
     const filteredSearches = recentSearches.filter(
@@ -57,16 +58,6 @@ const SearchModal = ({ open, setOpen }: Props) => {
     }
   };
 
-  const handleClose = () => {
-    if (!document.startViewTransition) {
-      setOpen((prev) => !prev);
-    } else {
-      return document.startViewTransition(() => {
-        setOpen((prev) => !prev);
-      });
-    }
-  };
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const q = inputVal;
     if (e.key === "Enter") {
@@ -76,7 +67,7 @@ const SearchModal = ({ open, setOpen }: Props) => {
       const newSearches = [q, ...recentSearches.slice(0, 5)];
       setRecentSearches(newSearches);
       localStorage.setItem("recentSearches", JSON.stringify(newSearches));
-      setOpen((prev) => !prev);
+      setIsOpen(false);
       setInputVal("");
       viewNavigate(`/search?q=${q}`);
     }
@@ -86,7 +77,7 @@ const SearchModal = ({ open, setOpen }: Props) => {
     // <Overlay visible={visible} />
     <div
       className={
-        open
+        isOpen
           ? cn(
               styles.search_modal,
               styles.active,
@@ -107,7 +98,7 @@ const SearchModal = ({ open, setOpen }: Props) => {
             onChange={handleChange}
             onKeyDown={handleKeyDown}
           />
-          <Close onClick={handleClose} className={styles.close_icon} />
+          <Close onClick={close} className={styles.close_icon} />
         </div>
       </div>
       <div className={styles.search_sub_part}>
@@ -148,7 +139,7 @@ const SearchModal = ({ open, setOpen }: Props) => {
                     key={idx}
                     onClick={() => {
                       router.push(`/search?q=${recentKeywords}`);
-                      handleClose();
+                      close();
                     }}
                   >
                     <span className={styles.keyword_title}>

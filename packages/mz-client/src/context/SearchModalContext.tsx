@@ -5,6 +5,7 @@ import React, {
   createContext,
   Dispatch,
   ReactNode,
+  useCallback,
   useContext,
   useState,
 } from "react";
@@ -20,12 +21,23 @@ export const SearchModalDispatchContext = createContext<Dispatch<
 > | null>(null);
 
 export const SearchModalProvider = ({ children }: { children: ReactNode }) => {
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const close = useCallback(() => {
+    if (!document.startViewTransition) {
+      setIsOpen(false);
+    } else {
+      return document.startViewTransition(() => {
+        setIsOpen(false);
+      });
+    }
+  }, []);
+
   return (
-    <SearchModalStateContext.Provider value={open}>
-      <SearchModalDispatchContext.Provider value={setOpen}>
+    <SearchModalStateContext.Provider value={isOpen}>
+      <SearchModalDispatchContext.Provider value={setIsOpen}>
         {children}
-        <SearchModal open={open} setOpen={setOpen} />
+        <SearchModal isOpen={isOpen} setIsOpen={setIsOpen} close={close} />
       </SearchModalDispatchContext.Provider>
     </SearchModalStateContext.Provider>
   );
