@@ -7,6 +7,7 @@ import { useWriteContext } from "@/context/WriteContext";
 import { getItem } from "@/lib/api/items";
 import { _cookie } from "@/lib/client";
 import { extractNextError } from "@/lib/nextError";
+import throttle from "lodash.throttle";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -25,6 +26,14 @@ export default function Edit({ params: { id } }: Params) {
   const [currentLink, setCurrentLink] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
+
+  const throttleUpdateProgress = throttle(
+    (value: number) => {
+      setProgress(value);
+    },
+    500,
+    { leading: true, trailing: true }
+  );
 
   useEffect(() => {
     async function fetchItemData() {
@@ -91,7 +100,7 @@ export default function Edit({ params: { id } }: Params) {
                       parseFloat(
                         (value / parseInt(contentLength, 10)).toFixed(2)
                       ) * 100;
-                    setProgress(percentComplete);
+                    throttleUpdateProgress(percentComplete);
                   }
                 }
 

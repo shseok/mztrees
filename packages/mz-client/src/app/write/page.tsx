@@ -7,6 +7,7 @@ import { useWriteContext } from "@/context/WriteContext";
 import { extractNextError } from "@/lib/nextError";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import throttle from "lodash.throttle";
 import { _cookie } from "@/lib/client";
 
 export default function Write() {
@@ -18,6 +19,13 @@ export default function Write() {
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
 
+  const throttleUpdateProgress = throttle(
+    (value: number) => {
+      setProgress(value);
+    },
+    500,
+    { leading: true, trailing: true }
+  );
   return (
     <BasicLayout title="링크 입력" hasBackButton>
       <WriteFormTemplate
@@ -61,7 +69,7 @@ export default function Write() {
                       parseFloat(
                         (value / parseInt(contentLength, 10)).toFixed(2)
                       ) * 100;
-                    setProgress(percentComplete);
+                    throttleUpdateProgress(percentComplete);
                   }
                 }
 
