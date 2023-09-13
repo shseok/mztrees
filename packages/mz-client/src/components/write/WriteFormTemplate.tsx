@@ -11,6 +11,7 @@ interface Props {
   buttonText: string;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   isLoading?: boolean;
+  loadingPercent?: number;
 }
 
 const WriteFormTemplate = ({
@@ -19,6 +20,7 @@ const WriteFormTemplate = ({
   buttonText,
   onSubmit,
   isLoading,
+  loadingPercent,
 }: Props) => {
   const { mode } = useTheme();
   return (
@@ -30,7 +32,15 @@ const WriteFormTemplate = ({
       {description && <h3>{description}</h3>}
       <div className={styles.content}>{children}</div>
       <Button disabled={isLoading}>
-        {isLoading ? <LoadingIndicator color="white" /> : buttonText}
+        {isLoading ? (
+          loadingPercent !== undefined ? (
+            `${loadingPercent}%`
+          ) : (
+            <LoadingIndicator color="white" />
+          )
+        ) : (
+          buttonText
+        )}
       </Button>
     </form>
   );

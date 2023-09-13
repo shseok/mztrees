@@ -1,6 +1,4 @@
-import QueryString from "qs";
-
-let _cookie = "";
+export let _cookie = "";
 
 export function setClientCookie(cookie: string) {
   _cookie = cookie;
