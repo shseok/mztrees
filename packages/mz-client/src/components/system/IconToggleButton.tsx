@@ -10,6 +10,7 @@ interface Props {
   size: Size;
   activeIcon: React.ReactNode;
   inactiveIcon: React.ReactNode;
+  ariaLabel: string;
 }
 
 const IconToggleButton = ({
@@ -18,11 +19,13 @@ const IconToggleButton = ({
   size,
   activeIcon,
   inactiveIcon,
+  ariaLabel,
 }: Props) => {
   return (
     <button
       className={cn(styles.styled_button, styles[size])}
       onClick={onClick}
+      aria-label={`${ariaLabel} toggle button`}
     >
       <AnimatePresence initial={false}>
         {isActive ? (

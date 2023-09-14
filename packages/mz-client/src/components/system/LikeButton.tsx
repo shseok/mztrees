@@ -27,6 +27,7 @@ const LikeButton = ({ onClick, isLiked, size = "medium" }: Props) => {
           )}
         />
       }
+      ariaLabel="like"
     />
   );
 };

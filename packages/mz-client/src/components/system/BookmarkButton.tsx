@@ -27,6 +27,7 @@ const BookmarkButton = ({ onClick, isBookmarked, size = "medium" }: Props) => {
           )}
         />
       }
+      ariaLabel="bookmark"
     />
   );
 };

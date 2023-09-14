@@ -32,6 +32,7 @@ const FooterTabItem = ({ icon, to }: Props) => {
     <Link
       className={cn(styles.like_item, pathname === to && styles.active)}
       href={to}
+      aria-label={`go to ${icon} page`}
       // passHref
     >
       {IconMap[icon]}

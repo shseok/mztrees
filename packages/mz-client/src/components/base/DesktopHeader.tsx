@@ -16,7 +16,7 @@ const DesktopHeader = () => {
       <div className={styles.block_top}>
         <div className={styles.content}>
           {/* tag 도입 후 params이 남아있기 때문에 Link -> a */}
-          <a className={styles.home_link} href="/">
+          <a className={styles.home_link} href="/" aria-label="go to home page">
             <Logo className={styles.styled_logo} />
           </a>
           <div className={styles.addon} />
