@@ -76,8 +76,12 @@
 .favicon {
   position: relative;
   width: 16px;
-  height: 16px;
+  aspect-ratio: 16/16;
   margin-right: 8px;
+
+  img {
+    object-fit: cover;
+  }
 }
 
 .title {
