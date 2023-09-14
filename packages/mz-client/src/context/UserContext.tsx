@@ -34,11 +34,11 @@ export function UserProvider({ children }: Props) {
         const user = await getMyAccountWithRefresh();
         setCurrentUser(user);
       } catch (e) {
-        console.log("in userContext", extractNextError(e));
+        console.log(extractNextError(e));
         setCurrentUser(null);
       }
     }
-    console.log("component mount"); // refresh
+    // console.log("component mount"); // refresh
     // TODO: cookie가 없다면 못하도록... 하고 싶다
     fetchUserData();
   }, []);
