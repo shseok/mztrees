@@ -73,6 +73,7 @@ const bookmarkService = {
             user: true,
             publisher: true,
             itemStats: true,
+            thumbnail: true,
             itemLikes: { where: { userId } },
           },
         },
