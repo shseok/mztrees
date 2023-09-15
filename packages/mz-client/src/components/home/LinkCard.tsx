@@ -5,7 +5,6 @@ import { useDateDistance } from "@/hooks/useDateDistance";
 import { useLikeManager } from "@/hooks/useLikeManager";
 import LikeButton from "../system/LikeButton";
 import { useItemOverrideById } from "@/hooks/stores/ItemOverrideStore";
-import { motion, AnimatePresence } from "framer-motion";
 import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
 import BookmarkButton from "../system/BookmarkButton";
 import { useBookmarkManager } from "@/hooks/useBookmarkManager";
@@ -15,6 +14,7 @@ import { useUser } from "@/context/UserContext";
 import { useSearchParams } from "next/navigation";
 import { useTheme } from "@/context/ThemeContext";
 import { cn } from "@/utils/common";
+import { AnimatePresence, MotionDiv } from "@/utils/dynamic";
 
 interface Props {
   item: Item;
@@ -109,14 +109,14 @@ const LinkCard = ({ item }: Props) => {
       <div className={styles.count_wrapper}>
         <AnimatePresence initial={false}>
           {likes === 0 ? null : (
-            <motion.div
+            <MotionDiv
               className={styles.likescount}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
               좋아요 {likes.toLocaleString()}개
-            </motion.div>
+            </MotionDiv>
           )}
         </AnimatePresence>
         {commentsCount === 0 ? null : (

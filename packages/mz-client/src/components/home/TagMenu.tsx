@@ -1,23 +1,20 @@
 import { useOnClickOutside } from "@/hooks/useOnClickOuteside";
-import { AnimatePresence, motion } from "framer-motion";
 import React, { useRef } from "react";
 import styles from "@/styles/TagMenu.module.scss";
 import { tagList } from "@/lib/const";
-import { ListMode, Tag } from "@/types/db";
+import { Tag } from "@/types/db";
 import { cn } from "@/utils/common";
-import Link from "next/link";
+import { AnimatePresence, MotionDiv } from "@/utils/dynamic";
 
 interface Props {
-  listMode: ListMode;
   visible: boolean;
   selected: Tag | null;
   onClose: (e?: Event) => void;
   onSelect: (e: React.MouseEvent<HTMLLIElement, MouseEvent>, item: Tag) => void;
 }
 
-const TagMenu = ({ listMode, onClose, visible, selected, onSelect }: Props) => {
+const TagMenu = ({ onClose, visible, selected, onSelect }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
-  const link = (item: Tag) => `/?mode=${listMode}&tag=${item}`;
   // const router = useRouter();
   useOnClickOutside(ref, (e) => {
     onClose(e);
@@ -25,7 +22,7 @@ const TagMenu = ({ listMode, onClose, visible, selected, onSelect }: Props) => {
   return (
     <AnimatePresence initial={false}>
       {visible && (
-        <motion.div
+        <MotionDiv
           className={styles.block}
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -47,7 +44,7 @@ const TagMenu = ({ listMode, onClose, visible, selected, onSelect }: Props) => {
               </li>
             ))}
           </ul>
-        </motion.div>
+        </MotionDiv>
       )}
     </AnimatePresence>
   );

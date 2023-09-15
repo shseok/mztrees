@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Overlay from "../system/Overlay";
-import { AnimatePresence, motion } from "framer-motion";
 import { useCommentInputStore } from "@/hooks/stores/useCommentInputStore";
 import { shallow } from "zustand/shallow";
 import { useItemId } from "@/hooks/useItemId";
@@ -17,7 +16,7 @@ import { extractNextError } from "@/lib/nextError";
 import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
 import { refreshToken } from "@/lib/api/auth";
 import { setClientCookie } from "@/lib/client";
-
+import { AnimatePresence, MotionDiv } from "@/utils/dynamic";
 const CommentInputOverlay = () => {
   const { visible, close, parentCommentId, commentId, defaultText } =
     useCommentInputStore(
@@ -182,7 +181,7 @@ const CommentInputOverlay = () => {
       <Overlay visible={visible} onClose={close} />
       <AnimatePresence initial={false}>
         {visible && (
-          <motion.div
+          <MotionDiv
             className={styles.footer}
             initial={{ y: 48 }}
             animate={{ y: 0 }}
@@ -205,7 +204,7 @@ const CommentInputOverlay = () => {
             >
               {isLoading ? <LoadingIndicator /> : buttonText}
             </button>
-          </motion.div>
+          </MotionDiv>
         )}
       </AnimatePresence>
     </>

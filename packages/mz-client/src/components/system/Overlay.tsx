@@ -1,6 +1,6 @@
 import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import styles from "@/styles/Overlay.module.scss";
+import { AnimatePresence, MotionDiv } from "@/utils/dynamic";
 
 interface Props {
   visible: boolean;
@@ -11,13 +11,13 @@ const Overlay = ({ visible, onClose }: Props) => {
   return (
     <AnimatePresence initial={false}>
       {visible && (
-        <motion.div
+        <MotionDiv
           className={styles.fill}
           onClick={onClose}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-        ></motion.div>
+        ></MotionDiv>
       )}
     </AnimatePresence>
   );

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Item } from "@/types/db";
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
 import LikeButton from "../system/LikeButton";
 import { useLikeManager } from "@/hooks/useLikeManager";
 import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
@@ -19,7 +18,7 @@ import MoreVertButton from "../base/MoreVertButton";
 import PopperMenu, { PopperMenuItem } from "../system/PopperMenu";
 import Button from "../system/Button";
 import { getItem } from "@/lib/api/items";
-
+import { AnimatePresence, MotionDiv } from "@/utils/dynamic";
 interface Props {
   item: Item;
   items: PopperMenuItem[];
@@ -140,14 +139,14 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
         </div>
         <AnimatePresence initial={false}>
           {likes === 0 ? null : (
-            <motion.div
+            <MotionDiv
               className={cn(styles.likescount, mode === "dark" && styles.dark)}
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 26, opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
             >
               좋아요 {likes.toLocaleString()}개
-            </motion.div>
+            </MotionDiv>
           )}
         </AnimatePresence>
         <div className={styles.footer}>

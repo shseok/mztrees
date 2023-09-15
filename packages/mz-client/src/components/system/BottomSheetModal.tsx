@@ -1,8 +1,8 @@
 import React from "react";
 import Overlay from "./Overlay";
-import { AnimatePresence, motion } from "framer-motion";
 import { BottomSheetModalItem } from "@/hooks/stores/useBottomSheetModalStore";
 import styles from "@/styles/BottomSheetModal.module.scss";
+import { AnimatePresence, MotionDiv } from "@/utils/dynamic";
 
 interface Props {
   visible: boolean;
@@ -16,7 +16,7 @@ const BottomSheetModal = ({ visible, items, onClose }: Props) => {
       <Overlay visible={visible} onClose={onClose} />
       <AnimatePresence>
         {visible && (
-          <motion.div
+          <MotionDiv
             className={styles.sheet}
             initial={{ y: "100%" }}
             animate={{ y: "0%" }}
@@ -34,7 +34,7 @@ const BottomSheetModal = ({ visible, items, onClose }: Props) => {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </MotionDiv>
         )}
       </AnimatePresence>
     </>

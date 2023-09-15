@@ -1,9 +1,8 @@
 import React from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { Size } from "@/types/db";
 import styles from "@/styles/IconToggleButton.module.scss";
 import { cn } from "@/utils/common";
-
+import { AnimatePresence, MotionDiv } from "@/utils/dynamic";
 interface Props {
   onClick: () => void;
   isActive: boolean;
@@ -29,7 +28,7 @@ const IconToggleButton = ({
     >
       <AnimatePresence initial={false}>
         {isActive ? (
-          <motion.div
+          <MotionDiv
             className={styles.svg_wrapper}
             key="fill"
             initial={{ scale: 0 }}
@@ -37,9 +36,9 @@ const IconToggleButton = ({
             exit={{ scale: 0 }}
           >
             {activeIcon}
-          </motion.div>
+          </MotionDiv>
         ) : (
-          <motion.div
+          <MotionDiv
             className={styles.svg_wrapper}
             key="outline"
             initial={{ scale: 0 }}
@@ -47,7 +46,7 @@ const IconToggleButton = ({
             exit={{ scale: 0 }}
           >
             {inactiveIcon}
-          </motion.div>
+          </MotionDiv>
         )}
       </AnimatePresence>
     </button>

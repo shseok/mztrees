@@ -1,11 +1,10 @@
-import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 import LoadingIndicator from "../system/LoadingIndicator";
 import Button from "../system/Button";
 import styles from "@/styles/CommentEditor.module.scss";
 import { useUser } from "@/context/UserContext";
 import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
-
+import { AnimatePresence, MotionDiv } from "@/utils/dynamic";
 interface Props {
   mode: "write" | "edit" | "reply";
   isLoading: boolean;
@@ -65,7 +64,7 @@ const CommentEditor = ({
       />
       <AnimatePresence>
         {isButtonShown && (
-          <motion.div
+          <MotionDiv
             className={styles.button_container}
             key="actions"
             initial={mode === "write" ? { height: 0, opacity: 0 } : false}
@@ -78,7 +77,7 @@ const CommentEditor = ({
             <Button size="small" onClick={handleSubmit} onFocus={onFocus}>
               {isLoading ? <LoadingIndicator color="white" /> : buttonText}
             </Button>
-          </motion.div>
+          </MotionDiv>
         )}
       </AnimatePresence>
     </div>

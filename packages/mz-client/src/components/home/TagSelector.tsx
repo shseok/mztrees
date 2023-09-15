@@ -55,7 +55,6 @@ const TagSelector = ({ listMode, selectedTag, setSelectedTag }: Props) => {
       )}
 
       <TagMenu
-        listMode={listMode}
         visible={visible}
         onClose={onClose}
         selected={selectedTag}

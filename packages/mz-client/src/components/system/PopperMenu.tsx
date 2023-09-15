@@ -1,10 +1,9 @@
-import { AnimatePresence, motion } from "framer-motion";
 import styles from "@/styles/PopperMenu.module.scss";
 import { useRef } from "react";
 import { useOnClickOutside } from "@/hooks/useOnClickOuteside";
 import { cn } from "@/utils/common";
 import { Delete, Edit } from "@/components/vectors/index";
-
+import { AnimatePresence, MotionDiv } from "@/utils/dynamic";
 const IconMap = {
   수정: <Edit />,
   삭제: <Delete />,
@@ -38,7 +37,7 @@ const PopperMenu = ({
   return (
     <AnimatePresence initial={false}>
       {visible && (
-        <motion.div
+        <MotionDiv
           className={cn(styles.block, styles[mode], styles[location])}
           onClick={() => {
             onClose();
@@ -64,7 +63,7 @@ const PopperMenu = ({
               {item.name}
             </div>
           ))}
-        </motion.div>
+        </MotionDiv>
       )}
     </AnimatePresence>
   );

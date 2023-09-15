@@ -1,12 +1,12 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
 import React, { useRef } from "react";
 import { useOnClickOutside } from "@/hooks/useOnClickOuteside";
 import { useOpenLogoutDialog } from "@/hooks/useOpenLoginDialog";
 import { useRouter } from "next/navigation";
 import styles from "@/styles/UserMenu.module.scss";
 import { cn } from "@/utils/common";
+import { AnimatePresence, MotionDiv } from "@/utils/dynamic";
 
 interface Props {
   visible: boolean;
@@ -23,7 +23,7 @@ const UserMenu = ({ visible, onClose }: Props) => {
   return (
     <AnimatePresence initial={false}>
       {visible && (
-        <motion.div
+        <MotionDiv
           className={styles.block}
           onClick={() => {
             onClose();
@@ -62,7 +62,7 @@ const UserMenu = ({ visible, onClose }: Props) => {
           >
             로그아웃
           </div>
-        </motion.div>
+        </MotionDiv>
       )}
     </AnimatePresence>
   );
