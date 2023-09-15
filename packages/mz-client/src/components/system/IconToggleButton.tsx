@@ -2,7 +2,13 @@ import React from "react";
 import { Size } from "@/types/db";
 import styles from "@/styles/IconToggleButton.module.scss";
 import { cn } from "@/utils/common";
-import { AnimatePresence, MotionDiv } from "@/utils/dynamic";
+import {
+  AnimatePresence,
+  MotionDiv,
+  LazyMotion,
+  loadFeature,
+} from "@/utils/dynamic";
+
 interface Props {
   onClick: () => void;
   isActive: boolean;
@@ -28,25 +34,29 @@ const IconToggleButton = ({
     >
       <AnimatePresence initial={false}>
         {isActive ? (
-          <MotionDiv
-            className={styles.svg_wrapper}
-            key="fill"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0 }}
-          >
-            {activeIcon}
-          </MotionDiv>
+          <LazyMotion features={loadFeature}>
+            <MotionDiv
+              className={styles.svg_wrapper}
+              key="fill"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+            >
+              {activeIcon}
+            </MotionDiv>
+          </LazyMotion>
         ) : (
-          <MotionDiv
-            className={styles.svg_wrapper}
-            key="outline"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0 }}
-          >
-            {inactiveIcon}
-          </MotionDiv>
+          <LazyMotion features={loadFeature}>
+            <MotionDiv
+              className={styles.svg_wrapper}
+              key="outline"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+            >
+              {inactiveIcon}
+            </MotionDiv>
+          </LazyMotion>
         )}
       </AnimatePresence>
     </button>

@@ -4,7 +4,12 @@ import Button from "../system/Button";
 import styles from "@/styles/CommentEditor.module.scss";
 import { useUser } from "@/context/UserContext";
 import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
-import { AnimatePresence, MotionDiv } from "@/utils/dynamic";
+import {
+  AnimatePresence,
+  MotionDiv,
+  LazyMotion,
+  loadFeature,
+} from "@/utils/dynamic";
 interface Props {
   mode: "write" | "edit" | "reply";
   isLoading: boolean;
@@ -64,20 +69,22 @@ const CommentEditor = ({
       />
       <AnimatePresence>
         {isButtonShown && (
-          <MotionDiv
-            className={styles.button_container}
-            key="actions"
-            initial={mode === "write" ? { height: 0, opacity: 0 } : false}
-            animate={{ height: 36, opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-          >
-            <Button size="small" variant="tertiary" onClick={onReset}>
-              취소
-            </Button>
-            <Button size="small" onClick={handleSubmit} onFocus={onFocus}>
-              {isLoading ? <LoadingIndicator color="white" /> : buttonText}
-            </Button>
-          </MotionDiv>
+          <LazyMotion features={loadFeature}>
+            <MotionDiv
+              className={styles.button_container}
+              key="actions"
+              initial={mode === "write" ? { height: 0, opacity: 0 } : false}
+              animate={{ height: 36, opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+            >
+              <Button size="small" variant="tertiary" onClick={onReset}>
+                취소
+              </Button>
+              <Button size="small" onClick={handleSubmit} onFocus={onFocus}>
+                {isLoading ? <LoadingIndicator color="white" /> : buttonText}
+              </Button>
+            </MotionDiv>
+          </LazyMotion>
         )}
       </AnimatePresence>
     </div>

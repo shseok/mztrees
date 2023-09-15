@@ -18,7 +18,12 @@ import MoreVertButton from "../base/MoreVertButton";
 import PopperMenu, { PopperMenuItem } from "../system/PopperMenu";
 import Button from "../system/Button";
 import { getItem } from "@/lib/api/items";
-import { AnimatePresence, MotionDiv } from "@/utils/dynamic";
+import {
+  AnimatePresence,
+  MotionDiv,
+  LazyMotion,
+  loadFeature,
+} from "@/utils/dynamic";
 interface Props {
   item: Item;
   items: PopperMenuItem[];
@@ -139,14 +144,19 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
         </div>
         <AnimatePresence initial={false}>
           {likes === 0 ? null : (
-            <MotionDiv
-              className={cn(styles.likescount, mode === "dark" && styles.dark)}
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 26, opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-            >
-              좋아요 {likes.toLocaleString()}개
-            </MotionDiv>
+            <LazyMotion features={loadFeature}>
+              <MotionDiv
+                className={cn(
+                  styles.likescount,
+                  mode === "dark" && styles.dark
+                )}
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 26, opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+              >
+                좋아요 {likes.toLocaleString()}개
+              </MotionDiv>
+            </LazyMotion>
           )}
         </AnimatePresence>
         <div className={styles.footer}>

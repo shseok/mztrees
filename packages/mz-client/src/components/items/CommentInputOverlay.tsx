@@ -16,7 +16,12 @@ import { extractNextError } from "@/lib/nextError";
 import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
 import { refreshToken } from "@/lib/api/auth";
 import { setClientCookie } from "@/lib/client";
-import { AnimatePresence, MotionDiv } from "@/utils/dynamic";
+import {
+  AnimatePresence,
+  MotionDiv,
+  LazyMotion,
+  loadFeature,
+} from "@/utils/dynamic";
 const CommentInputOverlay = () => {
   const { visible, close, parentCommentId, commentId, defaultText } =
     useCommentInputStore(
@@ -181,30 +186,32 @@ const CommentInputOverlay = () => {
       <Overlay visible={visible} onClose={close} />
       <AnimatePresence initial={false}>
         {visible && (
-          <MotionDiv
-            className={styles.footer}
-            initial={{ y: 48 }}
-            animate={{ y: 0 }}
-            exit={{ y: 48 }}
-            transition={{
-              damping: 0,
-            }}
-          >
-            <input
-              className={styles.input}
-              placeholder="댓글을 입력하세요."
-              onChange={(e) => setText(e.target.value)}
-              value={defaultTextValue}
-              autoFocus
-            />
-            <button
-              className={styles.transparent_button}
-              onClick={onClick}
-              disabled={isLoading}
+          <LazyMotion features={loadFeature}>
+            <MotionDiv
+              className={styles.footer}
+              initial={{ y: 48 }}
+              animate={{ y: 0 }}
+              exit={{ y: 48 }}
+              transition={{
+                damping: 0,
+              }}
             >
-              {isLoading ? <LoadingIndicator /> : buttonText}
-            </button>
-          </MotionDiv>
+              <input
+                className={styles.input}
+                placeholder="댓글을 입력하세요."
+                onChange={(e) => setText(e.target.value)}
+                value={defaultTextValue}
+                autoFocus
+              />
+              <button
+                className={styles.transparent_button}
+                onClick={onClick}
+                disabled={isLoading}
+              >
+                {isLoading ? <LoadingIndicator /> : buttonText}
+              </button>
+            </MotionDiv>
+          </LazyMotion>
         )}
       </AnimatePresence>
     </>

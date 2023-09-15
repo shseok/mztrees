@@ -14,7 +14,12 @@ import { useUser } from "@/context/UserContext";
 import { useSearchParams } from "next/navigation";
 import { useTheme } from "@/context/ThemeContext";
 import { cn } from "@/utils/common";
-import { AnimatePresence, MotionDiv } from "@/utils/dynamic";
+import {
+  AnimatePresence,
+  MotionDiv,
+  LazyMotion,
+  loadFeature,
+} from "@/utils/dynamic";
 
 interface Props {
   item: Item;
@@ -109,14 +114,16 @@ const LinkCard = ({ item }: Props) => {
       <div className={styles.count_wrapper}>
         <AnimatePresence initial={false}>
           {likes === 0 ? null : (
-            <MotionDiv
-              className={styles.likescount}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              좋아요 {likes.toLocaleString()}개
-            </MotionDiv>
+            <LazyMotion features={loadFeature}>
+              <MotionDiv
+                className={styles.likescount}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                좋아요 {likes.toLocaleString()}개
+              </MotionDiv>
+            </LazyMotion>
           )}
         </AnimatePresence>
         {commentsCount === 0 ? null : (

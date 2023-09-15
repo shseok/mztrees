@@ -10,5 +10,11 @@ const MotionDiv = dynamic(
     ssr: false,
   }
 );
+const LazyMotion = dynamic(
+  () => import("framer-motion").then((mod) => mod.LazyMotion),
+  { ssr: false }
+);
 
-export { AnimatePresence, MotionDiv };
+const loadFeature = () => import("./framerFeatures").then((res) => res.default);
+
+export { AnimatePresence, MotionDiv, LazyMotion, loadFeature };
