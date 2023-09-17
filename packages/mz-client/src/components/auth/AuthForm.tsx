@@ -9,12 +9,12 @@ import { userLogin, userRegister } from "@/lib/api/auth";
 import { useSearchParams, useRouter } from "next/navigation";
 import { validate } from "@/lib/validate";
 import styles from "@/styles/AuthForm.module.scss";
-import Link from "next/link";
 import { Logo } from "@/components/vectors";
 import { NextAppError, extractNextError } from "@/lib/nextError";
 import { useUser } from "@/context/UserContext";
 import { cn } from "@/utils/common";
 import { useTheme } from "@/context/ThemeContext";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
   mode: "login" | "register";
@@ -65,9 +65,11 @@ const AuthForm = ({ mode }: Props) => {
   const next = searchParams.get("next");
   const [error, setError] = useState<NextAppError | undefined>();
   const { setCurrentUser: set } = useUser();
+  const queryClient = useQueryClient();
 
   const onSubmit: SubmitHandler<Inputs> = async (data: Inputs, event) => {
     event?.preventDefault();
+    queryClient.invalidateQueries(["Items", "trending"]);
     try {
       if (mode === "register") {
         const result = await userRegister(data);
@@ -77,10 +79,10 @@ const AuthForm = ({ mode }: Props) => {
         const result = await userLogin(data);
         set(result.user);
         const from = next ?? "/";
-        // console.log(from);
         router.replace(from);
-        router.refresh();
       }
+
+      router.refresh();
     } catch (e) {
       set(null);
       const error = extractNextError(e);
