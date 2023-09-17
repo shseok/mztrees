@@ -20,7 +20,10 @@ const useItemOverrideStore = create<ItemOverrideStore>((set) => ({
   set: (itemId, overridableItem) =>
     set((store) =>
       produce(store, (draft) => {
-        draft.overrides[itemId] = overridableItem;
+        draft.overrides[itemId] = {
+          ...draft.overrides[itemId],
+          ...overridableItem,
+        };
       })
     ),
 }));
