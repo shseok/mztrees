@@ -12,7 +12,7 @@ import { SearchModalProvider } from "@/context/SearchModalContext";
 
 function Providers({ children }: React.PropsWithChildren) {
   const [client] = useState(
-    new QueryClient({ defaultOptions: { queries: { staleTime: 1000 * 60 } } })
+    new QueryClient({ defaultOptions: { queries: { staleTime: 1000 * 6 } } })
   );
 
   return (
