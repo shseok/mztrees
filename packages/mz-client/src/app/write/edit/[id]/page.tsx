@@ -5,7 +5,7 @@ import LabelInput from "@/components/system/LabelInput";
 import WriteFormTemplate from "@/components/write/WriteFormTemplate";
 import { useWriteContext } from "@/context/WriteContext";
 import { getItem } from "@/lib/api/items";
-import { _cookie } from "@/lib/client";
+import { FetchError, _cookie } from "@/lib/client";
 import { extractNextError } from "@/lib/nextError";
 import throttle from "lodash.throttle";
 import { useRouter } from "next/navigation";
@@ -87,6 +87,10 @@ export default function Edit({ params: { id } }: Params) {
               body: JSON.stringify({ link: form.link }),
             })
               .then(async (response) => {
+                if (!response.ok) {
+                  const data = await response.json();
+                  throw new FetchError(response, data);
+                }
                 if (!response?.body) return;
                 // get total length
                 const contentLength = response.headers.get("Content-Length");

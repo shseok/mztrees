@@ -8,7 +8,7 @@ import { extractNextError } from "@/lib/nextError";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import throttle from "lodash.throttle";
-import { _cookie } from "@/lib/client";
+import { FetchError, _cookie } from "@/lib/client";
 
 export default function Write() {
   const router = useRouter();
@@ -56,6 +56,10 @@ export default function Write() {
               body: JSON.stringify({ link: form.link }),
             })
               .then(async (response) => {
+                if (!response.ok) {
+                  const data = await response.json();
+                  throw new FetchError(response, data);
+                }
                 if (!response?.body) return;
                 // get total length
                 const contentLength = response.headers.get("Content-Length");
