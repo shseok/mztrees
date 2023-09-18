@@ -48,7 +48,6 @@ const LinkCard = ({ item }: Props) => {
   const commentsCount =
     itemOverride?.itemStats?.commentsCount ?? itemStats.commentsCount;
   const isBookmarked = itemOverride?.isBookmarked ?? item.isBookmarked;
-  /**TODO: 연타로 누르면 기존의 것이 잘 취소되어야함 */
   const openLoginDialog = useOpenLoginDialog();
   const { currentUser } = useUser();
   const { mode } = useTheme();

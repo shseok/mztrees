@@ -17,7 +17,6 @@ import { cn } from "@/utils/common";
 import MoreVertButton from "../base/MoreVertButton";
 import PopperMenu, { PopperMenuItem } from "../system/PopperMenu";
 import Button from "../system/Button";
-import { getItem } from "@/lib/api/items";
 import {
   AnimatePresence,
   MotionDiv,
@@ -47,12 +46,9 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
   const dateDistance = useDateDistance(createdAt);
   const { like, unlike } = useLikeManager();
   const { bookmark, unbookmark } = useBookmarkManager();
-
-  // const isLiked = itemOverride?.isLiked ?? item.isLiked;
-  const [isLiked, setIsLiked] = useState(itemOverride?.isLiked ?? item.isLiked);
+  const isLiked = itemOverride?.isLiked ?? item.isLiked;
   const likes = itemOverride?.itemStats?.likes ?? itemStats.likes;
   const isBookmarked = itemOverride?.isBookmarked ?? item.isBookmarked;
-  /**TODO: 연타로 누르면 기존의 것이 잘 취소되어야함 */
   const openLoginDialog = useOpenLoginDialog();
   const { currentUser } = useUser();
   const { mode } = useTheme();
@@ -88,15 +84,6 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
   const onCloseMenu = () => {
     setIsMenuVisible(false);
   };
-
-  // 항상 item page에서 받은 item의 isLiked는 false > isLiked 따로 갱신
-  useEffect(() => {
-    async function getIsLiked() {
-      const { isLiked } = await getItem(id);
-      setIsLiked(isLiked);
-    }
-    getIsLiked();
-  }, []);
 
   return (
     <div className={styles.block}>
