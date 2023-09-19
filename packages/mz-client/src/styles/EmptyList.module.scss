@@ -14,9 +14,16 @@
   text-align: center;
   flex: 1;
 
+  flex-direction: column;
+  gap: 38px;
+
+  span {
+    font-weight: 500;
+    font-size: 21px;
+  }
+
   @include mobile {
     padding-top: 128px;
     padding-bottom: 128px;
-    font-size: 21px;
   }
 }

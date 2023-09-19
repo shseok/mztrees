@@ -13,6 +13,7 @@ import { stringify } from "qs";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
 import Loading from "@/components/system/PostLoading";
+import EmptyList from "@/components/system/EmptyList";
 
 interface Props {
   searchParams: { [key: string]: string | undefined };
@@ -50,7 +51,7 @@ export default function Search({ searchParams }: Props) {
   useInfiniteScroll(observerTargetEl, fetchNextData);
 
   useEffect(() => {
-    console.log("1router.push");
+    // console.log("1router.push");
     const query = { q: inputResult };
     const url = `/search${stringify(query, {
       charset: "utf-8",
@@ -62,10 +63,10 @@ export default function Search({ searchParams }: Props) {
 
   // render for desktop search
   useEffect(() => {
-    console.log("2useEffect");
+    // console.log("2useEffect");
     setSearchText(searchParams?.["q"] ?? "");
   }, [searchParams]);
-
+  const items = infiniteData?.pages.flatMap((page) => page.list);
   return (
     <TabLayout
       header={
@@ -86,13 +87,15 @@ export default function Search({ searchParams }: Props) {
         ) : status === "error" ? (
           // // TODO: define error type
           <div>Error: {(error as any).message}</div>
-        ) : (
-          <>
-            <SearchResultCardList
-              items={infiniteData.pages.flatMap((page) => page.list) ?? []}
+        ) : items ? (
+          items?.length === 0 ? (
+            <EmptyList
+              message={`"${searchText}"에 대한 검색결과가 없어요.\n 다른 검색어로 검색을 해보시겠어요?`}
             />
-          </>
-        ))}
+          ) : (
+            <SearchResultCardList items={items} />
+          )
+        ) : null)}
       <div ref={observerTargetEl} />
     </TabLayout>
   );
