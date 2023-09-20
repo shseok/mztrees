@@ -6,6 +6,13 @@
   flex-direction: column;
   gap: 24px;
 
+  .search_text {
+    margin: 0;
+    padding-top: 13px;
+    padding-bottom: 31px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
   @include desktop {
     width: 768px;
     margin: 0 auto;

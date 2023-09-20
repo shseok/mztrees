@@ -93,7 +93,7 @@ export default function Search({ searchParams }: Props) {
               message={`"${searchText}"에 대한 검색결과가 없어요.\n 다른 검색어로 검색을 해보시겠어요?`}
             />
           ) : (
-            <SearchResultCardList items={items} />
+            <SearchResultCardList items={items} searchText={searchText} />
           )
         ) : null)}
       <div ref={observerTargetEl} />
