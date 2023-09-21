@@ -1,7 +1,10 @@
 "use client";
 
 import styles from "@/styles/StyledTabLayout.module.scss";
-import { useInfiniteQuery, useQueryErrorResetBoundary } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useQueryErrorResetBoundary,
+} from "@tanstack/react-query";
 import React, {
   useCallback,
   useEffect,
@@ -91,7 +94,6 @@ export default function Home() {
   }, [startDate, endDate, defaultDateRange, mode]);
 
   const items = infiniteData?.pages.flatMap((page) => page.list);
-  console.log(error, typeof error);
   return (
     <TabLayout className="layout_padding">
       <div className={styles.content}>
