@@ -1,0 +1,42 @@
+@import "_var";
+
+.body {
+  padding: 6px 24px;
+  height: 100%;
+
+  .container {
+    text-align: center;
+
+    .title {
+      // font-size: 24px;
+      // font-weight: 600;
+      color: $primary;
+      margin-bottom: 12px;
+    }
+
+    .message {
+      // font-size: 16px;
+      // font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .notification {
+      // font-size: 14px;
+      // font-weight: 400;
+      color: $gray2;
+      margin-bottom: 12px;
+    }
+
+    .button_container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 36px;
+      gap: 6px;
+
+      .button {
+        margin: 0 6px;
+      }
+    }
+  }
+}

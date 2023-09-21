@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "@/styles/StyledTabLayout.module.scss";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryErrorResetBoundary } from "@tanstack/react-query";
 import React, {
   useCallback,
   useEffect,
@@ -21,6 +21,7 @@ import SkeletonUI from "@/components/system/SkeletonUI";
 import EmptyList from "../system/EmptyList";
 import TabLayout from "../layout/TabLayout";
 import TagSelector from "./TagSelector";
+import Error from "@/app/error";
 
 export default function Home() {
   const observerTargetEl = useRef<HTMLDivElement>(null);
@@ -38,6 +39,7 @@ export default function Home() {
   const [dateRange, setDateRange] = useState(
     startDate && endDate ? [startDate, endDate] : defaultDateRange
   );
+  const { reset } = useQueryErrorResetBoundary();
 
   const {
     status,
@@ -89,7 +91,7 @@ export default function Home() {
   }, [startDate, endDate, defaultDateRange, mode]);
 
   const items = infiniteData?.pages.flatMap((page) => page.list);
-
+  console.log(error, typeof error);
   return (
     <TabLayout className="layout_padding">
       <div className={styles.content}>
@@ -104,7 +106,7 @@ export default function Home() {
           <SkeletonUI />
         ) : status === "error" ? (
           // TODO: define error type
-          <div>Error: {(error as any).message}</div>
+          <Error error={error as Error} reset={reset} />
         ) : items ? (
           <LinkCardList items={items} />
         ) : null}

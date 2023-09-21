@@ -7,13 +7,17 @@ import SearchInput from "@/components/search/SearchInput";
 import SearchResultCardList from "@/components/search/SearchResultCardList";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { searchItems } from "@/lib/api/search";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useQueryErrorResetBoundary,
+} from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { stringify } from "qs";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
 import Loading from "@/components/system/PostLoading";
 import EmptyList from "@/components/system/EmptyList";
+import Error from "@/app/error";
 
 interface Props {
   searchParams: { [key: string]: string | undefined };
@@ -24,6 +28,7 @@ export default function Search({ searchParams }: Props) {
   const [inputResult] = useDebounce(searchText, 300);
   const observerTargetEl = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const { reset } = useQueryErrorResetBoundary();
 
   const {
     status,
@@ -86,7 +91,7 @@ export default function Search({ searchParams }: Props) {
           <Loading />
         ) : status === "error" ? (
           // // TODO: define error type
-          <div>Error: {(error as any).message}</div>
+          <Error error={error as Error} reset={reset} />
         ) : items ? (
           items?.length === 0 ? (
             <EmptyList
