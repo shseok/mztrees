@@ -41,6 +41,7 @@ export default function EditExtract() {
           if (!form.id) return;
           router.push(`/write/edit/${form.id}/intro`);
         }}
+        hasGifButton
       >
         <div className={styles.group}>
           {extracted.length > 0 ? (

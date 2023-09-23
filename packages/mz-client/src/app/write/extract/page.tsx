@@ -39,6 +39,7 @@ export default function Extract() {
           e.preventDefault();
           router.push("/write/intro");
         }}
+        hasGifButton
       >
         <div className={styles.group}>
           {extracted.length > 0 ? (

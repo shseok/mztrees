@@ -12,6 +12,11 @@
     justify-content: center;
   }
 
+  .title {
+    display: flex;
+    justify-content: space-between;
+  }
+
   h3 {
     color: $gray5;
     line-height: 1.5;

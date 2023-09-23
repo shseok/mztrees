@@ -4,6 +4,7 @@ import Button from "../system/Button";
 import { useTheme } from "@/context/ThemeContext";
 import { cn } from "@/utils/common";
 import LoadingIndicator from "../system/LoadingIndicator";
+import GifSelectButton from "./GifButton";
 
 interface Props {
   description?: string;
@@ -12,6 +13,7 @@ interface Props {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   isLoading?: boolean;
   loadingPercent?: number;
+  hasGifButton?: boolean;
 }
 
 const WriteFormTemplate = ({
@@ -21,6 +23,7 @@ const WriteFormTemplate = ({
   onSubmit,
   isLoading,
   loadingPercent,
+  hasGifButton = false,
 }: Props) => {
   const { mode } = useTheme();
   return (
@@ -29,7 +32,10 @@ const WriteFormTemplate = ({
       method="POST"
       onSubmit={onSubmit}
     >
-      {description && <h3>{description}</h3>}
+      <div className={styles.title}>
+        {description && <h3>{description}</h3>}
+        {hasGifButton && <GifSelectButton />}
+      </div>
       <div className={styles.content}>{children}</div>
       <Button disabled={isLoading}>
         {isLoading ? (
