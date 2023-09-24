@@ -1,3 +1,4 @@
+import { GifSelectorProvider } from "@/context/GifSelectorContext";
 import { ImageViewerProvider } from "@/context/ImageViewerContext";
 import { WriteProvider } from "@/context/WriteContext";
 import { checkIsLoggedIn } from "@/lib/applyAuth";
@@ -14,14 +15,16 @@ export default async function WriteLayout({
 }: {
   children: React.ReactNode;
 }) {
-  console.log("pre-rendering test in write");
+  // console.log("pre-rendering test in write");
   const isLoggedIn = await checkIsLoggedIn();
   if (!isLoggedIn) {
     return redirect(`/login?next=/write`);
   }
   return (
     <ImageViewerProvider>
-      <WriteProvider>{children}</WriteProvider>
+      <WriteProvider>
+        <GifSelectorProvider>{children}</GifSelectorProvider>
+      </WriteProvider>
     </ImageViewerProvider>
   );
 }

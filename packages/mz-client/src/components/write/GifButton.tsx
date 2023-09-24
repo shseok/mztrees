@@ -1,6 +1,4 @@
 "use client";
-
-import React, { useState } from "react";
 import styles from "@/styles/GifSelectButton.module.scss";
 import { cn } from "@/utils/common";
 import { useTheme } from "@/context/ThemeContext";

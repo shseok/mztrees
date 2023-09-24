@@ -5,14 +5,21 @@ import styles from "@/styles/gif/GifList.module.scss";
 
 interface Props {
   data: any[];
+  selected: string;
+  handleClick: (url: string) => void;
 }
 
-const GifList = ({ data }: Props) => {
+const GifList = ({ data, selected, handleClick }: Props) => {
   const results = data;
   let gifs;
   if (results.length) {
     gifs = results.map((gif) => (
-      <Gif url={gif.images.fixed_height.url} key={gif.id} />
+      <Gif
+        url={gif.images.fixed_height.url}
+        key={gif.id}
+        selected={selected}
+        handleClick={handleClick}
+      />
     ));
   } else {
     gifs = <NoGifs />;

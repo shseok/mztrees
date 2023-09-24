@@ -15,6 +15,8 @@
   .title {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
   }
 
   h3 {
@@ -22,8 +24,7 @@
     line-height: 1.5;
     font-size: 18px;
     font-weight: 600;
-    margin-top: 0;
-    margin-bottom: 16px;
+    margin: 0;
   }
 
   &.dark h3 {

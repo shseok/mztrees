@@ -1,11 +1,7 @@
+"use client";
+
 import GifSelector from "@/components/system/gif/GifSelector";
-import React, {
-  MouseEvent,
-  ReactNode,
-  createContext,
-  useContext,
-  useState,
-} from "react";
+import React, { ReactNode, createContext, useContext, useState } from "react";
 
 export type GifSelectorContextType = {
   open: () => void;

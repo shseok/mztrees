@@ -18,15 +18,10 @@ function SearchForm({ onSearch }: Props) {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      <label className="is_hidden" htmlFor="search">
-        Search
-      </label>
-      <div className={styles.input_wrapper}>
-        <SearchInput value={searchText} onChangeText={setSearchText} />
-        <Button type="submit" id="submit" size="small">
-          검색
-        </Button>
-      </div>
+      <SearchInput value={searchText} onChangeText={setSearchText} />
+      <Button type="submit" id="submit" size="small">
+        검색
+      </Button>
     </form>
   );
 }

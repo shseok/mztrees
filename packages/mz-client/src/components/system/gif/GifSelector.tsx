@@ -4,21 +4,29 @@ import GifList from "./GifList";
 import Modal from "../Modal";
 import styles from "@/styles/gif/GifSelector.module.scss";
 import Button from "../Button";
+import { useWriteContext } from "@/context/WriteContext";
 
 interface Props {
   visible: boolean;
-  onClose: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onClose: () => void;
 }
 
 const key = process.env.NEXT_PUBLIC_GIPHY_API_KEY;
 
 const GifSelector = ({ visible, onClose }: Props) => {
   const [data, setData] = useState([]);
-  const [query, setQuery] = useState("webdeveloper");
+  const [query, setQuery] = useState("website");
   const [isloading, setIsLoading] = useState(true);
+  const [selected, setSelected] = useState("");
+  const {
+    state: { form },
+    actions,
+  } = useWriteContext();
 
   const performSearch = (value: string) => setQuery(value);
-
+  const selecteGif = (url: string) => {
+    setSelected(url);
+  };
   // fetching data from giphy api
   useEffect(() => {
     fetch(
@@ -39,10 +47,24 @@ const GifSelector = ({ visible, onClose }: Props) => {
           </div>
         </div>
         <div className={styles.content_wrapper}>
-          {isloading ? <p>Loading...</p> : <GifList data={data} />}
+          {isloading ? (
+            <p>Loading...</p>
+          ) : (
+            <GifList data={data} selected={selected} handleClick={selecteGif} />
+          )}
         </div>
         <section className={styles.footer}>
-          <Button onClick={() => {}}>선택</Button>
+          <Button
+            onClick={() => {
+              actions.change("thumbnail", {
+                extracted: [...form.thumbnail.extracted, selected],
+                selected,
+              });
+              onClose();
+            }}
+          >
+            선택
+          </Button>
           <Button onClick={onClose} variant="secondary">
             취소
           </Button>
