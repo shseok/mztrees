@@ -4,29 +4,22 @@ import React, { useState } from "react";
 import styles from "@/styles/GifSelectButton.module.scss";
 import { cn } from "@/utils/common";
 import { useTheme } from "@/context/ThemeContext";
-import GifSelectModal from "../system/GifSelectModal";
+import { useGifSelector } from "@/context/GifSelectorContext";
 
 const GifSelectButton = () => {
   const { mode } = useTheme();
-  const [visible, setVisible] = useState(false);
+  const { open } = useGifSelector();
   return (
     <>
       <button
         className={cn(styles.container, mode === "dark" && styles.dark_mode)}
         onClick={(e) => {
           e.preventDefault();
-          setVisible(true);
+          open();
         }}
       >
         GIF 파일검색
       </button>
-      <GifSelectModal
-        visible={visible}
-        onClose={(e) => {
-          e.preventDefault();
-          setVisible(false);
-        }}
-      />
     </>
   );
 };

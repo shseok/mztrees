@@ -71,6 +71,7 @@ const TagInput = () => {
           )}
         </div>
       </div>
+      {/* Refactor: 아마 form안에 있어서 form 버튼까지 버블링되는 것 같다. 물론 preventDefault로 일일이 막아주었지만.. 최대한 전역으로 빼자 (Dialog처럼.) */}
       <OptionSelector
         title="추가할 태그를 선택해주세요."
         list={[...tagList]}

@@ -1,0 +1,53 @@
+@import "../_var", "../_module";
+
+.box {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  max-width: 100%;
+
+  .header {
+    width: 100%;
+    background: #fff;
+    max-height: 145px;
+
+    .title {
+      font-size: 22px;
+      line-height: 80px;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+  }
+
+  .inner {
+    width: 90%;
+    margin: auto;
+  }
+
+  .content_wrapper {
+    overflow: scroll;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $primary;
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: $gray2;
+      border-radius: 10px;
+      box-shadow: inset 0px 0px 5px white;
+    }
+  }
+
+  .footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+    padding-bottom: 5px;
+    padding-top: 10px;
+  }
+}
