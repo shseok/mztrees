@@ -7,7 +7,7 @@ import { useParams } from "next/navigation";
  */
 export function useItemId() {
   const { id } = useParams();
-  const parsed = id ? parseInt(id) : null;
+  const parsed = id ? parseInt(id as string) : null;
   if (parsed && isNaN(parsed)) return null;
   return parsed;
 }
