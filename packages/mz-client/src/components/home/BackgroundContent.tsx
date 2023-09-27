@@ -6,27 +6,22 @@ const BackgroundContent = ({ x, y }: { x: number; y: number }) => {
     <>
       {/* light yellow */}
       <Object
-        locationX={"29%"}
-        locationY={"7%"}
+        bottom={"30%"}
+        left={"15%"}
         translateX={(x / 100) * 10}
         translateY={(y / 100) * 10}
-        bgColor={"rgb(255,255,102)"}
       />
-      {/* light cyan */}
       <Object
-        locationX={"68%"}
-        locationY={"37%"}
+        bottom={"50%"}
+        left={"70%"}
         translateX={(x / 100) * -10}
         translateY={(y / 100) * 10}
-        bgColor={"rgb(177,255,255)"}
       />
-      {/* light green */}
       <Object
-        locationX={"39%"}
-        locationY={"70%"}
+        bottom={"12%"}
+        left={"60%"}
         translateX={(x / 100) * -8}
         translateY={(y / 100) * -4}
-        bgColor={"rgb(144,238,144)"}
       />
     </>
   );
