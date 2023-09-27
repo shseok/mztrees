@@ -1,9 +1,9 @@
 .box {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  z-index: 0;
   position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
   background-position: right;
   background-size: cover;
 }

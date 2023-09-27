@@ -4,31 +4,29 @@ import Object from "./Object";
 const BackgroundContent = ({ x, y }: { x: number; y: number }) => {
   return (
     <>
-      <Object src="/assets/2.png" translateX={x / 100} translateY={y / 100} />
+      {/* light yellow */}
       <Object
-        src="/assets/3.png"
-        translateX={(x / 100) * -2}
-        translateY={(y / 100) * -2}
+        locationX={"29%"}
+        locationY={"7%"}
+        translateX={(x / 100) * 10}
+        translateY={(y / 100) * 10}
+        bgColor={"rgb(255,255,102)"}
       />
+      {/* light cyan */}
       <Object
-        src="/assets/4.png"
-        translateX={(x / 100) * -4}
-        translateY={(y / 100) * -4}
-      />
-      <Object
-        src="/assets/5.png"
-        translateX={(x / 100) * -6}
-        translateY={(y / 100) * -6}
-      />
-      <Object
-        src="/assets/6.png"
-        translateX={(x / 100) * -8}
-        translateY={(y / 100) * -8}
-      />
-      <Object
-        src="/assets/7.png"
+        locationX={"68%"}
+        locationY={"37%"}
         translateX={(x / 100) * -10}
-        translateY={(y / 100) * -10}
+        translateY={(y / 100) * 10}
+        bgColor={"rgb(177,255,255)"}
+      />
+      {/* light green */}
+      <Object
+        locationX={"39%"}
+        locationY={"70%"}
+        translateX={(x / 100) * -8}
+        translateY={(y / 100) * -4}
+        bgColor={"rgb(144,238,144)"}
       />
     </>
   );
