@@ -25,6 +25,7 @@ import EmptyList from "../system/EmptyList";
 import TabLayout from "../layout/TabLayout";
 import TagSelector from "./TagSelector";
 import Error from "@/app/error";
+import BackgroundContent from "./BackgroundContent";
 
 export default function Home() {
   const observerTargetEl = useRef<HTMLDivElement>(null);
@@ -42,6 +43,7 @@ export default function Home() {
   const [dateRange, setDateRange] = useState(
     startDate && endDate ? [startDate, endDate] : defaultDateRange
   );
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const { reset } = useQueryErrorResetBoundary();
 
   const {
@@ -93,9 +95,23 @@ export default function Home() {
     }
   }, [startDate, endDate, defaultDateRange, mode]);
 
+  useEffect(() => {
+    const handleMouseMove = (event: MouseEvent) => {
+      setMousePosition({ x: event.clientX, y: event.clientY });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
   const items = infiniteData?.pages.flatMap((page) => page.list);
   return (
     <TabLayout className="layout_padding">
+      {/* <Ball x={mousePosition.x} y={mousePosition.y} /> */}
+      <BackgroundContent x={mousePosition.x} y={mousePosition.y} />
       <div className={styles.content}>
         <ListModeSelector mode={mode} tag={tag} />
         <TagSelector
