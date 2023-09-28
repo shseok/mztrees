@@ -8,7 +8,7 @@ interface Props {
   translateY: number;
 }
 
-const cubeSize = 60;
+const cubeSize = 20;
 
 const Object = ({ bottom, left, translateX, translateY }: Props) => {
   return (

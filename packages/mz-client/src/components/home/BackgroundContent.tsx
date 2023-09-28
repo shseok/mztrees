@@ -6,8 +6,8 @@ const BackgroundContent = ({ x, y }: { x: number; y: number }) => {
     <>
       {/* light yellow */}
       <Object
-        bottom={"30%"}
-        left={"15%"}
+        bottom={"38%"}
+        left={"27%"}
         translateX={(x / 100) * 10}
         translateY={(y / 100) * 10}
       />

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import FullHeightPage from "@/components/system/FullHeightPage";
 import MobileHeader from "@/components/base/MobileHeader";
 import Footer from "@/components/base/Footer";
@@ -20,19 +20,6 @@ interface Props {
 const TabLayout = ({ className, children, header }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   useTabScrollTop(ref);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
-      setMousePosition({ x: event.clientX, y: event.clientY });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
 
   return (
     <FullHeightPage>
@@ -42,7 +29,7 @@ const TabLayout = ({ className, children, header }: Props) => {
           <DesktopHeader />
         </>
       )}
-      <BackgroundContent x={mousePosition.x} y={mousePosition.y} />
+      <BackgroundContent x={0} y={0} />
       <div
         className={cn(styles.content, className && styles[className])}
         ref={ref}

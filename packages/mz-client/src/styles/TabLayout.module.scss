@@ -5,7 +5,7 @@
 }
 
 .content {
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(1px);
   height: 100%;
   @include layout;
 }
