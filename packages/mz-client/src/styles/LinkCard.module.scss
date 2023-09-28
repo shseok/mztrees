@@ -12,6 +12,8 @@
   padding: 10px;
   box-shadow: rgba(0, 0, 0, 0.08) 0px 8px 20px 0px;
   border-radius: 12px;
+  background: white;
+  opacity: 0.9;
 
   @include tablet {
     box-shadow: none;
@@ -28,6 +30,9 @@
   }
 
   &.dark {
+    background: #1e1f21;
+    opacity: 0.8;
+
     .publisher,
     .title,
     .body,
