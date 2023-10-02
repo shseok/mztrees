@@ -29,7 +29,7 @@ const TabLayout = ({ className, children, header }: Props) => {
           <DesktopHeader />
         </>
       )}
-      <BackgroundContent x={0} y={0} />
+      {/* <BackgroundContent x={0} y={0} /> */}
       <div
         className={cn(styles.content, className && styles[className])}
         ref={ref}
