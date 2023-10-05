@@ -14,6 +14,7 @@ import LabelInput from "@/components/system/LabelInput";
 import LabelTextArea from "@/components/system/LabelTextArea";
 import { useWriteContext } from "@/context/WriteContext";
 import TagInput from "@/components/system/TagInput";
+import { toast } from "sonner";
 
 export default function EditIntro() {
   const {
@@ -37,11 +38,11 @@ export default function EditIntro() {
     e.preventDefault();
 
     if (form.title === "" || form.body === "") {
-      setErrorMessage("제목과 내용을 모두 입력해주세요.");
+      toast.error("제목과 내용을 모두 입력해주세요.");
       return;
     }
     if (!form.tags.length) {
-      setErrorMessage("해당 웹사이트의 태그를 입력해 주세요");
+      toast.error("해당 웹사이트의 태그를 입력해 주세요");
       return;
     }
 

@@ -15,6 +15,7 @@ import styles from "@/styles/WriteIntro.module.scss";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export default function Intro() {
   const {
@@ -40,11 +41,11 @@ export default function Intro() {
   const onSubmit: SubmitHandler<typeof form> = async (data, e) => {
     e?.preventDefault();
     if (form.title === "" || form.body === "") {
-      setErrorMessage("제목과 내용을 모두 입력해주세요.");
+      toast.error("제목과 내용을 모두 입력해주세요.");
       return;
     }
     if (!form.tags.length) {
-      setErrorMessage("해당 웹사이트의 태그를 입력해 주세요");
+      toast.error("해당 웹사이트의 태그를 입력해 주세요");
       return;
     }
     // if (form.thumbnail.extracted.length > 1 && !form.thumbnail.selected) {
