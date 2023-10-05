@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import Providers from "@/utils/provider";
 import GlobalBottomSheetModal from "@/components/system/GlobalBottomSheetModal";
 import { Metadata } from "next";
+import ToastProviders from "@/components/system/ToastProvider";
 
 export const metadata: Metadata = {
   title: "엠제트리 - Mztrees, 웹 사이트 공유의 장",
@@ -55,7 +56,9 @@ export default function RootLayout({
   return (
     <html lang="ko" className={myFont.className}>
       <body>
-        <Providers>{children}</Providers>
+        <ToastProviders>
+          <Providers>{children}</Providers>
+        </ToastProviders>
         <GlobalBottomSheetModal />
       </body>
     </html>
