@@ -10,7 +10,7 @@ interface ToastProvidersProps {
 const ToastProviders: FC<ToastProvidersProps> = ({ children }) => {
   return (
     <>
-      <Toaster position="top-center" richColors />
+      <Toaster position="bottom-right" richColors />
       {children}
     </>
   );
