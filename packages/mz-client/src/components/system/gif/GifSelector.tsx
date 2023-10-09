@@ -9,11 +9,12 @@ import { useWriteContext } from "@/context/WriteContext";
 interface Props {
   visible: boolean;
   onClose: () => void;
+  onSelect: () => void;
 }
 
 const key = process.env.NEXT_PUBLIC_GIPHY_API_KEY;
 
-const GifSelector = ({ visible, onClose }: Props) => {
+const GifSelector = ({ visible, onClose, onSelect }: Props) => {
   const [data, setData] = useState([]);
   const [query, setQuery] = useState("website");
   const [isloading, setIsLoading] = useState(true);
@@ -61,6 +62,7 @@ const GifSelector = ({ visible, onClose }: Props) => {
                 selected,
               });
               onClose();
+              onSelect();
             }}
           >
             선택

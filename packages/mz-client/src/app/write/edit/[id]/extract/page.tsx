@@ -7,19 +7,18 @@ import styles from "@/styles/WriteExtract.module.scss";
 import Image from "next/image";
 import { cn } from "@/utils/common";
 import { useImageViewer } from "@/context/ImageViewerContext";
-import { useEffect, useRef } from "react";
-import { useGifSelector } from "@/context/GifSelectorContext";
+import { useRef } from "react";
 import DesktopHeader from "@/components/base/DesktopHeader";
 import HeaderBackButton from "@/components/base/HeaderBackButton";
 import MobileHeader from "@/components/base/MobileHeader";
 import FullHeightPage from "@/components/system/FullHeightPage";
+import { useScrollToTop } from "@/hooks/useScrollToBottom";
 
 export default function EditExtract() {
   const {
     state: { form, error },
     actions,
   } = useWriteContext();
-  const { visible } = useGifSelector();
   const router = useRouter();
   const { extracted, selected } = form.thumbnail;
   const { open } = useImageViewer();
@@ -37,15 +36,8 @@ export default function EditExtract() {
     });
   };
 
-  const ScrollContainterRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (!visible && form.thumbnail.selected) {
-      if (ScrollContainterRef.current) {
-        ScrollContainterRef.current.scrollTop =
-          ScrollContainterRef.current.scrollHeight;
-      }
-    }
-  }, [visible]);
+  const ref = useRef<HTMLDivElement>(null);
+  useScrollToTop(ref);
 
   return (
     <FullHeightPage>
@@ -55,7 +47,7 @@ export default function EditExtract() {
         headerRight={false}
       />
       <DesktopHeader />
-      <div className={styles.content} ref={ScrollContainterRef}>
+      <div className={styles.content} ref={ref}>
         <WriteFormTemplate
           description="추출된 이미지 중 썸네일을 선택하세요"
           buttonText="다음"
