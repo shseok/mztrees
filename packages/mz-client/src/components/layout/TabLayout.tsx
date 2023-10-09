@@ -9,7 +9,6 @@ import DesktopHeader from "../base/DesktopHeader";
 import { cn } from "@/utils/common";
 import { useTabScrollTop } from "@/context/TabScrollTopContext";
 import ThemeToggleButton from "../system/ThemeToggleButton";
-import BackgroundContent from "../home/BackgroundContent";
 
 interface Props {
   className?: string;

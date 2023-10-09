@@ -1,5 +1,9 @@
 @import "_var", "_module";
 
+.content {
+  @include layout;
+}
+
 .group {
   flex: 1;
   display: flex;

@@ -5,6 +5,7 @@ import React, { ReactNode, createContext, useContext, useState } from "react";
 
 export type GifSelectorContextType = {
   open: () => void;
+  visible: boolean;
 };
 
 const GifSelectorContext = createContext<GifSelectorContextType | null>(null);
@@ -21,7 +22,7 @@ export function GifSelectorProvider({ children }: Props) {
   const close = () => {
     setVisible(false);
   };
-  const value = { open };
+  const value = { open, visible };
   return (
     <GifSelectorContext.Provider value={value}>
       {children}
