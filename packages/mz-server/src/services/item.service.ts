@@ -35,8 +35,8 @@ const itemService = {
       id,
       extension: extension || 'png',
     })
-
     await imageService.uploadFile(key, buffer)
+
     return { key, imageUrl: `https://img.mztrees.com/${key}` }
   },
   async getTagsForItem(itemId: number) {
@@ -759,7 +759,9 @@ const itemService = {
             },
           })
         }
-      } catch (e) {}
+      } catch (e) {
+        console.error(e)
+      }
     }
     // TODO: add tags
     algolia
