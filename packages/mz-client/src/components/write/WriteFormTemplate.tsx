@@ -34,20 +34,22 @@ const WriteFormTemplate = ({
     >
       <div className={styles.title}>
         {description && <h3>{description}</h3>}
-        {hasGifButton && <GifSelectButton />}
       </div>
       <div className={styles.content}>{children}</div>
-      <Button disabled={isLoading}>
-        {isLoading ? (
-          loadingPercent !== undefined ? (
-            `${loadingPercent}%`
+      <div className={styles.button_wrapper}>
+        {hasGifButton && <GifSelectButton />}
+        <Button disabled={isLoading} layoutmode="fullWidth">
+          {isLoading ? (
+            loadingPercent !== undefined ? (
+              `${loadingPercent}%`
+            ) : (
+              <LoadingIndicator color="white" />
+            )
           ) : (
-            <LoadingIndicator color="white" />
-          )
-        ) : (
-          buttonText
-        )}
-      </Button>
+            buttonText
+          )}
+        </Button>
+      </div>
     </form>
   );
 };

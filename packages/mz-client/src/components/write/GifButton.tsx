@@ -1,23 +1,22 @@
 "use client";
-import styles from "@/styles/GifSelectButton.module.scss";
-import { cn } from "@/utils/common";
-import { useTheme } from "@/context/ThemeContext";
+
 import { useGifSelector } from "@/context/GifSelectorContext";
+import Button from "../system/Button";
 
 const GifSelectButton = () => {
-  const { mode } = useTheme();
   const { open } = useGifSelector();
   return (
     <>
-      <button
-        className={cn(styles.container, mode === "dark" && styles.dark_mode)}
+      <Button
         onClick={(e) => {
           e.preventDefault();
           open();
         }}
+        variant="warning"
+        layoutmode="fullWidth"
       >
         GIF 파일검색
-      </button>
+      </Button>
     </>
   );
 };

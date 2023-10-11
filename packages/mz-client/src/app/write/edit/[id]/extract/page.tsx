@@ -35,7 +35,8 @@ export default function EditExtract() {
       },
     });
   };
-
+  /* Refactor: If WriteFormTemplate doesn't have a GifSelectButton at the top, you don't need the two lines of logic below.
+  For now, leave the logic below.*/
   const ref = useRef<HTMLDivElement>(null);
   useScrollToTop(ref);
 
@@ -57,6 +58,7 @@ export default function EditExtract() {
             router.push(`/write/edit/${form.id}/intro`);
           }}
           hasGifButton
+          contentFullWidth
         >
           <div className={styles.group}>
             {extracted.length > 0 ? (
