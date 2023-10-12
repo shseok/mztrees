@@ -58,7 +58,6 @@ export default function EditExtract() {
             router.push(`/write/edit/${form.id}/intro`);
           }}
           hasGifButton
-          contentFullWidth
         >
           <div className={styles.group}>
             {extracted.length > 0 ? (

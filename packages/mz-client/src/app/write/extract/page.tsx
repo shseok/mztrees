@@ -57,7 +57,6 @@ export default function Extract() {
             router.push("/write/intro");
           }}
           hasGifButton
-          contentFullWidth={extracted.length > 0}
         >
           <div className={styles.group}>
             {extracted.length > 0 ? (
