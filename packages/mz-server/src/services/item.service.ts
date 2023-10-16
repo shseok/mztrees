@@ -16,6 +16,8 @@ import algolia from '../lib/algolia.js'
 import { calculateScore } from '../lib/ranking.js'
 import { checkDateFormat, checkWeekRange } from '../lib/checkDate.js'
 import imageService from './image.service.js'
+import { statSync } from 'fs'
+import Jimp from 'jimp'
 
 const isR2Disbled = process.env.R2_DISABLED === 'true'
 
@@ -30,6 +32,27 @@ const itemService = {
     id: number
   }) {
     const { buffer, extension } = await imageService.downloadFile(url)
+    // 동기로 파일의 정보를 읽어온다.
+    const imageFileStats = statSync(buffer)
+    const imageFileSizeToMB = imageFileStats.size / (1024 * 1024) // MB로 단위를 수정한다.
+    // compreess image
+    // const compressedBuffer = await sharp(buffer)
+    //   .resize(200, 200)
+    //   .toFormat('png')
+    //   .toBuffer()
+    const jimpImage = await Jimp.read(buffer, (err, image) => {
+      if (err) throw new AppError('BadRequest')
+      image
+        .quality(60) // set JPEG quality
+        .greyscale() // set greyscale
+    })
+    const compressedBuffer = await jimpImage.getBufferAsync(Jimp.MIME_JPEG)
+    // 압축된 이미지를 다시 읽어와서 크기를 비교 해본다. 그리고 작은 것을 uplodFile buffer로 대체한다.
+
+    const imageFileStats2 = statSync(compressedBuffer)
+    const imageFileSizeToMB2 = imageFileStats.size / (1024 * 1024) // MB로 단위를 수정한다.
+
+    console.log(imageFileSizeToMB, imageFileSizeToMB2)
     const key = imageService.createFileKey({
       type,
       id,

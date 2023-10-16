@@ -1,8 +1,8 @@
-// 인증 라우트를 위한 플러그인
 import fp from 'fastify-plugin'
 import AppError from '../lib/AppError.js'
 import { FastifyPluginAsyncTypebox } from '../lib/types.js'
 
+// 인증 라우트를 위한 플러그인 정의
 const requireAuthPluginAsync: FastifyPluginAsyncTypebox = async (fastify) => {
   fastify.addHook('preHandler', async (request, reply) => {
     // console.log(request.user, request.isExpiredToken, request.cookies)
