@@ -4,7 +4,6 @@ import {
   ItemLike,
   ItemStats,
   Publisher,
-  Tag,
   Thumbnail,
   User,
 } from '@prisma/client'
@@ -16,7 +15,6 @@ import algolia from '../lib/algolia.js'
 import { calculateScore } from '../lib/ranking.js'
 import { checkDateFormat, checkWeekRange } from '../lib/checkDate.js'
 import imageService from './image.service.js'
-import Jimp from 'jimp'
 import sharp from 'sharp'
 
 const isR2Disbled = process.env.R2_DISABLED === 'true'
