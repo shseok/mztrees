@@ -1,4 +1,5 @@
 import Home from "@/components/home/Home";
+import Announcements from "@/components/system/Announcements";
 import { getItems } from "@/lib/api/items";
 import { getWeekRangeFromDate } from "@/lib/week";
 import getQueryClient from "@/utils/getQueryClient";
@@ -76,6 +77,7 @@ export default async function Hydation() {
   return (
     <Hydrate state={dehydratedState}>
       <Home />
+      <Announcements />
     </Hydrate>
   );
 }

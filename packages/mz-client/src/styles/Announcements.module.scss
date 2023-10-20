@@ -1,0 +1,65 @@
+@import "_module";
+
+.positioner {
+  position: absolute;
+  bottom: 0%;
+  left: 12%;
+  z-index: 4;
+}
+
+.block {
+  background: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.12);
+  border-radius: 0.75rem;
+  max-width: 35vw;
+  padding: 1rem 1.5rem 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 30px;
+}
+.iconWrapper svg {
+  cursor: pointer;
+  height: 1.5rem;
+  width: 1.5rem;
+}
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.title span {
+  font-weight: 600;
+}
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  list-style: disc;
+}
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.closeIcon svg {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+}
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.checkInput {
+  width: 1rem;
+  height: 1rem;
+}

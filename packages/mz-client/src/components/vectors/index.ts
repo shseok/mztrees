@@ -25,3 +25,5 @@ export { default as ChevronUp } from "../../../public/assets/chevron-up.svg";
 export { default as ChevronDown } from "../../../public/assets/chevron-down.svg";
 export { default as Close } from "../../../public/assets/close.svg";
 export { default as TrashCan } from "../../../public/assets/trashcan.svg";
+export { default as Github } from "../../../public/assets/github.svg";
+export { default as Gmail } from "../../../public/assets/gmail.svg";
