@@ -25,7 +25,6 @@ import EmptyList from "../system/EmptyList";
 import TabLayout from "../layout/TabLayout";
 import TagSelector from "./TagSelector";
 import Error from "@/app/error";
-import Announcements from "../system/Announcements";
 
 export default function Home() {
   const observerTargetEl = useRef<HTMLDivElement>(null);

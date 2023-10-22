@@ -1,1 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 488 512"><path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z" fill="currentColor"/></svg>
+<svg viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.5625 3.125V21.875H23.4375V3.125H1.5625Z" fill="#E1E1E1"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25 4.63538L3.125 21.6666V21.8229H23.4375L25 4.63538Z" fill="#EEEEEE"/>
+<path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M25 4.63538L3.125 21.6666V21.8229H23.4375L25 4.63538Z" fill="#E1E1E1"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M3.125 21.6667V21.823L21.875 7.18754V7.08337L3.125 21.6667Z" fill="white" fill-opacity="0.4"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21.875 4.63538L23.4375 3.07288C24.3229 3.07288 25 3.74996 25 4.63538V20.2604C25 21.1458 24.3229 21.8229 23.4375 21.8229H21.875V4.63538Z" fill="#B93426"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M3.125 4.63538L1.5625 3.07288C0.677083 3.07288 0 3.74996 0 4.63538V20.2604C0 21.1458 0.677083 21.8229 1.5625 21.8229H3.125V4.63538Z" fill="#D23F30"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.5625 21.8229L0.46875 5.72913L12.5 10.625L25 4.63538V20.2604C25 21.1458 24.3229 21.8229 23.4375 21.8229H16.5625Z" fill="url(#paint0_radial_854_373)"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.5 14.375L23.4375 3.07288H1.5625L12.5 14.375Z" fill="#EEEEEE"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24.3229 5.88538C24.7396 5.62496 25 5.15621 25 4.63538C25 3.74996 24.3229 3.07288 23.4375 3.07288H22.9167L12.5 10.625L2.08333 3.07288H1.5625C0.677083 3.07288 0 3.74996 0 4.63538C0 5.15621 0.260417 5.62496 0.677083 5.88538L12.5 14.375L24.3229 5.88538Z" fill="#DB4436"/>
+<defs>
+<radialGradient id="paint0_radial_854_373" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(0.446406 5.70772) scale(28.7613 20.1512)">
+<stop offset="0.32" stop-color="#263238" stop-opacity="0.2"/>
+<stop offset="1" stop-color="#263238" stop-opacity="0"/>
+</radialGradient>
+</defs>
+</svg>

@@ -1,33 +1,46 @@
-@import "_module";
+@import "_var", "_module";
 
 .positioner {
   position: absolute;
-  bottom: 0%;
-  left: 12%;
+  left: 16px;
+  bottom: 144px;
   z-index: 4;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90vw;
+
+  @include mobile {
+    left: 26px;
+    bottom: 99px;
+    transform: none;
+  }
+
+  @include tablet {
+    bottom: 26px;
+    width: 530px;
+  }
 }
 
 .block {
   background: white;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.12);
-  border-radius: 0.75rem;
-  max-width: 35vw;
-  padding: 1rem 1.5rem 1rem 2rem;
+  border-radius: 12px;
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 15px;
 }
 
 .iconWrapper {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
   font-size: 30px;
 }
 .iconWrapper svg {
   cursor: pointer;
-  height: 1.5rem;
-  width: 1.5rem;
+  height: 24px;
+  width: 24px;
 }
 .title {
   display: flex;
@@ -40,8 +53,15 @@
 .body {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  list-style: disc;
+  gap: 4px;
+  list-style: none;
+
+  li {
+    span {
+      color: $primary;
+      font-weight: 500;
+    }
+  }
 }
 .bottom {
   display: flex;
@@ -49,17 +69,18 @@
   align-items: center;
 }
 .closeIcon svg {
-  width: 1rem;
-  height: 1rem;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
 }
+
 .checkbox {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 4px;
 }
 
 .checkInput {
-  width: 1rem;
-  height: 1rem;
+  width: 17px;
+  height: 17px;
 }
