@@ -53,6 +53,7 @@ const Announcements: FC<AnnouncementsProps> = ({ fullWidth = false }) => {
 
   const handleClose = () => {
     setAnnouncementTimeout();
+    setShowAnnouncement(false);
   };
 
   return (
@@ -60,12 +61,12 @@ const Announcements: FC<AnnouncementsProps> = ({ fullWidth = false }) => {
       <div className={styles.block}>
         <section className={styles.title}>
           <span>공지사항</span>
-          <span
+          <button
             onClick={() => setShowAnnouncement(false)}
             className={styles.closeIcon}
           >
             <Close />
-          </span>
+          </button>
         </section>
         <ul className={styles.body}>
           <li>
@@ -84,12 +85,14 @@ const Announcements: FC<AnnouncementsProps> = ({ fullWidth = false }) => {
             <Github onClick={handleGitHubClick} />
           </div>
           <div className={styles.checkbox}>
-            오늘 하루 그만 보기
-            <input
-              type="checkbox"
-              onChange={handleClose}
-              className={styles.checkInput}
-            />
+            <label>
+              오늘 하루 그만 보기
+              <input
+                type="checkbox"
+                onChange={handleClose}
+                className={styles.checkInput}
+              />
+            </label>
           </div>
         </section>
       </div>
