@@ -87,7 +87,7 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
 
   return (
     <div className={styles.block}>
-      <Link href={item.link} className={styles.thumbnail}>
+      <Link href={item.link} className={styles.thumbnail} target="_blank">
         <Image
           src={thumbnail?.url ?? "https://img.mztrees.com/not-fount-image.svg"}
           alt={title}
@@ -109,7 +109,9 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
               {name}
             </div>
             <h2 className={cn(styles.title, mode === "dark" && styles.dark)}>
-              <Link href={item.link}>{title}</Link>
+              <Link href={item.link} target="_blank">
+                {title}
+              </Link>
             </h2>
           </div>
           <Button to={item.link} variant="visit">

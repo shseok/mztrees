@@ -14,6 +14,7 @@ interface Props
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     ButtonProps {
   to?: string;
+  isBlank?: boolean;
 }
 
 const Button = forwardRef<HTMLButtonElement, Props>(
@@ -23,6 +24,7 @@ const Button = forwardRef<HTMLButtonElement, Props>(
       variant = "primary",
       size = "medium",
       to,
+      isBlank,
       ...rest
     }: Props,
     ref
@@ -39,8 +41,8 @@ const Button = forwardRef<HTMLButtonElement, Props>(
           styles[size],
           mode === "dark" && styles.dark
         )}
-        // style={rest.style}
         href={to}
+        target={isBlank ? "_blank" : "_self"}
       >
         {rest.children}
       </Link>
