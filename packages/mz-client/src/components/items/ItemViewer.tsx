@@ -114,7 +114,7 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
               </Link>
             </h2>
           </div>
-          <Button to={item.link} variant="visit">
+          <Button to={item.link} variant="visit" isBlank>
             방문
           </Button>
         </div>
