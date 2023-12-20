@@ -23,6 +23,7 @@ import {
   LazyMotion,
   loadFeature,
 } from "@/utils/dynamic";
+import { nanum_gothic } from "@/lib/fonts";
 interface Props {
   item: Item;
   items: PopperMenuItem[];
@@ -118,7 +119,13 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
             방문
           </Button>
         </div>
-        <p className={cn(styles.body, mode === "dark" && styles.dark)}>
+        <p
+          className={cn(
+            styles.body,
+            nanum_gothic.className,
+            mode === "dark" && styles.dark
+          )}
+        >
           {body}
         </p>
         <div className={styles.tag_container}>

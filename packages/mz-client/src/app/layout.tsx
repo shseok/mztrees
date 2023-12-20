@@ -1,10 +1,10 @@
 import "../styles/global.scss";
-import localFont from "next/font/local";
 import Providers from "@/utils/provider";
 import GlobalBottomSheetModal from "@/components/system/GlobalBottomSheetModal";
 import type { Metadata } from "next";
 import NextTopLoader from "nextjs-toploader";
 import { colors } from "@/lib/colors";
+import { pretendard } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: "엠제트리 - Mztrees, 웹 사이트 공유의 장",
@@ -21,32 +21,6 @@ export const metadata: Metadata = {
   manifest: "/favicon/site.webmanifest",
 };
 
-const myFont = localFont({
-  src: [
-    {
-      path: "../../public/fonts/Pretendard/Pretendard-Regular.subset.woff2",
-      weight: "400",
-    },
-    {
-      path: "../../public/fonts/Pretendard/Pretendard-Medium.subset.woff2",
-      weight: "500",
-    },
-    {
-      path: "../../public/fonts/Pretendard/Pretendard-SemiBold.subset.woff2",
-      weight: "600",
-    },
-    {
-      path: "../../public/fonts/Pretendard/Pretendard-Bold.subset.woff2",
-      weight: "700",
-    },
-    {
-      path: "../../public/fonts/Pretendard/Pretendard-ExtraBold.subset.woff2",
-      weight: "800",
-    },
-  ],
-  display: "swap",
-});
-
 // export const revalidate = 60; // 60초 이후 refresh > 모든 페이지 모두 ssr
 
 export default function RootLayout({
@@ -55,9 +29,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko" className={myFont.className}>
+    <html lang="ko" className={pretendard.className}>
       <body>
-        <NextTopLoader showSpinner={false} color={colors.primary} />
+        <NextTopLoader
+          color={colors.primary}
+          showSpinner={false}
+          shadow={false}
+        />
         <Providers>{children}</Providers>
         <GlobalBottomSheetModal />
       </body>

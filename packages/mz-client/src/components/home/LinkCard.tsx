@@ -20,6 +20,7 @@ import {
   LazyMotion,
   loadFeature,
 } from "@/utils/dynamic";
+import { nanum_gothic } from "@/lib/fonts";
 
 interface Props {
   item: Item;
@@ -107,7 +108,7 @@ const LinkCard = ({ item }: Props) => {
           {name}
         </div>
         <h3 className={styles.title}>{item.title}</h3>
-        <p className={styles.body}>{body}</p>
+        <p className={cn(styles.body, nanum_gothic.className)}>{body}</p>
       </Link>
       <div className={styles.spacer} />
       <div className={styles.count_wrapper}>
