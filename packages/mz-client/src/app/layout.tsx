@@ -2,7 +2,9 @@ import "../styles/global.scss";
 import localFont from "next/font/local";
 import Providers from "@/utils/provider";
 import GlobalBottomSheetModal from "@/components/system/GlobalBottomSheetModal";
-import { Metadata } from "next";
+import type { Metadata } from "next";
+import NextTopLoader from "nextjs-toploader";
+import { colors } from "@/lib/colors";
 
 export const metadata: Metadata = {
   title: "엠제트리 - Mztrees, 웹 사이트 공유의 장",
@@ -55,6 +57,7 @@ export default function RootLayout({
   return (
     <html lang="ko" className={myFont.className}>
       <body>
+        <NextTopLoader showSpinner={false} color={colors.primary} />
         <Providers>{children}</Providers>
         <GlobalBottomSheetModal />
       </body>
