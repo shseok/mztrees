@@ -23,7 +23,7 @@ import {
   LazyMotion,
   loadFeature,
 } from "@/utils/dynamic";
-import { nanum_gothic } from "@/lib/fonts";
+import { roboto } from "@/lib/fonts";
 interface Props {
   item: Item;
   items: PopperMenuItem[];
@@ -122,7 +122,7 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
         <p
           className={cn(
             styles.body,
-            nanum_gothic.className,
+            roboto.className,
             mode === "dark" && styles.dark
           )}
         >

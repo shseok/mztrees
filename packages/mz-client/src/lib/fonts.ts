@@ -1,5 +1,5 @@
 import localFont from "next/font/local";
-import { Nanum_Gothic } from "next/font/google";
+import { Roboto } from "next/font/google";
 
 export const pretendard = localFont({
   src: [
@@ -28,9 +28,8 @@ export const pretendard = localFont({
 });
 
 // The reason this font is used is because hinting is not applied to the pretendard font. (if font-size <= 15px, use this font)
-export const nanum_gothic = Nanum_Gothic({
+export const roboto = Roboto({
   display: "swap",
   subsets: ["latin"],
   weight: "400",
-  variable: "--font-noto-sans",
 });

@@ -4,6 +4,7 @@ import { useTheme } from "@/context/ThemeContext";
 import styles from "@/styles/ThemeToggleButton.module.scss";
 import { Sun, Moon } from "@/components/vectors";
 import { cn } from "@/utils/common";
+import { roboto } from "@/lib/fonts";
 
 const ThemeToggleButton = () => {
   const { toggle, mode } = useTheme();
@@ -15,12 +16,16 @@ const ThemeToggleButton = () => {
       {mode === "dark" ? (
         <>
           <Sun />
-          <span className={styles.dark_mode}>라이트 모드로 전환</span>
+          <span className={cn(styles.dark_mode, roboto.className)}>
+            라이트 모드로 전환
+          </span>
         </>
       ) : (
         <>
           <Moon />
-          <span className={styles.light_mode}>다크 모드로 전환</span>
+          <span className={cn(styles.light_mode, roboto.className)}>
+            다크 모드로 전환
+          </span>
         </>
       )}
     </button>
