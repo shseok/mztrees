@@ -10,7 +10,11 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { validate } from "@/lib/validate";
 import styles from "@/styles/AuthForm.module.scss";
 import { Logo } from "@/components/vectors";
-import { NextAppError, extractNextError } from "@/lib/nextError";
+import {
+  NextAppError,
+  extractNextError,
+  translateNextErrorMessage,
+} from "@/lib/nextError";
 import { useUser } from "@/context/UserContext";
 import { cn } from "@/utils/common";
 import { useTheme } from "@/context/ThemeContext";
@@ -90,32 +94,60 @@ const AuthForm = ({ mode }: Props) => {
       setError(error);
     }
   };
-  const usernameErrorMessage = useMemo(() => {
+  const getMessageForUsername = () => {
     if (mode !== "register") return undefined;
-    if (errors.username) {
-      if (errors.username.type === "minLength" || "maxLength") {
-        return "5~20자 사이의 글자를 입력해주세요.";
-      } else if (errors.username.type === "validate") {
-        return "영문 소문자 또는 숫자를 입력해주세요.";
+    const usernameError = errors.username;
+    if (usernameError) {
+      switch (usernameError.type) {
+        case "minLength":
+        case "maxLength":
+          return "5~20자 사이의 글자를 입력해주세요.";
+        case "validate":
+          return "영문 소문자 또는 숫자를 입력해주세요.";
+        default:
+          break;
       }
     }
     if (error?.name === "AlreadyExists") {
       return "이미 존재하는 계정입니다.";
     }
     return undefined;
-  }, [mode, error, errors.username]);
+  };
 
-  const passwordErrorMessage = useMemo(() => {
+  const getMessageForPassword = () => {
     if (mode !== "register") return undefined;
-    if (errors.password) {
-      if (errors.password.type === "minLength" || "maxLength") {
-        return "8~20자 사이의 글자를 입력해주세요.";
-      } else if (errors.password.type === "validate") {
-        return "영문/숫자/특수문자 1가지 이상 입력해주세요.";
+    const passwordError = errors.password;
+    if (passwordError) {
+      switch (passwordError.type) {
+        case "minLength":
+        case "maxLength":
+          return "8~20자 사이의 글자를 입력해주세요.";
+        case "validate":
+          return "영문/숫자/특수문자 1가지 이상 입력해주세요.";
+        default:
+          break;
       }
     }
     return undefined;
-  }, [mode, errors]);
+  };
+
+  // for login error
+  const onClick = () => {
+    if (mode !== "login") return;
+    const isWrongCredentialsErorr = errors.username || errors.password;
+    const err = { name: "WrongCredentials" } as NextAppError;
+    if (isWrongCredentialsErorr) {
+      setError(err);
+    }
+  };
+  const usernameErrorMessage = useMemo(
+    () => (mode === "register" ? getMessageForUsername() : undefined),
+    [mode, error, errors.username]
+  );
+  const passwordErrorMessage = useMemo(
+    () => (mode === "register" ? getMessageForPassword() : undefined),
+    [mode, errors.password]
+  );
 
   const { mode: themeMode } = useTheme();
 
@@ -162,14 +194,17 @@ const AuthForm = ({ mode }: Props) => {
       </div>
 
       <div className={styles.actions_box}>
-        {(error?.name === "WrongCredentials" ||
-          errors.username ||
-          errors.password) && (
+        {error && (
           <div className={styles.action_error_message}>
-            잘못된 계정 정보입니다.
+            {translateNextErrorMessage(error)}
           </div>
         )}
-        <Button layoutmode="fullWidth" type="submit" disabled={isSubmitting}>
+        <Button
+          layoutmode="fullWidth"
+          type="submit"
+          disabled={isSubmitting}
+          onClick={onClick}
+        >
           {isLoading ? <LoadingIndicator color="white" /> : buttonText}
         </Button>
         <QuestionLink
