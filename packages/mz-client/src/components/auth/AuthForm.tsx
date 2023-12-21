@@ -15,6 +15,7 @@ import { useUser } from "@/context/UserContext";
 import { cn } from "@/utils/common";
 import { useTheme } from "@/context/ThemeContext";
 import { useQueryClient } from "@tanstack/react-query";
+import LoadingIndicator from "../system/LoadingIndicator";
 
 interface Props {
   mode: "login" | "register";
@@ -56,7 +57,7 @@ const AuthForm = ({ mode }: Props) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isLoading },
   } = useForm<Inputs>({
     mode: "all",
   });
@@ -116,12 +117,6 @@ const AuthForm = ({ mode }: Props) => {
     return undefined;
   }, [mode, errors]);
 
-  // if (error) {
-  //   return <h1>{error.message}</h1>;
-  // }
-  // console.log(errors.username, errors.password, errors);
-
-  // handleSubmit > e.preventDefault() 를 기본으로 적용된다.
   const { mode: themeMode } = useTheme();
 
   return (
@@ -149,9 +144,7 @@ const AuthForm = ({ mode }: Props) => {
           disabled={isSubmitting}
           errorMessage={usernameErrorMessage}
           autoComplete="on"
-          // errorMessage={error?.name === 'UserExistsError' ? 'hgh': undefined}
         />
-        {/*{errors.username && <span>This field is required</span>}*/}
         <LabelInput
           label="비밀번호"
           type="password"
@@ -166,17 +159,18 @@ const AuthForm = ({ mode }: Props) => {
           errorMessage={passwordErrorMessage}
           autoComplete="on"
         />
-        {/*{errors.password && <span>This field is required</span>}*/}
       </div>
 
       <div className={styles.actions_box}>
-        {error?.name === "WrongCredentials" && (
+        {(error?.name === "WrongCredentials" ||
+          errors.username ||
+          errors.password) && (
           <div className={styles.action_error_message}>
             잘못된 계정 정보입니다.
           </div>
         )}
         <Button layoutmode="fullWidth" type="submit" disabled={isSubmitting}>
-          {buttonText}
+          {isLoading ? <LoadingIndicator color="white" /> : buttonText}
         </Button>
         <QuestionLink
           question={question}
