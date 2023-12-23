@@ -1,7 +1,7 @@
-import Link from "next/link";
-import React from "react";
-import styles from "@/styles/QuestionLink.module.scss";
-import { cn } from "@/utils/common";
+import Link from 'next/link';
+import React from 'react';
+import styles from '@/styles/QuestionLink.module.scss';
+import { cn } from '@/utils/common';
 
 interface Props {
   question: string;
@@ -17,7 +17,7 @@ const QuestionLink = ({ question, name, to, className, mode }: Props) => {
       className={cn(
         styles.block,
         className && styles[className],
-        mode === "dark" && styles.dark
+        mode === 'dark' && styles.dark
       )}
     >
       {question} <Link href={to}>{name}</Link>

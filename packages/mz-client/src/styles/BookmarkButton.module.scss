@@ -1,4 +1,4 @@
-@import "_var";
+@import 'var';
 
 .styled_like_outline {
   color: $gray3;
@@ -7,6 +7,7 @@
     color: white;
   }
 }
+
 .styled_like_fill {
   color: $primary;
 }

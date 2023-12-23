@@ -1,7 +1,8 @@
-@import "_var", "_module";
+@import 'var', 'module';
 
 .menu {
   position: relative;
+
   .button {
     display: flex;
     align-items: center;
@@ -19,6 +20,7 @@
 
     .imgWrapper {
       display: flex;
+
       svg {
         width: 21px;
         height: 21px;
@@ -31,11 +33,11 @@
   }
 
   .selectList {
-    display: none;
     width: 100%;
     position: absolute;
     background: #fff;
     pointer-events: none;
+
     // padding: 10px;
     display: flex;
     flex-direction: column;
@@ -47,6 +49,7 @@
       max-height: 400px;
       overflow-y: scroll;
       scroll-behavior: smooth;
+
       &::-webkit-scrollbar {
         width: 0; /* Hide scrollbar */
       }

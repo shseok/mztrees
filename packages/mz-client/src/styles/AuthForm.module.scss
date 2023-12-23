@@ -1,4 +1,4 @@
-@import "./var", "./module";
+@import './var', './module';
 
 .form {
   display: flex;
@@ -9,8 +9,10 @@
 
   @include mobile {
     justify-content: center;
+
     // 500-16-16
     width: 478px;
+
     // margin: 0 auto;
     align-self: center;
   }
@@ -18,9 +20,11 @@
 
 .desktop_logo {
   display: none;
+
   @include mobile {
     display: flex;
   }
+
   justify-content: center;
   align-items: center;
   margin-bottom: 48px;

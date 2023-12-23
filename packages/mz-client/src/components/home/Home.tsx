@@ -1,44 +1,45 @@
-"use client";
+'use client';
 
-import styles from "@/styles/StyledTabLayout.module.scss";
+import styles from '@/styles/StyledTabLayout.module.scss';
 import {
   useInfiniteQuery,
   useQueryErrorResetBoundary,
-} from "@tanstack/react-query";
+} from '@tanstack/react-query';
+import type { QueryKey } from '@tanstack/react-query';
+import type { GetItemsResult, ListMode, Tag } from '@/types/db';
 import React, {
   useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
-} from "react";
-import LinkCardList from "@/components/home/LinkCardList";
-import ListModeSelector from "@/components/home/ListModeSelector";
-import WeekSelector from "@/components/home/WeekSelector";
-import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
-import { useSearchParams } from "next/navigation";
-import { getItems } from "@/lib/api/items";
-import { ListMode, Tag } from "@/types/db";
-import { getWeekRangeFromDate } from "@/lib/week";
-import SkeletonUI from "@/components/system/SkeletonUI";
-import EmptyList from "../system/EmptyList";
-import TabLayout from "../layout/TabLayout";
-import TagSelector from "./TagSelector";
-import Error from "@/app/error";
+} from 'react';
+import LinkCardList from '@/components/home/LinkCardList';
+import ListModeSelector from '@/components/home/ListModeSelector';
+import WeekSelector from '@/components/home/WeekSelector';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { useSearchParams } from 'next/navigation';
+import { getItems } from '@/lib/api/items';
+import { getWeekRangeFromDate } from '@/lib/week';
+import SkeletonUI from '@/components/system/SkeletonUI';
+import EmptyList from '../system/EmptyList';
+import TabLayout from '../layout/TabLayout';
+import TagSelector from './TagSelector';
+import ErrorShower from '@/app/error';
 
 export default function Home() {
   const observerTargetEl = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
   const [mode, setMode] = useState<ListMode>(
-    (searchParams.get("mode") as ListMode | null) ?? "trending"
+    (searchParams.get('mode') as ListMode | null) ?? 'trending'
   );
   const [tag, setTag] = useState<Tag | null>(
-    searchParams.get("tag") as Tag | null
+    searchParams.get('tag') as Tag | null
   );
 
   const defaultDateRange = useMemo(() => getWeekRangeFromDate(new Date()), []);
-  const startDate = searchParams.get("start");
-  const endDate = searchParams.get("end");
+  const startDate = searchParams.get('start');
+  const endDate = searchParams.get('end');
   const [dateRange, setDateRange] = useState(
     startDate && endDate ? [startDate, endDate] : defaultDateRange
   );
@@ -50,16 +51,16 @@ export default function Home() {
     error,
     fetchNextPage,
     hasNextPage,
-  } = useInfiniteQuery(
-    ["Items", mode, tag, mode === "past" ? dateRange : undefined].filter(
+  } = useInfiniteQuery<GetItemsResult, Error, GetItemsResult, QueryKey>(
+    ['Items', mode, tag, mode === 'past' ? dateRange : undefined].filter(
       (item) => !!item
     ),
-    ({ pageParam = undefined }) =>
+    ({ pageParam = undefined }: { pageParam?: number }) =>
       getItems({
         mode,
         tag: tag ?? undefined,
         cursor: pageParam,
-        ...(mode === "past"
+        ...(mode === 'past'
           ? { startDate: dateRange[0], endDate: dateRange[1] }
           : {}),
       }),
@@ -79,14 +80,14 @@ export default function Home() {
   useInfiniteScroll(observerTargetEl, fetchNextData);
 
   useEffect(() => {
-    const nextMode = (searchParams.get("mode") as ListMode) ?? "trending";
+    const nextMode = (searchParams.get('mode') as ListMode) ?? 'trending';
     if (nextMode !== mode) {
       setMode(nextMode);
     }
   }, [searchParams, mode]);
 
   useEffect(() => {
-    if (mode === "past") {
+    if (mode === 'past') {
       setDateRange(
         startDate && endDate ? [startDate, endDate] : defaultDateRange
       );
@@ -95,7 +96,7 @@ export default function Home() {
 
   const items = infiniteData?.pages.flatMap((page) => page.list);
   return (
-    <TabLayout className="layout_padding">
+    <TabLayout className='layout_padding'>
       <div className={styles.content}>
         <ListModeSelector mode={mode} tag={tag} />
         <TagSelector
@@ -103,12 +104,12 @@ export default function Home() {
           selectedTag={tag}
           setSelectedTag={setTag}
         />
-        {mode === "past" && <WeekSelector dateRange={dateRange} />}
-        {status === "loading" ? (
+        {mode === 'past' && <WeekSelector dateRange={dateRange} />}
+        {status === 'loading' ? (
           <SkeletonUI />
-        ) : status === "error" ? (
+        ) : status === 'error' ? (
           // TODO: define error type
-          <Error error={error as Error} reset={reset} />
+          <ErrorShower error={error as Error} reset={reset} />
         ) : items ? (
           <LinkCardList items={items} />
         ) : null}

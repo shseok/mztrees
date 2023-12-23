@@ -1,16 +1,17 @@
-import React from "react";
-import Gif from "./Gif";
-import NoGifs from "./NoGifs";
-import styles from "@/styles/gif/GifList.module.scss";
+import React from 'react';
+import Gif from './Gif';
+import NoGifs from './NoGifs';
+import styles from '@/styles/gif/GifList.module.scss';
+import type { GIFObject } from '@/types/custom';
 
 interface Props {
-  data: any[];
+  data: GIFObject[];
   selected: string;
   handleClick: (url: string) => void;
 }
 
-const GifList = ({ data, selected, handleClick }: Props) => {
-  const results = data;
+const GifList = ({ data: results, selected, handleClick }: Props) => {
+  console.log(results);
   let gifs;
   if (results.length) {
     gifs = results.map((gif) => (

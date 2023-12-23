@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import ImageViewer from "@/components/system/ImageViewer";
-import { createContext, useCallback, useContext, useState } from "react";
+import ImageViewer from '@/components/system/ImageViewer';
+import { createContext, useCallback, useContext, useState } from 'react';
 
 interface ImageViewerConfig {
-  open(config: DialogConfig): void;
+  open: (config: DialogConfig) => void;
 }
 
 interface DialogConfig {
@@ -54,7 +54,7 @@ export function ImageViewerProvider({ children }: Props) {
 export function useImageViewer() {
   const context = useContext(ImageViewerContext);
   if (!context) {
-    throw new Error("useImageViewer must be used within a ImageViewerProvider");
+    throw new Error('useImageViewer must be used within a ImageViewerProvider');
   }
   return context;
 }

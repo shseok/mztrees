@@ -1,4 +1,4 @@
-@import "_var", "_module";
+@import 'var', 'module';
 
 .block {
   height: 100%;
@@ -7,13 +7,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
   color: $gray2;
   white-space: pre-wrap;
   line-height: 1.5;
   text-align: center;
   flex: 1;
-
   flex-direction: column;
   gap: 38px;
 

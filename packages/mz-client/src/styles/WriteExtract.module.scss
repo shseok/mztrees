@@ -1,4 +1,4 @@
-@import "_var", "_module";
+@import 'var', 'module';
 
 .content {
   @include layout;
@@ -22,21 +22,23 @@
   cursor: pointer;
 
   img {
-    border-radius: 0px;
+    border-radius: 0;
     object-fit: contain;
   }
 
   &.active {
-    box-shadow: 0 0 23px rgba(1, 122, 89, 0.5);
+    box-shadow: 0 0 23px rgb(1 122 89 / 50%);
   }
 }
 
 .notification {
   font-size: 15px;
   text-align: center;
+
   @include mobile {
     text-align: start;
   }
+
   color: $gray2;
 }
 

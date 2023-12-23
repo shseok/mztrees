@@ -1,4 +1,4 @@
-@import "_var", "_module";
+@import 'var', 'module';
 
 .block {
   display: flex;
@@ -51,6 +51,7 @@
   &.dark {
     color: white;
   }
+
   svg {
     display: block;
     width: 20px;
@@ -58,7 +59,7 @@
   }
 }
 
-@mixin Text {
+@mixin text {
   margin-top: 4px;
   margin-bottom: 10px;
   color: $gray5;
@@ -69,7 +70,7 @@
 }
 
 .text {
-  @include Text;
+  @include text;
 
   &.dark {
     color: white;
@@ -118,7 +119,8 @@
 }
 
 .deleted_text {
-  @include Text;
+  @include text;
+
   color: $gray2;
   margin: 0;
 

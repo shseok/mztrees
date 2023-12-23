@@ -1,13 +1,13 @@
-import { GifSelectorProvider } from "@/context/GifSelectorContext";
-import { ImageViewerProvider } from "@/context/ImageViewerContext";
-import { WriteProvider } from "@/context/WriteContext";
-import { checkIsLoggedIn } from "@/lib/applyAuth";
-import { Metadata } from "next";
-import { redirect } from "next/navigation";
+import { GifSelectorProvider } from '@/context/GifSelectorContext';
+import { ImageViewerProvider } from '@/context/ImageViewerContext';
+import { WriteProvider } from '@/context/WriteContext';
+import { checkIsLoggedIn } from '@/lib/applyAuth';
+import { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
-  title: "새 글 작성",
-  robots: "noindex",
+  title: '새 글 작성',
+  robots: 'noindex',
 };
 
 export default async function WriteLayout({

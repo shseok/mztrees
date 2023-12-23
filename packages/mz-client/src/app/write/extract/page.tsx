@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import WriteFormTemplate from "@/components/write/WriteFormTemplate";
-import { useWriteContext } from "@/context/WriteContext";
-import { useRouter } from "next/navigation";
-import styles from "@/styles/WriteExtract.module.scss";
-import Image from "next/image";
-import { cn } from "@/utils/common";
-import { useImageViewer } from "@/context/ImageViewerContext";
-import FullHeightPage from "@/components/system/FullHeightPage";
-import MobileHeader from "@/components/base/MobileHeader";
-import HeaderBackButton from "@/components/base/HeaderBackButton";
-import DesktopHeader from "@/components/base/DesktopHeader";
-import { useRef } from "react";
-import { useScrollToTop } from "@/hooks/useScrollToBottom";
+import WriteFormTemplate from '@/components/write/WriteFormTemplate';
+import { useWriteContext } from '@/context/WriteContext';
+import { useRouter } from 'next/navigation';
+import styles from '@/styles/WriteExtract.module.scss';
+import Image from 'next/image';
+import { cn } from '@/utils/common';
+import { useImageViewer } from '@/context/ImageViewerContext';
+import FullHeightPage from '@/components/system/FullHeightPage';
+import MobileHeader from '@/components/base/MobileHeader';
+import HeaderBackButton from '@/components/base/HeaderBackButton';
+import DesktopHeader from '@/components/base/DesktopHeader';
+import { useRef } from 'react';
+import { useScrollToTop } from '@/hooks/useScrollToBottom';
 
 export default function Extract() {
   const {
@@ -27,11 +27,11 @@ export default function Extract() {
       url,
       onClose: () => {
         if (selected === url) {
-          actions.change("thumbnail", { extracted });
+          actions.change('thumbnail', { extracted });
         }
       },
       onConfirm: () => {
-        actions.change("thumbnail", { extracted, selected: url });
+        actions.change('thumbnail', { extracted, selected: url });
       },
     });
   };
@@ -43,18 +43,18 @@ export default function Extract() {
   return (
     <FullHeightPage>
       <MobileHeader
-        title={"이미지 선택"}
+        title={'이미지 선택'}
         headerLeft={<HeaderBackButton />}
         headerRight={false}
       />
       <DesktopHeader />
       <div className={styles.content} ref={ref}>
         <WriteFormTemplate
-          description="추출된 이미지 중 썸네일을 선택하세요"
-          buttonText="다음"
+          description='추출된 이미지 중 썸네일을 선택하세요'
+          buttonText='다음'
           onSubmit={(e) => {
             e.preventDefault();
-            router.push("/write/intro");
+            router.push('/write/intro');
           }}
           hasGifButton
         >
@@ -64,7 +64,7 @@ export default function Extract() {
                 <div
                   className={cn([
                     styles.thumbnail,
-                    selected === imageUrl && styles["active"],
+                    selected === imageUrl && styles['active'],
                   ])}
                   key={index}
                   onClick={() => selectThumbnail(imageUrl)}
@@ -74,7 +74,7 @@ export default function Extract() {
                     alt={`image-${index}`}
                     fill
                     priority
-                    sizes="100vw"
+                    sizes='100vw'
                   />
                 </div>
               ))
@@ -84,7 +84,7 @@ export default function Extract() {
               </div>
             )}
             {error?.statusCode === 400 ? (
-              <div className={styles.message}>{"이미지를 선택해주세요"}</div>
+              <div className={styles.message}>{'이미지를 선택해주세요'}</div>
             ) : null}
           </div>
         </WriteFormTemplate>

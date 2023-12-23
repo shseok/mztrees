@@ -1,13 +1,13 @@
-import React from "react";
-import { Size } from "@/types/db";
-import styles from "@/styles/IconToggleButton.module.scss";
-import { cn } from "@/utils/common";
+import React from 'react';
+import { Size } from '@/types/db';
+import styles from '@/styles/IconToggleButton.module.scss';
+import { cn } from '@/utils/common';
 import {
   AnimatePresence,
   MotionDiv,
   LazyMotion,
   loadFeature,
-} from "@/utils/dynamic";
+} from '@/utils/dynamic';
 
 interface Props {
   onClick: () => void;
@@ -37,7 +37,7 @@ const IconToggleButton = ({
           <LazyMotion features={loadFeature}>
             <MotionDiv
               className={styles.svg_wrapper}
-              key="fill"
+              key='fill'
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0 }}
@@ -49,7 +49,7 @@ const IconToggleButton = ({
           <LazyMotion features={loadFeature}>
             <MotionDiv
               className={styles.svg_wrapper}
-              key="outline"
+              key='outline'
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0 }}

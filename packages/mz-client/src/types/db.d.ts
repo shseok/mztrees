@@ -1,4 +1,4 @@
-import { tagList } from "@/lib/const";
+import { tagList } from '@/lib/const';
 
 interface Pagination<T> {
   list: T[];
@@ -101,8 +101,8 @@ export interface Hightlight {
 
 export type SearchItemsResult = Pagination<SearchItemResult>;
 
-export type ListMode = "recent" | "trending" | "past";
-export type Size = "small" | "medium" | "large";
+export type ListMode = 'recent' | 'trending' | 'past';
+export type Size = 'small' | 'medium' | 'large';
 
 export interface Bookmark {
   id: number;

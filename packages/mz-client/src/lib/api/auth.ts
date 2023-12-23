@@ -1,9 +1,9 @@
-import { fetchClient } from "../client";
-import { User } from "@/types/db";
+import { fetchClient } from '../client';
+import { User } from '@/types/db';
 
 export async function userRegister(params: AuthParams) {
   const response = await fetchClient.post<AuthResult>(
-    "/api/auth/register",
+    '/api/auth/register',
     params
   );
   return response;
@@ -11,18 +11,18 @@ export async function userRegister(params: AuthParams) {
 
 export async function userLogin(params: AuthParams) {
   const response = await fetchClient.post<AuthResult>(
-    "/api/auth/login",
+    '/api/auth/login',
     params
   );
   return response;
 }
 
 export async function userLogout() {
-  await fetchClient.post("/api/auth/logout");
+  await fetchClient.post('/api/auth/logout');
 }
 
 export async function refreshToken() {
-  const response = await fetchClient.post<Tokens>("/api/auth/refresh", {});
+  const response = await fetchClient.post<Tokens>('/api/auth/refresh', {});
   return response;
 }
 

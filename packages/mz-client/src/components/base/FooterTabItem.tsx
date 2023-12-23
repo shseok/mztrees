@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Home,
@@ -6,16 +6,16 @@ import {
   PlusCircle,
   Bookmark,
   Setting,
-} from "@/components/vectors";
-import styles from "@/styles/FooterTabItem.module.scss";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { cn } from "@/utils/common";
+} from '@/components/vectors';
+import styles from '@/styles/FooterTabItem.module.scss';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/utils/common';
 
 const IconMap = {
   home: <Home />,
   search: <Search />,
-  "plus-circle": <PlusCircle />,
+  'plus-circle': <PlusCircle />,
   bookmark: <Bookmark />,
   setting: <Setting />,
 } as const;

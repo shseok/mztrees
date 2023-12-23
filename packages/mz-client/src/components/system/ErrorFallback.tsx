@@ -1,17 +1,13 @@
-import { refreshToken } from "@/lib/api/auth";
-import { extractNextError } from "@/lib/nextError";
-import { usePathname, useRouter } from "next/navigation";
-import Button from "./Button";
-import styles from "@/styles/ErrorFallback.module.scss";
-
-type FallbackProps = {
-  error: any;
-  resetErrorBoundary: (...args: any[]) => void;
-};
+import type { FallbackProps } from 'react-error-boundary';
+import { refreshToken } from '@/lib/api/auth';
+import { extractNextError } from '@/lib/nextError';
+import { usePathname, useRouter } from 'next/navigation';
+import Button from './Button';
+import styles from '@/styles/ErrorFallback.module.scss';
 
 const getErrorMessage = () => {
-  const title = "서비스에 접속할 수 없습니다.";
-  const content = "새로고침을 하거나 잠시 후 다시 접속해 주시기 바랍니다.";
+  const title = '서비스에 접속할 수 없습니다.';
+  const content = '새로고침을 하거나 잠시 후 다시 접속해 주시기 바랍니다.';
   return { title, content };
 };
 
@@ -22,7 +18,7 @@ function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
   const pathname = usePathname();
 
   const onClickHandler = async () => {
-    if (name === "Unauthorized" && payload?.isExpiredToken) {
+    if (name === 'Unauthorized' && payload?.isExpiredToken) {
       try {
         await refreshToken();
       } catch (e) {

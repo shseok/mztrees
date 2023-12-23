@@ -1,4 +1,4 @@
-@import "_var";
+@import 'var';
 
 .search_input_wrapper {
   display: flex;
@@ -6,6 +6,7 @@
   width: 200px;
   height: 36px;
   padding: 4px 9px;
+
   // border: 1px solid ${colors.gray1};
   border-radius: 18px;
   margin-right: 8px;

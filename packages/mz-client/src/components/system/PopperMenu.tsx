@@ -1,14 +1,14 @@
-import styles from "@/styles/PopperMenu.module.scss";
-import { useRef } from "react";
-import { useOnClickOutside } from "@/hooks/useOnClickOuteside";
-import { cn } from "@/utils/common";
-import { Delete, Edit } from "@/components/vectors/index";
+import styles from '@/styles/PopperMenu.module.scss';
+import { useRef } from 'react';
+import { useOnClickOutside } from '@/hooks/useOnClickOuteside';
+import { cn } from '@/utils/common';
+import { Delete, Edit } from '@/components/vectors/index';
 import {
   AnimatePresence,
   MotionDiv,
   LazyMotion,
   loadFeature,
-} from "@/utils/dynamic";
+} from '@/utils/dynamic';
 const IconMap = {
   수정: <Edit />,
   삭제: <Delete />,
@@ -22,8 +22,8 @@ export interface PopperMenuItem {
 interface Props {
   visible: boolean;
   items: PopperMenuItem[];
-  mode: "comment" | "item";
-  location?: "right" | "left";
+  mode: 'comment' | 'item';
+  location?: 'right' | 'left';
   onClose: (e?: Event) => void;
 }
 
@@ -31,7 +31,7 @@ const PopperMenu = ({
   visible,
   mode,
   items,
-  location = "left",
+  location = 'left',
   onClose,
 }: Props) => {
   const ref = useRef<HTMLDivElement>(null);

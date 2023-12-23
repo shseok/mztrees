@@ -1,5 +1,5 @@
-import { useGifSelector } from "@/context/GifSelectorContext";
-import { RefObject, useEffect } from "react";
+import { useGifSelector } from '@/context/GifSelectorContext';
+import { RefObject, useEffect } from 'react';
 
 export const useScrollToTop = (
   ScrollContainterRef: RefObject<HTMLDivElement>

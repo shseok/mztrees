@@ -1,12 +1,12 @@
-import { headers } from "next/headers";
-import { setClientCookie } from "./client";
-import { getMyAccountWithRefresh } from "./protectRoute";
-import { extractNextError } from "./nextError";
+import { headers } from 'next/headers';
+import { setClientCookie } from './client';
+import { getMyAccountWithRefresh } from './protectRoute';
+import { extractNextError } from './nextError';
 
 export function applyAuth() {
   const headersList = headers();
-  const cookie = headersList.get("Cookie");
-  if (!cookie || !cookie.includes("access_token")) {
+  const cookie = headersList.get('Cookie');
+  if (!cookie || !cookie.includes('access_token')) {
     return false;
   }
   setClientCookie(cookie);
@@ -20,7 +20,7 @@ export const checkIsLoggedIn = async () => {
   try {
     await getMyAccountWithRefresh();
   } catch (e) {
-    console.log("checkIsLoggedIn", extractNextError(e));
+    console.log('checkIsLoggedIn', extractNextError(e));
     return false;
   }
   return true;
@@ -28,7 +28,7 @@ export const checkIsLoggedIn = async () => {
 
 export async function getAccount() {
   const headersList = headers();
-  const cookie = headersList.get("Cookie");
+  const cookie = headersList.get('Cookie');
   if (!cookie) return null;
   setClientCookie(cookie);
   try {

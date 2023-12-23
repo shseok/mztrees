@@ -1,6 +1,6 @@
 // AuthProvider와 다른 방법으로 작성
 
-import SearchModal from "@/components/system/SearchModal";
+import SearchModal from '@/components/system/SearchModal';
 import React, {
   createContext,
   Dispatch,
@@ -8,7 +8,7 @@ import React, {
   useCallback,
   useContext,
   useState,
-} from "react";
+} from 'react';
 
 // type SearchModalProps = {
 //   open: boolean;
@@ -48,7 +48,7 @@ const useSearchModal = () => {
   const setOpenModal = useContext(SearchModalDispatchContext);
   // useDebugValue(open, (open) => (open === null ? 'open has value' : 'open is null'));
   if (openModal === null || !setOpenModal) {
-    throw new Error("Cannot find SearchModalProvider");
+    throw new Error('Cannot find SearchModalProvider');
   }
   return { openModal, setOpenModal };
 };

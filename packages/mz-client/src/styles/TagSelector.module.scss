@@ -1,4 +1,4 @@
-@import "_var";
+@import 'var';
 
 .container {
   margin-bottom: 24px;
@@ -25,12 +25,14 @@
       font-weight: 600;
       font-size: 16px;
     }
+
     svg {
       color: $gray1;
       width: 20px;
       height: 20px;
     }
   }
+
   .current_tag {
     display: flex;
     align-items: center;
@@ -50,6 +52,7 @@
       display: flex;
       align-items: center;
       cursor: pointer;
+
       svg {
         color: $gray2;
         width: 12px;

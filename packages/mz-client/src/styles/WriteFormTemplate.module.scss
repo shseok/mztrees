@@ -1,4 +1,4 @@
-@import "_var", "_module";
+@import 'var', 'module';
 
 .styled_form {
   flex: 1;
@@ -30,6 +30,7 @@
   &.dark h3 {
     color: white;
   }
+
   .content {
     flex: 1;
     display: flex;

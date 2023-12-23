@@ -1,5 +1,5 @@
-import React from "react";
-import styles from "@/styles/Object.module.scss";
+import React from 'react';
+import styles from '@/styles/Object.module.scss';
 
 interface Props {
   bottom: string;

@@ -1,4 +1,4 @@
-@import "_var";
+@import 'var';
 
 .block {
   display: flex;
@@ -18,7 +18,6 @@
         padding: 5px 10px;
         color: white;
         border: 1px solid $primary;
-        border-radius: 14px;
         font-weight: 700;
         border-radius: 15px;
         margin-right: 8px;

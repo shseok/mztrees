@@ -1,6 +1,6 @@
-import { produce } from "immer";
-import { create } from "zustand";
-import { ItemStats } from "@/types/db";
+import { produce } from 'immer';
+import { create } from 'zustand';
+import { ItemStats } from '@/types/db';
 
 interface OverridableItem {
   isLiked?: boolean;

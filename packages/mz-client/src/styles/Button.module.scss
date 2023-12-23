@@ -1,14 +1,13 @@
-@import "_var";
+@import 'var';
 
 @mixin full-width {
   width: 100%;
 }
 
-@mixin sharedStyles {
+@mixin shared-style {
   display: flex;
   align-items: center;
   justify-content: center;
-
   cursor: pointer;
   border: none;
   border-radius: 4px;
@@ -87,6 +86,7 @@
       }
     }
   }
+
   // sizeStyled
   &.small {
     height: 36px;
@@ -109,18 +109,19 @@
 }
 
 .styled_button {
-  @include sharedStyles;
+  @include shared-style;
 }
 
 .linked_button {
-  @include sharedStyles;
+  @include shared-style;
+
   text-decoration: none;
 
   &.write_button {
     display: none;
     margin-right: 8px;
 
-    @media (min-width: 700px) {
+    @media (width >= 700px) {
       display: flex;
     }
   }

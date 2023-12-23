@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React, { forwardRef, useState } from "react";
-import Input, { type Props as InputProps } from "@/components/system/Input";
-import styles from "@/styles/LabelInput.module.scss";
-import { cn } from "@/utils/common";
-import { useTheme } from "@/context/ThemeContext";
+import React, { forwardRef, useState } from 'react';
+import Input, { type Props as InputProps } from '@/components/system/Input';
+import styles from '@/styles/LabelInput.module.scss';
+import { cn } from '@/utils/common';
+import { useTheme } from '@/context/ThemeContext';
 interface Props extends InputProps {
   label: string;
 }
@@ -27,7 +27,7 @@ const LabelInput = forwardRef<HTMLInputElement, Props>(
           className={cn(
             styles.label,
             focused && styles.focused,
-            mode === "dark" && styles.dark
+            mode === 'dark' && styles.dark
           )}
         >
           {label}
@@ -38,6 +38,6 @@ const LabelInput = forwardRef<HTMLInputElement, Props>(
   }
 );
 
-LabelInput.displayName = "LabelInput";
+LabelInput.displayName = 'LabelInput';
 
 export default LabelInput;

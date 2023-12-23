@@ -1,4 +1,4 @@
-@import "_var", "_module";
+@import 'var', 'module';
 
 .image {
   display: block;
@@ -9,8 +9,7 @@
   cursor: pointer;
 
   img {
-    border-radius: 0px;
-    // object-fit: contain;
+    border-radius: 0;
     object-fit: scale-down;
     @include tablet {
       object-fit: none;

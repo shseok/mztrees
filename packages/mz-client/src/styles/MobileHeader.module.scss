@@ -1,4 +1,4 @@
-@import "_var", "_module";
+@import 'var', 'module';
 
 .block {
   position: relative;
@@ -13,42 +13,44 @@
     display: none;
   }
 
+  .header_side {
+    cursor: pointer;
+    position: absolute;
+
+    &.left {
+      left: 8px;
+    }
+
+    &.right {
+      right: 8px;
+    }
+
+    top: 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .title {
+    color: $gray5;
+    font-size: 18px;
+    font-weight: 600;
+
+    &.dark {
+      color: white;
+    }
+
+    svg {
+      display: block;
+      width: 84px;
+      height: 17px;
+    }
+  }
+
   &.style_mobile_header {
     & > .title {
       width: 100%;
     }
   }
-}
-
-.title {
-  color: $gray5;
-  font-size: 18px;
-  font-weight: 600;
-
-  &.dark {
-    color: white;
-  }
-
-  svg {
-    display: block;
-    width: 84px;
-    height: 17px;
-  }
-}
-
-.header_side {
-  cursor: pointer;
-  position: absolute;
-  &.left {
-    left: 8px;
-  }
-
-  &.right {
-    right: 8px;
-  }
-  top: 0;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }

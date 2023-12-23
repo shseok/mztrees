@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { FC, useEffect, useState } from "react";
-import styles from "@/styles/Announcements.module.scss";
-import { cn } from "@/utils/common";
-import { Close, Github, Gmail } from "../vectors";
+import { FC, useEffect, useState } from 'react';
+import styles from '@/styles/Announcements.module.scss';
+import { cn } from '@/utils/common';
+import { Close, Github, Gmail } from '../vectors';
 
 interface AnnouncementsProps {
   fullWidth?: boolean;
@@ -13,12 +13,12 @@ const Announcements: FC<AnnouncementsProps> = ({ fullWidth = false }) => {
   const [showAnnouncement, setShowAnnouncement] = useState(false);
 
   const handleGitHubClick = () => {
-    const url = "https://github.com/shseok/mztrees/issues";
-    window.open(url, "_blank");
+    const url = 'https://github.com/shseok/mztrees/issues';
+    window.open(url, '_blank');
   };
 
   const handleGmailClick = () => {
-    window.location.href = "mailto:shseok0674@gmail.com";
+    window.location.href = 'mailto:shseok0674@gmail.com';
   };
 
   const setAnnouncementTimeout = () => {
@@ -26,11 +26,11 @@ const Announcements: FC<AnnouncementsProps> = ({ fullWidth = false }) => {
     const item = {
       expiry: now.getTime() + 86400000, // 24 hours from now
     };
-    localStorage.setItem("announcement", JSON.stringify(item));
+    localStorage.setItem('announcement', JSON.stringify(item));
   };
 
   const checkAnnouncementAvailability = () => {
-    const announcementStr = localStorage.getItem("announcement");
+    const announcementStr = localStorage.getItem('announcement');
     if (!announcementStr) {
       setShowAnnouncement(true);
       return;
@@ -70,7 +70,7 @@ const Announcements: FC<AnnouncementsProps> = ({ fullWidth = false }) => {
         </section>
         <ul className={styles.body}>
           <li>
-            &bull; 서비스 이용 중 <span>불편한 점</span>이나{" "}
+            &bull; 서비스 이용 중 <span>불편한 점</span>이나{' '}
             <span>버그를 발견</span>
             하신 경우, 신고해 주시면 검토 후 신속하게 답변해 드리겠습니다.
           </li>
@@ -88,7 +88,7 @@ const Announcements: FC<AnnouncementsProps> = ({ fullWidth = false }) => {
             <label>
               오늘 하루 그만 보기
               <input
-                type="checkbox"
+                type='checkbox'
                 onChange={handleClose}
                 className={styles.checkInput}
               />

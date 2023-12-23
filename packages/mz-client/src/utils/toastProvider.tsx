@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { FC, ReactNode } from "react";
-import { Toaster } from "sonner";
+import { FC, ReactNode } from 'react';
+import { Toaster } from 'sonner';
 
 interface ToastProvidersProps {
   children: ReactNode;
@@ -10,7 +10,7 @@ interface ToastProvidersProps {
 const ToastProviders: FC<ToastProvidersProps> = ({ children }) => {
   return (
     <>
-      <Toaster position="bottom-right" richColors />
+      <Toaster position='bottom-right' richColors />
       {children}
     </>
   );

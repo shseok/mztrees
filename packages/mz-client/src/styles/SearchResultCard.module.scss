@@ -1,4 +1,4 @@
-@import "_var";
+@import 'var';
 
 .block {
   display: flex;
@@ -10,6 +10,64 @@
     font-style: normal;
   }
 
+  .publisher {
+    display: flex;
+    align-items: center;
+    line-height: 1.5;
+    color: $gray3;
+    font-size: 14px;
+    margin-bottom: 4px;
+
+    img,
+    svg {
+      display: block;
+      margin-right: 8px;
+      width: 16px;
+      height: 16px;
+    }
+
+    .favicon {
+      width: 16px;
+      height: 16px;
+      position: relative;
+    }
+  }
+
+  .title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: $gray4;
+
+    em {
+      font-weight: 800;
+    }
+  }
+
+  .body {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: $gray4;
+
+    em {
+      font-weight: 600;
+    }
+  }
+
+  .likescount {
+    font-size: 12px;
+    font-weight: 600;
+    color: $gray4;
+    line-height: 1.5;
+    height: 26px;
+    display: flex;
+    align-items: top;
+  }
+
   &.dark {
     .publisher,
     .title,
@@ -18,62 +76,4 @@
       color: white;
     }
   }
-}
-
-.publisher {
-  display: flex;
-  align-items: center;
-  line-height: 1.5;
-  color: $gray3;
-  font-size: 14px;
-  margin-bottom: 4px;
-
-  img,
-  svg {
-    display: block;
-    margin-right: 8px;
-    width: 16px;
-    height: 16px;
-  }
-}
-
-.favicon {
-  width: 16px;
-  height: 16px;
-  position: relative;
-}
-
-.title {
-  margin-top: 0;
-  margin-bottom: 0px;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.5;
-  color: $gray4;
-
-  em {
-    font-weight: 800;
-  }
-}
-
-.body {
-  margin-top: 8px;
-  margin-bottom: 8px;
-  font-size: 14px;
-  line-height: 1.5;
-  color: $gray4;
-
-  em {
-    font-weight: 600;
-  }
-}
-
-.likescount {
-  font-size: 12px;
-  font-weight: 600;
-  color: $gray4;
-  line-height: 1.5;
-  height: 26px;
-  display: flex;
-  align-items: top;
 }

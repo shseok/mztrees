@@ -1,9 +1,9 @@
-import React from "react";
-import Modal from "./Modal";
-import Button from "./Button";
-import styles from "@/styles/OptionSelector.module.scss";
-import { Tag, TagList } from "@/types/db";
-import { cn } from "@/utils/common";
+import React from 'react';
+import Modal from './Modal';
+import Button from './Button';
+import styles from '@/styles/OptionSelector.module.scss';
+import { Tag, TagList } from '@/types/db';
+import { cn } from '@/utils/common';
 
 interface Props {
   visible: boolean;
@@ -18,7 +18,7 @@ interface Props {
   ): void;
   onClose(): void;
   onConfirm(): void;
-  mode?: "alert" | "confirm";
+  mode?: 'alert' | 'confirm';
 }
 
 const OptionSelector = ({
@@ -31,10 +31,10 @@ const OptionSelector = ({
   selected,
   confirmText,
   cancelText,
-  mode = "alert",
+  mode = 'alert',
 }: Props) => {
   return (
-    <Modal className="styled_modal" visible={visible}>
+    <Modal className='styled_modal' visible={visible}>
       <h3 className={styles.title}>{title}</h3>
       <section className={styles.listContainer}>
         {list.map((item, index) => (
@@ -52,15 +52,15 @@ const OptionSelector = ({
         ))}
       </section>
       <section className={styles.footer}>
-        <Button onClick={onConfirm} type="button" size="large">
+        <Button onClick={onConfirm} type='button' size='large'>
           {confirmText}
         </Button>
-        {mode === "confirm" && (
+        {mode === 'confirm' && (
           <Button
             onClick={onClose}
-            variant="secondary"
-            type="button"
-            size="large"
+            variant='secondary'
+            type='button'
+            size='large'
           >
             {cancelText}
           </Button>

@@ -1,8 +1,8 @@
-import { fetchClient } from "../client";
-import { User } from "@/types/db";
+import { fetchClient } from '../client';
+import { User } from '@/types/db';
 
 export async function getMyAccount(accessToken?: string) {
-  const response = await fetchClient.get<User>("/api/me", {
+  const response = await fetchClient.get<User>('/api/me', {
     headers: accessToken
       ? { Authorization: `Bearer ${accessToken}` }
       : undefined,
@@ -17,14 +17,14 @@ export async function changePassword({
   oldPassword: string;
   newPassword: string;
 }) {
-  await fetchClient.post("/api/me/change-password", {
+  await fetchClient.post('/api/me/change-password', {
     oldPassword,
     newPassword,
   });
 }
 
 export async function unregister() {
-  await fetchClient.delete("/api/me");
+  await fetchClient.delete('/api/me');
 }
 
 // export async function getMyAccount() {

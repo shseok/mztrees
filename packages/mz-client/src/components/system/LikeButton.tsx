@@ -1,9 +1,9 @@
-import { LikeFill, LikeOutline } from "@/components/vectors";
-import styles from "@/styles/LikeButton.module.scss";
-import IconToggleButton from "./IconToggleButton";
-import { Size } from "@/types/db";
-import { useTheme } from "@/context/ThemeContext";
-import { cn } from "@/utils/common";
+import { LikeFill, LikeOutline } from '@/components/vectors';
+import styles from '@/styles/LikeButton.module.scss';
+import IconToggleButton from './IconToggleButton';
+import { Size } from '@/types/db';
+import { useTheme } from '@/context/ThemeContext';
+import { cn } from '@/utils/common';
 
 interface Props {
   onClick: () => void;
@@ -11,7 +11,7 @@ interface Props {
   size?: Size;
 }
 
-const LikeButton = ({ onClick, isLiked, size = "medium" }: Props) => {
+const LikeButton = ({ onClick, isLiked, size = 'medium' }: Props) => {
   const { mode } = useTheme();
   return (
     <IconToggleButton
@@ -23,11 +23,11 @@ const LikeButton = ({ onClick, isLiked, size = "medium" }: Props) => {
         <LikeOutline
           className={cn(
             styles.styled_like_outline,
-            mode === "dark" && styles.dark
+            mode === 'dark' && styles.dark
           )}
         />
       }
-      ariaLabel="like"
+      ariaLabel='like'
     />
   );
 };

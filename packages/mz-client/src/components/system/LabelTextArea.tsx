@@ -1,7 +1,7 @@
-import { forwardRef, useState } from "react";
-import { cn } from "@/utils/common";
-import styles from "@/styles/LabelTextArea.module.scss";
-import { useTheme } from "@/context/ThemeContext";
+import { forwardRef, useState } from 'react';
+import { cn } from '@/utils/common';
+import styles from '@/styles/LabelTextArea.module.scss';
+import { useTheme } from '@/context/ThemeContext';
 
 interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string;
@@ -26,7 +26,7 @@ const LabelTextArea = forwardRef<HTMLTextAreaElement, Props>(
           className={cn(
             styles.label,
             focused && styles.focused,
-            mode === "dark" && styles.dark
+            mode === 'dark' && styles.dark
           )}
         >
           {label}
@@ -43,6 +43,6 @@ const LabelTextArea = forwardRef<HTMLTextAreaElement, Props>(
   }
 );
 
-LabelTextArea.displayName = "LabelTextArea";
+LabelTextArea.displayName = 'LabelTextArea';
 
 export default LabelTextArea;

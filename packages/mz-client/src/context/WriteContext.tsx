@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { createContext, useContext, useMemo, useState } from "react";
-import { NextAppError } from "@/lib/nextError";
-import { produce } from "immer";
-import { TagList } from "@/types/db";
+import { createContext, useContext, useMemo, useState } from 'react';
+import { NextAppError } from '@/lib/nextError';
+import { produce } from 'immer';
+import { TagList } from '@/types/db';
 
 type ThumbnailType = {
   extracted: string[];
@@ -24,7 +24,7 @@ interface WriteContextState {
 
 interface WriteContextActions {
   change(
-    key: keyof WriteContextState["form"],
+    key: keyof WriteContextState['form'],
     value: string | ThumbnailType | TagList
   ): void;
   reset(): void;
@@ -44,9 +44,9 @@ interface Props {
 
 const initialState = {
   form: {
-    link: "",
-    title: "",
-    body: "",
+    link: '',
+    title: '',
+    body: '',
     thumbnail: {
       extracted: [],
     },
@@ -72,9 +72,9 @@ export const WriteProvider = ({ children }: Props) => {
       change(key, value) {
         setState((prev) =>
           produce(prev, (draft) => {
-            if (key === "thumbnail") {
+            if (key === 'thumbnail') {
               draft.form.thumbnail = value as ThumbnailType;
-            } else if (key === "tags") {
+            } else if (key === 'tags') {
               draft.form.tags = value as TagList;
             } else {
               draft.form[key] = value as string;
@@ -105,7 +105,7 @@ export const useWriteContext = () => {
   const context = useContext(WriteContext);
 
   if (!context) {
-    throw new Error("useWriteContext must be used within a WriteProvider");
+    throw new Error('useWriteContext must be used within a WriteProvider');
   }
 
   return context;

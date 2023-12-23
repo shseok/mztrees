@@ -1,9 +1,9 @@
-import React from "react";
-import { useCommentInputStore } from "@/hooks/stores/useCommentInputStore";
-import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
-import styles from "@/styles/CommentInput.module.scss";
-import { useUser } from "@/context/UserContext";
-import WriteComment from "./WriteComment";
+import React from 'react';
+import { useCommentInputStore } from '@/hooks/stores/useCommentInputStore';
+import { useOpenLoginDialog } from '@/hooks/useOpenLoginDialog';
+import styles from '@/styles/CommentInput.module.scss';
+import { useUser } from '@/context/UserContext';
+import WriteComment from './WriteComment';
 
 const CommentInput = () => {
   const write = useCommentInputStore((state) => state.write);
@@ -11,7 +11,7 @@ const CommentInput = () => {
   const { currentUser } = useUser();
   const onClickDummyInput = async () => {
     if (!currentUser) {
-      openLoginDialog("comment");
+      openLoginDialog('comment');
       return;
     }
     write();

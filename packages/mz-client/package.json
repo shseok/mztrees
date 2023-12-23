@@ -10,7 +10,7 @@
     "start": "next start",
     "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
-    "lint": "stylelint --allow-empty-input \"**/*.{css,scss}\" && next lint"
+    "lint": "stylelint --allow-empty-input \"**/*.{css,scss}\" --cache && next lint"
   },
   "dependencies": {
     "@next/bundle-analyzer": "^13.5.2",

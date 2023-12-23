@@ -1,4 +1,4 @@
-@import "_var";
+@import 'var';
 
 .block {
   display: flex;
@@ -38,19 +38,19 @@
   border-radius: 4px;
   outline: none;
   font-size: 16px;
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding: 16px;
   line-height: 1.5;
-  padding-left: 16px;
-  padding-right: 16px;
   color: $gray5;
   transition: all 0.25s ease-in-out;
+
   &:focus {
     border: 1px solid $primary;
   }
+
   &::placeholder {
     color: $gray2;
   }
+
   &:disabled {
     background: $gray0;
     color: $gray3;

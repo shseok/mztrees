@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
-import SearchForm from "./SearchForm";
-import GifList from "./GifList";
-import Modal from "../Modal";
-import styles from "@/styles/gif/GifSelector.module.scss";
-import Button from "../Button";
-import { useWriteContext } from "@/context/WriteContext";
+import React, { useEffect, useState } from 'react';
+import SearchForm from './SearchForm';
+import GifList from './GifList';
+import Modal from '../Modal';
+import styles from '@/styles/gif/GifSelector.module.scss';
+import Button from '../Button';
+import { useWriteContext } from '@/context/WriteContext';
+import { GIFObject } from '@/types/custom';
 
 interface Props {
   visible: boolean;
@@ -15,10 +16,11 @@ interface Props {
 const key = process.env.NEXT_PUBLIC_GIPHY_API_KEY;
 
 const GifSelector = ({ visible, onClose, onSelect }: Props) => {
-  const [data, setData] = useState([]);
-  const [query, setQuery] = useState("website");
+  // Refcator: 4번 리렌더링 되는 문제 해결하기
+  const [data, setData] = useState<GIFObject[]>([]);
+  const [query, setQuery] = useState('website');
   const [isloading, setIsLoading] = useState(true);
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState('');
   const {
     state: { form },
     actions,
@@ -35,9 +37,10 @@ const GifSelector = ({ visible, onClose, onSelect }: Props) => {
     )
       .then((res) => res.json())
       .then((res) => setData(res.data))
-      .catch((error) => console.log("Error fetching and parsing data", error))
+      .catch((error) => console.error('Error fetching and parsing data', error))
       .finally(() => setIsLoading(false));
   }, [query]);
+
   return (
     <Modal visible={visible} fullWidth>
       <div className={styles.box}>
@@ -57,7 +60,7 @@ const GifSelector = ({ visible, onClose, onSelect }: Props) => {
         <section className={styles.footer}>
           <Button
             onClick={() => {
-              actions.change("thumbnail", {
+              actions.change('thumbnail', {
                 extracted: [...form.thumbnail.extracted, selected],
                 selected,
               });
@@ -67,7 +70,7 @@ const GifSelector = ({ visible, onClose, onSelect }: Props) => {
           >
             선택
           </Button>
-          <Button onClick={onClose} variant="secondary">
+          <Button onClick={onClose} variant='secondary'>
             취소
           </Button>
         </section>

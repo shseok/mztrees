@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useGifSelector } from "@/context/GifSelectorContext";
-import Button from "../system/Button";
+import { useGifSelector } from '@/context/GifSelectorContext';
+import Button from '../system/Button';
 
 const GifSelectButton = () => {
   const { open } = useGifSelector();
@@ -12,8 +12,8 @@ const GifSelectButton = () => {
           e.preventDefault();
           open();
         }}
-        variant="warning"
-        layoutmode="fullWidth"
+        variant='warning'
+        layoutmode='fullWidth'
       >
         GIF 파일검색
       </Button>

@@ -25,6 +25,12 @@ export const useCommentInputStore = create<
       set((state) => ({ ...state, parentCommentId, visible: true })),
     edit: (commentId: number, defaultText: string) =>
       set((store) => ({ ...store, commentId, defaultText, visible: true })),
-    close: () => set((store) => ({ ...store, commentId: null, defaultText: '', visible: false })),
-  })),
+    close: () =>
+      set((store) => ({
+        ...store,
+        commentId: null,
+        defaultText: '',
+        visible: false,
+      })),
+  }))
 );

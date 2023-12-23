@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { extractNextError } from "@/lib/nextError";
-import { getMyAccountWithRefresh } from "@/lib/protectRoute";
-import { User } from "@/types/db";
-import { createContext, useContext, useEffect, useState } from "react";
+import { extractNextError } from '@/lib/nextError';
+import { getMyAccountWithRefresh } from '@/lib/protectRoute';
+import { User } from '@/types/db';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 /**
  * null: not logged in
@@ -52,7 +52,7 @@ export function UserProvider({ children }: Props) {
 export function useUser() {
   const user = useContext(UserContext);
   if (user === undefined) {
-    throw new Error("UserContext.Provider not used");
+    throw new Error('UserContext.Provider not used');
   }
   return user;
 }

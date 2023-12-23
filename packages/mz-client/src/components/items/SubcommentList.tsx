@@ -1,7 +1,7 @@
-import React from "react";
-import { Comment } from "@/types/db";
-import CommentItem from "./CommentItem";
-import styles from "@/styles/SubcommentList.module.scss";
+import React from 'react';
+import { Comment } from '@/types/db';
+import CommentItem from './CommentItem';
+import styles from '@/styles/SubcommentList.module.scss';
 
 interface Props {
   comments: Comment[];

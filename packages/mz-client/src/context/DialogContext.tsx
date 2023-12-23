@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { createContext, useCallback, useContext, useState } from "react";
-import Dialog from "@/components/system/Dialog";
+import { createContext, useCallback, useContext, useState } from 'react';
+import Dialog from '@/components/system/Dialog';
 
 interface DialogContextValue {
   open(config: DialogConfig): void;
@@ -15,7 +15,7 @@ interface DialogConfig {
   cancelText?: string;
   onClose?(): void;
   onConfirm?(): void;
-  mode?: "alert" | "confirm";
+  mode?: 'alert' | 'confirm';
 }
 
 const DiaLogContext = createContext<DialogContextValue | null>(null);
@@ -46,13 +46,13 @@ export function DialogProvider({ children }: Props) {
       {children}
       <Dialog
         visible={visible}
-        title={config?.title ?? ""}
-        description={config?.description ?? ""}
-        confirmText={config?.confirmText ?? "확인"}
-        cancelText={config?.cancelText ?? "닫기"}
+        title={config?.title ?? ''}
+        description={config?.description ?? ''}
+        confirmText={config?.confirmText ?? '확인'}
+        cancelText={config?.cancelText ?? '닫기'}
         onClose={close}
         onConfirm={confirm}
-        mode={config?.mode ?? "alert"}
+        mode={config?.mode ?? 'alert'}
       />
     </DiaLogContext.Provider>
   );
@@ -61,7 +61,7 @@ export function DialogProvider({ children }: Props) {
 export const useDialog = () => {
   const context = useContext(DiaLogContext);
   if (!context) {
-    throw new Error("useDialog must be used within a DialogProvider");
+    throw new Error('useDialog must be used within a DialogProvider');
   }
   return context;
 };

@@ -1,9 +1,9 @@
-import { Size } from "@/types/db";
-import IconToggleButton from "./IconToggleButton";
-import { BookmarkOutline, Bookmark } from "@/components/vectors";
-import styles from "@/styles/BookmarkButton.module.scss";
-import { useTheme } from "@/context/ThemeContext";
-import { cn } from "@/utils/common";
+import { Size } from '@/types/db';
+import IconToggleButton from './IconToggleButton';
+import { BookmarkOutline, Bookmark } from '@/components/vectors';
+import styles from '@/styles/BookmarkButton.module.scss';
+import { useTheme } from '@/context/ThemeContext';
+import { cn } from '@/utils/common';
 
 interface Props {
   onClick: () => void;
@@ -11,7 +11,7 @@ interface Props {
   size?: Size;
 }
 
-const BookmarkButton = ({ onClick, isBookmarked, size = "medium" }: Props) => {
+const BookmarkButton = ({ onClick, isBookmarked, size = 'medium' }: Props) => {
   const { mode } = useTheme();
   return (
     <IconToggleButton
@@ -23,11 +23,11 @@ const BookmarkButton = ({ onClick, isBookmarked, size = "medium" }: Props) => {
         <BookmarkOutline
           className={cn(
             styles.styled_like_outline,
-            mode === "dark" && styles.dark
+            mode === 'dark' && styles.dark
           )}
         />
       }
-      ariaLabel="bookmark"
+      ariaLabel='bookmark'
     />
   );
 };

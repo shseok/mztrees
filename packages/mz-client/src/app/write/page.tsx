@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import BasicLayout from "@/components/layout/BasicLayout";
-import LabelInput from "@/components/system/LabelInput";
-import WriteFormTemplate from "@/components/write/WriteFormTemplate";
-import { useWriteContext } from "@/context/WriteContext";
-import { extractNextError } from "@/lib/nextError";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import throttle from "lodash.throttle";
-import { extractUrlsWithProgress } from "@/lib/api/extract";
+import BasicLayout from '@/components/layout/BasicLayout';
+import LabelInput from '@/components/system/LabelInput';
+import WriteFormTemplate from '@/components/write/WriteFormTemplate';
+import { useWriteContext } from '@/context/WriteContext';
+import { extractNextError } from '@/lib/nextError';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import throttle from 'lodash.throttle';
+import { extractUrlsWithProgress } from '@/lib/api/extract';
 
 export default function Write() {
   const router = useRouter();
@@ -27,14 +27,14 @@ export default function Write() {
     { leading: true, trailing: true }
   );
   return (
-    <BasicLayout title="링크 입력" hasBackButton>
+    <BasicLayout title='링크 입력' hasBackButton>
       <WriteFormTemplate
-        description="공유하고 싶은 URL을 입력하세요"
-        buttonText="다음"
+        description='공유하고 싶은 URL을 입력하세요'
+        buttonText='다음'
         onSubmit={async (e) => {
           e.preventDefault();
           if (!form.link) {
-            alert("공유할 주소를 입력해주세요.");
+            alert('공유할 주소를 입력해주세요.');
             return;
           }
           setIsLoading(true);
@@ -48,8 +48,8 @@ export default function Write() {
             );
             // 요청 완료 후 처리
             // console.log(urls);
-            actions.change("thumbnail", { extracted: urls });
-            router.push("/write/extract");
+            actions.change('thumbnail', { extracted: urls });
+            router.push('/write/extract');
           } catch (innerError) {
             const error = extractNextError(innerError);
             if (error.statusCode === 422) {
@@ -65,16 +65,16 @@ export default function Write() {
         loadingPercent={progress}
       >
         <LabelInput
-          label="url"
-          placeholder="https://example.com"
+          label='url'
+          placeholder='https://example.com'
           // defaultValue={state.url}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            actions.change("link", e.target.value);
+            actions.change('link', e.target.value);
           }}
           value={form.link}
           errorMessage={
             error?.statusCode === 422
-              ? "유효하지 않은 URL입니다. 다른 URL을 입력해주세요."
+              ? '유효하지 않은 URL입니다. 다른 URL을 입력해주세요.'
               : undefined
           }
         />

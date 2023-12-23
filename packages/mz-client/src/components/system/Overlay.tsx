@@ -1,11 +1,11 @@
-import React from "react";
-import styles from "@/styles/Overlay.module.scss";
+import React from 'react';
+import styles from '@/styles/Overlay.module.scss';
 import {
   AnimatePresence,
   MotionDiv,
   LazyMotion,
   loadFeature,
-} from "@/utils/dynamic";
+} from '@/utils/dynamic';
 
 interface Props {
   visible: boolean;

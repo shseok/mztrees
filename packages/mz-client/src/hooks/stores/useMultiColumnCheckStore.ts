@@ -14,10 +14,12 @@ interface MultiColumnStore {
 
 export const useMultiColumnStore = create<MultiColumnStore>((set) => ({
   isMultiColumn: false,
-  set: (isMultiColumn: boolean) => set((state) => ({ ...state, isMultiColumn })),
+  set: (isMultiColumn: boolean) =>
+    set((state) => ({ ...state, isMultiColumn })),
 }));
 
-export const useIsMultiColumn = () => useMultiColumnStore((state) => state.isMultiColumn);
+export const useIsMultiColumn = () =>
+  useMultiColumnStore((state) => state.isMultiColumn);
 export const useIsMultiColumnCheck = () => {
   const set = useMultiColumnStore((state) => state.set);
   const isMultiColumn = useIsMultiColumn();

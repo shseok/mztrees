@@ -1,13 +1,13 @@
-import React from "react";
-import Overlay from "./Overlay";
-import { BottomSheetModalItem } from "@/hooks/stores/useBottomSheetModalStore";
-import styles from "@/styles/BottomSheetModal.module.scss";
+import React from 'react';
+import Overlay from './Overlay';
+import { BottomSheetModalItem } from '@/hooks/stores/useBottomSheetModalStore';
+import styles from '@/styles/BottomSheetModal.module.scss';
 import {
   AnimatePresence,
   MotionDiv,
   LazyMotion,
   loadFeature,
-} from "@/utils/dynamic";
+} from '@/utils/dynamic';
 
 interface Props {
   visible: boolean;
@@ -24,9 +24,9 @@ const BottomSheetModal = ({ visible, items, onClose }: Props) => {
           <LazyMotion features={loadFeature}>
             <MotionDiv
               className={styles.sheet}
-              initial={{ y: "100%" }}
-              animate={{ y: "0%" }}
-              exit={{ y: "100%" }}
+              initial={{ y: '100%' }}
+              animate={{ y: '0%' }}
+              exit={{ y: '100%' }}
               transition={{ dumping: 0 }}
             >
               <div className={styles.items} onClick={onClose}>

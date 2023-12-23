@@ -17,12 +17,14 @@ export const useCommentLikesStore = create<CommentLikesStore>((set) => ({
     set((store) =>
       produce(store, (draft) => {
         draft.commentLikesMap[commentId] = commentLike;
-      }),
+      })
     ),
 }));
 
 export const useCommentLikeById = (commentId: number) => {
-  const commentLikesById = useCommentLikesStore((store) => store.commentLikesMap);
+  const commentLikesById = useCommentLikesStore(
+    (store) => store.commentLikesMap
+  );
   return commentLikesById[commentId];
 };
 

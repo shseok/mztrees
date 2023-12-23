@@ -1,14 +1,25 @@
-import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from 'react';
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useState,
+} from 'react';
 
 export const CookieStateContext = createContext<string | null>(null);
-export const CookieDispatchContext = createContext<Dispatch<SetStateAction<string>> | null>(null);
+export const CookieDispatchContext = createContext<Dispatch<
+  SetStateAction<string>
+> | null>(null);
 
 export const CookieStateProvider = ({ children }: { children: ReactNode }) => {
   const [cookie, setCookie] = useState('');
 
   return (
     <CookieStateContext.Provider value={cookie}>
-      <CookieDispatchContext.Provider value={setCookie}>{children}</CookieDispatchContext.Provider>
+      <CookieDispatchContext.Provider value={setCookie}>
+        {children}
+      </CookieDispatchContext.Provider>
     </CookieStateContext.Provider>
   );
 };

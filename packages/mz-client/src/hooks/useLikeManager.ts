@@ -1,11 +1,11 @@
-import { useCallback, useRef } from "react";
-import { likeItem, unlikeItem } from "@/lib/api/items";
-import { ItemStats } from "@/types/db";
-import { useItemOverrideSetter } from "./stores/ItemOverrideStore";
-import { extractNextError } from "@/lib/nextError";
-import { useOpenLoginDialog } from "./useOpenLoginDialog";
-import { refreshToken } from "@/lib/api/auth";
-import { setClientCookie } from "@/lib/client";
+import { useCallback, useRef } from 'react';
+import { likeItem, unlikeItem } from '@/lib/api/items';
+import { ItemStats } from '@/types/db';
+import { useItemOverrideSetter } from './stores/ItemOverrideStore';
+import { extractNextError } from '@/lib/nextError';
+import { useOpenLoginDialog } from './useOpenLoginDialog';
+import { refreshToken } from '@/lib/api/auth';
+import { setClientCookie } from '@/lib/client';
 
 // like와 unlike 로직 내부에서는 state[id].itemStats는 변하지 않는다.
 // 결국, 컴포넌트에서 쓰일 때, 변한다.
@@ -32,7 +32,7 @@ export const useLikeManager = () => {
         set(id, { itemStats: result.itemStats, isLiked: true });
       } catch (e) {
         const error = extractNextError(e);
-        if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
+        if (error.name === 'Unauthorized' && error.payload?.isExpiredToken) {
           try {
             const tokens = await refreshToken();
             setClientCookie(`access_token=${tokens.accessToken}`);
@@ -46,14 +46,14 @@ export const useLikeManager = () => {
               itemStats: { ...initialStats, likes: initialStats.likes - 1 },
               isLiked: false,
             });
-            openLoginDialog("itemLike");
+            openLoginDialog('itemLike');
           }
         } else {
           set(id, {
             itemStats: { ...initialStats, likes: initialStats.likes - 1 },
             isLiked: false,
           });
-          openLoginDialog("itemLike");
+          openLoginDialog('itemLike');
         }
         // TODO: fail api -> handle error (rollback state)
         console.log(extractNextError(e));
@@ -79,7 +79,7 @@ export const useLikeManager = () => {
         set(id, { itemStats: result.itemStats, isLiked: false });
       } catch (e) {
         const error = extractNextError(e);
-        if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
+        if (error.name === 'Unauthorized' && error.payload?.isExpiredToken) {
           try {
             const tokens = await refreshToken();
             setClientCookie(`access_token=${tokens.accessToken}`);
@@ -94,7 +94,7 @@ export const useLikeManager = () => {
               isLiked: true,
             });
             // TODO: 좋아요 취소시 재로그인 문구 다시 만들기
-            openLoginDialog("itemLike");
+            openLoginDialog('itemLike');
           }
         } else {
           // 아예 로그인 x 된 상황
@@ -102,7 +102,7 @@ export const useLikeManager = () => {
             itemStats: { ...initialStats, likes: initialStats.likes + 1 },
             isLiked: true,
           });
-          openLoginDialog("itemLike");
+          openLoginDialog('itemLike');
         }
         // TODO: fail api -> handle error (rollback state)
         console.log(extractNextError(e));

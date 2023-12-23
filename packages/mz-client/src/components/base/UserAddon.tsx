@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React, { useRef, useState } from "react";
-import Button from "../system/Button";
-import UserMenu from "./UserMenu";
-import styles from "@/styles/UserAddon.module.scss";
-import { User } from "@/components/vectors";
+import React, { useRef, useState } from 'react';
+import Button from '../system/Button';
+import UserMenu from './UserMenu';
+import styles from '@/styles/UserAddon.module.scss';
+import { User } from '@/components/vectors';
 
 interface Props {
   username: string;
@@ -28,14 +28,14 @@ const UserAddon = ({ username }: Props) => {
   return (
     <div className={styles.responsive}>
       <Button
-        className="write_button"
-        to="/write"
-        size="small"
-        variant="primary"
+        className='write_button'
+        to='/write'
+        size='small'
+        variant='primary'
       >
         새 글 작성
       </Button>
-      <Button size="small" variant="tertiary" onClick={onOpen} ref={buttonRef}>
+      <Button size='small' variant='tertiary' onClick={onOpen} ref={buttonRef}>
         <span className={styles.block}>
           <User />
           {username}

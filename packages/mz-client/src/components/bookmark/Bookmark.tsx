@@ -1,26 +1,28 @@
-"use client";
+'use client';
 
-import LinkCardList from "@/components/home/LinkCardList";
-import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
-import { getBookmarks } from "@/lib/api/bookmark";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { useCallback, useRef } from "react";
-import SkeletonUI from "@/components/system/SkeletonUI";
-import styles from "@/styles/StyledTabLayout.module.scss";
-import EmptyList from "../system/EmptyList";
+import LinkCardList from '@/components/home/LinkCardList';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { getBookmarks } from '@/lib/api/bookmark';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import type { QueryKey } from '@tanstack/react-query';
+import type { GetBookmarksResult } from '@/types/db';
+import { useCallback, useRef } from 'react';
+import SkeletonUI from '@/components/system/SkeletonUI';
+import styles from '@/styles/StyledTabLayout.module.scss';
+import EmptyList from '../system/EmptyList';
 
 export default function Bookmark() {
   const observerTargetEl = useRef<HTMLDivElement>(null);
 
-  const {
-    status,
-    data,
-    fetchNextPage,
-
-    hasNextPage,
-  } = useInfiniteQuery(
-    ["bookmarks"],
-    ({ pageParam = undefined }) => getBookmarks(pageParam),
+  const { status, data, fetchNextPage, hasNextPage } = useInfiniteQuery<
+    GetBookmarksResult,
+    Error,
+    GetBookmarksResult,
+    QueryKey
+  >(
+    ['bookmarks'],
+    ({ pageParam = undefined }: { pageParam?: number }) =>
+      getBookmarks(pageParam),
     {
       getNextPageParam: (lastPage) => {
         if (!lastPage.pageInfo.hasNextPage) return undefined;
@@ -44,10 +46,10 @@ export default function Bookmark() {
 
   return (
     <>
-      <div className={styles.content} style={{ height: "100%" }}>
-        {status === "loading" ? (
+      <div className={styles.content} style={{ height: '100%' }}>
+        {status === 'loading' ? (
           <SkeletonUI />
-        ) : status === "error" ? (
+        ) : status === 'error' ? (
           <div>페이지를 로딩중입니다. 잠시만 기다려주세요...</div>
         ) : items ? (
           items.length === 0 ? (

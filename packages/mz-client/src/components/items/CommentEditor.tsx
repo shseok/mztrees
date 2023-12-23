@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import LoadingIndicator from "../system/LoadingIndicator";
-import Button from "../system/Button";
-import styles from "@/styles/CommentEditor.module.scss";
-import { useUser } from "@/context/UserContext";
-import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
+import React, { useState } from 'react';
+import LoadingIndicator from '../system/LoadingIndicator';
+import Button from '../system/Button';
+import styles from '@/styles/CommentEditor.module.scss';
+import { useUser } from '@/context/UserContext';
+import { useOpenLoginDialog } from '@/hooks/useOpenLoginDialog';
 import {
   AnimatePresence,
   MotionDiv,
   LazyMotion,
   loadFeature,
-} from "@/utils/dynamic";
+} from '@/utils/dynamic';
 interface Props {
-  mode: "write" | "edit" | "reply";
+  mode: 'write' | 'edit' | 'reply';
   isLoading: boolean;
   onSubmit: () => void;
   onClose?: () => void;
@@ -45,19 +45,19 @@ const CommentEditor = ({
 
   const onFocus = () => {
     if (!currentUser) {
-      openLoginDialog("comment");
+      openLoginDialog('comment');
       return;
     }
   };
 
-  const buttonText = mode === "edit" ? "수정" : "등록";
+  const buttonText = mode === 'edit' ? '수정' : '등록';
 
   return (
     <div className={styles.group}>
       <input
         className={styles.styled_input}
-        placeholder="댓글을 입력하세요"
-        onFocus={(e) => {
+        placeholder='댓글을 입력하세요'
+        onFocus={() => {
           setIsButtonShown(true);
         }}
         value={text}
@@ -72,16 +72,16 @@ const CommentEditor = ({
           <LazyMotion features={loadFeature}>
             <MotionDiv
               className={styles.button_container}
-              key="actions"
-              initial={mode === "write" ? { height: 0, opacity: 0 } : false}
+              key='actions'
+              initial={mode === 'write' ? { height: 0, opacity: 0 } : false}
               animate={{ height: 36, opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
             >
-              <Button size="small" variant="tertiary" onClick={onReset}>
+              <Button size='small' variant='tertiary' onClick={onReset}>
                 취소
               </Button>
-              <Button size="small" onClick={handleSubmit} onFocus={onFocus}>
-                {isLoading ? <LoadingIndicator color="white" /> : buttonText}
+              <Button size='small' onClick={handleSubmit} onFocus={onFocus}>
+                {isLoading ? <LoadingIndicator color='white' /> : buttonText}
               </Button>
             </MotionDiv>
           </LazyMotion>

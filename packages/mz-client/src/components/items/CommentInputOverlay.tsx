@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from "react";
-import Overlay from "../system/Overlay";
-import { useCommentInputStore } from "@/hooks/stores/useCommentInputStore";
-import { shallow } from "zustand/shallow";
-import { useItemId } from "@/hooks/useItemId";
-import { useCreateCommentMutation } from "@/hooks/mutation/useCreateCommentMutation";
-import LoadingIndicator from "../system/LoadingIndicator";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useCommentsQuery } from "@/hooks/query/useCommentsQuery";
-import { Comment } from "@/types/db";
-import { produce } from "immer";
-import { useDialog } from "@/context/DialogContext";
-import { editComment } from "@/lib/api/items";
-import styles from "@/styles/CommentInputOverlay.module.scss";
-import { extractNextError } from "@/lib/nextError";
-import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
-import { refreshToken } from "@/lib/api/auth";
-import { setClientCookie } from "@/lib/client";
+import React, { useEffect, useState } from 'react';
+import Overlay from '../system/Overlay';
+import { useCommentInputStore } from '@/hooks/stores/useCommentInputStore';
+import { shallow } from 'zustand/shallow';
+import { useItemId } from '@/hooks/useItemId';
+import { useCreateCommentMutation } from '@/hooks/mutation/useCreateCommentMutation';
+import LoadingIndicator from '../system/LoadingIndicator';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useCommentsQuery } from '@/hooks/query/useCommentsQuery';
+import { Comment } from '@/types/db';
+import { produce } from 'immer';
+import { useDialog } from '@/context/DialogContext';
+import { editComment } from '@/lib/api/items';
+import styles from '@/styles/CommentInputOverlay.module.scss';
+import { extractNextError } from '@/lib/nextError';
+import { useOpenLoginDialog } from '@/hooks/useOpenLoginDialog';
+import { refreshToken } from '@/lib/api/auth';
+import { setClientCookie } from '@/lib/client';
 import {
   AnimatePresence,
   MotionDiv,
   LazyMotion,
   loadFeature,
-} from "@/utils/dynamic";
+} from '@/utils/dynamic';
 const CommentInputOverlay = () => {
   const { visible, close, parentCommentId, commentId, defaultText } =
     useCommentInputStore(
@@ -35,10 +35,10 @@ const CommentInputOverlay = () => {
       shallow
     );
   // manage text state
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
   const itemId = useItemId();
   const queryClient = useQueryClient();
-  const buttonText = commentId ? "수정" : "등록";
+  const buttonText = commentId ? '수정' : '등록';
   const openLoginDialog = useOpenLoginDialog();
 
   const scrollToCommentId = (commentId: number) => {
@@ -47,8 +47,8 @@ const CommentInputOverlay = () => {
     );
     if (!commentElement) return;
     commentElement.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
+      behavior: 'smooth',
+      block: 'end',
     });
     commentElement.focus();
   };
@@ -69,10 +69,11 @@ const CommentInputOverlay = () => {
               return produce(prevComments, (draft) => {
                 const rootComment =
                   draft.find((comment) => comment.id === parentCommentId) ?? // 첫번째에 발견된 0 level comments
-                  draft.find((comment) =>
-                    comment.subcomments?.find(
-                      (subcomment) => subcomment.id === parentCommentId
-                    )
+                  draft.find(
+                    (comment) =>
+                      comment.subcomments?.find(
+                        (subcomment) => subcomment.id === parentCommentId
+                      )
                   ); // 다음 subcomments에서 발견
                 rootComment?.subcomments?.push(data);
               });
@@ -90,7 +91,7 @@ const CommentInputOverlay = () => {
       },
       onError: async (e, variables) => {
         const error = extractNextError(e);
-        if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
+        if (error.name === 'Unauthorized' && error.payload?.isExpiredToken) {
           try {
             const tokens = await refreshToken();
             setClientCookie(`access_token=${tokens.accessToken}`);
@@ -102,13 +103,13 @@ const CommentInputOverlay = () => {
             });
           } catch (innerError) {
             // expire refresh
-            openLoginDialog("sessionOut");
+            openLoginDialog('sessionOut');
           }
         } else {
           // 서버가 죽지 않는 이상 에러는 발생하지 않을 것
           open({
-            title: "오류",
-            description: "댓글 작성 실패",
+            title: '오류',
+            description: '댓글 작성 실패',
           });
         }
       },
@@ -124,7 +125,7 @@ const CommentInputOverlay = () => {
     },
     onError: async (e, variables) => {
       const error = extractNextError(e);
-      if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
+      if (error.name === 'Unauthorized' && error.payload?.isExpiredToken) {
         try {
           const tokens = await refreshToken();
           setClientCookie(`access_token=${tokens.accessToken}`);
@@ -136,13 +137,13 @@ const CommentInputOverlay = () => {
           });
         } catch (innerError) {
           // expire refresh
-          openLoginDialog("sessionOut");
+          openLoginDialog('sessionOut');
         }
       } else {
         // 서버가 죽지 않는 이상 에러는 발생하지 않을 것
         open({
-          title: "오류",
-          description: "댓글 작성 실패",
+          title: '오류',
+          description: '댓글 작성 실패',
         });
       }
     },
@@ -152,8 +153,8 @@ const CommentInputOverlay = () => {
     if (!itemId) return;
     if (text.length === 0) {
       open({
-        title: "오류",
-        description: "댓글을 입력하지 않으셨습니다.",
+        title: '오류',
+        description: '댓글을 입력하지 않으셨습니다.',
       });
       return;
     }
@@ -175,7 +176,7 @@ const CommentInputOverlay = () => {
 
   useEffect(() => {
     if (visible) {
-      setText("");
+      setText('');
     }
   }, [visible]);
 
@@ -198,7 +199,7 @@ const CommentInputOverlay = () => {
             >
               <input
                 className={styles.input}
-                placeholder="댓글을 입력하세요."
+                placeholder='댓글을 입력하세요.'
                 onChange={(e) => setText(e.target.value)}
                 value={defaultTextValue}
                 autoFocus

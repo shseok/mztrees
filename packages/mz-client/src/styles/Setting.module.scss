@@ -1,4 +1,4 @@
-@import "_var", "_module";
+@import 'var', 'module';
 
 .block {
   background: $gray0;
@@ -16,14 +16,14 @@
 }
 
 .list_item {
-  @include ListItemStyle;
+  @include list-item-style;
 }
 
 .list_item_link {
   cursor: pointer;
   display: block;
   text-decoration: none;
-  @include ListItemStyle;
+  @include list-item-style;
 
   &.dark {
     background: $gray4;

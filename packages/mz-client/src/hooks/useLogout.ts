@@ -1,5 +1,5 @@
-import { userLogout } from "@/lib/api/auth";
-import { extractNextError } from "@/lib/nextError";
+import { userLogout } from '@/lib/api/auth';
+import { extractNextError } from '@/lib/nextError';
 
 export function useLogout() {
   const handleLogout = async () => {
@@ -7,9 +7,9 @@ export function useLogout() {
       await userLogout();
     } catch (e) {
       const result = extractNextError(e);
-      console.log("logout", result);
+      console.log('logout', result);
     }
-    window.location.href = "/";
+    window.location.href = '/';
   };
 
   return handleLogout;

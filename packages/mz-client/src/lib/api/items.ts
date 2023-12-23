@@ -1,5 +1,5 @@
-import { stringify } from "qs";
-import { fetchClient } from "../client";
+import { stringify } from 'qs';
+import { fetchClient } from '../client';
 import {
   Comment,
   ExtractedUrlsResult,
@@ -11,10 +11,10 @@ import {
   MutateItemParams,
   Tag,
   UnlikeCommentResult,
-} from "@/types/db";
+} from '@/types/db';
 
 export async function createItem(params: MutateItemParams) {
-  const response = await fetchClient.post<Item>("/api/items", params);
+  const response = await fetchClient.post<Item>('/api/items', params);
   return response;
 }
 
@@ -36,7 +36,7 @@ export async function getItems({
     { addQueryPrefix: true } //  tags > arrayFormat: "repeat"
   );
   const resonse = await fetchClient.get<GetItemsResult>(
-    "/api/items".concat(query)
+    '/api/items'.concat(query)
   );
   return resonse;
 }
@@ -166,7 +166,7 @@ export async function unlikeComment({
 
 export async function getImageUrl(link: string) {
   const response = await fetchClient.post<ExtractedUrlsResult>(
-    "/api/items/urls",
+    '/api/items/urls',
     {
       link,
     }

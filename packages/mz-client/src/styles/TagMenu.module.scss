@@ -1,4 +1,4 @@
-@import "_var", "_module";
+@import 'var', 'module';
 
 .block {
   background: white;
@@ -10,27 +10,27 @@
   min-height: 200px;
   border-radius: 8px;
   padding: 24px;
+
   // box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 4px rgb(0 0 0 / 15%);
   z-index: 5;
 
   .tag_list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+
     @include mobile {
       grid-template-columns: repeat(4, 1fr);
     }
+
     gap: 3px;
     row-gap: 3px;
 
     .tag {
       background: #fff;
-      // display: inline-block;
       padding: 5px 10px;
       cursor: pointer;
-      color: $gray4;
       transition: all 0.2s ease;
-      // border: 1px solid $primary;
       font-weight: 700;
       border-radius: 8px;
       color: $gray4;

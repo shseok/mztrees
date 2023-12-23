@@ -1,7 +1,7 @@
-import React from "react";
-import Modal from "./Modal";
-import Button from "./Button";
-import styles from "@/styles/Dialog.module.scss";
+import React from 'react';
+import Modal from './Modal';
+import Button from './Button';
+import styles from '@/styles/Dialog.module.scss';
 
 interface Props {
   visible: boolean;
@@ -11,7 +11,7 @@ interface Props {
   cancelText: string;
   onClose(): void;
   onConfirm(): void;
-  mode?: "alert" | "confirm";
+  mode?: 'alert' | 'confirm';
 }
 
 const Dialog = ({
@@ -22,15 +22,15 @@ const Dialog = ({
   onConfirm,
   confirmText,
   cancelText,
-  mode = "alert",
+  mode = 'alert',
 }: Props) => {
   return (
-    <Modal className="styled_modal" visible={visible}>
+    <Modal className='styled_modal' visible={visible}>
       <h3 className={styles.title}>{title}</h3>
       <p className={styles.description}>{description}</p>
       <section className={styles.footer}>
-        {mode === "confirm" && (
-          <Button onClick={onClose} variant="secondary">
+        {mode === 'confirm' && (
+          <Button onClick={onClose} variant='secondary'>
             {cancelText}
           </Button>
         )}

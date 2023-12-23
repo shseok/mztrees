@@ -1,10 +1,10 @@
-import { useCallback, useRef } from "react";
-import { useItemOverrideSetter } from "./stores/ItemOverrideStore";
-import { createBookmark, deleteBookmark } from "@/lib/api/bookmark";
-import { useOpenLoginDialog } from "./useOpenLoginDialog";
-import { extractNextError } from "@/lib/nextError";
-import { refreshToken } from "@/lib/api/auth";
-import { setClientCookie } from "@/lib/client";
+import { useCallback, useRef } from 'react';
+import { useItemOverrideSetter } from './stores/ItemOverrideStore';
+import { createBookmark, deleteBookmark } from '@/lib/api/bookmark';
+import { useOpenLoginDialog } from './useOpenLoginDialog';
+import { extractNextError } from '@/lib/nextError';
+import { refreshToken } from '@/lib/api/auth';
+import { setClientCookie } from '@/lib/client';
 
 // TODO: refactor try catch
 export const useBookmarkManager = () => {
@@ -26,7 +26,7 @@ export const useBookmarkManager = () => {
         abortControllers.delete(itemId);
       } catch (e) {
         const error = extractNextError(e);
-        if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
+        if (error.name === 'Unauthorized' && error.payload?.isExpiredToken) {
           try {
             const tokens = await refreshToken();
             setClientCookie(`access_token=${tokens.accessToken}`);
@@ -41,7 +41,7 @@ export const useBookmarkManager = () => {
             set(itemId, {
               isBookmarked: false,
             });
-            openLoginDialog("sessionOut");
+            openLoginDialog('sessionOut');
           }
         } else {
           set(itemId, {
@@ -69,7 +69,7 @@ export const useBookmarkManager = () => {
         abortControllers.delete(itemId);
       } catch (e) {
         const error = extractNextError(e);
-        if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
+        if (error.name === 'Unauthorized' && error.payload?.isExpiredToken) {
           try {
             const tokens = await refreshToken();
             setClientCookie(`access_token=${tokens.accessToken}`);
@@ -84,7 +84,7 @@ export const useBookmarkManager = () => {
             set(itemId, {
               isBookmarked: true,
             });
-            openLoginDialog("sessionOut");
+            openLoginDialog('sessionOut');
           }
         } else {
           set(itemId, {

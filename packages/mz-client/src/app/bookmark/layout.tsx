@@ -1,10 +1,10 @@
-import { checkIsLoggedIn } from "@/lib/applyAuth";
-import { Metadata } from "next";
-import { redirect } from "next/navigation";
+import { checkIsLoggedIn } from '@/lib/applyAuth';
+import { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
-  title: "북마크",
-  robots: "noindex",
+  title: '북마크',
+  robots: 'noindex',
 };
 
 export default async function BookmarkLayout({
@@ -12,7 +12,7 @@ export default async function BookmarkLayout({
 }: {
   children: React.ReactNode;
 }) {
-  console.log("pre-rendering test in bookmark");
+  console.log('pre-rendering test in bookmark');
   const isLoggedIn = await checkIsLoggedIn();
   if (!isLoggedIn) {
     return redirect(`/login?next=/bookmark`);

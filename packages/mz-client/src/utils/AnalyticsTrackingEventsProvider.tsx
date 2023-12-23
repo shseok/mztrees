@@ -1,10 +1,10 @@
-import { useTrackScreenViews } from "@/hooks/useTrackScreenViews";
+import { useTrackScreenViews } from '@/hooks/useTrackScreenViews';
 
 function AnalyticsTrackingEventsProvider({
   children,
 }: React.PropsWithChildren) {
   const trackScreenViews = useTrackScreenViews;
-  if (process.env.NODE_ENV === "production") {
+  if (process.env.NODE_ENV === 'production') {
     trackScreenViews();
   }
 

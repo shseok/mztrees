@@ -1,10 +1,10 @@
-import React from "react";
-import styles from "@/styles/WriteFormTemplate.module.scss";
-import Button from "../system/Button";
-import { useTheme } from "@/context/ThemeContext";
-import { cn } from "@/utils/common";
-import LoadingIndicator from "../system/LoadingIndicator";
-import GifSelectButton from "./GifButton";
+import React from 'react';
+import styles from '@/styles/WriteFormTemplate.module.scss';
+import Button from '../system/Button';
+import { useTheme } from '@/context/ThemeContext';
+import { cn } from '@/utils/common';
+import LoadingIndicator from '../system/LoadingIndicator';
+import GifSelectButton from './GifButton';
 
 interface Props {
   description?: string;
@@ -28,8 +28,8 @@ const WriteFormTemplate = ({
   const { mode } = useTheme();
   return (
     <form
-      className={cn(styles.styled_form, mode === "dark" && styles.dark)}
-      method="POST"
+      className={cn(styles.styled_form, mode === 'dark' && styles.dark)}
+      method='POST'
       onSubmit={onSubmit}
     >
       <div className={styles.title}>
@@ -38,12 +38,12 @@ const WriteFormTemplate = ({
       <div className={styles.content}>{children}</div>
       <div className={styles.button_wrapper}>
         {hasGifButton && <GifSelectButton />}
-        <Button disabled={isLoading} layoutmode="fullWidth">
+        <Button disabled={isLoading} layoutmode='fullWidth'>
           {isLoading ? (
             loadingPercent !== undefined ? (
               `${loadingPercent}%`
             ) : (
-              <LoadingIndicator color="white" />
+              <LoadingIndicator color='white' />
             )
           ) : (
             buttonText

@@ -1,6 +1,6 @@
-import { getItem } from "@/lib/api/items";
-import { Metadata } from "next";
-import Item from "@/components/items/Item";
+import { getItem } from '@/lib/api/items';
+import { Metadata } from 'next';
+import Item from '@/components/items/Item';
 
 type Params = {
   params: {
@@ -17,7 +17,7 @@ export async function generateMetadata({
   const itemData = await getItem(parseInt(id));
   const shortenDescription = itemData.body
     .slice(0, 300)
-    .concat(itemData.body.length > 300 ? "..." : "");
+    .concat(itemData.body.length > 300 ? '...' : '');
 
   return {
     title: itemData.title,
@@ -28,21 +28,21 @@ export async function generateMetadata({
       url: itemData.link,
       images:
         itemData.thumbnail?.url ??
-        "https://img.mztrees.com/not-fount-image.svg",
+        'https://img.mztrees.com/not-fount-image.svg',
       authors: itemData.author,
     },
     twitter: {
-      card: itemData.thumbnail ? "summary_large_image" : "summary",
+      card: itemData.thumbnail ? 'summary_large_image' : 'summary',
       title: itemData.title,
       description: shortenDescription,
-      creator: "@mztrees",
+      creator: '@mztrees',
       images:
         itemData.thumbnail?.url ??
-        "https://img.mztrees.com/not-fount-image.svg",
+        'https://img.mztrees.com/not-fount-image.svg',
     },
   };
 }
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 // export const fetchCache = "force-no-store";
 
 export default async function ItemPage({ params: { id } }: Params) {

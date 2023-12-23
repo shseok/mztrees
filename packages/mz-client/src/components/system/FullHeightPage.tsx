@@ -1,5 +1,5 @@
-import React from "react";
-import styles from "@/styles/FullHeightPage.module.scss";
+import React from 'react';
+import styles from '@/styles/FullHeightPage.module.scss';
 // fullheight 트리거용(로그인 / 회원가입...)
 
 interface Props {

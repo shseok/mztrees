@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useParams } from "next/navigation";
+import { useParams } from 'next/navigation';
 
 /**
  * Returns ItemId URL parameter in items page

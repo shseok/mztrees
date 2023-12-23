@@ -1,9 +1,9 @@
-import React from "react";
-import FullHeightPage from "@/components/system/FullHeightPage";
-import HeaderBackButton from "@/components/base/HeaderBackButton";
-import MobileHeader from "@/components/base/MobileHeader";
-import DesktopHeader from "../base/DesktopHeader";
-import styles from "@/styles/BasicLayout.module.scss";
+import React from 'react';
+import FullHeightPage from '@/components/system/FullHeightPage';
+import HeaderBackButton from '@/components/base/HeaderBackButton';
+import MobileHeader from '@/components/base/MobileHeader';
+import DesktopHeader from '../base/DesktopHeader';
+import styles from '@/styles/BasicLayout.module.scss';
 
 interface Props {
   hasBackButton: boolean;

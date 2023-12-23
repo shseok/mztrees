@@ -1,19 +1,19 @@
-import { FetchError, _cookie } from "../client";
+import { FetchError, _cookie } from '../client';
 
 export async function extractUrlsWithProgress(
   link: string,
   throttleUpdateProgress: (value: number) => void
 ) {
   const baseUrl =
-    process.env.NODE_ENV === "development"
+    process.env.NODE_ENV === 'development'
       ? process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL!
       : process.env.NEXT_PUBLIC_API_BASE_URL!;
 
   const result = await fetch(`${baseUrl}/api/items/urls`, {
-    method: "POST",
-    credentials: "include",
+    method: 'POST',
+    credentials: 'include',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Cookie: _cookie,
     },
     body: JSON.stringify({ link }),
@@ -25,7 +25,7 @@ export async function extractUrlsWithProgress(
       }
       if (!response?.body) return;
       // get total length
-      const contentLength = response.headers.get("Content-Length");
+      const contentLength = response.headers.get('Content-Length');
       const reader = response.body.getReader();
 
       let receivedLength = 0;
@@ -41,16 +41,21 @@ export async function extractUrlsWithProgress(
       return new ReadableStream({
         start(controller) {
           function push() {
-            reader.read().then(({ done, value }) => {
-              if (done) {
-                controller.close();
-                return;
-              }
-              receivedLength += value.byteLength;
-              updateProgress({ value: receivedLength });
-              controller.enqueue(value);
-              push();
-            });
+            reader
+              .read()
+              .then(({ done, value }) => {
+                if (done) {
+                  controller.close();
+                  return;
+                }
+                receivedLength += value.byteLength;
+                updateProgress({ value: receivedLength });
+                controller.enqueue(value);
+                push();
+              })
+              .catch((error) => {
+                console.error(error);
+              });
           }
           push();
         },

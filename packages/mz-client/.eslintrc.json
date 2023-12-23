@@ -2,20 +2,27 @@
   "root": true,
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
-  "extends": ["eslint:recommended", "next/core-web-vitals", "prettier"],
-  "overrides": [
-    {
-      "files": ["*.ts", "*.tsx"],
-      "parserOptions": {
-        "project": ["./tsconfig.json"]
-        // "tsconfigRootDir": "__dirname"
-      },
-      "extends": [
-        "plugin:@typescript-eslint/recommended",
-        "plugin:@typescript-eslint/recommended-requiring-type-checking",
-        "next/core-web-vitals",
-        "prettier"
-      ]
-    }
-  ]
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "next/core-web-vitals",
+    "prettier"
+  ],
+  // "files": ["*.ts", "*.tsx"],
+  "parserOptions": {
+    "project": ["tsconfig.json"]
+  },
+  "rules": {
+    // Promise를 처리할 수 없는 구문에 작성하지 못하도록 설정
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        // void를 반환하는 함수에 대해서는 예외처리 (ex. void를 인자로 받는 함수는 Promise<void>를 받을 수 있음 )
+        "checksVoidReturn": false
+      }
+    ],
+    // Promise에서 항상 에러를 catch하도록 설정 > warning
+    "@typescript-eslint/no-floating-promises": "warn",
+    "@typescript-eslint/no-explicit-any": "warn"
+  }
 }

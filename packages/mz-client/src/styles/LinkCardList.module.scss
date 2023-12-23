@@ -1,4 +1,4 @@
-@import "_module";
+@import 'module';
 
 .list {
   // display: flex;
@@ -13,6 +13,7 @@
   @include widescreen {
     grid-template-columns: repeat(3, 1fr);
   }
+
   gap: 32px;
   row-gap: 43px;
 }

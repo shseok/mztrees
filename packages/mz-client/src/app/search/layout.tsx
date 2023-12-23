@@ -1,8 +1,8 @@
-import { Metadata } from "next";
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "검색",
-  robots: "noindex",
+  title: '검색',
+  robots: 'noindex',
 };
 
 export default function SearchLayout({

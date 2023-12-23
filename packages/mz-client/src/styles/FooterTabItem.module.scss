@@ -1,15 +1,17 @@
-@import "_var";
+@import 'var';
 
 .like_item {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+
   svg {
     width: 32px;
     height: 32px;
     color: $gray2;
   }
+
   &.active {
     svg {
       color: $primary;

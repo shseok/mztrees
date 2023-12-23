@@ -1,4 +1,4 @@
-@import "_var", "_module";
+@import 'var', 'module';
 
 .title {
   margin-top: 0;
@@ -23,11 +23,8 @@
     color: $gray4;
     transition: all 0.2s ease;
     border: 1px solid $primary;
-    border-radius: 14px;
     font-weight: 700;
     border-radius: 15px;
-    // margin-right: 8px;
-    // margin-bottom: 8px;
 
     &:hover {
       background: #017a5978;

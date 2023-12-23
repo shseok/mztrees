@@ -1,8 +1,9 @@
-@import "_var", "_module";
+@import 'var', 'module';
 
 .scroll_container {
   min-height: $category;
   padding: 12px 4px;
+
   .region {
     display: block;
     text-decoration: none;
@@ -29,11 +30,9 @@
     position: absolute;
     height: 100%;
     width: 43px;
-    // width: 20px;
     top: 0;
     display: flex;
     align-items: center;
-    // padding: 0 2px;
 
     @include mobile {
       width: 100px;

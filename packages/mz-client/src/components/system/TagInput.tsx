@@ -1,12 +1,12 @@
-import { Tag, TagList } from "@/types/db";
-import styles from "@/styles/TagInput.module.scss";
-import { useTheme } from "@/context/ThemeContext";
-import { cn } from "@/utils/common";
-import { useState } from "react";
-import Button from "./Button";
-import OptionSelector from "./OptionSelector";
-import { useWriteContext } from "@/context/WriteContext";
-import { tagList } from "@/lib/const";
+import { Tag, TagList } from '@/types/db';
+import styles from '@/styles/TagInput.module.scss';
+import { useTheme } from '@/context/ThemeContext';
+import { cn } from '@/utils/common';
+import { useState } from 'react';
+import Button from './Button';
+import OptionSelector from './OptionSelector';
+import { useWriteContext } from '@/context/WriteContext';
+import { tagList } from '@/lib/const';
 
 const TagInput = () => {
   const {
@@ -43,15 +43,15 @@ const TagInput = () => {
             className={cn(
               styles.label,
               focused && styles.focused,
-              mode === "dark" && styles.dark
+              mode === 'dark' && styles.dark
             )}
           >
             태그
           </label>
           <Button
-            variant="tertiary"
-            size="small"
-            style={{ paddingLeft: "6px", paddingRight: "6px" }}
+            variant='tertiary'
+            size='small'
+            style={{ paddingLeft: '6px', paddingRight: '6px' }}
             onClick={openTagSelector}
           >
             + 태그 추가
@@ -73,7 +73,7 @@ const TagInput = () => {
       </div>
       {/* Refactor: 아마 form안에 있어서 form 버튼까지 버블링되는 것 같다. 물론 preventDefault로 일일이 막아주었지만.. 최대한 전역으로 빼자 (Dialog처럼.) */}
       <OptionSelector
-        title="추가할 태그를 선택해주세요."
+        title='추가할 태그를 선택해주세요.'
         list={[...tagList]}
         visible={visible}
         selected={selectedTags}
@@ -90,10 +90,10 @@ const TagInput = () => {
         }}
         onConfirm={() => {
           if (!selectedTags.length) {
-            alert("태그를 한 개 이상 선택해주세요.");
+            alert('태그를 한 개 이상 선택해주세요.');
             return;
           }
-          actions.change("tags", selectedTags);
+          actions.change('tags', selectedTags);
           setVisible(false);
           onBlur();
           // buttonRef.current?.focus();
@@ -102,9 +102,9 @@ const TagInput = () => {
           setVisible(false);
           onBlur();
         }}
-        confirmText="선택"
-        cancelText="취소"
-        mode="confirm"
+        confirmText='선택'
+        cancelText='취소'
+        mode='confirm'
       />
     </>
   );

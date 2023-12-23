@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import React, { useRef } from "react";
-import { useOnClickOutside } from "@/hooks/useOnClickOuteside";
-import { useOpenLogoutDialog } from "@/hooks/useOpenLoginDialog";
-import { useRouter } from "next/navigation";
-import styles from "@/styles/UserMenu.module.scss";
-import { cn } from "@/utils/common";
+import React, { useRef } from 'react';
+import { useOnClickOutside } from '@/hooks/useOnClickOuteside';
+import { useOpenLogoutDialog } from '@/hooks/useOpenLoginDialog';
+import { useRouter } from 'next/navigation';
+import styles from '@/styles/UserMenu.module.scss';
+import { cn } from '@/utils/common';
 import {
   AnimatePresence,
   MotionDiv,
   LazyMotion,
   loadFeature,
-} from "@/utils/dynamic";
+} from '@/utils/dynamic';
 
 interface Props {
   visible: boolean;
@@ -44,26 +44,26 @@ const UserMenu = ({ visible, onClose }: Props) => {
               <div className={styles.triangle_border} />
               <div
                 className={cn(styles.menu_item, styles.isDeskTopHidden)}
-                onClick={() => router.push("/write")}
+                onClick={() => router.push('/write')}
               >
                 새 글 등록
               </div>
               <div
                 className={styles.menu_item}
-                onClick={() => router.push("/setting/account")}
+                onClick={() => router.push('/setting/account')}
               >
                 내 계정
               </div>
               <div
                 className={styles.menu_item}
-                onClick={() => router.push("/bookmark")}
+                onClick={() => router.push('/bookmark')}
               >
                 북마크
               </div>
               <div
                 className={styles.menu_item}
                 onClick={() => {
-                  openLogoutDialog("logout");
+                  openLogoutDialog('logout');
                 }}
               >
                 로그아웃

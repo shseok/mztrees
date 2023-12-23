@@ -1,11 +1,11 @@
-import React, { useRef, useState } from "react";
-import styles from "@/styles/TagSelector.module.scss";
-import { ChevronDown, ChevronUp, Close } from "../vectors";
-import { useTheme } from "@/context/ThemeContext";
-import { cn } from "@/utils/common";
-import TagMenu from "./TagMenu";
-import { ListMode, Tag } from "@/types/db";
-import useSetSearchParams from "@/hooks/useSetSearchParams";
+import React, { useRef, useState } from 'react';
+import styles from '@/styles/TagSelector.module.scss';
+import { ChevronDown, ChevronUp, Close } from '../vectors';
+import { useTheme } from '@/context/ThemeContext';
+import { cn } from '@/utils/common';
+import TagMenu from './TagMenu';
+import { ListMode, Tag } from '@/types/db';
+import useSetSearchParams from '@/hooks/useSetSearchParams';
 
 interface Props {
   listMode: ListMode;
@@ -30,7 +30,7 @@ const TagSelector = ({ listMode, selectedTag, setSelectedTag }: Props) => {
     setVisible(false);
   };
   return (
-    <div className={cn(styles.container, mode === "dark" && styles.dark)}>
+    <div className={cn(styles.container, mode === 'dark' && styles.dark)}>
       <button
         className={styles.inner_container}
         onClick={onToggle}

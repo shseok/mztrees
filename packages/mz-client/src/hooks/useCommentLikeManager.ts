@@ -1,10 +1,10 @@
-import { likeComment, unlikeComment } from "@/lib/api/items";
-import { useCommentLikeSetter } from "./stores/useCommentLikesStore";
-import { useCallback } from "react";
-import { extractNextError } from "@/lib/nextError";
-import { refreshToken } from "@/lib/api/auth";
-import { setClientCookie } from "@/lib/client";
-import { useOpenLoginDialog } from "./useOpenLoginDialog";
+import { likeComment, unlikeComment } from '@/lib/api/items';
+import { useCommentLikeSetter } from './stores/useCommentLikesStore';
+import { useCallback } from 'react';
+import { extractNextError } from '@/lib/nextError';
+import { refreshToken } from '@/lib/api/auth';
+import { setClientCookie } from '@/lib/client';
+import { useOpenLoginDialog } from './useOpenLoginDialog';
 
 export function useCommentLikeManager() {
   // const { mutate: like, isLoading: isLikeLoading } = useMutation(likeComment);
@@ -27,7 +27,7 @@ export function useCommentLikeManager() {
         await likeComment({ itemId, commentId });
       } catch (e) {
         const error = extractNextError(e);
-        if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
+        if (error.name === 'Unauthorized' && error.payload?.isExpiredToken) {
           try {
             const tokens = await refreshToken();
             setClientCookie(`access_token=${tokens.accessToken}`);
@@ -37,14 +37,14 @@ export function useCommentLikeManager() {
               likes: prevLikes - 1,
               isLiked: false,
             });
-            openLoginDialog("commentLike");
+            openLoginDialog('commentLike');
           }
         } else {
           set(commentId, {
             likes: prevLikes - 1,
             isLiked: false,
           });
-          openLoginDialog("commentLike");
+          openLoginDialog('commentLike');
         }
         // TODO: fail api -> handle error (rollback state)
         console.log(extractNextError(e));
@@ -62,7 +62,7 @@ export function useCommentLikeManager() {
         await unlikeComment({ itemId, commentId });
       } catch (e) {
         const error = extractNextError(e);
-        if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
+        if (error.name === 'Unauthorized' && error.payload?.isExpiredToken) {
           try {
             const tokens = await refreshToken();
             setClientCookie(`access_token=${tokens.accessToken}`);
@@ -72,14 +72,14 @@ export function useCommentLikeManager() {
               likes: prevLikes + 1,
               isLiked: true,
             });
-            openLoginDialog("commentLike");
+            openLoginDialog('commentLike');
           }
         } else {
           set(commentId, {
             likes: prevLikes + 1,
             isLiked: true,
           });
-          openLoginDialog("commentLike");
+          openLoginDialog('commentLike');
         }
         // TODO: fail api -> handle error (rollback state)
         console.log(extractNextError(e));

@@ -1,13 +1,7 @@
-"use client";
+'use client';
 
-import GifSelector from "@/components/system/gif/GifSelector";
-import React, {
-  ReactNode,
-  RefObject,
-  createContext,
-  useContext,
-  useState,
-} from "react";
+import GifSelector from '@/components/system/gif/GifSelector';
+import React, { ReactNode, createContext, useContext, useState } from 'react';
 
 export type GifSelectorContextType = {
   open: () => void;
@@ -45,7 +39,7 @@ export function GifSelectorProvider({ children }: Props) {
 export const useGifSelector = () => {
   const context = useContext(GifSelectorContext);
   if (!context) {
-    throw new Error("GifSelectorProvider not found");
+    throw new Error('GifSelectorProvider not found');
   }
   return context;
 };

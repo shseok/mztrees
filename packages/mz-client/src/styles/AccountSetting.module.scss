@@ -1,4 +1,4 @@
-@import "_var", "_module";
+@import 'var', 'module';
 
 .block {
   display: flex;
@@ -11,6 +11,7 @@
     width: 100%;
     max-width: 560px;
     margin: 0 auto;
+
     // flex: initial;
   }
 }

@@ -1,5 +1,5 @@
-import React from "react";
-import styles from "@/styles/Input.module.scss";
+import React from 'react';
+import styles from '@/styles/Input.module.scss';
 
 export interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string;
@@ -18,6 +18,6 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
   }
 );
 
-Input.displayName = "Input";
+Input.displayName = 'Input';
 
 export default Input;

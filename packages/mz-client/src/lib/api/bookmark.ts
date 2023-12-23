@@ -1,13 +1,13 @@
-import { stringify } from "qs";
-import { fetchClient } from "../client";
-import { Bookmark, GetBookmarksResult } from "@/types/db";
+import { stringify } from 'qs';
+import { fetchClient } from '../client';
+import { Bookmark, GetBookmarksResult } from '@/types/db';
 
 export const createBookmark = async (
   itemId: number,
   contorller?: AbortController
 ) => {
   const response = await fetchClient.post<Bookmark>(
-    "/api/bookmark/",
+    '/api/bookmark/',
     { itemId },
     {
       signal: contorller?.signal,
@@ -27,9 +27,9 @@ export const deleteBookmark = async (
 };
 
 export const getBookmarks = async (cursor?: number) => {
-  const query = cursor ? stringify({ cursor }, { addQueryPrefix: true }) : "";
+  const query = cursor ? stringify({ cursor }, { addQueryPrefix: true }) : '';
   const response = await fetchClient.get<GetBookmarksResult>(
-    "/api/bookmark".concat(query)
+    '/api/bookmark'.concat(query)
   );
   return response;
 };

@@ -4,13 +4,13 @@ import React, {
   useMemo,
   useRef,
   useState,
-} from "react";
-import { ListMode, Tag } from "@/types/db";
-import { Trending, History, Calendar } from "@/components/vectors";
-import styles from "@/styles/ListModeSelector.module.scss";
-import { cn } from "@/utils/common";
-import { useTheme } from "@/context/ThemeContext";
-import Link from "next/link";
+} from 'react';
+import { ListMode, Tag } from '@/types/db';
+import { Trending, History, Calendar } from '@/components/vectors';
+import styles from '@/styles/ListModeSelector.module.scss';
+import { cn } from '@/utils/common';
+import { useTheme } from '@/context/ThemeContext';
+import Link from 'next/link';
 
 const GAP = 16;
 
@@ -31,19 +31,19 @@ const ListModeSelector = ({ mode, tag }: Props) => {
     () =>
       [
         {
-          mode: "trending",
+          mode: 'trending',
           icon: <Trending />,
-          name: "트렌딩",
+          name: '트렌딩',
         },
         {
-          mode: "recent",
+          mode: 'recent',
           icon: <History />,
-          name: "최근",
+          name: '최근',
         },
         {
-          mode: "past",
+          mode: 'past',
           icon: <Calendar />,
-          name: "과거",
+          name: '과거',
         },
       ] as const,
     []
@@ -108,10 +108,10 @@ const ListModeItem = ({
       className={cn(
         styles.mode,
         mode === currentMode && styles.active,
-        themeMode === "dark" && styles.dark
+        themeMode === 'dark' && styles.dark
       )}
       href={link}
-      prefetch={mode !== "past"}
+      prefetch={mode !== 'past'}
       ref={ref}
     >
       {icon}

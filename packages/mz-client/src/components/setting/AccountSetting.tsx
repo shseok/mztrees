@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import React, { useRef, useState } from "react";
-import Input from "../system/Input";
-import Button from "../system/Button";
-import { useDialog } from "@/context/DialogContext";
-import { useMutation } from "@tanstack/react-query";
-import { changePassword, unregister } from "@/lib/api/me";
-import { extractNextError } from "@/lib/nextError";
-import styles from "@/styles/AccountSetting.module.scss";
-import { useUser } from "@/context/UserContext";
-import { useTheme } from "@/context/ThemeContext";
-import { cn } from "@/utils/common";
-import { refreshToken } from "@/lib/api/auth";
-import { setClientCookie } from "@/lib/client";
-import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
+import React, { useRef, useState } from 'react';
+import Input from '../system/Input';
+import Button from '../system/Button';
+import { useDialog } from '@/context/DialogContext';
+import { useMutation } from '@tanstack/react-query';
+import { changePassword, unregister } from '@/lib/api/me';
+import { extractNextError } from '@/lib/nextError';
+import styles from '@/styles/AccountSetting.module.scss';
+import { useUser } from '@/context/UserContext';
+import { useTheme } from '@/context/ThemeContext';
+import { cn } from '@/utils/common';
+import { refreshToken } from '@/lib/api/auth';
+import { setClientCookie } from '@/lib/client';
+import { useOpenLoginDialog } from '@/hooks/useOpenLoginDialog';
 
 const AccountSetting = () => {
   const { currentUser } = useUser();
@@ -22,13 +22,13 @@ const AccountSetting = () => {
   const newPasswordInputRef = useRef<HTMLInputElement>(null);
   const openLoginDialog = useOpenLoginDialog();
   const [form, setForm] = useState({
-    oldPassword: "",
-    newPassword: "",
+    oldPassword: '',
+    newPassword: '',
   });
   const reset = () => {
     setForm({
-      oldPassword: "",
-      newPassword: "",
+      oldPassword: '',
+      newPassword: '',
     });
   };
   const { open } = useDialog();
@@ -39,36 +39,36 @@ const AccountSetting = () => {
     onSuccess: () => {
       reset();
       open({
-        title: "비밀번호 변경",
-        description: "비밀번호 변경이 완료되었습니다.",
-        mode: "alert",
+        title: '비밀번호 변경',
+        description: '비밀번호 변경이 완료되었습니다.',
+        mode: 'alert',
       });
     },
     onError: async (error, variables) => {
       const extractedError = extractNextError(error);
-      if (extractedError.name === "Forbidden") {
+      if (extractedError.name === 'Forbidden') {
         open({
-          title: "비밀번호 불일치",
+          title: '비밀번호 불일치',
           description:
-            "비밀번호가 일치하지 않습니다.. 현재 비밀번호를 다시 입력해주세요.",
-          mode: "alert",
+            '비밀번호가 일치하지 않습니다.. 현재 비밀번호를 다시 입력해주세요.',
+          mode: 'alert',
           onConfirm() {
             oldPasswordInputRef.current?.focus();
-            setForm((prev) => ({ ...prev, oldPassword: "" }));
+            setForm((prev) => ({ ...prev, oldPassword: '' }));
           },
         });
-      } else if (extractedError.name === "BadRequest") {
+      } else if (extractedError.name === 'BadRequest') {
         open({
-          title: "비밀번호 변경 실패",
-          description: "8~20자, 영문/숫자/특수문자 1가지 이상 입력해주세요.",
-          mode: "alert",
+          title: '비밀번호 변경 실패',
+          description: '8~20자, 영문/숫자/특수문자 1가지 이상 입력해주세요.',
+          mode: 'alert',
           onConfirm() {
             newPasswordInputRef.current?.focus();
-            setForm((prev) => ({ ...prev, newPassword: "" }));
+            setForm((prev) => ({ ...prev, newPassword: '' }));
           },
         });
       } else if (
-        extractedError.name === "Unauthorized" &&
+        extractedError.name === 'Unauthorized' &&
         extractedError.payload?.isExpiredToken
       ) {
         try {
@@ -78,7 +78,7 @@ const AccountSetting = () => {
           mutateChangePassword({ newPassword, oldPassword });
         } catch (innerError) {
           // expire refresh
-          openLoginDialog("sessionOut");
+          openLoginDialog('sessionOut');
         }
       }
     },
@@ -87,18 +87,18 @@ const AccountSetting = () => {
   // 실패할 일이 없는 탈퇴는 mutation 사용 x
   const askUnregister = () => {
     open({
-      title: "계정 탈퇴",
+      title: '계정 탈퇴',
       description:
-        "계정에 관련된 정보를 모두 삭제합니다. 정말로 탈퇴하시겠습니까?",
-      mode: "confirm",
-      confirmText: "탈퇴",
-      cancelText: "취소",
+        '계정에 관련된 정보를 모두 삭제합니다. 정말로 탈퇴하시겠습니까?',
+      mode: 'confirm',
+      confirmText: '탈퇴',
+      cancelText: '취소',
       async onConfirm() {
         try {
           await unregister();
         } catch (e) {
           const error = extractNextError(e);
-          if (error.name === "Unauthorized" && error.payload?.isExpiredToken) {
+          if (error.name === 'Unauthorized' && error.payload?.isExpiredToken) {
             try {
               const tokens = await refreshToken();
               setClientCookie(`access_token=${tokens.accessToken}`);
@@ -106,12 +106,12 @@ const AccountSetting = () => {
               await unregister();
             } catch (innerError) {
               // expire refresh
-              openLoginDialog("sessionOut");
+              openLoginDialog('sessionOut');
             }
           }
           console.log(error);
         }
-        window.location.href = "/";
+        window.location.href = '/';
       },
     });
   };
@@ -132,56 +132,56 @@ const AccountSetting = () => {
   return (
     <div className={styles.block}>
       <div>
-        <h1 className={cn(styles.title, themeMode === "dark" && styles.dark)}>
+        <h1 className={cn(styles.title, themeMode === 'dark' && styles.dark)}>
           내 계정
         </h1>
         <div
-          className={cn(styles.section, themeMode === "dark" && styles.dark)}
+          className={cn(styles.section, themeMode === 'dark' && styles.dark)}
         >
           <h4>아이디</h4>
           <div
-            className={cn(styles.username, themeMode === "dark" && styles.dark)}
+            className={cn(styles.username, themeMode === 'dark' && styles.dark)}
           >
             {currentUser.username} 님
           </div>
         </div>
         <div
-          className={cn(styles.section, themeMode === "dark" && styles.dark)}
+          className={cn(styles.section, themeMode === 'dark' && styles.dark)}
         >
           <h4>비밀번호</h4>
           <form onSubmit={onSubmit}>
             <div className={styles.input_group}>
               <Input
                 value={form.oldPassword}
-                name="oldPassword"
-                placeholder="현재 비밀번호"
-                type="password"
+                name='oldPassword'
+                placeholder='현재 비밀번호'
+                type='password'
                 onChange={onChange}
-                autoComplete="off"
+                autoComplete='off'
                 ref={oldPasswordInputRef}
               />
               <Input
                 value={form.newPassword}
-                name="newPassword"
-                placeholder="새 비밀번호"
-                type="password"
+                name='newPassword'
+                placeholder='새 비밀번호'
+                type='password'
                 onChange={onChange}
-                autoComplete="off"
+                autoComplete='off'
                 ref={newPasswordInputRef}
               />
             </div>
             <Button
-              layoutmode="fullWidth"
-              variant="primary"
-              size="small"
-              type="submit"
+              layoutmode='fullWidth'
+              variant='primary'
+              size='small'
+              type='submit'
             >
               비밀번호 변경
             </Button>
           </form>
         </div>
       </div>
-      <Button variant="warning" onClick={askUnregister}>
+      <Button variant='warning' onClick={askUnregister}>
         계정 탈퇴
       </Button>
     </div>

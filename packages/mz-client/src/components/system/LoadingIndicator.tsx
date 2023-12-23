@@ -1,5 +1,5 @@
-import styles from "@/styles/LoadingIndicator.module.scss";
-import { Spinner } from "@/components/vectors";
+import styles from '@/styles/LoadingIndicator.module.scss';
+import { Spinner } from '@/components/vectors';
 
 interface Props {
   color?: string;

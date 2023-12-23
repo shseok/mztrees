@@ -5,11 +5,17 @@ export function getWeekRangeFromDate(d: Date) {
   const startDate = d.getDate() - day;
 
   const start = format(new Date(d.setDate(startDate)), 'yyyy-MM-dd');
-  let end = format(new Date(new Date(start).setDate(startDate + 6)), 'yyyy-MM-dd');
+  let end = format(
+    new Date(new Date(start).setDate(startDate + 6)),
+    'yyyy-MM-dd'
+  );
 
   if (+start.split('-')[2] > +end.split('-')[2]) {
     const endArr = end.split('-');
-    endArr[1] = `${+endArr[1] + 1}`.length === 1 ? `0${+endArr[1] + 1}` : `${+endArr[1] + 1}`;
+    endArr[1] =
+      `${+endArr[1] + 1}`.length === 1
+        ? `0${+endArr[1] + 1}`
+        : `${+endArr[1] + 1}`;
     end = endArr.join('-');
   }
   return [start, end];

@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
-import styles from "@/styles/SearchModal.module.scss";
-import { Close, Search, TrashCan } from "../vectors";
-import { useRouter } from "next/navigation";
-import { cn } from "@/utils/common";
-import { useTheme } from "@/context/ThemeContext";
+import React, { useEffect, useRef, useState } from 'react';
+import styles from '@/styles/SearchModal.module.scss';
+import { Close, Search, TrashCan } from '../vectors';
+import { useRouter } from 'next/navigation';
+import { cn } from '@/utils/common';
+import { useTheme } from '@/context/ThemeContext';
 
 interface Props {
   isOpen: boolean;
@@ -13,12 +13,12 @@ interface Props {
 
 const SearchModal = ({ isOpen, setIsOpen, close }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [inputVal, setInputVal] = useState<string>("");
+  const [inputVal, setInputVal] = useState<string>('');
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const { mode } = useTheme();
   const router = useRouter();
   useEffect(() => {
-    const searches = localStorage.getItem("recentSearches");
+    const searches = localStorage.getItem('recentSearches');
     if (searches) {
       setRecentSearches(JSON.parse(searches));
     }
@@ -34,18 +34,18 @@ const SearchModal = ({ isOpen, setIsOpen, close }: Props) => {
     const filteredSearches = recentSearches.filter(
       (eachVal) => eachVal !== value
     );
-    localStorage.setItem("recentSearches", JSON.stringify(filteredSearches));
+    localStorage.setItem('recentSearches', JSON.stringify(filteredSearches));
     setRecentSearches(filteredSearches);
   };
 
   const handleAllDelete = () => {
-    localStorage.removeItem("recentSearches");
+    localStorage.removeItem('recentSearches');
     setRecentSearches([]);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputVal(e.target.value);
-    console.log(inputVal);
+    // console.log(inputVal);
   };
 
   const viewNavigate = (newRoute: string) => {
@@ -60,15 +60,15 @@ const SearchModal = ({ isOpen, setIsOpen, close }: Props) => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const q = inputVal;
-    if (e.key === "Enter") {
-      if (q === "" || q.trim() === "") return;
+    if (e.key === 'Enter') {
+      if (q === '' || q.trim() === '') return;
       // store searched word in localstorage
       // maximum 6 words
       const newSearches = [q, ...recentSearches.slice(0, 5)];
       setRecentSearches(newSearches);
-      localStorage.setItem("recentSearches", JSON.stringify(newSearches));
+      localStorage.setItem('recentSearches', JSON.stringify(newSearches));
       setIsOpen(false);
-      setInputVal("");
+      setInputVal('');
       viewNavigate(`/search?q=${q}`);
     }
   };
@@ -81,7 +81,7 @@ const SearchModal = ({ isOpen, setIsOpen, close }: Props) => {
           ? cn(
               styles.search_modal,
               styles.active,
-              mode === "dark" && styles.dark
+              mode === 'dark' && styles.dark
             )
           : styles.search_modal
       }
@@ -92,9 +92,9 @@ const SearchModal = ({ isOpen, setIsOpen, close }: Props) => {
           <input
             ref={inputRef}
             className={styles.news_search_input}
-            id="searchInput"
-            placeholder="어떤 콘텐츠가 궁금하신가요?"
-            type="text"
+            id='searchInput'
+            placeholder='어떤 콘텐츠가 궁금하신가요?'
+            type='text'
             onChange={handleChange}
             onKeyDown={handleKeyDown}
           />
@@ -131,7 +131,7 @@ const SearchModal = ({ isOpen, setIsOpen, close }: Props) => {
               </div>
               <div
                 className={styles.recent_keyword_list}
-                id="recentKeywordList"
+                id='recentKeywordList'
               >
                 {recentSearches.map((recentKeywords, idx) => (
                   <div

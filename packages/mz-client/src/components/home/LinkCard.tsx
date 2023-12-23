@@ -1,26 +1,26 @@
-import { Item } from "@/types/db";
-import Image from "next/image";
-import { Globe } from "@/components/vectors";
-import { useDateDistance } from "@/hooks/useDateDistance";
-import { useLikeManager } from "@/hooks/useLikeManager";
-import LikeButton from "../system/LikeButton";
-import { useItemOverrideById } from "@/hooks/stores/ItemOverrideStore";
-import { useOpenLoginDialog } from "@/hooks/useOpenLoginDialog";
-import BookmarkButton from "../system/BookmarkButton";
-import { useBookmarkManager } from "@/hooks/useBookmarkManager";
-import styles from "@/styles/LinkCard.module.scss";
-import Link from "next/link";
-import { useUser } from "@/context/UserContext";
-import { useSearchParams } from "next/navigation";
-import { useTheme } from "@/context/ThemeContext";
-import { cn } from "@/utils/common";
+import { Item } from '@/types/db';
+import Image from 'next/image';
+import { Globe } from '@/components/vectors';
+import { useDateDistance } from '@/hooks/useDateDistance';
+import { useLikeManager } from '@/hooks/useLikeManager';
+import LikeButton from '../system/LikeButton';
+import { useItemOverrideById } from '@/hooks/stores/ItemOverrideStore';
+import { useOpenLoginDialog } from '@/hooks/useOpenLoginDialog';
+import BookmarkButton from '../system/BookmarkButton';
+import { useBookmarkManager } from '@/hooks/useBookmarkManager';
+import styles from '@/styles/LinkCard.module.scss';
+import Link from 'next/link';
+import { useUser } from '@/context/UserContext';
+import { useSearchParams } from 'next/navigation';
+import { useTheme } from '@/context/ThemeContext';
+import { cn } from '@/utils/common';
 import {
   AnimatePresence,
   MotionDiv,
   LazyMotion,
   loadFeature,
-} from "@/utils/dynamic";
-import { roboto } from "@/lib/fonts";
+} from '@/utils/dynamic';
+import { roboto } from '@/lib/fonts';
 
 interface Props {
   item: Item;
@@ -53,9 +53,9 @@ const LinkCard = ({ item }: Props) => {
   const { currentUser } = useUser();
   const { mode } = useTheme();
   /**TODO: move to hooks */
-  const toggleLike = async () => {
+  const toggleLike = () => {
     if (!currentUser) {
-      openLoginDialog("itemLike");
+      openLoginDialog('itemLike');
       return;
     }
     if (isLiked) {
@@ -65,9 +65,9 @@ const LinkCard = ({ item }: Props) => {
     }
   };
 
-  const toggleBookmark = async () => {
+  const toggleBookmark = () => {
     if (!currentUser) {
-      openLoginDialog("itemBookmark");
+      openLoginDialog('itemBookmark');
       return;
     }
     if (isBookmarked) {
@@ -78,33 +78,33 @@ const LinkCard = ({ item }: Props) => {
   };
 
   const link = `/items/${item.id}?mode=${
-    searchParams.get("mode") ?? "trending"
+    searchParams.get('mode') ?? 'trending'
   }`;
 
   return (
-    <div className={cn(styles.block, mode === "dark" && styles.dark)}>
+    <div className={cn(styles.block, mode === 'dark' && styles.dark)}>
       {/* TODO: prefetch={false} > detailed item 클릭시 느리지만 비용 절약(초기 렌더링x) > 나중에 부담되면 적용 */}
       <Link href={link} className={styles.styled_link}>
         <div className={styles.thumbnail}>
           <Image
             src={
-              thumbnail?.url ?? "https://img.mztrees.com/not-fount-image.svg"
+              thumbnail?.url ?? 'https://img.mztrees.com/not-fount-image.svg'
             }
             alt={title}
             fill
             priority
-            sizes="100vw"
+            sizes='300px'
           />
         </div>
         <div className={styles.publisher}>
           {favicon ? (
             <div className={styles.favicon}>
-              <Image src={favicon} alt="favicon" fill />
+              <Image src={favicon} alt='favicon' fill sizes='16px' />
             </div>
           ) : (
             <Globe />
           )}
-          {author ? `${author} · ` : ""}
+          {author ? `${author} · ` : ''}
           {name}
         </div>
         <h3 className={styles.title}>{item.title}</h3>

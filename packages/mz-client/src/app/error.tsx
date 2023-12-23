@@ -1,8 +1,8 @@
-"use client"; // Error components must be Client Components
-import styles from "@/styles/Error.module.scss";
-import Button from "@/components/system/Button";
+'use client'; // Error components must be Client Components
+import styles from '@/styles/Error.module.scss';
+import Button from '@/components/system/Button';
 
-export default function Error({
+export default function ErrorShower({
   error,
   reset,
 }: {
@@ -19,7 +19,7 @@ export default function Error({
       <div className={styles.container}>
         <p className={styles.title}>해당 작업에 문제가 있습니다.</p>
         <h1 className={styles.message}>
-          {error.message || "알 수 없는 문제가 발생했습니다."}
+          {error.message || '알 수 없는 문제가 발생했습니다.'}
         </h1>
         <p className={styles.notification}>
           이후에 다시 시도해주세요. 만약, 문제가 지속된다면 해당 이슈에 대해
@@ -34,7 +34,7 @@ export default function Error({
           >
             다시 시도
           </Button>
-          <Button variant="tertiary" to="/">
+          <Button variant='tertiary' to='/'>
             홈으로
           </Button>
         </div>

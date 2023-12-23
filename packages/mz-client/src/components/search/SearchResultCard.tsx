@@ -1,11 +1,11 @@
-import { SearchItemResult } from "@/types/db";
-import Image from "next/image";
-import styles from "@/styles/SearchResultCard.module.scss";
-import DOMPurify from "dompurify";
-import { Globe } from "@/components/vectors";
-import Link from "next/link";
-import { useTheme } from "@/context/ThemeContext";
-import { cn } from "@/utils/common";
+import { SearchItemResult } from '@/types/db';
+import Image from 'next/image';
+import styles from '@/styles/SearchResultCard.module.scss';
+import DOMPurify from 'dompurify';
+import { Globe } from '@/components/vectors';
+import Link from 'next/link';
+import { useTheme } from '@/context/ThemeContext';
+import { cn } from '@/utils/common';
 
 interface Props {
   item: SearchItemResult;
@@ -26,17 +26,17 @@ const SearchResultCard = ({ item }: Props) => {
   return (
     <Link
       href={link}
-      className={cn(styles.block, mode === "dark" && styles.dark)}
+      className={cn(styles.block, mode === 'dark' && styles.dark)}
     >
       <div className={styles.publisher}>
         {favicon ? (
           <div className={styles.favicon}>
-            <Image src={favicon} alt="favicon" fill />
+            <Image src={favicon} alt='favicon' fill sizes='16px' />
           </div>
         ) : (
           <Globe />
         )}
-        {author ? `${author} · ` : ""}
+        {author ? `${author} · ` : ''}
         {name}
       </div>
       {/* TODO: Secure this code */}

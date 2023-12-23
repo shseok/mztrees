@@ -1,9 +1,9 @@
-import styles from "@/styles/loading.module.scss";
+import styles from '@/styles/loading.module.scss';
 
 export default function SkeletonUI() {
   return (
     <div className={styles.list}>
-      {new Array(6).fill("").map((_, i) => (
+      {new Array(6).fill('').map((_, i) => (
         <LoadingItem key={i} />
       ))}
     </div>

@@ -1,30 +1,32 @@
-"use client";
+'use client';
 
-import DesktopHeader from "@/components/base/DesktopHeader";
-import MobileHeader from "@/components/base/MobileHeader";
-import TabLayout from "@/components/layout/TabLayout";
-import SearchInput from "@/components/search/SearchInput";
-import SearchResultCardList from "@/components/search/SearchResultCardList";
-import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
-import { searchItems } from "@/lib/api/search";
+import DesktopHeader from '@/components/base/DesktopHeader';
+import MobileHeader from '@/components/base/MobileHeader';
+import TabLayout from '@/components/layout/TabLayout';
+import SearchInput from '@/components/search/SearchInput';
+import SearchResultCardList from '@/components/search/SearchResultCardList';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { searchItems } from '@/lib/api/search';
 import {
   useInfiniteQuery,
   useQueryErrorResetBoundary,
-} from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { stringify } from "qs";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useDebounce } from "use-debounce";
-import Loading from "@/components/system/PostLoading";
-import EmptyList from "@/components/system/EmptyList";
-import Error from "@/app/error";
+} from '@tanstack/react-query';
+import type { QueryKey } from '@tanstack/react-query';
+import type { SearchItemsResult } from '@/types/db';
+import { useRouter } from 'next/navigation';
+import { stringify } from 'qs';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useDebounce } from 'use-debounce';
+import Loading from '@/components/system/PostLoading';
+import EmptyList from '@/components/system/EmptyList';
+import ErrorShower from '@/app/error';
 
 interface Props {
   searchParams: { [key: string]: string | undefined };
 }
 
 export default function Search({ searchParams }: Props) {
-  const [searchText, setSearchText] = useState(searchParams?.["q"] ?? "");
+  const [searchText, setSearchText] = useState(searchParams?.['q'] ?? '');
   const [inputResult] = useDebounce(searchText, 300);
   const observerTargetEl = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -36,13 +38,13 @@ export default function Search({ searchParams }: Props) {
     error,
     fetchNextPage,
     hasNextPage,
-  } = useInfiniteQuery(
-    ["searchItems", inputResult],
-    ({ pageParam = undefined }) =>
+  } = useInfiniteQuery<SearchItemsResult, Error, SearchItemsResult, QueryKey>(
+    ['searchItems', inputResult],
+    ({ pageParam = undefined }: { pageParam?: number }) =>
       searchItems({ q: inputResult, offset: pageParam }),
     {
-      enabled: inputResult.trim() !== "",
-      getNextPageParam: (lastPage, allPages) => {
+      enabled: inputResult.trim() !== '',
+      getNextPageParam: (lastPage) => {
         if (!lastPage.pageInfo.hasNextPage) return undefined;
         return lastPage.pageInfo.nextOffset;
       },
@@ -59,7 +61,7 @@ export default function Search({ searchParams }: Props) {
     // console.log("1router.push");
     const query = { q: inputResult };
     const url = `/search${stringify(query, {
-      charset: "utf-8",
+      charset: 'utf-8',
       encodeValuesOnly: true,
       addQueryPrefix: true,
     })}`;
@@ -69,7 +71,7 @@ export default function Search({ searchParams }: Props) {
   // render for desktop search
   useEffect(() => {
     // console.log("2useEffect");
-    setSearchText(searchParams?.["q"] ?? "");
+    setSearchText(searchParams?.['q'] ?? '');
   }, [searchParams]);
   const items = infiniteData?.pages.flatMap((page) => page.list);
   return (
@@ -77,7 +79,7 @@ export default function Search({ searchParams }: Props) {
       header={
         <>
           <MobileHeader
-            className="style_mobile_header"
+            className='style_mobile_header'
             title={
               <SearchInput value={searchText} onChangeText={setSearchText} />
             }
@@ -86,12 +88,12 @@ export default function Search({ searchParams }: Props) {
         </>
       }
     >
-      {inputResult.trim() !== "" &&
-        (status === "loading" ? (
+      {inputResult.trim() !== '' &&
+        (status === 'loading' ? (
           <Loading />
-        ) : status === "error" ? (
+        ) : status === 'error' ? (
           // // TODO: define error type
-          <Error error={error as Error} reset={reset} />
+          <ErrorShower error={error} reset={reset} />
         ) : items ? (
           items?.length === 0 ? (
             <EmptyList

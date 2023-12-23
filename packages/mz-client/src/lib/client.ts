@@ -1,4 +1,4 @@
-export let _cookie = "";
+export let _cookie = '';
 
 export function setClientCookie(cookie: string) {
   _cookie = cookie;
@@ -11,7 +11,10 @@ interface RequestConfig {
 }
 
 export class FetchError extends Error {
-  constructor(public response: Response, public data: any) {
+  constructor(
+    public response: Response,
+    public data: any
+  ) {
     super(`Fetch failed with status ${response.status}`);
   }
 }
@@ -26,7 +29,7 @@ async function rejectIfNeeded(response: Response) {
 
 export const fetchClient = {
   baseUrl:
-    process.env.NODE_ENV === "development"
+    process.env.NODE_ENV === 'development'
       ? process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL!
       : process.env.NEXT_PUBLIC_API_BASE_URL!,
   // baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL!,
@@ -35,10 +38,10 @@ export const fetchClient = {
     //   ? QueryString.stringify(config?.params, { addQueryPrefix: true })
     //   : "";
     const response = await fetch(this.baseUrl.concat(url), {
-      method: "GET",
-      credentials: "include",
+      method: 'GET',
+      credentials: 'include',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Cookie: _cookie,
         ...(config?.headers ?? {}),
       },
@@ -52,10 +55,10 @@ export const fetchClient = {
     config: RequestConfig = {}
   ): Promise<T> {
     const response = await fetch(this.baseUrl.concat(url), {
-      method: "POST",
-      credentials: "include",
+      method: 'POST',
+      credentials: 'include',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Cookie: _cookie,
         ...(config.headers ?? {}),
       },
@@ -66,7 +69,7 @@ export const fetchClient = {
 
     // for reply.status(204) > json x > so, response.text() > type error > as any
     // 서버에서 reply.status(204)응답시 useMutation onSuccess 미동작 해결
-    const data: T = response.headers.get("Content-Type")?.includes("json")
+    const data: T = response.headers.get('Content-Type')?.includes('json')
       ? await response.json()
       : ((await response.text()) as any);
     return data;
@@ -77,10 +80,10 @@ export const fetchClient = {
     config: RequestConfig = {}
   ): Promise<T> {
     const response = await fetch(this.baseUrl.concat(url), {
-      method: "PATCH",
-      credentials: "include",
+      method: 'PATCH',
+      credentials: 'include',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Cookie: _cookie,
         ...(config.headers ?? {}),
       },
@@ -93,10 +96,10 @@ export const fetchClient = {
   },
   async delete<T>(url: string, config: RequestConfig = {}): Promise<T> {
     const response = await fetch(this.baseUrl.concat(url), {
-      method: "DELETE",
-      credentials: "include",
+      method: 'DELETE',
+      credentials: 'include',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Cookie: _cookie,
         ...(config.headers ?? {}),
       },
@@ -107,7 +110,7 @@ export const fetchClient = {
 
     // for reply.status(204) > json x > so, response.text() > type error > as any
     // 서버에서 reply.status(204)응답시 useMutation onSuccess 미동작 해결
-    const data: T = response.headers.get("Content-Type")?.includes("json")
+    const data: T = response.headers.get('Content-Type')?.includes('json')
       ? await response.json()
       : ((await response.text()) as any);
 

@@ -1,4 +1,4 @@
-@import "_var";
+@import 'var';
 
 .footer {
   position: fixed;
@@ -20,6 +20,7 @@
   padding-left: 16px;
   font-size: 16px;
   color: $gray5;
+
   &::placeholder {
     color: $gray1;
   }

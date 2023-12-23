@@ -1,7 +1,7 @@
-import Image from "next/image";
-import Modal from "./Modal";
-import styles from "@/styles/ImageViewer.module.scss";
-import Button from "./Button";
+import Image from 'next/image';
+import Modal from './Modal';
+import styles from '@/styles/ImageViewer.module.scss';
+import Button from './Button';
 
 interface Props {
   visible: boolean;
@@ -15,11 +15,11 @@ const ImageViewer = ({ visible, url, onClose, onConfirm }: Props) => {
     <Modal visible={visible} fullWidth>
       <div className={styles.image}>
         <Image
-          src={url ?? "https://img.mztrees.com/not-fount-image.svg"}
+          src={url ?? 'https://img.mztrees.com/not-fount-image.svg'}
           alt={`enlarged image`}
           fill
           priority
-          sizes="100vw"
+          sizes='1000px'
         />
       </div>
       <p className={styles.notification}>
@@ -27,7 +27,7 @@ const ImageViewer = ({ visible, url, onClose, onConfirm }: Props) => {
       </p>
       <section className={styles.footer}>
         <Button onClick={onConfirm}>선택</Button>
-        <Button onClick={onClose} variant="secondary">
+        <Button onClick={onClose} variant='secondary'>
           취소
         </Button>
       </section>
