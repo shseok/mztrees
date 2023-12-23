@@ -52,6 +52,12 @@
     font-size: 14px;
     line-height: 1.5;
     color: $gray4;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-height: 125px;
+    word-break: break-word;
 
     em {
       font-weight: 600;
