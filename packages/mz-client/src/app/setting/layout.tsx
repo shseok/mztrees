@@ -1,10 +1,11 @@
 import { checkIsLoggedIn } from '@/lib/applyAuth';
+import { siteConfig } from '@/lib/const';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
-  title: '설정',
-  robots: 'noindex',
+  title: siteConfig.setting.title,
+  robots: siteConfig.robotsNoIndex,
 };
 
 export default async function SettingLayout({

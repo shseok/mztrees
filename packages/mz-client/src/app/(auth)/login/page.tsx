@@ -3,10 +3,11 @@ import { Suspense } from 'react';
 import Loading from '@/components/system/PostLoading';
 import AuthForm from '@/components/auth/AuthForm';
 import { Metadata } from 'next';
+import { siteConfig } from '@/lib/const';
 
 export const metadata: Metadata = {
-  title: '로그인',
-  robots: 'noindex',
+  title: siteConfig.auth.login.title,
+  robots: siteConfig.robotsNoIndex,
 };
 
 export default function Login() {

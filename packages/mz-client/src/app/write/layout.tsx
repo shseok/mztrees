@@ -2,12 +2,13 @@ import { GifSelectorProvider } from '@/context/GifSelectorContext';
 import { ImageViewerProvider } from '@/context/ImageViewerContext';
 import { WriteProvider } from '@/context/WriteContext';
 import { checkIsLoggedIn } from '@/lib/applyAuth';
+import { siteConfig } from '@/lib/const';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
-  title: '새 글 작성',
-  robots: 'noindex',
+  title: siteConfig.write.title,
+  robots: siteConfig.robotsNoIndex,
 };
 
 export default async function WriteLayout({

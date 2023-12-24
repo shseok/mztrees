@@ -5,20 +5,33 @@ import type { Metadata } from 'next';
 import NextTopLoader from 'nextjs-toploader';
 import { colors } from '@/lib/colors';
 import { pretendard } from '@/lib/fonts';
+import { siteConfig } from '@/lib/const';
 
 export const metadata: Metadata = {
-  title: '엠제트리 - Mztrees, 웹 사이트 공유의 장',
-  description:
-    '인터넷에 흩어져있는 트렌디하거나 유용한 사이트들을 엠제트리에서 확인하고 공유해보세요.',
-  metadataBase: new URL('https://img.mztrees.com'),
+  title: siteConfig.root.title,
+  description: siteConfig.root.description,
+  metadataBase: new URL(siteConfig.imageDomain),
   openGraph: {
-    images: '/og-image.png',
+    type: siteConfig.type,
+    url: siteConfig.mainDomain,
+    title: siteConfig.root.title,
+    description: siteConfig.root.description,
+    images: siteConfig.root.imageUrl,
+    siteName: siteConfig.site,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: siteConfig.root.title,
+    description: siteConfig.root.description,
+    images: siteConfig.root.imageUrl,
+    creator: siteConfig.creator,
+    site: siteConfig.site,
   },
   icons: {
-    icon: ['/favicon/favicon.ico'],
-    apple: ['/favicon/apple-touch-icon.png'],
+    icon: [siteConfig.root.iconUrl.favicon],
+    apple: [siteConfig.root.iconUrl.appleTouchIcon],
   },
-  manifest: '/favicon/site.webmanifest',
+  manifest: siteConfig.root.manifestUrl,
 };
 
 // export const revalidate = 60; // 60초 이후 refresh > 모든 페이지 모두 ssr

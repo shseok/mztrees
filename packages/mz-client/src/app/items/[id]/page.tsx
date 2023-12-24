@@ -1,6 +1,7 @@
 import { getItem } from '@/lib/api/items';
 import { Metadata } from 'next';
 import Item from '@/components/items/Item';
+import { siteConfig } from '@/lib/const';
 
 type Params = {
   params: {
@@ -15,30 +16,24 @@ export async function generateMetadata({
   params: { id },
 }: Params): Promise<Metadata> {
   const itemData = await getItem(parseInt(id));
-  const shortenDescription = itemData.body
-    .slice(0, 300)
-    .concat(itemData.body.length > 300 ? '...' : '');
-
+  const { title, description, imageUrl, path } = siteConfig.post(itemData);
   return {
-    title: itemData.title,
-    description: shortenDescription,
+    title,
+    description,
     openGraph: {
-      title: itemData.title,
-      description: shortenDescription,
-      url: itemData.link,
-      images:
-        itemData.thumbnail?.url ??
-        'https://img.mztrees.com/not-fount-image.svg',
-      authors: itemData.author,
+      title,
+      description,
+      url: path,
+      images: imageUrl,
+      siteName: siteConfig.site,
     },
     twitter: {
       card: itemData.thumbnail ? 'summary_large_image' : 'summary',
-      title: itemData.title,
-      description: shortenDescription,
-      creator: '@mztrees',
-      images:
-        itemData.thumbnail?.url ??
-        'https://img.mztrees.com/not-fount-image.svg',
+      title,
+      description,
+      images: imageUrl,
+      creator: siteConfig.creator,
+      site: siteConfig.site,
     },
   };
 }

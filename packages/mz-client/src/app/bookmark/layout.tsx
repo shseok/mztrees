@@ -1,10 +1,11 @@
 import { checkIsLoggedIn } from '@/lib/applyAuth';
+import { siteConfig } from '@/lib/const';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
-  title: '북마크',
-  robots: 'noindex',
+  title: siteConfig.bookmark.title,
+  robots: siteConfig.robotsNoIndex,
 };
 
 export default async function BookmarkLayout({
