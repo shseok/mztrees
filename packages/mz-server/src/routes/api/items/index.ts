@@ -16,6 +16,10 @@ export const itemsRoute: FastifyPluginAsyncTypebox = async (fastify) => {
   //   )
   // })
   fastify.register(authorizedItemRoute) // refactoring above code
+  fastify.get('/all', { schema: ItemRouteSchema.GetAllItems }, async () => {
+    const items = await itemService.getAllItems()
+    return items as any
+  })
   fastify.get('/:id', { schema: ItemRouteSchema.GetItem }, async (request) => {
     const { id } = request.params
     const item = await itemService.getItem(id, request.user?.id)

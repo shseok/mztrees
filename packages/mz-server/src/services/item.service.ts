@@ -249,6 +249,21 @@ const itemService = {
     return this.serialize(itemWithItemStats)
   },
 
+  async getAllItems() {
+    const items = await db.item.findMany({
+      select: {
+        id: true,
+        updatedAt: true,
+      },
+      // Google's limit is 50,000 URLs per sitemap
+      take: 50000,
+    })
+    if (!items) {
+      throw new AppError('NotFound')
+    }
+    return items
+  },
+
   async getItem(id: number, userId: number | null = null) {
     const item = await db.item.findUnique({
       where: {

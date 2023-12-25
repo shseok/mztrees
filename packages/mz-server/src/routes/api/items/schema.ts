@@ -47,6 +47,11 @@ export const ItemSchema = Type.Object({
   isBookmarked: Type.Boolean(),
 })
 
+const ItemForSiteMapSchema = Type.Object({
+  id: Type.Integer(),
+  updatedAt: Type.String(),
+})
+
 export type ItemType = Static<typeof ItemSchema>
 
 ItemSchema.example = {
@@ -106,6 +111,12 @@ ImageUrlsSchame.example = {
 }
 
 export const ItemRouteSchema = createRouteSchema({
+  GetAllItems: {
+    tags: ['item'],
+    response: {
+      200: Type.Array(ItemForSiteMapSchema),
+    },
+  },
   GetItem: {
     tags: ['item'],
     params: ItemParamsSchema,
