@@ -25,6 +25,9 @@ export interface Item {
   isBookmarked: boolean;
 }
 
+// just wanna get id and updatedAt in Item Type
+export type ItemForSitemap = Pick<Item, 'id' | 'updatedAt'>;
+
 export interface Thumbnail {
   id: number;
   key: string;

@@ -5,6 +5,7 @@ import type {
   ExtractedUrlsResult,
   GetItemsResult,
   Item,
+  ItemForSitemap,
   LikeCommentResult,
   LikeItemResult,
   ListMode,
@@ -15,6 +16,11 @@ import type {
 
 export async function createItem(params: MutateItemParams) {
   const response = await fetchClient.post<Item>('/api/items', params);
+  return response;
+}
+
+export async function getAllItems() {
+  const response = await fetchClient.get<ItemForSitemap[]>('/api/items/all');
   return response;
 }
 
