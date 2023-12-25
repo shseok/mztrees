@@ -1,6 +1,5 @@
-import React from 'react';
 import CommentInput from './CommentInput';
-import { Comment } from '@/types/db';
+import type { Comment } from '@/types/db';
 import CommentItem from './CommentItem';
 import styles from '@/styles/CommentList.module.scss';
 

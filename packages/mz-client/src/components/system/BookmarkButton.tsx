@@ -1,4 +1,4 @@
-import { Size } from '@/types/db';
+import type { Size } from '@/types/db';
 import IconToggleButton from './IconToggleButton';
 import { BookmarkOutline, Bookmark } from '@/components/vectors';
 import styles from '@/styles/BookmarkButton.module.scss';

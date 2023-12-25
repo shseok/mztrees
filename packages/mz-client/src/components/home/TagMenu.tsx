@@ -2,7 +2,7 @@ import { useOnClickOutside } from '@/hooks/useOnClickOuteside';
 import React, { useRef } from 'react';
 import styles from '@/styles/TagMenu.module.scss';
 import { tagList } from '@/lib/const';
-import { Tag } from '@/types/db';
+import type { Tag } from '@/types/db';
 import { cn } from '@/utils/common';
 import {
   AnimatePresence,

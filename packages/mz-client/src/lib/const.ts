@@ -1,4 +1,4 @@
-import { Item } from '@/types/db';
+import type { Item } from '@/types/db';
 import type { OpenGraphType } from 'next/dist/lib/metadata/types/opengraph-types';
 
 export const tagList = [

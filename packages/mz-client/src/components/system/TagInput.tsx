@@ -1,4 +1,4 @@
-import { Tag, TagList } from '@/types/db';
+import type { Tag, TagList } from '@/types/db';
 import styles from '@/styles/TagInput.module.scss';
 import { useTheme } from '@/context/ThemeContext';
 import { cn } from '@/utils/common';

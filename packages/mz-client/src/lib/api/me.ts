@@ -1,5 +1,5 @@
 import { fetchClient } from '../client';
-import { User } from '@/types/db';
+import type { User } from '@/types/db';
 
 export async function getMyAccount(accessToken?: string) {
   const response = await fetchClient.get<User>('/api/me', {

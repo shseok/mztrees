@@ -1,5 +1,5 @@
 import React from 'react';
-import { Size } from '@/types/db';
+import type { Size } from '@/types/db';
 import styles from '@/styles/IconToggleButton.module.scss';
 import { cn } from '@/utils/common';
 import {

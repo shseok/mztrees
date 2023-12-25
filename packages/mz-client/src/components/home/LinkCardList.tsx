@@ -1,5 +1,4 @@
-import React from 'react';
-import { Item } from '@/types/db';
+import type { Item } from '@/types/db';
 import LinkCard from './LinkCard';
 import styles from '@/styles/LinkCardList.module.scss';
 

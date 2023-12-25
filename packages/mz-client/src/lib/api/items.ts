@@ -1,6 +1,6 @@
 import { stringify } from 'qs';
 import { fetchClient } from '../client';
-import {
+import type {
   Comment,
   ExtractedUrlsResult,
   GetItemsResult,

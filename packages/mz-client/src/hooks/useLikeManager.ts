@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react';
 import { likeItem, unlikeItem } from '@/lib/api/items';
-import { ItemStats } from '@/types/db';
+import type { ItemStats } from '@/types/db';
 import { useItemOverrideSetter } from './stores/ItemOverrideStore';
 import { extractNextError } from '@/lib/nextError';
 import { useOpenLoginDialog } from './useOpenLoginDialog';

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Item } from '@/types/db';
+import type { Item } from '@/types/db';
 import Image from 'next/image';
 import LikeButton from '../system/LikeButton';
 import { useLikeManager } from '@/hooks/useLikeManager';

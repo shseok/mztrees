@@ -2,7 +2,7 @@
 
 import { extractNextError } from '@/lib/nextError';
 import { getMyAccountWithRefresh } from '@/lib/protectRoute';
-import { User } from '@/types/db';
+import type { User } from '@/types/db';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 /**

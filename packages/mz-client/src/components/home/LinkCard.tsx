@@ -1,4 +1,4 @@
-import { Item } from '@/types/db';
+import type { Item } from '@/types/db';
 import Image from 'next/image';
 import { Globe } from '@/components/vectors';
 import { useDateDistance } from '@/hooks/useDateDistance';

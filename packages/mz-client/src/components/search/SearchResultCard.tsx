@@ -1,4 +1,4 @@
-import { SearchItemResult } from '@/types/db';
+import type { SearchItemResult } from '@/types/db';
 import Image from 'next/image';
 import styles from '@/styles/SearchResultCard.module.scss';
 import DOMPurify from 'dompurify';

@@ -4,7 +4,7 @@ import { ChevronDown, ChevronUp, Close } from '../vectors';
 import { useTheme } from '@/context/ThemeContext';
 import { cn } from '@/utils/common';
 import TagMenu from './TagMenu';
-import { ListMode, Tag } from '@/types/db';
+import type { ListMode, Tag } from '@/types/db';
 import useSetSearchParams from '@/hooks/useSetSearchParams';
 
 interface Props {

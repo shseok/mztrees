@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { ListMode, Tag } from '@/types/db';
+import type { ListMode, Tag } from '@/types/db';
 import { Trending, History, Calendar } from '@/components/vectors';
 import styles from '@/styles/ListModeSelector.module.scss';
 import { cn } from '@/utils/common';

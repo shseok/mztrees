@@ -1,6 +1,6 @@
 import { stringify } from 'qs';
 import { fetchClient } from '../client';
-import { Bookmark, GetBookmarksResult } from '@/types/db';
+import type { Bookmark, GetBookmarksResult } from '@/types/db';
 
 export const createBookmark = async (
   itemId: number,

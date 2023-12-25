@@ -12,7 +12,7 @@ import { useUser } from '@/context/UserContext';
 import { useDialog } from '@/context/DialogContext';
 import { useBottomSheetModalStore } from '@/hooks/stores/useBottomSheetModalStore';
 import { useRouter } from 'next/navigation';
-import { Item } from '@/types/db';
+import type { Item } from '@/types/db';
 import Loading from '@/components/system/PostLoading';
 import { isTablet } from '@/lib/isMobile';
 import { useMemo } from 'react';

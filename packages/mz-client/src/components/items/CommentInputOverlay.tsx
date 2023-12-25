@@ -7,7 +7,7 @@ import { useCreateCommentMutation } from '@/hooks/mutation/useCreateCommentMutat
 import LoadingIndicator from '../system/LoadingIndicator';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCommentsQuery } from '@/hooks/query/useCommentsQuery';
-import { Comment } from '@/types/db';
+import type { Comment } from '@/types/db';
 import { produce } from 'immer';
 import { useDialog } from '@/context/DialogContext';
 import { editComment } from '@/lib/api/items';

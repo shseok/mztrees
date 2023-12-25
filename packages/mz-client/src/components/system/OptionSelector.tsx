@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from './Modal';
 import Button from './Button';
 import styles from '@/styles/OptionSelector.module.scss';
-import { Tag, TagList } from '@/types/db';
+import type { Tag, TagList } from '@/types/db';
 import { cn } from '@/utils/common';
 
 interface Props {
