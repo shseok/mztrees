@@ -31,7 +31,13 @@ const SearchResultCard = ({ item }: Props) => {
       <div className={styles.publisher}>
         {favicon ? (
           <div className={styles.favicon}>
-            <Image src={favicon} alt='favicon' fill sizes='16px' />
+            <Image
+              src={favicon}
+              alt={`검색된 ${name} 로고 이미지`}
+              title={`검색된 ${name}`}
+              fill
+              sizes='16px'
+            />
           </div>
         ) : (
           <Globe />

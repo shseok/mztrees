@@ -16,7 +16,8 @@ const ImageViewer = ({ visible, url, onClose, onConfirm }: Props) => {
       <div className={styles.image}>
         <Image
           src={url ?? 'https://img.mztrees.com/not-fount-image.svg'}
-          alt={`enlarged image`}
+          alt='이미지 뷰어'
+          title='해당 이미지는 원본 크기로 표시됩니다'
           fill
           priority
           sizes='1000px'

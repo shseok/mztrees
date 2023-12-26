@@ -91,7 +91,8 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
       <Link href={item.link} className={styles.thumbnail} target='_blank'>
         <Image
           src={thumbnail?.url ?? 'https://img.mztrees.com/not-fount-image.svg'}
-          alt={title}
+          alt={`세부 페이지에서 ${title} 썸네일 이미지`}
+          title={`${title}-클릭시 원본 이미지 링크로 방문`}
           fill
           priority
           sizes='736px'
@@ -102,7 +103,13 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
           <div className={styles.item_info}>
             <div className={styles.publisher}>
               {favicon ? (
-                <Image src={favicon} alt='favicon' width={16} height={16} />
+                <Image
+                  src={favicon}
+                  alt={`세부 페이지에서 ${name} 로고 이미지`}
+                  title={`세부 페이지에서 ${name}`}
+                  width={16}
+                  height={16}
+                />
               ) : (
                 <Globe />
               )}

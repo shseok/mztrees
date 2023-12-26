@@ -90,7 +90,8 @@ const LinkCard = ({ item }: Props) => {
             src={
               thumbnail?.url ?? 'https://img.mztrees.com/not-fount-image.svg'
             }
-            alt={title}
+            alt={`${name} 썸네일 이미지`}
+            title={title}
             fill
             priority
             sizes='300px'
@@ -99,7 +100,13 @@ const LinkCard = ({ item }: Props) => {
         <div className={styles.publisher}>
           {favicon ? (
             <div className={styles.favicon}>
-              <Image src={favicon} alt='favicon' fill sizes='16px' />
+              <Image
+                src={favicon}
+                alt={`${name} 로고 이미지`}
+                title={name}
+                fill
+                sizes='16px'
+              />
             </div>
           ) : (
             <Globe />

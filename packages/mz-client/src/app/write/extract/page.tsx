@@ -71,7 +71,8 @@ export default function Extract() {
                 >
                   <Image
                     src={imageUrl}
-                    alt={`image-${index}`}
+                    alt={`입력한 url에서 추출된 ${index}번째 이미지`}
+                    title={`해당 ${index}번째 이미지를 클릭하여 썸네일로 지정하세요`}
                     fill
                     priority
                     sizes='100vw'

@@ -18,6 +18,7 @@ const GifList = ({ data: results, selected, handleClick }: Props) => {
       <Gif
         url={gif.images.fixed_height.url}
         key={gif.id}
+        title={gif.title}
         selected={selected}
         handleClick={handleClick}
       />

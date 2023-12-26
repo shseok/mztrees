@@ -12,7 +12,8 @@ export default function EmptyList({
     <div className={styles.block}>
       <Image
         src={'https://img.mztrees.com/search-not-found.svg'}
-        alt='not-found-result'
+        alt='검색 결과가 없음을 나타내는 이미지'
+        title='검색 결과가 없습니다. 다시시도 해주세요'
         width='325'
         height='147'
       />
