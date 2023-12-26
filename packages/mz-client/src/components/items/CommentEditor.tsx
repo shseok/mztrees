@@ -77,10 +77,20 @@ const CommentEditor = ({
               animate={{ height: 36, opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
             >
-              <Button size='small' variant='tertiary' onClick={onReset}>
+              <Button
+                size='small'
+                variant='tertiary'
+                onClick={onReset}
+                aria-label='Cancel a comment'
+              >
                 취소
               </Button>
-              <Button size='small' onClick={handleSubmit} onFocus={onFocus}>
+              <Button
+                size='small'
+                onClick={handleSubmit}
+                onFocus={onFocus}
+                aria-label='Submit a comment'
+              >
                 {isLoading ? <LoadingIndicator color='white' /> : buttonText}
               </Button>
             </MotionDiv>

@@ -30,11 +30,17 @@ const Dialog = ({
       <p className={styles.description}>{description}</p>
       <section className={styles.footer}>
         {mode === 'confirm' && (
-          <Button onClick={onClose} variant='secondary'>
+          <Button
+            onClick={onClose}
+            variant='secondary'
+            aria-label='cancel dialog'
+          >
             {cancelText}
           </Button>
         )}
-        <Button onClick={onConfirm}>{confirmText}</Button>
+        <Button onClick={onConfirm} aria-label='confirm dialog'>
+          {confirmText}
+        </Button>
       </section>
     </Modal>
   );

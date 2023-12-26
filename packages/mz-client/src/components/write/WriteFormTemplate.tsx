@@ -38,7 +38,11 @@ const WriteFormTemplate = ({
       <div className={styles.content}>{children}</div>
       <div className={styles.button_wrapper}>
         {hasGifButton && <GifSelectButton />}
-        <Button disabled={isLoading} layoutmode='fullWidth'>
+        <Button
+          disabled={isLoading}
+          layoutmode='fullWidth'
+          aria-label='Submit in write form'
+        >
           {isLoading ? (
             loadingPercent !== undefined ? (
               `${loadingPercent}%`

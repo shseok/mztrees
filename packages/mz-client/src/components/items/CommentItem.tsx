@@ -226,6 +226,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
             <button
               className={cn(styles.more_button, mode === 'dark' && styles.dark)}
               onClick={onClickMore}
+              aria-label="Open comment's menu"
             >
               <MoreVert />
             </button>
@@ -256,6 +257,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
         <button
           className={cn(styles.reply_button, mode === 'dark' && styles.dark)}
           onClick={onReply}
+          aria-label="Reply comment"
         >
           답글 달기
         </button>

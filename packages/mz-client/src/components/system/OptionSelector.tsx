@@ -46,13 +46,19 @@ const OptionSelector = ({
             key={index}
             onClick={(e) => onSelect(e, item)}
             tabIndex={0}
+            aria-label='Select option'
           >
             # {item}
           </button>
         ))}
       </section>
       <section className={styles.footer}>
-        <Button onClick={onConfirm} type='button' size='large'>
+        <Button
+          onClick={onConfirm}
+          type='button'
+          size='large'
+          aria-label='Confirm option selector'
+        >
           {confirmText}
         </Button>
         {mode === 'confirm' && (
@@ -61,6 +67,7 @@ const OptionSelector = ({
             variant='secondary'
             type='button'
             size='large'
+            aria-label='Cancel option selector'
           >
             {cancelText}
           </Button>

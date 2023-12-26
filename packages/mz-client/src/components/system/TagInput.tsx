@@ -53,6 +53,7 @@ const TagInput = () => {
             size='small'
             style={{ paddingLeft: '6px', paddingRight: '6px' }}
             onClick={openTagSelector}
+            aria-label='Add tag'
           >
             + 태그 추가
           </Button>
@@ -61,9 +62,9 @@ const TagInput = () => {
           {tags.length > 0 ? (
             <div className={styles.tag_wrappper}>
               {tags.map((tag, index) => (
-                <button className={styles.item} key={index}>
+                <div className={styles.item} key={index}>
                   # {tag}
-                </button>
+                </div>
               ))}
             </div>
           ) : (

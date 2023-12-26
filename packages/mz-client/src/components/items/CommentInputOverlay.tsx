@@ -208,6 +208,7 @@ const CommentInputOverlay = () => {
                 className={styles.transparent_button}
                 onClick={onClick}
                 disabled={isLoading}
+                aria-label='Submit a comment in tablet size'
               >
                 {isLoading ? <LoadingIndicator /> : buttonText}
               </button>

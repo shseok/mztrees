@@ -19,7 +19,12 @@ function SearchForm({ onSearch }: Props) {
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <SearchInput value={searchText} onChangeText={setSearchText} />
-      <Button type='submit' id='submit' size='small'>
+      <Button
+        type='submit'
+        id='submit'
+        size='small'
+        aria-label='search gif image'
+      >
         검색
       </Button>
     </form>

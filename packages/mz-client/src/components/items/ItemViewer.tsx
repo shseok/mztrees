@@ -115,7 +115,12 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
               </Link>
             </h2>
           </div>
-          <Button to={item.link} variant='visit' isBlank>
+          <Button
+            to={item.link}
+            variant='visit'
+            aria-label='Visit post'
+            isBlank
+          >
             방문
           </Button>
         </div>

@@ -67,10 +67,15 @@ const GifSelector = ({ visible, onClose, onSelect }: Props) => {
               onClose();
               onSelect();
             }}
+            aria-label='Select gif image'
           >
             선택
           </Button>
-          <Button onClick={onClose} variant='secondary'>
+          <Button
+            onClick={onClose}
+            variant='secondary'
+            aria-label='Cancel selected gif image'
+          >
             취소
           </Button>
         </section>

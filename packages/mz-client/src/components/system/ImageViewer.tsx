@@ -26,8 +26,14 @@ const ImageViewer = ({ visible, url, onClose, onConfirm }: Props) => {
         위 이미지는 원본 크기이며, 작은 이미지 선택시 화질이 깨질 수 있습니다.
       </p>
       <section className={styles.footer}>
-        <Button onClick={onConfirm}>선택</Button>
-        <Button onClick={onClose} variant='secondary'>
+        <Button onClick={onConfirm} aria-label='Select image'>
+          선택
+        </Button>
+        <Button
+          onClick={onClose}
+          variant='secondary'
+          aria-label='Cancel selected image'
+        >
           취소
         </Button>
       </section>

@@ -15,7 +15,11 @@ const DesktopHeader = () => {
       <div className={styles.block_top}>
         <div className={styles.content}>
           {/* tag 도입 후 params이 남아있기 때문에 Link -> a */}
-          <a className={styles.home_link} href='/' aria-label='go to home page'>
+          <a
+            className={styles.home_link}
+            href='/'
+            aria-label='Go to home in desktop header'
+          >
             <Logo className={styles.styled_logo} />
           </a>
           <div className={styles.addon} />
@@ -25,10 +29,15 @@ const DesktopHeader = () => {
               <UserAddon username={currentUser.username} profileImage={''} />
             ) : (
               <div className={styles.buttons}>
-                <Button variant='tertiary' size='small' to='/login'>
+                <Button
+                  variant='tertiary'
+                  size='small'
+                  to='/login'
+                  aria-label='Login'
+                >
                   로그인
                 </Button>
-                <Button size='small' to='/register'>
+                <Button size='small' to='/register' aria-label='Register'>
                   회원가입
                 </Button>
               </div>

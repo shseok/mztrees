@@ -50,6 +50,7 @@ const WeekSelector = ({ dateRange }: Props) => {
           className={cn(styles.text_button, mode === 'dark' && styles.dark)}
           onClick={onClickPrev}
           disabled={prevDisabled}
+          aria-label='Get previous week posts'
         >
           이전 주
         </button>
@@ -57,6 +58,7 @@ const WeekSelector = ({ dateRange }: Props) => {
           className={cn(styles.text_button, mode === 'dark' && styles.dark)}
           onClick={onClickNext}
           disabled={nextDisabled}
+          aria-label='Get next week posts'
         >
           다음 주
         </button>

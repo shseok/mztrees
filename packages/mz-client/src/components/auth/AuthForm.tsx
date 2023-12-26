@@ -204,6 +204,7 @@ const AuthForm = ({ mode }: Props) => {
           type='submit'
           disabled={isSubmitting}
           onClick={onClick}
+          aria-label='Submit form'
         >
           {isLoading ? <LoadingIndicator color='white' /> : buttonText}
         </Button>

@@ -7,7 +7,7 @@ import { ArrowLeft } from '@/components/vectors';
 const HeaderBackButton = () => {
   const goBack = useGoBack();
   return (
-    <button className={styles.button} onClick={goBack}>
+    <button className={styles.button} onClick={goBack} aria-label='Go to back'>
       <ArrowLeft />
     </button>
   );

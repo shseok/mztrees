@@ -14,7 +14,11 @@ const SearchArea = () => {
   };
 
   return (
-    <button className={styles.search_input_wrapper} onClick={onClick}>
+    <button
+      className={styles.search_input_wrapper}
+      onClick={onClick}
+      aria-label='Open search modal'
+    >
       <Search />
       <p>{initialKeyword}</p>
     </button>

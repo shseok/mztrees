@@ -16,6 +16,7 @@ const MoreVertButton = ({ onClickMore, ...rest }: Props) => {
     <button
       className={cn(styles.styled_button, mode === 'dark' && styles.dark)}
       onClick={onClickMore}
+      aria-label='More button'
       {...rest}
     >
       <MoreVert />

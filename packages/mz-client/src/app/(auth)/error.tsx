@@ -22,6 +22,7 @@ export default function Error({
           // Attempt to recover by trying to re-render the segment
           () => reset()
         }
+        aria-label='Retry in auth'
       >
         Try again
       </button>
