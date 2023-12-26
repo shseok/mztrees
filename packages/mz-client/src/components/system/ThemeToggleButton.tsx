@@ -12,7 +12,7 @@ const ThemeToggleButton = () => {
     <button
       className={cn(styles.container, mode === 'dark' && styles.dark_mode)}
       onClick={toggle}
-      aria-label='Toggle theme mode'
+      aria-label='테마 전환'
     >
       {mode === 'dark' ? (
         <>

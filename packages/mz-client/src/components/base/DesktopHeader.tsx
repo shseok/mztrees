@@ -18,7 +18,7 @@ const DesktopHeader = () => {
           <a
             className={styles.home_link}
             href='/'
-            aria-label='Go to home in desktop header'
+            aria-label='데스크탑 헤더에서 홈으로 이동'
           >
             <Logo className={styles.styled_logo} />
           </a>
@@ -33,11 +33,15 @@ const DesktopHeader = () => {
                   variant='tertiary'
                   size='small'
                   to='/login'
-                  aria-label='Login'
+                  aria-label='데스크탑 헤더에서 로그인 페이지로 이동'
                 >
                   로그인
                 </Button>
-                <Button size='small' to='/register' aria-label='Register'>
+                <Button
+                  size='small'
+                  to='/register'
+                  aria-label='데스크탑 헤더에서 회원가입 페이지로 이동'
+                >
                   회원가입
                 </Button>
               </div>

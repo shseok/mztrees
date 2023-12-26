@@ -37,7 +37,7 @@ function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
       <div className={styles.inner}>
         <h2 className={styles.title}>{title}</h2>
         <p className={styles.content}>{content}</p>
-        <Button onClick={onClickHandler} aria-label='Refresh'>
+        <Button onClick={onClickHandler} aria-label='새로고침'>
           새로고침
         </Button>
       </div>

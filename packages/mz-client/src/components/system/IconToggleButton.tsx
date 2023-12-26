@@ -30,7 +30,7 @@ const IconToggleButton = ({
     <button
       className={cn(styles.styled_button, styles[size])}
       onClick={onClick}
-      aria-label={`${ariaLabel} toggle button`}
+      aria-label={`${ariaLabel} 토글 버튼`}
     >
       <AnimatePresence initial={false}>
         {isActive ? (

@@ -27,7 +27,7 @@ const BookmarkButton = ({ onClick, isBookmarked, size = 'medium' }: Props) => {
           )}
         />
       }
-      ariaLabel='bookmark'
+      ariaLabel='북마크'
     />
   );
 };

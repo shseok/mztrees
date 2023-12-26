@@ -208,7 +208,7 @@ const CommentInputOverlay = () => {
                 className={styles.transparent_button}
                 onClick={onClick}
                 disabled={isLoading}
-                aria-label='Submit a comment in tablet size'
+                aria-label='테블릿 사이즈보다 작은 화면에서 댓글 작성 버튼'
               >
                 {isLoading ? <LoadingIndicator /> : buttonText}
               </button>

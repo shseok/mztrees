@@ -32,7 +32,7 @@ const FooterTabItem = ({ icon, to }: Props) => {
     <Link
       className={cn(styles.like_item, pathname === to && styles.active)}
       href={to}
-      aria-label={`go to ${icon} page`}
+      aria-label={`모바일 푸터에서 ${icon}으로 이동`}
       // passHref
     >
       {IconMap[icon]}

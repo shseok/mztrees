@@ -33,12 +33,12 @@ const Dialog = ({
           <Button
             onClick={onClose}
             variant='secondary'
-            aria-label='cancel dialog'
+            aria-label='다이얼로그 취소'
           >
             {cancelText}
           </Button>
         )}
-        <Button onClick={onConfirm} aria-label='confirm dialog'>
+        <Button onClick={onConfirm} aria-label='다이얼로그 확인'>
           {confirmText}
         </Button>
       </section>

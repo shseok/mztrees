@@ -14,7 +14,7 @@ const GifSelectButton = () => {
         }}
         variant='warning'
         layoutmode='fullWidth'
-        aria-label='Open gif selector'
+        aria-label='gif 파일 검색 모달창 열기'
       >
         GIF 파일검색
       </Button>

@@ -31,11 +31,11 @@ export default function ErrorShower({
               // Attempt to recover by trying to re-render the segment
               () => reset()
             }
-            aria-label='Retry'
+            aria-label='다시 시도'
           >
             다시 시도
           </Button>
-          <Button variant='tertiary' to='/' aria-label='Go to Home'>
+          <Button variant='tertiary' to='/' aria-label='홈으로 이동'>
             홈으로
           </Button>
         </div>

@@ -113,7 +113,7 @@ const SearchModal = ({ isOpen, setIsOpen, close }: Props) => {
                     : styles.sub_action
                 }
                 onClick={handleAllDelete}
-                aria-label='Delete all recent searches'
+                aria-label='최근 검색 결과 전체 삭제'
               >
                 전체 삭제
               </button>
@@ -152,7 +152,7 @@ const SearchModal = ({ isOpen, setIsOpen, close }: Props) => {
                         e.stopPropagation();
                         handleKeywordDelete(recentKeywords);
                       }}
-                      aria-label='Delete this keyword'
+                      aria-label='해당 검색어 삭제'
                     >
                       <TrashCan className={styles.icon_delete} />
                     </button>

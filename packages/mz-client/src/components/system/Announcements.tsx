@@ -64,7 +64,7 @@ const Announcements: FC<AnnouncementsProps> = ({ fullWidth = false }) => {
           <button
             onClick={() => setShowAnnouncement(false)}
             className={styles.closeIcon}
-            aria-label='Close announcement'
+            aria-label='공지사항 닫기'
           >
             <Close />
           </button>

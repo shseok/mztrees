@@ -53,7 +53,7 @@ const TagInput = () => {
             size='small'
             style={{ paddingLeft: '6px', paddingRight: '6px' }}
             onClick={openTagSelector}
-            aria-label='Add tag'
+            aria-label='태그 추가'
           >
             + 태그 추가
           </Button>

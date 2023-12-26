@@ -46,7 +46,7 @@ const OptionSelector = ({
             key={index}
             onClick={(e) => onSelect(e, item)}
             tabIndex={0}
-            aria-label='Select option'
+            aria-label='옵션 선택'
           >
             # {item}
           </button>
@@ -57,7 +57,7 @@ const OptionSelector = ({
           onClick={onConfirm}
           type='button'
           size='large'
-          aria-label='Confirm option selector'
+          aria-label='옵션 선택 모달 확인'
         >
           {confirmText}
         </Button>
@@ -67,7 +67,7 @@ const OptionSelector = ({
             variant='secondary'
             type='button'
             size='large'
-            aria-label='Cancel option selector'
+            aria-label='옵션 선택 모달 취소'
           >
             {cancelText}
           </Button>

@@ -81,7 +81,7 @@ const CommentEditor = ({
                 size='small'
                 variant='tertiary'
                 onClick={onReset}
-                aria-label='Cancel a comment'
+                aria-label='댓글 작성 취소'
               >
                 취소
               </Button>
@@ -89,7 +89,7 @@ const CommentEditor = ({
                 size='small'
                 onClick={handleSubmit}
                 onFocus={onFocus}
-                aria-label='Submit a comment'
+                aria-label='댓글 작성 완료'
               >
                 {isLoading ? <LoadingIndicator color='white' /> : buttonText}
               </Button>

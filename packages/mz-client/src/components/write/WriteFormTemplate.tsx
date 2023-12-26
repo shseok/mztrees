@@ -41,7 +41,7 @@ const WriteFormTemplate = ({
         <Button
           disabled={isLoading}
           layoutmode='fullWidth'
-          aria-label='Submit in write form'
+          aria-label='작성 폼 전송'
         >
           {isLoading ? (
             loadingPercent !== undefined ? (

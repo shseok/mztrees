@@ -17,7 +17,7 @@ const SearchArea = () => {
     <button
       className={styles.search_input_wrapper}
       onClick={onClick}
-      aria-label='Open search modal'
+      aria-label='검색창 열기'
     >
       <Search />
       <p>{initialKeyword}</p>

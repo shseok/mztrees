@@ -34,7 +34,7 @@ const TagSelector = ({ listMode, selectedTag, setSelectedTag }: Props) => {
       <button
         className={styles.inner_container}
         onClick={onToggle}
-        aria-label='Open tag menu'
+        aria-label='태그 목록 토글'
         ref={buttonRef}
       >
         <span>태그 목록</span>
@@ -49,7 +49,7 @@ const TagSelector = ({ listMode, selectedTag, setSelectedTag }: Props) => {
               setSelectedTag(null);
               setSearchParams({ mode: listMode, tag: null });
             }}
-            aria-label='Close selected tag'
+            aria-label='선택한 태그 지우기'
           >
             <Close />
           </button>

@@ -32,7 +32,7 @@ const UserAddon = ({ username }: Props) => {
         to='/write'
         size='small'
         variant='primary'
-        aria-label='Write a new post'
+        aria-label='새로운 글 작성'
       >
         새 글 작성
       </Button>
@@ -41,7 +41,7 @@ const UserAddon = ({ username }: Props) => {
         variant='tertiary'
         onClick={onOpen}
         ref={buttonRef}
-        aria-label='Open user menu'
+        aria-label='유저 메뉴 열기'
       >
         <span className={styles.block}>
           <User />

@@ -175,18 +175,14 @@ const AccountSetting = () => {
               variant='primary'
               size='small'
               type='submit'
-              aria-label='Change password'
+              aria-label='비밀번호 변경'
             >
               비밀번호 변경
             </Button>
           </form>
         </div>
       </div>
-      <Button
-        variant='warning'
-        onClick={askUnregister}
-        aria-label='Delete account'
-      >
+      <Button variant='warning' onClick={askUnregister} aria-label='계정 탈퇴'>
         계정 탈퇴
       </Button>
     </div>

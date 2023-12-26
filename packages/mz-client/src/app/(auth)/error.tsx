@@ -22,7 +22,7 @@ export default function Error({
           // Attempt to recover by trying to re-render the segment
           () => reset()
         }
-        aria-label='Retry in auth'
+        aria-label='로그인 회원가입 페이지에서 에러발생시 다시 시도'
       >
         Try again
       </button>

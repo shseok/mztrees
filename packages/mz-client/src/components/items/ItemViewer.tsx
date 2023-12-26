@@ -122,12 +122,7 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
               </Link>
             </h2>
           </div>
-          <Button
-            to={item.link}
-            variant='visit'
-            aria-label='Visit post'
-            isBlank
-          >
+          <Button to={item.link} variant='visit' aria-label='방문하기' isBlank>
             방문
           </Button>
         </div>
