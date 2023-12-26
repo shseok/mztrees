@@ -257,7 +257,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
         <button
           className={cn(styles.reply_button, mode === 'dark' && styles.dark)}
           onClick={onReply}
-          aria-label="Reply comment"
+          aria-label='Reply comment'
         >
           답글 달기
         </button>
