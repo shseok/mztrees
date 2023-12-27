@@ -9,7 +9,7 @@ export default function EmptyList({
   message = '리스트가 비어있습니다.',
 }: Props) {
   return (
-    <div className={styles.block}>
+    <figure className={styles.block}>
       <Image
         src={'https://img.mztrees.com/search-not-found.svg'}
         alt='검색 결과가 없음을 나타내는 이미지'
@@ -18,6 +18,6 @@ export default function EmptyList({
         height='147'
       />
       <span>{message}</span>
-    </div>
+    </figure>
   );
 }

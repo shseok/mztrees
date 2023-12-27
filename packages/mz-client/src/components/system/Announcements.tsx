@@ -57,9 +57,9 @@ const Announcements: FC<AnnouncementsProps> = ({ fullWidth = false }) => {
   };
 
   return (
-    <main className={cn(styles.positioner, fullWidth && styles.fullWidth)}>
+    <section className={cn(styles.positioner, fullWidth && styles.fullWidth)}>
       <div className={styles.block}>
-        <section className={styles.title}>
+        <div className={styles.title}>
           <span>공지사항</span>
           <button
             onClick={() => setShowAnnouncement(false)}
@@ -68,7 +68,7 @@ const Announcements: FC<AnnouncementsProps> = ({ fullWidth = false }) => {
           >
             <Close />
           </button>
-        </section>
+        </div>
         <ul className={styles.body}>
           <li>
             &bull; 서비스 이용 중 <span>불편한 점</span>이나{' '}
@@ -80,7 +80,7 @@ const Announcements: FC<AnnouncementsProps> = ({ fullWidth = false }) => {
             싶다면 아래 아이콘을 클릭하여 요청해주세요.
           </li>
         </ul>
-        <section className={styles.bottom}>
+        <div className={styles.bottom}>
           <div className={styles.iconWrapper}>
             <Gmail onClick={handleGmailClick} />
             <Github onClick={handleGitHubClick} />
@@ -95,9 +95,9 @@ const Announcements: FC<AnnouncementsProps> = ({ fullWidth = false }) => {
               />
             </label>
           </div>
-        </section>
+        </div>
       </div>
-    </main>
+    </section>
   );
 };
 

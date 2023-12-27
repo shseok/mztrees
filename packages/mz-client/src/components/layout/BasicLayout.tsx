@@ -29,7 +29,7 @@ const BasicLayout = ({
         headerRight={headerRight}
       />
       {desktopHeaderVisible && <DesktopHeader />}
-      <div className={styles.content}>{children}</div>
+      <main className={styles.content}>{children}</main>
     </FullHeightPage>
   );
 };

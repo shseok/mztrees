@@ -85,7 +85,7 @@ const LinkCard = ({ item }: Props) => {
     <div className={cn(styles.block, mode === 'dark' && styles.dark)}>
       {/* TODO: prefetch={false} > detailed item 클릭시 느리지만 비용 절약(초기 렌더링x) > 나중에 부담되면 적용 */}
       <Link href={link} className={styles.styled_link}>
-        <div className={styles.thumbnail}>
+        <figure className={styles.thumbnail}>
           <Image
             src={
               thumbnail?.url ?? 'https://img.mztrees.com/not-fount-image.svg'
@@ -96,10 +96,10 @@ const LinkCard = ({ item }: Props) => {
             priority
             sizes='300px'
           />
-        </div>
+        </figure>
         <div className={styles.publisher}>
           {favicon ? (
-            <div className={styles.favicon}>
+            <figure className={styles.favicon}>
               <Image
                 src={favicon}
                 alt={`${name} 로고 이미지`}
@@ -107,7 +107,7 @@ const LinkCard = ({ item }: Props) => {
                 fill
                 sizes='16px'
               />
-            </div>
+            </figure>
           ) : (
             <Globe />
           )}

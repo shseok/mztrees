@@ -62,7 +62,7 @@ const ListModeSelector = ({ mode, tag }: Props) => {
   const indicatorWidth = elementSizes[currentIndex];
 
   return (
-    <div className={styles.block}>
+    <nav className={styles.block}>
       {modeInfos.map((modeInfo, index) => (
         <ListModeItem
           currentMode={mode}
@@ -77,7 +77,7 @@ const ListModeSelector = ({ mode, tag }: Props) => {
         className={styles.indicator}
         style={{ left: indicatorLeft + 0.3, width: indicatorWidth }}
       />
-    </div>
+    </nav>
   );
 };
 

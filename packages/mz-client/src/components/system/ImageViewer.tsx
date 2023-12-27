@@ -13,7 +13,7 @@ interface Props {
 const ImageViewer = ({ visible, url, onClose, onConfirm }: Props) => {
   return (
     <Modal visible={visible} fullWidth>
-      <div className={styles.image}>
+      <figure className={styles.image}>
         <Image
           src={url ?? 'https://img.mztrees.com/not-fount-image.svg'}
           alt='이미지 뷰어'
@@ -22,7 +22,7 @@ const ImageViewer = ({ visible, url, onClose, onConfirm }: Props) => {
           priority
           sizes='1000px'
         />
-      </div>
+      </figure>
       <p className={styles.notification}>
         위 이미지는 원본 크기이며, 작은 이미지 선택시 화질이 깨질 수 있습니다.
       </p>

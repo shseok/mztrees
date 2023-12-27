@@ -101,7 +101,7 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
       <div className={cn(styles.content, mode === 'dark' && styles.dark_mode)}>
         <div className={styles.item_head}>
           <div className={styles.item_info}>
-            <div className={styles.publisher}>
+            <figure className={styles.publisher}>
               {favicon ? (
                 <Image
                   src={favicon}
@@ -115,7 +115,7 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
               )}
               {author ? `${author} · ` : ''}
               {name}
-            </div>
+            </figure>
             <h2 className={cn(styles.title)}>
               <Link href={item.link} target='_blank'>
                 {title}

@@ -29,12 +29,12 @@ const TabLayout = ({ className, children, header }: Props) => {
         </>
       )}
       {/* <BackgroundContent x={0} y={0} /> */}
-      <div
+      <main
         className={cn(styles.content, className && styles[className])}
         ref={ref}
       >
         {children}
-      </div>
+      </main>
       <ThemeToggleButton />
       <Footer />
     </FullHeightPage>
