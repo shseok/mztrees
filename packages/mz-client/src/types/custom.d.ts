@@ -92,3 +92,7 @@ export interface User {
   website_url: string;
   is_verified: boolean;
 }
+
+export type HomeProps = {
+  searchParams: { [key: string]: string | undefined };
+};

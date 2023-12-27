@@ -15,13 +15,15 @@ const DesktopHeader = () => {
       <div className={styles.block_top}>
         <div className={styles.content}>
           {/* tag 도입 후 params이 남아있기 때문에 Link -> a */}
-          <a
-            className={styles.home_link}
-            href='/'
-            aria-label='데스크탑 헤더에서 홈으로 이동'
-          >
-            <Logo className={styles.styled_logo} />
-          </a>
+          <h1 className={styles.link_container}>
+            <a
+              className={styles.home_link}
+              href='/'
+              aria-label='로고를 통해 홈으로 이동'
+            >
+              <Logo className={styles.styled_logo} />
+            </a>
+          </h1>
           <div className={styles.addon} />
           <div className={styles.addon}>
             <SearchArea />

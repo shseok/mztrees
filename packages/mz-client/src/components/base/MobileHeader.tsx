@@ -24,9 +24,9 @@ const MobileHeader = ({
       {headerLeft && (
         <div className={cn(styles.header_side, styles.left)}>{headerLeft}</div>
       )}
-      <div className={cn(styles.title, mode === 'dark' && styles.dark)}>
+      <h1 className={cn(styles.title, mode === 'dark' && styles.dark)}>
         {title}
-      </div>
+      </h1>
       {headerRight && (
         <div className={cn(styles.header_side, styles.right)}>
           {headerRight}

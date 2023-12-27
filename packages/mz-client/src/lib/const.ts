@@ -1,5 +1,8 @@
+import { HomeProps } from '@/types/custom';
 import type { Item } from '@/types/db';
 import type { OpenGraphType } from 'next/dist/lib/metadata/types/opengraph-types';
+import { getWeekRangeFromDate } from '@/lib/week';
+import { format } from 'date-fns';
 
 export const tagList = [
   '요리',
@@ -44,6 +47,58 @@ export const siteConfig = {
       appleTouchIcon: '/favicon/apple-touch-icon.png',
     },
     manifestUrl: '/favicon/site.webmanifest',
+  },
+  mode: function (searchParams: HomeProps['searchParams']) {
+    const { mode } = searchParams;
+
+    const canonicalObj = {
+      alternates: {
+        canonical: this.getModeUrl(mode),
+      },
+    };
+
+    if (mode === 'recent') {
+      return {
+        title: '최근 소식 | 엠제트리',
+        description: '방금 엠제트리에 올라온 따끈따끈한 소식들을 확인해보세요.',
+        ...canonicalObj,
+      };
+    }
+
+    if (mode === 'past') {
+      const { start, end } = searchParams;
+      const formattedDuration = this.getFormattedDuration({ start, end });
+      return {
+        title: `과거 소식 (${formattedDuration}) | 엠제트리`,
+        description: `${formattedDuration}에 올라온 엠제트리 소식들을 인기순으로 확인해보세요.`,
+        ...canonicalObj,
+      };
+    }
+
+    // is trending mode
+    return {
+      title: this.root.title,
+      description: this.root.description,
+      ...canonicalObj,
+    };
+  },
+  getFormattedDuration: function ({
+    start,
+    end,
+  }: {
+    start?: string;
+    end?: string;
+  }) {
+    const range = getWeekRangeFromDate(new Date());
+    const startDate = start ?? range?.[0];
+    const endDate = end ?? range?.[1];
+    const formattedStart = format(new Date(startDate), 'yyyy년 MM월 dd일');
+    const formattedEnd = format(new Date(endDate), 'yyyy년 MM월 dd일');
+    return `${formattedStart} ~ ${formattedEnd}`;
+  },
+  getModeUrl: function (mode?: string) {
+    const isTrendingMode = !mode || mode === 'trending';
+    return this.mainDomain + (isTrendingMode ? '/' : `/?mode=${mode}`);
   },
   post: function (item: Item) {
     const shortenDescription = item.body
