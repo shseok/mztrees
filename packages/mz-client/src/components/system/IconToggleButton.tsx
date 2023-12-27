@@ -28,9 +28,10 @@ const IconToggleButton = ({
 }: Props) => {
   return (
     <button
+      type='button'
+      aria-label={`${ariaLabel} 토글 버튼`}
       className={cn(styles.styled_button, styles[size])}
       onClick={onClick}
-      aria-label={`${ariaLabel} 토글 버튼`}
     >
       <AnimatePresence initial={false}>
         {isActive ? (

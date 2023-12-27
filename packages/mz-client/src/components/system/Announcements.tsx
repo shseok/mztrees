@@ -57,14 +57,18 @@ const Announcements: FC<AnnouncementsProps> = ({ fullWidth = false }) => {
   };
 
   return (
-    <section className={cn(styles.positioner, fullWidth && styles.fullWidth)}>
+    <section
+      className={cn(styles.positioner, fullWidth && styles.fullWidth)}
+      role='alert'
+    >
       <div className={styles.block}>
         <div className={styles.title}>
           <span>공지사항</span>
           <button
+            type='button'
+            aria-label='공지사항 닫기'
             onClick={() => setShowAnnouncement(false)}
             className={styles.closeIcon}
-            aria-label='공지사항 닫기'
           >
             <Close />
           </button>

@@ -149,40 +149,45 @@ const AccountSetting = () => {
           className={cn(styles.section, themeMode === 'dark' && styles.dark)}
         >
           <h4>비밀번호</h4>
-          <form onSubmit={onSubmit}>
+          <form onSubmit={onSubmit} role='form'>
             <div className={styles.input_group}>
               <Input
+                type='password'
                 value={form.oldPassword}
                 name='oldPassword'
                 placeholder='현재 비밀번호'
-                type='password'
                 onChange={onChange}
                 autoComplete='off'
                 ref={oldPasswordInputRef}
               />
               <Input
+                type='password'
                 value={form.newPassword}
                 name='newPassword'
                 placeholder='새 비밀번호'
-                type='password'
                 onChange={onChange}
                 autoComplete='off'
                 ref={newPasswordInputRef}
               />
             </div>
             <Button
+              type='submit'
+              aria-label='비밀번호 변경'
               layoutmode='fullWidth'
               variant='primary'
               size='small'
-              type='submit'
-              aria-label='비밀번호 변경'
             >
               비밀번호 변경
             </Button>
           </form>
         </div>
       </div>
-      <Button variant='warning' onClick={askUnregister} aria-label='계정 탈퇴'>
+      <Button
+        type='button'
+        aria-label='계정 탈퇴'
+        variant='warning'
+        onClick={askUnregister}
+      >
         계정 탈퇴
       </Button>
     </div>

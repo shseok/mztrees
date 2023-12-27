@@ -49,11 +49,12 @@ const TagInput = () => {
             태그
           </label>
           <Button
+            type='button'
+            aria-label='태그 추가'
             variant='tertiary'
             size='small'
             style={{ paddingLeft: '6px', paddingRight: '6px' }}
             onClick={openTagSelector}
-            aria-label='태그 추가'
           >
             + 태그 추가
           </Button>

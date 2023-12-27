@@ -31,14 +31,15 @@ const Dialog = ({
       <section className={styles.footer}>
         {mode === 'confirm' && (
           <Button
+            type='button'
+            aria-label='다이얼로그 취소'
             onClick={onClose}
             variant='secondary'
-            aria-label='다이얼로그 취소'
           >
             {cancelText}
           </Button>
         )}
-        <Button onClick={onConfirm} aria-label='다이얼로그 확인'>
+        <Button type='button' aria-label='다이얼로그 확인' onClick={onConfirm}>
           {confirmText}
         </Button>
       </section>

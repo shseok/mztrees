@@ -28,20 +28,22 @@ const UserAddon = ({ username }: Props) => {
   return (
     <div className={styles.responsive}>
       <Button
+        type='button'
+        aria-label='새로운 글 작성'
         className='write_button'
         to='/write'
         size='small'
         variant='primary'
-        aria-label='새로운 글 작성'
       >
         새 글 작성
       </Button>
       <Button
+        type='button'
+        aria-label='유저 메뉴 열기'
         size='small'
         variant='tertiary'
         onClick={onOpen}
         ref={buttonRef}
-        aria-label='유저 메뉴 열기'
       >
         <span className={styles.block}>
           <User />

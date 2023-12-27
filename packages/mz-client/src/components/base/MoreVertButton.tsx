@@ -14,9 +14,10 @@ const MoreVertButton = ({ onClickMore, ...rest }: Props) => {
   const { mode } = useTheme();
   return (
     <button
+      type='button'
+      aria-label='더보기'
       className={cn(styles.styled_button, mode === 'dark' && styles.dark)}
       onClick={onClickMore}
-      aria-label='더보기'
       {...rest}
     >
       <MoreVert />

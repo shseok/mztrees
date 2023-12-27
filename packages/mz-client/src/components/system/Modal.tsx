@@ -20,7 +20,10 @@ const Modal = ({ visible, children, className, fullWidth = false }: Props) => {
   return (
     <>
       <Overlay visible={visible} />
-      <div className={cn(styles.positioner, fullWidth && styles.fullWidth)}>
+      <div
+        className={cn(styles.positioner, fullWidth && styles.fullWidth)}
+        role='dialog'
+      >
         <AnimatePresence>
           {visible && (
             <LazyMotion features={loadFeature}>

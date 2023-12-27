@@ -39,6 +39,8 @@ const OptionSelector = ({
       <section className={styles.listContainer}>
         {list.map((item, index) => (
           <button
+            type='button'
+            aria-label='옵션 선택'
             className={cn(
               styles.item,
               selected.includes(item as Tag) && styles.selected
@@ -46,7 +48,6 @@ const OptionSelector = ({
             key={index}
             onClick={(e) => onSelect(e, item)}
             tabIndex={0}
-            aria-label='옵션 선택'
           >
             # {item}
           </button>
@@ -54,20 +55,20 @@ const OptionSelector = ({
       </section>
       <section className={styles.footer}>
         <Button
-          onClick={onConfirm}
           type='button'
-          size='large'
           aria-label='옵션 선택 모달 확인'
+          size='large'
+          onClick={onConfirm}
         >
           {confirmText}
         </Button>
         {mode === 'confirm' && (
           <Button
-            onClick={onClose}
-            variant='secondary'
             type='button'
-            size='large'
             aria-label='옵션 선택 모달 취소'
+            size='large'
+            variant='secondary'
+            onClick={onClose}
           >
             {cancelText}
           </Button>

@@ -78,18 +78,20 @@ const CommentEditor = ({
               exit={{ height: 0, opacity: 0 }}
             >
               <Button
+                type='button'
+                aria-label='댓글 작성 취소'
                 size='small'
                 variant='tertiary'
                 onClick={onReset}
-                aria-label='댓글 작성 취소'
               >
                 취소
               </Button>
               <Button
+                type='button'
+                aria-label='댓글 작성 완료'
                 size='small'
                 onClick={handleSubmit}
                 onFocus={onFocus}
-                aria-label='댓글 작성 완료'
               >
                 {isLoading ? <LoadingIndicator color='white' /> : buttonText}
               </Button>

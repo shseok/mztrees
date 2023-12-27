@@ -47,18 +47,20 @@ const WeekSelector = ({ dateRange }: Props) => {
       </div>
       <div className={styles.week_navigator}>
         <button
+          type='button'
+          aria-label='이전 주 게시글 가져오기'
           className={cn(styles.text_button, mode === 'dark' && styles.dark)}
           onClick={onClickPrev}
           disabled={prevDisabled}
-          aria-label='이전 주 게시글 가져오기'
         >
           이전 주
         </button>
         <button
+          type='button'
+          aria-label='다음 주 게시글 가져오기'
           className={cn(styles.text_button, mode === 'dark' && styles.dark)}
           onClick={onClickNext}
           disabled={nextDisabled}
-          aria-label='다음 주 게시글 가져오기'
         >
           다음 주
         </button>

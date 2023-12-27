@@ -18,11 +18,12 @@ export default function Error({
     <div>
       <h2>Something went wrong!</h2>
       <button
+        type='button'
+        aria-label='로그인 회원가입 페이지에서 에러발생시 다시 시도'
         onClick={
           // Attempt to recover by trying to re-render the segment
           () => reset()
         }
-        aria-label='로그인 회원가입 페이지에서 에러발생시 다시 시도'
       >
         Try again
       </button>

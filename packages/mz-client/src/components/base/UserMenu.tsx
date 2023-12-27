@@ -42,32 +42,38 @@ const UserMenu = ({ visible, onClose }: Props) => {
             >
               <div className={styles.triangle} />
               <div className={styles.triangle_border} />
-              <div
-                className={cn(styles.menu_item, styles.isDeskTopHidden)}
-                onClick={() => router.push('/write')}
-              >
-                새 글 등록
-              </div>
-              <div
-                className={styles.menu_item}
-                onClick={() => router.push('/setting/account')}
-              >
-                내 계정
-              </div>
-              <div
-                className={styles.menu_item}
-                onClick={() => router.push('/bookmark')}
-              >
-                북마크
-              </div>
-              <div
-                className={styles.menu_item}
-                onClick={() => {
-                  openLogoutDialog('logout');
-                }}
-              >
-                로그아웃
-              </div>
+              <ul role='menu'>
+                <li
+                  role='menuitem'
+                  className={cn(styles.menu_item, styles.isDeskTopHidden)}
+                  onClick={() => router.push('/write')}
+                >
+                  새 글 등록
+                </li>
+                <li
+                  role='menuitem'
+                  className={styles.menu_item}
+                  onClick={() => router.push('/setting/account')}
+                >
+                  내 계정
+                </li>
+                <li
+                  role='menuitem'
+                  className={styles.menu_item}
+                  onClick={() => router.push('/bookmark')}
+                >
+                  북마크
+                </li>
+                <li
+                  role='menuitem'
+                  className={styles.menu_item}
+                  onClick={() => {
+                    openLogoutDialog('logout');
+                  }}
+                >
+                  로그아웃
+                </li>
+              </ul>
             </MotionDiv>
           </LazyMotion>
         )}

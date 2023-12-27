@@ -122,7 +122,13 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
               </Link>
             </h2>
           </div>
-          <Button to={item.link} variant='visit' aria-label='방문하기' isBlank>
+          <Button
+            type='button'
+            aria-label='방문하기'
+            to={item.link}
+            variant='visit'
+            isBlank
+          >
             방문
           </Button>
         </div>
@@ -145,6 +151,7 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 26, opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
+                role='status'
               >
                 좋아요 {likes.toLocaleString()}개
               </MotionDiv>

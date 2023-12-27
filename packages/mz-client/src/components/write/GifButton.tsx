@@ -8,13 +8,14 @@ const GifSelectButton = () => {
   return (
     <>
       <Button
+        type='button'
+        aria-label='gif 파일 검색 모달창 열기'
         onClick={(e) => {
           e.preventDefault();
           open();
         }}
         variant='warning'
         layoutmode='fullWidth'
-        aria-label='gif 파일 검색 모달창 열기'
       >
         GIF 파일검색
       </Button>

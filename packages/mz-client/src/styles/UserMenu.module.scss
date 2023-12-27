@@ -18,6 +18,11 @@
   padding: 16px;
   cursor: pointer;
 
+  a {
+    color: $gray5;
+    text-decoration: none;
+  }
+
   &:hover {
     transition: all 0.125s ease-in;
     background: $gray0;

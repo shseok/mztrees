@@ -84,7 +84,7 @@ const LinkCard = ({ item }: Props) => {
   return (
     <div className={cn(styles.block, mode === 'dark' && styles.dark)}>
       {/* TODO: prefetch={false} > detailed item 클릭시 느리지만 비용 절약(초기 렌더링x) > 나중에 부담되면 적용 */}
-      <Link href={link} className={styles.styled_link}>
+      <Link href={link} className={styles.styled_link} tabIndex={-1}>
         <figure className={styles.thumbnail}>
           <Image
             src={
@@ -127,6 +127,7 @@ const LinkCard = ({ item }: Props) => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
+                role='status'
               >
                 좋아요 {likes.toLocaleString()}개
               </MotionDiv>
@@ -134,7 +135,7 @@ const LinkCard = ({ item }: Props) => {
           )}
         </AnimatePresence>
         {commentsCount === 0 ? null : (
-          <div className={styles.commentscount}>
+          <div className={styles.commentscount} role='status'>
             댓글 {commentsCount.toLocaleString()}개
           </div>
         )}

@@ -156,6 +156,7 @@ const AuthForm = ({ mode }: Props) => {
       className={styles.form}
       method='post'
       onSubmit={handleSubmit(onSubmit)}
+      role='form'
     >
       <a
         className={cn(styles.desktop_logo, themeMode === 'dark' && styles.dark)}
@@ -200,11 +201,11 @@ const AuthForm = ({ mode }: Props) => {
           </div>
         )}
         <Button
-          layoutmode='fullWidth'
           type='submit'
+          aria-label='폼 제출'
+          layoutmode='fullWidth'
           disabled={isSubmitting}
           onClick={onClick}
-          aria-label='폼 제출'
         >
           {isLoading ? <LoadingIndicator color='white' /> : buttonText}
         </Button>

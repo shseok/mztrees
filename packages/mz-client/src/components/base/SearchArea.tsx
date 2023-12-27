@@ -15,9 +15,10 @@ const SearchArea = () => {
 
   return (
     <button
+      type='button'
+      aria-label='검색창 열기'
       className={styles.search_input_wrapper}
       onClick={onClick}
-      aria-label='검색창 열기'
     >
       <Search />
       <p>{initialKeyword}</p>

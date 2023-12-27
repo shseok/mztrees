@@ -196,6 +196,7 @@ const CommentInputOverlay = () => {
               transition={{
                 damping: 0,
               }}
+              role='dialog'
             >
               <input
                 className={styles.input}
@@ -205,10 +206,11 @@ const CommentInputOverlay = () => {
                 autoFocus
               />
               <button
+                type='button'
+                aria-label='테블릿 사이즈보다 작은 화면에서 댓글 작성 버튼'
                 className={styles.transparent_button}
                 onClick={onClick}
                 disabled={isLoading}
-                aria-label='테블릿 사이즈보다 작은 화면에서 댓글 작성 버튼'
               >
                 {isLoading ? <LoadingIndicator /> : buttonText}
               </button>

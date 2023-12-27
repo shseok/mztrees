@@ -30,17 +30,19 @@ const DesktopHeader = () => {
             ) : (
               <div className={styles.buttons}>
                 <Button
+                  type='button'
+                  aria-label='데스크탑 헤더에서 로그인 페이지로 이동'
                   variant='tertiary'
                   size='small'
                   to='/login'
-                  aria-label='데스크탑 헤더에서 로그인 페이지로 이동'
                 >
                   로그인
                 </Button>
                 <Button
+                  type='button'
+                  aria-label='데스크탑 헤더에서 회원가입 페이지로 이동'
                   size='small'
                   to='/register'
-                  aria-label='데스크탑 헤더에서 회원가입 페이지로 이동'
                 >
                   회원가입
                 </Button>

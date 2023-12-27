@@ -24,7 +24,7 @@ const TagMenu = ({ onClose, visible, selected, onSelect }: Props) => {
     onClose(e);
   });
   return (
-    <div ref={ref}>
+    <div ref={ref} role='menu'>
       <AnimatePresence initial={false}>
         {visible && (
           <LazyMotion features={loadFeature}>
@@ -47,6 +47,7 @@ const TagMenu = ({ onClose, visible, selected, onSelect }: Props) => {
                       onClose();
                     }}
                     key={idx}
+                    role='menuitem'
                   >
                     {item}
                   </li>

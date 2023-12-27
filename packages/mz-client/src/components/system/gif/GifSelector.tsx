@@ -59,6 +59,8 @@ const GifSelector = ({ visible, onClose, onSelect }: Props) => {
         </div>
         <section className={styles.footer}>
           <Button
+            type='button'
+            aria-label='gif 파일 선택'
             onClick={() => {
               actions.change('thumbnail', {
                 extracted: [...form.thumbnail.extracted, selected],
@@ -67,14 +69,14 @@ const GifSelector = ({ visible, onClose, onSelect }: Props) => {
               onClose();
               onSelect();
             }}
-            aria-label='gif 파일 선택'
           >
             선택
           </Button>
           <Button
+            type='button'
+            aria-label='gif 파일 선택 취소'
             onClick={onClose}
             variant='secondary'
-            aria-label='gif 파일 선택 취소'
           >
             취소
           </Button>

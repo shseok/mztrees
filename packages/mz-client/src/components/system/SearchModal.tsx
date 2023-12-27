@@ -85,16 +85,17 @@ const SearchModal = ({ isOpen, setIsOpen, close }: Props) => {
             )
           : styles.search_modal
       }
+      role='dialog'
     >
       <div className={styles.search_part}>
         <div className={styles.container}>
           <Search className={styles.search_icon} />
           <input
-            ref={inputRef}
-            className={styles.news_search_input}
-            id='searchInput'
-            placeholder='어떤 콘텐츠가 궁금하신가요?'
             type='text'
+            id='searchInput'
+            ref={inputRef}
+            placeholder='어떤 콘텐츠가 궁금하신가요?'
+            className={styles.news_search_input}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
           />
@@ -107,13 +108,14 @@ const SearchModal = ({ isOpen, setIsOpen, close }: Props) => {
             <div className={styles.title}>
               최근검색어
               <button
+                type='button'
+                aria-label='최근 검색 결과 전체 삭제'
                 className={
                   recentSearches.length
                     ? cn(styles.sub_action, styles.active)
                     : styles.sub_action
                 }
                 onClick={handleAllDelete}
-                aria-label='최근 검색 결과 전체 삭제'
               >
                 전체 삭제
               </button>
@@ -147,12 +149,13 @@ const SearchModal = ({ isOpen, setIsOpen, close }: Props) => {
                       {recentKeywords}
                     </span>
                     <button
+                      type='button'
+                      aria-label='해당 검색어 삭제'
                       className={styles.icon_delete_wrapper}
                       onClick={(e) => {
                         e.stopPropagation();
                         handleKeywordDelete(recentKeywords);
                       }}
-                      aria-label='해당 검색어 삭제'
                     >
                       <TrashCan className={styles.icon_delete} />
                     </button>

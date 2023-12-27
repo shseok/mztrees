@@ -31,17 +31,19 @@ const WriteFormTemplate = ({
       className={cn(styles.styled_form, mode === 'dark' && styles.dark)}
       method='POST'
       onSubmit={onSubmit}
+      role='form'
     >
       <div className={styles.title}>
-        {description && <h3>{description}</h3>}
+        {description && <h3 className={styles.description}>{description}</h3>}
       </div>
       <div className={styles.content}>{children}</div>
       <div className={styles.button_wrapper}>
         {hasGifButton && <GifSelectButton />}
         <Button
+          type='submit'
+          aria-label='작성 폼 전송'
           disabled={isLoading}
           layoutmode='fullWidth'
-          aria-label='작성 폼 전송'
         >
           {isLoading ? (
             loadingPercent !== undefined ? (

@@ -32,9 +32,10 @@ const TagSelector = ({ listMode, selectedTag, setSelectedTag }: Props) => {
   return (
     <div className={cn(styles.container, mode === 'dark' && styles.dark)}>
       <button
+        type='button'
+        aria-label='태그 목록 토글'
         className={styles.inner_container}
         onClick={onToggle}
-        aria-label='태그 목록 토글'
         ref={buttonRef}
       >
         <span>태그 목록</span>
@@ -44,12 +45,13 @@ const TagSelector = ({ listMode, selectedTag, setSelectedTag }: Props) => {
         <div className={styles.current_tag}>
           <span className={styles.tag_text}># {selectedTag}</span>
           <button
+            type='button'
+            aria-label='선택한 태그 지우기'
             className={styles.close_btn}
             onClick={() => {
               setSelectedTag(null);
               setSearchParams({ mode: listMode, tag: null });
             }}
-            aria-label='선택한 태그 지우기'
           >
             <Close />
           </button>

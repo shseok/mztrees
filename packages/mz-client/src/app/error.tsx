@@ -27,15 +27,21 @@ export default function ErrorShower({
         </p>
         <div className={styles.button_container}>
           <Button
+            type='button'
+            aria-label='다시 시도'
             onClick={
               // Attempt to recover by trying to re-render the segment
               () => reset()
             }
-            aria-label='다시 시도'
           >
             다시 시도
           </Button>
-          <Button variant='tertiary' to='/' aria-label='홈으로 이동'>
+          <Button
+            type='button'
+            aria-label='홈으로 이동'
+            variant='tertiary'
+            to='/'
+          >
             홈으로
           </Button>
         </div>

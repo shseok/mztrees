@@ -57,18 +57,21 @@ const PopperMenu = ({
               <div className={styles.triangle} />
               <div className={styles.triangle_border} />
               {/* TODO: Add icon at each menu item */}
-              {items.map((item) => (
-                <div
-                  className={styles.menu_item}
-                  key={item.name}
-                  onClick={() => {
-                    item.onClick();
-                  }}
-                >
-                  {IconMap[item.name as keyof typeof IconMap]}
-                  {item.name}
-                </div>
-              ))}
+              <ul role='menu'>
+                {items.map((item) => (
+                  <li
+                    role='menuitem'
+                    className={styles.menu_item}
+                    key={item.name}
+                    onClick={() => {
+                      item.onClick();
+                    }}
+                  >
+                    {IconMap[item.name as keyof typeof IconMap]}
+                    {item.name}
+                  </li>
+                ))}
+              </ul>
             </MotionDiv>
           </LazyMotion>
         )}
