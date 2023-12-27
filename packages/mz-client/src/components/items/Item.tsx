@@ -21,6 +21,7 @@ import { refreshToken } from '@/lib/api/auth';
 import { setClientCookie } from '@/lib/client';
 import { useOpenLoginDialog } from '@/hooks/useOpenLoginDialog';
 import ThemeToggleButton from '../system/ThemeToggleButton';
+import { useItemQuery } from '@/hooks/query/useItemQuery';
 
 type Props = {
   item: Item;
@@ -30,12 +31,16 @@ export default function Item({ item }: Props) {
   const { currentUser } = useUser();
   const isMyItem = item ? item.user.id === currentUser?.id : false;
   const { data: comments, status } = useCommentsQuery(item.id);
+  const {
+    data: { isBookmarked, isLiked } = { isBookmarked: false, isLiked: false },
+  } = useItemQuery(item.id) || {}; // for like, bookmark update
 
   const openBottomSheetModal = useBottomSheetModalStore((store) => store.open);
   const { open: openDialog } = useDialog();
   const openLoginDialog = useOpenLoginDialog();
   const router = useRouter();
   const items = useMemo(
+    // TODO: refactor in hooks
     () => [
       {
         name: '수정',
@@ -91,6 +96,8 @@ export default function Item({ item }: Props) {
     }
   };
 
+  const updatedItem = { ...item, isBookmarked, isLiked };
+
   return (
     <BasicLayout
       hasBackButton
@@ -98,7 +105,7 @@ export default function Item({ item }: Props) {
       headerRight={isMyItem && <MoreVertButton onClickMore={onClickMore} />}
     >
       <div className={styles.content}>
-        <ItemViewer item={item} isMyItem={isMyItem} items={items} />
+        <ItemViewer item={updatedItem} isMyItem={isMyItem} items={items} />
         {status === 'loading' ? (
           <Loading />
         ) : status === 'error' ? (
