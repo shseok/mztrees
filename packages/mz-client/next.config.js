@@ -38,6 +38,7 @@ const nextConfig = {
       },
     ],
   },
+  poweredByHeader: false,
   // TODO: config proxy
   // rewrites: async () => {
   //   return [
