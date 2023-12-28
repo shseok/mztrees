@@ -6,6 +6,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_DOMAIN!;
 // the sitemap objects that is generated dynamically
 const generatePostsSitemapObjects = async () => {
   const posts = await getAllItems();
+  console.log(posts);
   return posts.map((post) => ({
     slug: post.id.toString(),
     updatedAt: new Date(post.updatedAt),
@@ -25,3 +26,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   ];
 }
+
+export const dynamic = 'force-dynamic';
