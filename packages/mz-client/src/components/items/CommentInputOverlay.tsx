@@ -197,6 +197,7 @@ const CommentInputOverlay = () => {
                 damping: 0,
               }}
               role='dialog'
+              aria-label='댓글 작성 영역'
             >
               <input
                 className={styles.input}

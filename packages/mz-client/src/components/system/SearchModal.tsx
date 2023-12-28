@@ -86,6 +86,7 @@ const SearchModal = ({ isOpen, setIsOpen, close }: Props) => {
           : styles.search_modal
       }
       role='dialog'
+      aria-label='검색 모달 영역'
     >
       <div className={styles.search_part}>
         <div className={styles.container}>

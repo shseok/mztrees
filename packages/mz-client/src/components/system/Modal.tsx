@@ -23,6 +23,7 @@ const Modal = ({ visible, children, className, fullWidth = false }: Props) => {
       <div
         className={cn(styles.positioner, fullWidth && styles.fullWidth)}
         role='dialog'
+        aria-label='모달 영역'
       >
         <AnimatePresence>
           {visible && (
