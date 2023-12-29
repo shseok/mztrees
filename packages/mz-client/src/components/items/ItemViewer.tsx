@@ -88,14 +88,20 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
 
   return (
     <div className={styles.block}>
-      <Link href={item.link} className={styles.thumbnail} target='_blank'>
+      <Link
+        href={item.link}
+        className={styles.thumbnail_wrapper}
+        target='_blank'
+      >
         <Image
           src={thumbnail?.url ?? 'https://img.mztrees.com/not-fount-image.svg'}
           alt={`세부 페이지에서 ${title} 썸네일 이미지`}
           title={`${title}-클릭시 원본 이미지 링크로 방문`}
+          placeholder='blur'
           fill
+          sizes='(max-width: 767px) 100vw, 736px'
           priority
-          sizes='736px'
+          className={styles.thumbnail}
         />
       </Link>
       <div className={cn(styles.content, mode === 'dark' && styles.dark_mode)}>

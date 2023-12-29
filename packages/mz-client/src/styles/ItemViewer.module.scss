@@ -5,17 +5,12 @@
   flex-direction: column;
 }
 
-.thumbnail {
-  display: block;
+.thumbnail_wrapper {
+  aspect-ratio: 1200/630;
   position: relative;
   width: 100%;
 
-  // height: auto;
-  // max-height: 80vh;
-  // aspect-ratio > img에 absolute 안생김
-  aspect-ratio: 1200/630;
-
-  img {
+  .thumbnail {
     border-radius: 0;
     object-fit: contain;
   }

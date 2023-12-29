@@ -85,18 +85,20 @@ const LinkCard = ({ item }: Props) => {
     <div className={cn(styles.block, mode === 'dark' && styles.dark)}>
       {/* TODO: prefetch={false} > detailed item 클릭시 느리지만 비용 절약(초기 렌더링x) > 나중에 부담되면 적용 */}
       <Link href={link} className={styles.styled_link} tabIndex={-1}>
-        <figure className={styles.thumbnail}>
+        <div className={styles.thumbnail_wrapper}>
           <Image
             src={
               thumbnail?.url ?? 'https://img.mztrees.com/not-fount-image.svg'
             }
             alt={`${name} 썸네일 이미지`}
             title={title}
+            placeholder='blur'
             fill
+            sizes='(max-width: 767px) 94vw, (max-width: 1199px) 46vw, 346px' // sizes="346"을 하면 정작 모바일 화면에서 645px 너비를 가져야하는 이미지가 깨짐 > 346으로 크기를 확대했기 때문. 따라서 이처럼 변경
             priority
-            sizes='300px'
+            className={styles.thumbnail}
           />
-        </figure>
+        </div>
         <div className={styles.publisher}>
           {favicon ? (
             <figure className={styles.favicon}>
@@ -104,6 +106,7 @@ const LinkCard = ({ item }: Props) => {
                 src={favicon}
                 alt={`${name} 로고 이미지`}
                 title={name}
+                placeholder='blur'
                 fill
                 sizes='16px'
               />

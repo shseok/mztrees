@@ -75,7 +75,7 @@ export default function Extract() {
                     title={`해당 ${index}번째 이미지를 클릭하여 썸네일로 지정하세요`}
                     fill
                     priority
-                    sizes='100vw'
+                    sizes='(max-width: 499px) 94vw, 450px'
                   />
                 </div>
               ))

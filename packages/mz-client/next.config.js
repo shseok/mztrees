@@ -23,6 +23,8 @@ const nextConfig = {
     // prependData: `@import "styles/_variables.scss"; @import "styles/_mixins.scss";`,
   },
   images: {
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 422, 548, 630, 720],
+    deviceSizes: [768, 1080, 1200],
     remotePatterns: [
       {
         protocol: 'https',
