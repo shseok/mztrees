@@ -14,6 +14,8 @@ import { Globe } from '@/components/vectors';
 import { useUser } from '@/context/UserContext';
 import { useTheme } from '@/context/ThemeContext';
 import { cn } from '@/utils/common';
+import { roboto } from '@/lib/fonts';
+import { blurDataUrl } from '@/lib/const';
 import MoreVertButton from '../base/MoreVertButton';
 import PopperMenu, { PopperMenuItem } from '../system/PopperMenu';
 import Button from '../system/Button';
@@ -23,7 +25,6 @@ import {
   LazyMotion,
   loadFeature,
 } from '@/utils/dynamic';
-import { roboto } from '@/lib/fonts';
 interface Props {
   item: Item;
   items: PopperMenuItem[];
@@ -98,6 +99,7 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
           alt={`세부 페이지에서 ${title} 썸네일 이미지`}
           title={`${title}-클릭시 원본 이미지 링크로 방문`}
           placeholder='blur'
+          blurDataURL={blurDataUrl}
           fill
           sizes='(max-width: 767px) 100vw, 736px'
           priority
