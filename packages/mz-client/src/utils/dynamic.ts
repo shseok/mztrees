@@ -15,6 +15,9 @@ const LazyMotion = dynamic(
   { ssr: false }
 );
 
-const loadFeature = () => import('./framerFeatures').then((res) => res.default);
+const loadFeature = async () => {
+  const { domAnimation } = await import('framer-motion');
+  return domAnimation;
+};
 
 export { AnimatePresence, MotionDiv, LazyMotion, loadFeature };
