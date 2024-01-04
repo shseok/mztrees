@@ -5,9 +5,9 @@ import { deleteItem } from '@/lib/api/items';
 import styles from '@/styles/Item.module.scss';
 import ItemViewer from '@/components/items/ItemViewer';
 import CommentList from '@/components/items/CommentList';
-import CommentInputOverlay from '@/components/items/CommentInputOverlay';
 import MoreVertButton from '@/components/base/MoreVertButton';
 import { useCommentsQuery } from '@/hooks/query/useCommentsQuery';
+import { useItemQuery } from '@/hooks/query/useItemQuery';
 import { useUser } from '@/context/UserContext';
 import { useDialog } from '@/context/DialogContext';
 import { useBottomSheetModalStore } from '@/hooks/stores/useBottomSheetModalStore';
@@ -21,11 +21,15 @@ import { refreshToken } from '@/lib/api/auth';
 import { setClientCookie } from '@/lib/client';
 import { useOpenLoginDialog } from '@/hooks/useOpenLoginDialog';
 import ThemeToggleButton from '../system/ThemeToggleButton';
-import { useItemQuery } from '@/hooks/query/useItemQuery';
+import dynamic from 'next/dynamic';
 
 type Props = {
   item: Item;
 };
+
+const CommentInputOverlay = dynamic(() => import('./CommentInputOverlay'), {
+  ssr: false,
+});
 
 export default function Item({ item }: Props) {
   const { currentUser } = useUser();
