@@ -1,11 +1,22 @@
 /** @type {import('next').NextConfig} */
 // const nextConfig = {}
 // module.exports = nextConfig
-
+const prod = process.env.NODE_ENV === 'production';
 const path = require('path');
+
+const WithPlugins = require('next-compose-plugins');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-  // openAnalyzer: false,
+  enabled: process.env.ANALYZE === 'true', // 환경변수 ANALYZE가 true일 때 실행
+  openAnalyzer: false, // 브라우저에 자동으로 분석결과를 새 탭으로 Open하는 것을 방지
+});
+
+const runtimeCaching = require('next-pwa/cache');
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  disable: !prod,
+  runtimeCaching,
+  reloadOnOnline: true,
+  register: true,
 });
 
 const nextConfig = {
@@ -52,4 +63,4 @@ const nextConfig = {
   // },
 };
 
-module.exports = withBundleAnalyzer(nextConfig);
+module.exports = WithPlugins([withBundleAnalyzer, withPWA], nextConfig);

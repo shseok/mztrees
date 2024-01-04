@@ -5,3 +5,10 @@ coverage
 .prettierignore
 .stylelintignore
 .eslintignore
+
+**/public/workbox-*.js
+**/public/sw.js
+**/public/worker-*.js
+**/public/workbox-*.map
+**/public/sw*.map
+**/public/worker-*.map

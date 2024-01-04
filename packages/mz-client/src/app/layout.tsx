@@ -1,7 +1,7 @@
 import '../styles/global.scss';
-import Providers from '@/utils/provider';
+import Providers from '@/utils/Providers';
 import GlobalBottomSheetModal from '@/components/system/GlobalBottomSheetModal';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import NextTopLoader from 'nextjs-toploader';
 import { colors } from '@/lib/colors';
 import { pretendard } from '@/lib/fonts';
@@ -32,6 +32,10 @@ export const metadata: Metadata = {
     apple: [siteConfig.root.iconUrl.appleTouchIcon],
   },
   manifest: siteConfig.root.manifestUrl,
+};
+
+export const viewport: Viewport = {
+  themeColor: colors.primary,
 };
 
 // export const revalidate = 60; // 60초 이후 refresh > 모든 페이지 모두 ssr
