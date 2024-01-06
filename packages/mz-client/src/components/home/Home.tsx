@@ -80,6 +80,23 @@ export default function Home() {
   useInfiniteScroll(observerTargetEl, fetchNextData);
 
   useEffect(() => {
+    const handleBeforeInstallPrompt = (event: any) => {
+      event.preventDefault();
+      console.log('beforeinstallprompt1', event);
+      if (!window.matchMedia('(display-mode: standalone)').matches) {
+        event.prompt();
+        console.log('beforeinstallprompt2', event);
+      }
+    };
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return window.removeEventListener(
+      'beforeinstallprompt',
+      handleBeforeInstallPrompt
+    );
+  }, []);
+
+  useEffect(() => {
     const nextMode = (searchParams.get('mode') as ListMode) ?? 'trending';
     if (nextMode !== mode) {
       setMode(nextMode);
@@ -111,7 +128,7 @@ export default function Home() {
           // TODO: define error type
           <ErrorShower error={error as Error} reset={reset} />
         ) : items ? (
-          <LinkCardList items={items} />
+          <LinkCardList items={items} /> // TODO: 과연 items를 여기서 넘겨주는게 맞는건가? 아니면 LinkCardList에서 직접 쿼리를 날려서 가져오는게 맞는건가? chatgpt에게 물어보기
         ) : null}
         <div ref={observerTargetEl} />
       </div>
