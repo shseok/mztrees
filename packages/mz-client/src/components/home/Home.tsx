@@ -44,7 +44,6 @@ export default function Home() {
     startDate && endDate ? [startDate, endDate] : defaultDateRange
   );
   const { reset } = useQueryErrorResetBoundary();
-
   const {
     status,
     data: infiniteData,
@@ -78,23 +77,6 @@ export default function Home() {
   }, [hasNextPage, fetchNextPage]);
 
   useInfiniteScroll(observerTargetEl, fetchNextData);
-
-  useEffect(() => {
-    const handleBeforeInstallPrompt = (event: any) => {
-      event.preventDefault();
-      console.log('beforeinstallprompt1', event);
-      if (!window.matchMedia('(display-mode: standalone)').matches) {
-        event.prompt();
-        console.log('beforeinstallprompt2', event);
-      }
-    };
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-    return window.removeEventListener(
-      'beforeinstallprompt',
-      handleBeforeInstallPrompt
-    );
-  }, []);
 
   useEffect(() => {
     const nextMode = (searchParams.get('mode') as ListMode) ?? 'trending';
