@@ -45,16 +45,11 @@ export default function ExpandableActionMenu({ visible, close }: Props) {
     }
     if (deferredPrompt) {
       deferredPrompt.prompt();
-      const { outcom } = await deferredPrompt.userChoice;
-      if (outcom !== 'accepted') {
-        toast.error(
-          '설치가 취소되었습니다. 설치를 원하시는 경우 브라우저 상단 검색창에서 모니터 아이콘을 눌러 설치를 진행해주세요.'
-        );
-      }
+      await deferredPrompt.userChoice;
       setDeferredPrompt(null);
     } else {
       toast.error(
-        '설치를 원하시는 경우 브라우저 상단 검색창에서 모니터 아이콘을 눌러 설치를 진행해주세요.'
+        '먼저 설치가 되어있는지 확인해 주세요. 설치되어 있지 않다면, 브라우저 설정에서 설치를 진행해 주세요.'
       );
     }
   };
