@@ -1,0 +1,14 @@
+@import 'module';
+
+.container {
+  display: flex;
+  position: fixed;
+  right: 16px;
+  bottom: 72px;
+  gap: 8px;
+
+  @include mobile {
+    right: 26px;
+    bottom: 26px;
+  }
+}

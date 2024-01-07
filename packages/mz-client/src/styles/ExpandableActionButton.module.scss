@@ -1,0 +1,38 @@
+@import 'var';
+
+.container {
+  border-radius: 100px;
+  background-color: white;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 15%);
+  padding: 16px;
+  cursor: pointer;
+
+  svg {
+    display: block;
+    color: $gray4;
+  }
+
+  &:hover {
+    background-color: white;
+
+    svg {
+      color: $primary;
+    }
+  }
+
+  &.dark_mode {
+    background-color: rgb(41 42 45);
+
+    svg {
+      color: rgb(221 227 243);
+    }
+
+    &:hover {
+      background-color: white;
+
+      svg {
+        color: $primary;
+      }
+    }
+  }
+}

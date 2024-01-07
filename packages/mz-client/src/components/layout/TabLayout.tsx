@@ -4,11 +4,11 @@ import React, { useRef } from 'react';
 import FullHeightPage from '@/components/system/FullHeightPage';
 import MobileHeader from '@/components/base/MobileHeader';
 import Footer from '@/components/base/Footer';
+import FloatingActionButtonGroup from '@/components/system/FloatingActionButtonGroup';
 import styles from '@/styles/TabLayout.module.scss';
 import DesktopHeader from '../base/DesktopHeader';
 import { cn } from '@/utils/common';
 import { useTabScrollTop } from '@/context/TabScrollTopContext';
-import ThemeToggleButton from '../system/ThemeToggleButton';
 
 interface Props {
   className?: string;
@@ -35,7 +35,7 @@ const TabLayout = ({ className, children, header }: Props) => {
       >
         {children}
       </main>
-      <ThemeToggleButton />
+      <FloatingActionButtonGroup />
       <Footer />
     </FullHeightPage>
   );

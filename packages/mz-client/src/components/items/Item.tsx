@@ -6,6 +6,8 @@ import styles from '@/styles/Item.module.scss';
 import ItemViewer from '@/components/items/ItemViewer';
 import CommentList from '@/components/items/CommentList';
 import MoreVertButton from '@/components/base/MoreVertButton';
+import Loading from '@/components/system/PostLoading';
+import FloatingActionButtonGroup from '@/components/system/FloatingActionButtonGroup';
 import { useCommentsQuery } from '@/hooks/query/useCommentsQuery';
 import { useItemQuery } from '@/hooks/query/useItemQuery';
 import { useUser } from '@/context/UserContext';
@@ -13,14 +15,12 @@ import { useDialog } from '@/context/DialogContext';
 import { useBottomSheetModalStore } from '@/hooks/stores/useBottomSheetModalStore';
 import { useRouter } from 'next/navigation';
 import type { Item } from '@/types/db';
-import Loading from '@/components/system/PostLoading';
 import { isTablet } from '@/lib/isMobile';
 import { useMemo } from 'react';
 import { extractNextError } from '@/lib/nextError';
 import { refreshToken } from '@/lib/api/auth';
 import { setClientCookie } from '@/lib/client';
 import { useOpenLoginDialog } from '@/hooks/useOpenLoginDialog';
-import ThemeToggleButton from '../system/ThemeToggleButton';
 import dynamic from 'next/dynamic';
 
 type Props = {
@@ -118,7 +118,7 @@ export default function Item({ item }: Props) {
           comments && <CommentList comments={comments} />
         )}
       </div>
-      <ThemeToggleButton />
+      <FloatingActionButtonGroup />
       <CommentInputOverlay />
     </BasicLayout>
   );
