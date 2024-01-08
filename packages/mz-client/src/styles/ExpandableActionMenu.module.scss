@@ -15,9 +15,14 @@
 .menu_item {
   border-radius: 100px;
   background: white;
-  padding: 16px;
   box-shadow: 0 2px 6px rgb(0 0 0 / 15%);
-  cursor: pointer;
+
+  a,
+  button {
+    cursor: pointer;
+    display: block;
+    padding: 16px;
+  }
 
   svg {
     display: block;

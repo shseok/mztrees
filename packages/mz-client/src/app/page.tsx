@@ -1,5 +1,4 @@
 import Home from '@/components/home/Home';
-import Announcements from '@/components/system/Announcements';
 import { getItems } from '@/lib/api/items';
 import { siteConfig } from '@/lib/const';
 import { HomeProps } from '@/types/custom';
@@ -43,7 +42,6 @@ export default async function Hydation() {
   return (
     <Hydrate state={dehydratedState}>
       <Home />
-      <Announcements />
     </Hydrate>
   );
 }

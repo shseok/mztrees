@@ -11,6 +11,7 @@ import {
   loadFeature,
 } from '@/utils/dynamic';
 import { cn } from '@/utils/common';
+import Link from 'next/link';
 
 interface Props {
   visible: boolean;
@@ -88,14 +89,18 @@ export default function ExpandableActionMenu({ visible, close }: Props) {
           >
             <ul role='menu'>
               <li role='menuitem' className={menuItemClassName}>
-                <Announcement />
+                <Link href='/notice'>
+                  <Announcement />
+                </Link>
               </li>
-              <li
-                role='menuitem'
-                className={menuItemClassName}
-                onClick={openPwaInstallDialog}
-              >
-                <Download />
+              <li role='menuitem' className={menuItemClassName}>
+                <button
+                  type='button'
+                  onClick={openPwaInstallDialog}
+                  aria-label='앱 설치'
+                >
+                  <Download />
+                </button>
               </li>
             </ul>
           </MotionDiv>
