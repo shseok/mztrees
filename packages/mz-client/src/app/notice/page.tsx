@@ -2,8 +2,15 @@ import React, { Suspense } from 'react';
 import styles from '@/styles/Notice.module.scss';
 import BasicLayout from '@/components/layout/BasicLayout';
 import Loading from '@/components/system/PostLoading';
-import { Github, Gmail, Logo } from '@/components/vectors';
+import { Discord, Github, Gmail, Logo } from '@/components/vectors';
 import Link from 'next/link';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: '공지사항',
+  description: 'Mztrees 공지사항',
+  robots: 'noindex',
+};
 
 export default function Notice() {
   return (
@@ -33,24 +40,35 @@ export default function Notice() {
               </li>
               <li>
                 &bull; 원하는 게시물에 태그가 없고, <span>태그를 추가</span>하고
-                싶다면 아래 아이콘을 클릭하여 요청해주세요.
+                싶다면 아래 <span>아이콘</span>을 클릭하여 요청해주세요.
               </li>
               <li>
-                &bull; 또한, 프로젝트에 기여를 원하신다면 <span>Gmail</span>{' '}
-                혹은 <span>Github Discussions</span>을 이용해주세요.
+                &bull; 프로젝트에 참여하고 싶으신 경우 <span>Gmail</span> 혹은{' '}
+                <span>Github Discussions</span>을 통해 언제든지 기여해주시면
+                감사하겠습니다. 여러분의 모든 아이디어를 환영합니다.
               </li>
             </ul>
-            <div className={styles.iconWrapper}>
-              <Link href='mailto:shseok0674@gmail.com'>
-                <Gmail />
-              </Link>
-              <Link
-                href='https://github.com/shseok/mztrees/issues'
-                target='_blank'
-              >
-                <Github />
-              </Link>
-            </div>
+            <ul className={styles.iconWrapper}>
+              <li>
+                <Link href='mailto:shseok0674@gmail.com'>
+                  <Gmail />
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href='https://github.com/shseok/mztrees/issues'
+                  target='_blank'
+                >
+                  <Github />
+                </Link>
+              </li>
+              <li>
+                <Link href='https://discord.gg/x64HebAK' target='_blank'>
+                  <Discord />
+                </Link>
+              </li>
+            </ul>
+            <p className={styles.bottom}>대표 이메일: shseok0674@gmail.com</p>
           </section>
         </article>
       </Suspense>

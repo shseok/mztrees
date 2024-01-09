@@ -24,7 +24,7 @@
 }
 
 .content {
-  height: 100%;
+  height: calc(100% - 65px);
   background: rgb(248 249 250);
   padding: 16px 20px;
   display: flex;
@@ -34,16 +34,28 @@
 }
 
 .title {
+  display: none;
   font-size: 24px;
+  margin: 0;
+  margin-top: 24px;
   color: $gray5;
   font-weight: 600;
+
+  @include mobile {
+    display: block;
+  }
 }
 
 .body {
+  margin-top: 66px;
   display: flex;
   flex-direction: column;
   gap: 4px;
   list-style: none;
+
+  @include mobile {
+    margin-top: 24px;
+  }
 
   li {
     color: $gray4;
@@ -58,14 +70,20 @@
 
 .iconWrapper {
   display: flex;
-  align-items: center;
   gap: 8px;
   font-size: 30px;
   margin-top: 91px;
+  list-style: none;
 }
 
 .iconWrapper svg {
   cursor: pointer;
-  height: 28px;
-  width: 28px;
+  height: 30px;
+  width: 30px;
+}
+
+.bottom {
+  font-size: 14px;
+  font-weight: 500;
+  color: $gray3;
 }

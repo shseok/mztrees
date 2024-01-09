@@ -30,3 +30,4 @@ export { default as Github } from '../../../public/assets/github.svg';
 export { default as Gmail } from '../../../public/assets/gmail.svg';
 export { default as Announcement } from '../../../public/assets/announcement.svg';
 export { default as Download } from '../../../public/assets/download.svg';
+export { default as Discord } from '../../../public/assets/discord.svg';
