@@ -10,13 +10,16 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   openAnalyzer: false, // 브라우저에 자동으로 분석결과를 새 탭으로 Open하는 것을 방지
 });
 
-const runtimeCaching = require('next-pwa/cache');
-const withPWA = require('next-pwa')({
+const withPWA = require('@ducanh2912/next-pwa').default({
   dest: 'public',
   disable: !prod,
-  runtimeCaching,
+  cacheOnFrontEndNav: true,
+  aggressiveFrontEndNavCaching: true,
+  swcMinify: true,
   reloadOnOnline: true,
-  register: true,
+  workboxOptions: {
+    disableDevLogs: true,
+  },
 });
 
 const nextConfig = {

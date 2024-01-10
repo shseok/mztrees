@@ -42,3 +42,4 @@ next-env.d.ts
 **/public/workbox-*.map
 **/public/sw*.map
 **/public/worker-*.map
+**/public/swe-*.js
