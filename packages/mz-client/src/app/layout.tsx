@@ -31,7 +31,6 @@ export const metadata: Metadata = {
     icon: [siteConfig.root.iconUrl.favicon],
     apple: [siteConfig.root.iconUrl.appleTouchIcon],
   },
-  manifest: siteConfig.root.manifestUrl,
 };
 
 export const viewport: Viewport = {

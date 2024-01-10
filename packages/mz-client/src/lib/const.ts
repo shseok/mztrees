@@ -46,7 +46,6 @@ export const siteConfig = {
       favicon: '/favicon/favicon.ico',
       appleTouchIcon: '/favicon/apple-touch-icon.png',
     },
-    manifestUrl: '/favicon/site.webmanifest',
   },
   mode: function (searchParams: HomeProps['searchParams']) {
     const { mode } = searchParams;
