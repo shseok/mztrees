@@ -110,7 +110,7 @@ export default function Home() {
           // TODO: define error type
           <ErrorShower error={error as Error} reset={reset} />
         ) : items ? (
-          <LinkCardList items={items} /> // TODO: 과연 items를 여기서 넘겨주는게 맞는건가? 아니면 LinkCardList에서 직접 쿼리를 날려서 가져오는게 맞는건가? chatgpt에게 물어보기
+          <LinkCardList items={items} listMode={mode} /> // TODO: 과연 items를 여기서 넘겨주는게 맞는건가? 아니면 LinkCardList에서 직접 쿼리를 날려서 가져오는게 맞는건가? chatgpt에게 물어보기
         ) : null}
         <div ref={observerTargetEl} />
       </div>

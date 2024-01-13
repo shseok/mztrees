@@ -18,18 +18,18 @@
     font-size: 14px;
     margin-bottom: 4px;
 
-    img,
-    svg {
-      display: block;
-      margin-right: 8px;
-      width: 16px;
-      height: 16px;
-    }
-
     .favicon {
       width: 16px;
       height: 16px;
       position: relative;
+      margin-right: 8px;
+    }
+
+    img,
+    svg {
+      display: block;
+      width: 16px;
+      height: 16px;
     }
   }
 
