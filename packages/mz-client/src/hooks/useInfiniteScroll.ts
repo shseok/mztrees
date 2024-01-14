@@ -18,7 +18,7 @@ export const useInfiniteScroll = (
         // });
       },
       {
-        rootMargin: '200px',
+        rootMargin: '300px',
         threshold: 1.0,
       }
     );

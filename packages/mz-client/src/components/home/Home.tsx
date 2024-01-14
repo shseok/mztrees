@@ -26,6 +26,8 @@ import EmptyList from '../system/EmptyList';
 import TabLayout from '../layout/TabLayout';
 import TagSelector from './TagSelector';
 import ErrorShower from '@/app/error';
+import LoadingIndicator from '../system/LoadingIndicator';
+import { colors } from '@/lib/colors';
 
 export default function Home() {
   const observerTargetEl = useRef<HTMLDivElement>(null);
@@ -50,6 +52,7 @@ export default function Home() {
     error,
     fetchNextPage,
     hasNextPage,
+    isFetchingNextPage,
   } = useInfiniteQuery<GetItemsResult, Error, GetItemsResult, QueryKey>(
     ['Items', mode, tag, mode === 'past' ? dateRange : undefined].filter(
       (item) => !!item
@@ -94,6 +97,7 @@ export default function Home() {
   }, [startDate, endDate, defaultDateRange, mode]);
 
   const items = infiniteData?.pages.flatMap((page) => page.list);
+
   return (
     <TabLayout className='layout_padding'>
       <div className={styles.content}>
@@ -110,9 +114,13 @@ export default function Home() {
           // TODO: define error type
           <ErrorShower error={error as Error} reset={reset} />
         ) : items ? (
-          <LinkCardList items={items} listMode={mode} /> // TODO: 과연 items를 여기서 넘겨주는게 맞는건가? 아니면 LinkCardList에서 직접 쿼리를 날려서 가져오는게 맞는건가? chatgpt에게 물어보기
+          <LinkCardList items={items} /> // TODO: 과연 items를 여기서 넘겨주는게 맞는건가? 아니면 LinkCardList에서 직접 쿼리를 날려서 가져오는게 맞는건가? chatgpt에게 물어보기
         ) : null}
-        <div ref={observerTargetEl} />
+        <div className={styles.loadMore} ref={observerTargetEl}>
+          {isFetchingNextPage ? (
+            <LoadingIndicator color={colors.primary} />
+          ) : null}
+        </div>
       </div>
       {items?.length === 0 ? <EmptyList /> : null}
     </TabLayout>
