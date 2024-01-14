@@ -620,7 +620,7 @@ const itemService = {
       mode: 'recent',
     },
   ) {
-    const _limit = limit ?? 20
+    const _limit = limit ?? 9
 
     const { totalCount, endCursor, hasNextPage, list } = await (() => {
       if (mode === 'recent') {

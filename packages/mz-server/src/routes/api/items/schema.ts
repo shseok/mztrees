@@ -138,6 +138,7 @@ export const ItemRouteSchema = createRouteSchema({
       tag: Type.Optional(Type.String()),
       startDate: Type.Optional(Type.String()),
       endDate: Type.Optional(Type.String()),
+      limit: Type.Optional(Type.Integer()),
     }),
     response: {
       200: PaginationSchema(ItemSchema),
