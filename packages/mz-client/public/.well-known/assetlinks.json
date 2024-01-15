@@ -3,9 +3,9 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "com.mztrees.www.twa",
+      "package_name": "com.mztrees.twa",
       "sha256_cert_fingerprints": [
-        "97:97:BC:9D:F1:50:B8:2E:7A:BA:2B:41:43:34:A0:13:3B:CE:12:7F:90:44:57:4B:9C:2D:AC:9E:75:70:B1:4B"
+        "0B:00:2F:9F:E9:40:71:E8:22:79:FF:71:76:C5:2A:B5:7A:99:1D:9C:48:F5:A2:C8:8E:58:D9:D6:B0:77:28:83"
       ]
     }
   }
