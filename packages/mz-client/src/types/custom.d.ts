@@ -96,3 +96,5 @@ export interface User {
 export type HomeProps = {
   searchParams: { [key: string]: string | undefined };
 };
+
+export type CommentMutationProps = () => void;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Overlay from '../system/Overlay';
 import { shallow } from 'zustand/shallow';
 import { useCommentInputStore } from '@/hooks/stores/useCommentInputStore';
@@ -30,21 +30,22 @@ const CommentInputOverlay = () => {
   const [text, setText] = useState('');
   const itemId = useItemId();
   const buttonText = commentId ? '수정' : '등록';
-  const { open } = useDialog();
-  const { write, isWriteLoading } = useCreateCommentMutation();
-  const { edit, isEditLoading } = useEditCommentMutation();
+  const resetText = () => setText('');
+  const { open: openDialog } = useDialog();
+  const { writeComment, isWriteLoading } = useCreateCommentMutation(resetText);
+  const { editComment, isEditLoading } = useEditCommentMutation(resetText);
 
   const onClick = () => {
     if (!itemId) return;
     if (text.length === 0) {
-      open({
+      openDialog({
         title: '오류',
         description: '댓글을 입력하지 않으셨습니다.',
       });
       return;
     }
     if (commentId) {
-      edit({
+      editComment({
         itemId,
         commentId,
         text,
@@ -52,19 +53,12 @@ const CommentInputOverlay = () => {
       return;
     }
 
-    write({
+    writeComment({
       itemId,
       text,
       parentCommentId: parentCommentId ?? undefined,
     });
   };
-
-  useEffect(() => {
-    if (visible) {
-      setText('');
-    }
-  }, [visible]);
-
   const isLoading = isWriteLoading || isEditLoading;
   const defaultTextValue = text || defaultText;
   return (

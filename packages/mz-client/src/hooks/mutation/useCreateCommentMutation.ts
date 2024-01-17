@@ -11,8 +11,9 @@ import { extractNextError } from '@/lib/nextError';
 import { refreshToken } from '@/lib/api/auth';
 import { setClientCookie } from '@/lib/client';
 import { useDialog } from '@/context/DialogContext';
+import type { CommentMutationProps } from '@/types/custom';
 
-export function useCreateCommentMutation() {
+export function useCreateCommentMutation(resetText: CommentMutationProps) {
   const itemId = useItemId();
   const queryClient = useQueryClient();
   const openLoginDialog = useOpenLoginDialog();
@@ -37,13 +38,15 @@ export function useCreateCommentMutation() {
     commentElement.focus();
   };
 
-  const { mutate: write, isLoading: isWriteLoading } = useMutation(
+  const { mutate: writeComment, isLoading: isWriteLoading } = useMutation(
     createComment,
     {
       onSuccess: (data) => {
-        // TODO: do something with data
         if (!itemId) return;
+        resetText();
         const queryKey = useCommentsQuery.extractKey(itemId);
+        // 낙관적 업데이트: comments의 로컬 캐시 데이터를 업데이트
+        // queryClient.invalidateQueries(queryKey); 대체
         queryClient.setQueryData(
           queryKey,
           (prevComments: Comment[] | undefined) => {
@@ -66,9 +69,8 @@ export function useCreateCommentMutation() {
             }
           }
         );
-        // queryClient.invalidateQueries(queryKey);
+        // 위 코드 실행 블록이 완료된 다음에 호출되며, 이는 대개 현재의 이벤트 루프 주기가 종료된 후에 발생
         setTimeout(() => {
-          // 현재 코드 실행 블록이 완료된 다음에 호출되며, 이는 대개 현재의 이벤트 루프 주기가 종료된 후에 발생
           scrollToCommentId(data.id);
         }, 0);
         close();
@@ -80,13 +82,13 @@ export function useCreateCommentMutation() {
             const tokens = await refreshToken();
             setClientCookie(`access_token=${tokens.accessToken}`);
             const { itemId, text, parentCommentId } = variables;
-            write({
+            writeComment({
               itemId,
               text,
               parentCommentId: parentCommentId ?? undefined,
             });
           } catch (innerError) {
-            // expire refresh
+            // refresh token이 만료되었을 때
             openLoginDialog('sessionOut');
           }
         } else {
@@ -100,5 +102,5 @@ export function useCreateCommentMutation() {
     }
   );
 
-  return { write, isWriteLoading };
+  return { writeComment, isWriteLoading };
 }

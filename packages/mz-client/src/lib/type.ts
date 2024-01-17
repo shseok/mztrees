@@ -1,4 +1,4 @@
-import { UseQueryOptions, UseMutationOptions } from '@tanstack/react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 
 export type FunctionResolve<T extends (...args: any) => any> = Awaited<
   ReturnType<T>
