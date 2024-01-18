@@ -4,8 +4,7 @@ import React, { useRef, useState } from 'react';
 import Input from '../system/Input';
 import Button from '../system/Button';
 import { useDialog } from '@/context/DialogContext';
-import { useMutation } from '@tanstack/react-query';
-import { changePassword, unregister } from '@/lib/api/me';
+import { unregister } from '@/lib/api/me';
 import { extractNextError } from '@/lib/nextError';
 import styles from '@/styles/AccountSetting.module.scss';
 import { useUser } from '@/context/UserContext';
@@ -14,6 +13,7 @@ import { cn } from '@/utils/common';
 import { refreshToken } from '@/lib/api/auth';
 import { setClientCookie } from '@/lib/client';
 import { useOpenLoginDialog } from '@/hooks/useOpenLoginDialog';
+import { useChangePasswordMutation } from '@/hooks/mutation/useChangePasswordMutation';
 
 const AccountSetting = () => {
   const { currentUser } = useUser();
@@ -31,58 +31,15 @@ const AccountSetting = () => {
       newPassword: '',
     });
   };
+  const onConfirm = () => {
+    oldPasswordInputRef.current?.focus();
+    setForm((prev) => ({ ...prev, oldPassword: '' }));
+  };
   const { open } = useDialog();
   const { mode: themeMode } = useTheme();
 
   // 실패할 일이 있기때문에 mutation 사용
-  const { mutate: mutateChangePassword } = useMutation(changePassword, {
-    onSuccess: () => {
-      reset();
-      open({
-        title: '비밀번호 변경',
-        description: '비밀번호 변경이 완료되었습니다.',
-        mode: 'alert',
-      });
-    },
-    onError: async (error, variables) => {
-      const extractedError = extractNextError(error);
-      if (extractedError.name === 'Forbidden') {
-        open({
-          title: '비밀번호 불일치',
-          description:
-            '비밀번호가 일치하지 않습니다.. 현재 비밀번호를 다시 입력해주세요.',
-          mode: 'alert',
-          onConfirm() {
-            oldPasswordInputRef.current?.focus();
-            setForm((prev) => ({ ...prev, oldPassword: '' }));
-          },
-        });
-      } else if (extractedError.name === 'BadRequest') {
-        open({
-          title: '비밀번호 변경 실패',
-          description: '8~20자, 영문/숫자/특수문자 1가지 이상 입력해주세요.',
-          mode: 'alert',
-          onConfirm() {
-            newPasswordInputRef.current?.focus();
-            setForm((prev) => ({ ...prev, newPassword: '' }));
-          },
-        });
-      } else if (
-        extractedError.name === 'Unauthorized' &&
-        extractedError.payload?.isExpiredToken
-      ) {
-        try {
-          const tokens = await refreshToken();
-          setClientCookie(`access_token=${tokens.accessToken}`);
-          const { newPassword, oldPassword } = variables;
-          mutateChangePassword({ newPassword, oldPassword });
-        } catch (innerError) {
-          // expire refresh
-          openLoginDialog('sessionOut');
-        }
-      }
-    },
-  });
+  const mutateChangePassword = useChangePasswordMutation(reset, onConfirm);
 
   // 실패할 일이 없는 탈퇴는 mutation 사용 x
   const askUnregister = () => {

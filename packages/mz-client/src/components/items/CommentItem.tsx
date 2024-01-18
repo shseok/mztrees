@@ -19,9 +19,6 @@ import { isTablet } from '@/lib/isMobile';
 import PopperMenu from '../system/PopperMenu';
 import ModifyComment from './ModifyComment';
 import { useDialog } from '@/context/DialogContext';
-import { extractNextError } from '@/lib/nextError';
-import { refreshToken } from '@/lib/api/auth';
-import { setClientCookie } from '@/lib/client';
 import { useDeleteCommentMutation } from '@/hooks/mutation/useDeleteCommentMutations';
 
 /**@todo isSubcomment 굳이 필요한가에 대한 고민 */
@@ -51,7 +48,7 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
 
   const likes = commentLike?.likes ?? comment.likes;
   const isLiked = commentLike?.isLiked ?? comment.isLiked;
-  const deleteComment = useDeleteCommentMutation();
+  const deleteComment = useDeleteCommentMutation(comment.id);
   const [isReplying, setIsReplying] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const replyRef = useRef<HTMLInputElement>(null);
@@ -81,28 +78,9 @@ const CommentItem = ({ comment, isSubcomment }: Props) => {
             title: '댓글 삭제',
             description: '댓글을 완전히 삭제합니다. 정말 삭제하시겠습니까?',
             mode: 'confirm',
-            onConfirm: async () => {
-              try {
-                await deleteComment(comment.id);
-              } catch (e) {
-                const error = extractNextError(e);
-                if (
-                  error.name === 'Unauthorized' &&
-                  error.payload?.isExpiredToken
-                ) {
-                  try {
-                    const tokens = await refreshToken();
-                    setClientCookie(`access_token=${tokens.accessToken}`);
-
-                    await deleteComment(comment.id);
-                  } catch (innerError) {
-                    // expire refresh
-                    openLoginDialog('sessionOut');
-                  }
-                }
-                console.log(error);
-              }
-              // TODO: Add Spinner & Toast
+            onConfirm: () => {
+              if (!itemId) return;
+              deleteComment({ itemId, commentId: comment.id });
             },
             confirmText: '삭제',
             cancelText: '취소',

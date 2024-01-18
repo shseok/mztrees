@@ -97,4 +97,4 @@ export type HomeProps = {
   searchParams: { [key: string]: string | undefined };
 };
 
-export type CommentMutationProps = () => void;
+export type MutationProps = () => void;

@@ -9,9 +9,12 @@ import { useCommentInputStore } from '../stores/useCommentInputStore';
 import { shallow } from 'zustand/shallow';
 import { useOpenLoginDialog } from '../useOpenLoginDialog';
 import { useDialog } from '@/context/DialogContext';
-import type { CommentMutationProps } from '@/types/custom';
+import type { MutationProps } from '@/types/custom';
+import type { Comment } from '@/types/db';
+import { produce } from 'immer';
+import { useCallback } from 'react';
 
-export function useEditCommentMutation(resetText: CommentMutationProps) {
+export function useEditCommentMutation(resetText: MutationProps) {
   const itemId = useItemId();
   const queryClient = useQueryClient();
   const openLoginDialog = useOpenLoginDialog();
@@ -26,20 +29,50 @@ export function useEditCommentMutation(resetText: CommentMutationProps) {
   const { mutate: editComment, isLoading: isEditLoading } = useMutation(
     modifyComment,
     {
-      onSuccess: () => {
-        if (!itemId) return;
-        resetText();
-        // TODO: useCreateCommentMutation처럼 낙관적 업데이트 적용
-        queryClient.invalidateQueries(useCommentsQuery.extractKey(itemId));
-        close();
-      },
+      onSuccess: useCallback(
+        (data: Comment) => {
+          if (!itemId) return;
+          resetText();
+          // 낙관적 업데이트: comments의 로컬 캐시 데이터 업데이트
+          const queryKey = useCommentsQuery.extractKey(itemId);
+          queryClient.setQueryData(
+            queryKey,
+            (prevComments: Comment[] | undefined) => {
+              if (!prevComments) return;
+              return produce(prevComments, (draft) => {
+                const rootComment = draft.find(
+                  (comment) => comment.id === data.id
+                );
+                if (rootComment) {
+                  rootComment.text = data.text;
+                } else {
+                  // childComment
+                  draft.forEach((comment) => {
+                    if (comment.subcomments) {
+                      const childComment = comment.subcomments.find(
+                        (subcomment) => subcomment.id === data.id
+                      );
+                      if (childComment) {
+                        childComment.text = data.text;
+                      }
+                    }
+                  });
+                }
+              });
+            }
+          );
+          // queryClient.invalidateQueries(useCommentsQuery.extractKey(itemId)); // 위 내용과 달리 캐시를 지우고 다시 요청
+          close();
+        },
+        [itemId, queryClient]
+      ),
       onError: async (e, variables) => {
         const error = extractNextError(e);
         if (error.name === 'Unauthorized' && error.payload?.isExpiredToken) {
           try {
             const tokens = await refreshToken();
-            setClientCookie(`access_token=${tokens.accessToken}`);
             const { itemId, commentId, text } = variables;
+            setClientCookie(`access_token=${tokens.accessToken}`);
             editComment({
               itemId,
               commentId,
