@@ -14,15 +14,17 @@ import { useDialog } from '@/context/DialogContext';
 import type { MutationProps } from '@/types/custom';
 import { useCallback } from 'react';
 
-export function useCreateCommentMutation(resetText: MutationProps) {
+export function useCreateCommentMutation(
+  resetText: MutationProps,
+  parentCommentId?: number | null
+) {
   const itemId = useItemId();
   const queryClient = useQueryClient();
   const openLoginDialog = useOpenLoginDialog();
   const { open: openCommonDialog } = useDialog();
-  const { close, parentCommentId } = useCommentInputStore(
-    ({ close, parentCommentId }) => ({
+  const { close } = useCommentInputStore(
+    ({ close }) => ({
       close,
-      parentCommentId,
     }),
     shallow
   );
@@ -63,11 +65,7 @@ export function useCreateCommentMutation(resetText: MutationProps) {
                           (subcomment) => subcomment.id === parentCommentId
                         )
                     ); // 다음 subcomments에서 발견
-                  if (!rootComment) return;
-                  if (!rootComment.subcomments) {
-                    rootComment.subcomments = [];
-                  }
-                  rootComment.subcomments.unshift(data);
+                  rootComment?.subcomments?.push(data);
                 });
               } else {
                 return [...prevComments, data];

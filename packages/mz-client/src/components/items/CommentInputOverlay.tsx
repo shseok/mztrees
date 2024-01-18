@@ -32,7 +32,10 @@ const CommentInputOverlay = () => {
   const buttonText = commentId ? '수정' : '등록';
   const resetText = () => setText('');
   const { open: openDialog } = useDialog();
-  const { writeComment, isWriteLoading } = useCreateCommentMutation(resetText);
+  const { writeComment, isWriteLoading } = useCreateCommentMutation(
+    resetText,
+    parentCommentId
+  );
   const { editComment, isEditLoading } = useEditCommentMutation(resetText);
 
   const onClick = () => {

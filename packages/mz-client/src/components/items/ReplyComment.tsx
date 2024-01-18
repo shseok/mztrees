@@ -13,7 +13,10 @@ const ReplyComment = ({ parentCommentId, onClose, inputRef }: Props) => {
   const itemId = useItemId();
   const [text, setText] = useState('');
   const resetText = () => setText('');
-  const { writeComment, isWriteLoading } = useCreateCommentMutation(resetText);
+  const { writeComment, isWriteLoading } = useCreateCommentMutation(
+    resetText,
+    parentCommentId
+  );
 
   const onClickWrite = () => {
     if (!itemId) return;
