@@ -63,7 +63,11 @@ export function useCreateCommentMutation(resetText: MutationProps) {
                           (subcomment) => subcomment.id === parentCommentId
                         )
                     ); // 다음 subcomments에서 발견
-                  rootComment?.subcomments?.push(data);
+                  if (!rootComment) return;
+                  if (!rootComment.subcomments) {
+                    rootComment.subcomments = [];
+                  }
+                  rootComment.subcomments.unshift(data);
                 });
               } else {
                 return [...prevComments, data];
