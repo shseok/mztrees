@@ -35,32 +35,24 @@ const variants = {
 };
 
 const LinkCard = ({ item }: Props) => {
-  const {
-    id,
-    thumbnail,
-    title,
-    body,
-    author,
-    createdAt,
-    user: { username },
-    publisher: { favicon, name },
-  } = item;
+  const { id, thumbnail, title, body, author, createdAt, publisher, user } =
+    item;
   const itemOverride = useItemOverrideById(id);
-  const itemStats = itemOverride?.itemStats ?? item.itemStats;
   const dateDistance = useDateDistance(createdAt);
+  const searchParams = useSearchParams();
+  const openLoginDialog = useOpenLoginDialog();
+
+  const itemStats = itemOverride?.itemStats ?? item.itemStats;
+  const likes = itemOverride?.itemStats?.likes ?? itemStats.likes;
+  const isLiked = itemOverride?.isLiked ?? item.isLiked;
+  const isBookmarked = itemOverride?.isBookmarked ?? item.isBookmarked;
+  const commentsCount = itemStats.commentsCount;
+
   const { like, unlike } = useLikeManager();
   const { bookmark, unbookmark } = useBookmarkManager();
-  const searchParams = useSearchParams();
-
-  const isLiked = itemOverride?.isLiked ?? item.isLiked;
-  const likes = itemOverride?.itemStats?.likes ?? itemStats.likes;
-  const commentsCount =
-    itemOverride?.itemStats?.commentsCount ?? itemStats.commentsCount;
-  const isBookmarked = itemOverride?.isBookmarked ?? item.isBookmarked;
-  const openLoginDialog = useOpenLoginDialog();
   const { currentUser } = useUser();
   const { mode } = useTheme();
-  /**TODO: move to hooks */
+
   const toggleLike = () => {
     if (!currentUser) {
       openLoginDialog('itemLike');
@@ -124,12 +116,12 @@ const LinkCard = ({ item }: Props) => {
               />
             </div>
             <div className={styles.publisher}>
-              {favicon ? (
+              {publisher.favicon ? (
                 <figure className={styles.favicon}>
                   <Image
-                    src={favicon}
-                    alt={`${name} 로고 이미지`}
-                    title={name}
+                    src={publisher.favicon}
+                    alt={`${publisher.name} 로고 이미지`}
+                    title={publisher.name}
                     width={16}
                     height={16}
                   />
@@ -138,7 +130,7 @@ const LinkCard = ({ item }: Props) => {
                 <Globe />
               )}
               {author ? `${author} · ` : ''}
-              {name}
+              {publisher.name}
             </div>
             <h3 className={styles.title}>{item.title}</h3>
             <p className={cn(styles.body, roboto.className)}>{body}</p>
@@ -175,7 +167,7 @@ const LinkCard = ({ item }: Props) => {
               />
             </div>
             <p className={styles.user_info}>
-              by <b>{username}</b> · {dateDistance}
+              by <b>{user.username}</b> · {dateDistance}
             </p>
           </div>
         </MotionDiv>

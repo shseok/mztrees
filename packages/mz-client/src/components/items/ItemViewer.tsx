@@ -32,29 +32,23 @@ interface Props {
 }
 
 const ItemViewer = ({ item, isMyItem, items }: Props) => {
-  const {
-    id,
-    thumbnail,
-    title,
-    body,
-    author,
-    createdAt,
-    user: { username },
-    publisher: { favicon, name },
-  } = item;
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const { id, thumbnail, title, body, author, createdAt, user, publisher } =
+    item;
   const itemOverride = useItemOverrideById(id);
-  const itemStats = itemOverride?.itemStats ?? item.itemStats;
   const dateDistance = useDateDistance(createdAt);
+  const openLoginDialog = useOpenLoginDialog();
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+
+  const itemStats = itemOverride?.itemStats ?? item.itemStats;
+  const likes = itemOverride?.itemStats?.likes ?? itemStats.likes;
+  const isLiked = itemOverride?.isLiked ?? item.isLiked;
+  const isBookmarked = itemOverride?.isBookmarked ?? item.isBookmarked;
+
   const { like, unlike } = useLikeManager();
   const { bookmark, unbookmark } = useBookmarkManager();
-  const isLiked = itemOverride?.isLiked ?? item.isLiked;
-  const likes = itemOverride?.itemStats?.likes ?? itemStats.likes;
-  const isBookmarked = itemOverride?.isBookmarked ?? item.isBookmarked;
-  const openLoginDialog = useOpenLoginDialog();
   const { currentUser } = useUser();
   const { mode } = useTheme();
-  /**TODO: move to hooks */
+
   const toggleLike = () => {
     if (!currentUser) {
       openLoginDialog('itemLike');
@@ -110,11 +104,11 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
         <div className={styles.item_head}>
           <div className={styles.item_info}>
             <figure className={styles.publisher}>
-              {favicon ? (
+              {publisher.favicon ? (
                 <Image
-                  src={favicon}
-                  alt={`세부 페이지에서 ${name} 로고 이미지`}
-                  title={`세부 페이지에서 ${name}`}
+                  src={publisher.favicon}
+                  alt={`세부 페이지에서 ${publisher.name} 로고 이미지`}
+                  title={`세부 페이지에서 ${publisher.name}`}
                   width={16}
                   height={16}
                 />
@@ -122,7 +116,7 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
                 <Globe />
               )}
               {author ? `${author} · ` : ''}
-              {name}
+              {publisher.name}
             </figure>
             <h2 className={cn(styles.title)}>
               <Link href={item.link} target='_blank'>
@@ -191,7 +185,7 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
             )}
           </div>
           <p className={cn(styles.user_info)}>
-            by <b>{username}</b> · {dateDistance}
+            by <b>{user.username}</b> · {dateDistance}
           </p>
         </div>
       </div>

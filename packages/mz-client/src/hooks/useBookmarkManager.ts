@@ -23,16 +23,15 @@ export const useBookmarkManager = () => {
         });
         abortControllers.set(itemId, controller);
         await createBookmark(itemId, controller);
-        abortControllers.delete(itemId);
       } catch (e) {
         const error = extractNextError(e);
+        const errorName = e instanceof Error && e.name;
+        if (errorName === 'AbortError') return;
         if (error.name === 'Unauthorized' && error.payload?.isExpiredToken) {
           try {
             const tokens = await refreshToken();
             setClientCookie(`access_token=${tokens.accessToken}`);
-
             await createBookmark(itemId, controller);
-            abortControllers.delete(itemId);
             // for latest server state update
             set(itemId, {
               isBookmarked: true,
@@ -49,7 +48,9 @@ export const useBookmarkManager = () => {
           });
         }
         // TODO: fail api -> handle error (rollback state)
-        console.log(extractNextError(e));
+        console.log('bookmark error', extractNextError(e));
+      } finally {
+        abortControllers.delete(itemId);
       }
     },
     [set, abortControllers, openLoginDialog]
@@ -66,16 +67,16 @@ export const useBookmarkManager = () => {
         });
         abortControllers.set(itemId, controller);
         await deleteBookmark(itemId, controller);
-        abortControllers.delete(itemId);
       } catch (e) {
         const error = extractNextError(e);
+        const errorName = e instanceof Error && e.name;
+        if (errorName === 'AbortError') return;
         if (error.name === 'Unauthorized' && error.payload?.isExpiredToken) {
           try {
             const tokens = await refreshToken();
             setClientCookie(`access_token=${tokens.accessToken}`);
 
             await deleteBookmark(itemId, controller);
-            abortControllers.delete(itemId);
             // for latest server state update
             set(itemId, {
               isBookmarked: false,
@@ -92,7 +93,9 @@ export const useBookmarkManager = () => {
           });
         }
         // TODO: fail api -> handle error (rollback state)
-        console.log(extractNextError(e));
+        console.log('unbookmark error', extractNextError(e));
+      } finally {
+        abortControllers.delete(itemId);
       }
     },
     [set, abortControllers, openLoginDialog]
