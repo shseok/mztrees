@@ -13,6 +13,7 @@ import type { MutationProps } from '@/types/custom';
 import type { Comment } from '@/types/db';
 import { produce } from 'immer';
 import { useCallback } from 'react';
+import { isTablet } from '@/lib/isMobile';
 
 export function useEditCommentMutation(resetText: MutationProps) {
   const itemId = useItemId();
@@ -25,6 +26,7 @@ export function useEditCommentMutation(resetText: MutationProps) {
     }),
     shallow
   );
+  const isTabletWidth = isTablet();
 
   const { mutate: editComment, isLoading: isEditLoading } = useMutation(
     modifyComment,
@@ -33,7 +35,7 @@ export function useEditCommentMutation(resetText: MutationProps) {
         (data: Comment) => {
           if (!itemId) return;
           resetText();
-          // 낙관적 업데이트: comments의 로컬 캐시 데이터 업데이트
+          // comments의 로컬 캐시 데이터 업데이트
           const queryKey = useCommentsQuery.extractKey(itemId);
           queryClient.setQueryData(
             queryKey,
@@ -61,8 +63,12 @@ export function useEditCommentMutation(resetText: MutationProps) {
               });
             }
           );
-          // queryClient.invalidateQueries(useCommentsQuery.extractKey(itemId)); // 위 내용과 달리 캐시를 지우고 다시 요청
-          close();
+          // 위 내용과 달리 캐시를 지우고 다시 요청
+          // queryClient.invalidateQueries(useCommentsQuery.extractKey(itemId));
+          // 태블릿보다 작은 화면이라면 댓글 모달창을 닫는다.
+          if (isTabletWidth) {
+            close();
+          }
         },
         [itemId, queryClient]
       ),

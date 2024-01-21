@@ -21,6 +21,7 @@ export function useDeleteCommentMutation(commentId: number) {
     onSuccess: useCallback(() => {
       if (!itemId) return;
       const queryKey = useCommentsQuery.extractKey(itemId);
+      // comments의 로컬 캐시 데이터 업데이트
       queryClient.setQueryData(
         queryKey,
         (prevComments: Comment[] | undefined) => {

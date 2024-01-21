@@ -13,6 +13,7 @@ import { setClientCookie } from '@/lib/client';
 import { useDialog } from '@/context/DialogContext';
 import type { MutationProps } from '@/types/custom';
 import { useCallback } from 'react';
+import { isTablet } from '@/lib/isMobile';
 
 export function useCreateCommentMutation(
   resetText: MutationProps,
@@ -28,6 +29,7 @@ export function useCreateCommentMutation(
     }),
     shallow
   );
+  const isTabletWidth = isTablet();
 
   const scrollToCommentId = (commentId: number) => {
     const commentElement = document.body.querySelector<HTMLDivElement>(
@@ -49,35 +51,41 @@ export function useCreateCommentMutation(
           if (!itemId) return;
           resetText();
           const queryKey = useCommentsQuery.extractKey(itemId);
-          // 낙관적 업데이트: comments의 로컬 캐시 데이터 업데이트
+          // comments의 로컬 캐시 데이터 업데이트
           queryClient.setQueryData(
             queryKey,
             (prevComments: Comment[] | undefined) => {
               if (!prevComments) return;
-              if (parentCommentId) {
-                // parentCommentId를 가진 comment에다가 data를 추가시켜줘야한다. > 가장 위에서 부터 존재하면 넣어주기
-                return produce(prevComments, (draft) => {
-                  const rootComment =
-                    draft.find((comment) => comment.id === parentCommentId) ?? // 첫번째에 발견된 0 level comments
-                    draft.find(
-                      (comment) =>
-                        comment.subcomments?.find(
-                          (subcomment) => subcomment.id === parentCommentId
-                        )
-                    ); // 다음 subcomments에서 발견
-                  rootComment?.subcomments?.push(data);
-                });
-              } else {
+              // parentCommentId가 없다면, 즉 0 level comment라면
+              if (parentCommentId === null || parentCommentId === undefined) {
                 return [...prevComments, data];
               }
+
+              // parentCommentId를 가진 comment에다가 data를 추가시켜줘야한다.
+              // 가장 위에서부터 존재하면 넣어주기
+              return produce(prevComments, (draft) => {
+                const rootComment =
+                  draft.find((comment) => comment.id === parentCommentId) ?? // 첫번째에 발견된 0 level comments
+                  draft.find(
+                    (comment) =>
+                      comment.subcomments?.find(
+                        (subcomment) => subcomment.id === parentCommentId
+                      )
+                  ); // 다음 subcomments에서 발견
+                rootComment?.subcomments?.push(data);
+              });
             }
           );
-          // queryClient.invalidateQueries(queryKey); // 위 내용과 달리 캐시를 지우고 다시 요청
+          // 위 내용과 달리 캐시를 지우고 다시 요청
+          // queryClient.invalidateQueries(queryKey);
           // 위 코드 실행 블록이 완료된 다음에 호출되며, 이는 대개 현재의 이벤트 루프 주기가 종료된 후에 발생
           setTimeout(() => {
             scrollToCommentId(data.id);
           }, 0);
-          close();
+          // 태블릿보다 작은 화면이라면 댓글 모달창을 닫는다.
+          if (isTabletWidth) {
+            close();
+          }
         },
         [itemId, queryClient, parentCommentId]
       ),
