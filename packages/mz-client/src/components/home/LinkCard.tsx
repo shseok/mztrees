@@ -2,12 +2,9 @@ import type { Item } from '@/types/db';
 import Image from 'next/image';
 import { Globe } from '@/components/vectors';
 import { useDateDistance } from '@/hooks/useDateDistance';
-import { useLikeManager } from '@/hooks/useLikeManager';
 import LikeButton from '../system/LikeButton';
-import { useItemOverrideById } from '@/hooks/stores/ItemOverrideStore';
 import { useOpenLoginDialog } from '@/hooks/useOpenLoginDialog';
 import BookmarkButton from '../system/BookmarkButton';
-import { useBookmarkManager } from '@/hooks/useBookmarkManager';
 import styles from '@/styles/LinkCard.module.scss';
 import Link from 'next/link';
 import { useUser } from '@/context/UserContext';
@@ -22,6 +19,8 @@ import {
   LazyMotion,
   loadFeature,
 } from '@/utils/dynamic';
+import { useLikeItemMutation } from '@/hooks/mutation/useLikeItemMutation';
+import { useBookmarkItemMutation } from '@/hooks/mutation/useBookmarkItemMutation';
 
 interface Props {
   item: Item;
@@ -35,21 +34,25 @@ const variants = {
 };
 
 const LinkCard = ({ item }: Props) => {
-  const { id, thumbnail, title, body, author, createdAt, publisher, user } =
-    item;
-  const itemOverride = useItemOverrideById(id);
+  const {
+    id,
+    thumbnail,
+    title,
+    body,
+    author,
+    createdAt,
+    publisher,
+    user,
+    itemStats: { likes, commentsCount },
+    isLiked,
+    isBookmarked,
+  } = item;
   const dateDistance = useDateDistance(createdAt);
   const searchParams = useSearchParams();
   const openLoginDialog = useOpenLoginDialog();
 
-  const itemStats = itemOverride?.itemStats ?? item.itemStats;
-  const likes = itemOverride?.itemStats?.likes ?? itemStats.likes;
-  const isLiked = itemOverride?.isLiked ?? item.isLiked;
-  const isBookmarked = itemOverride?.isBookmarked ?? item.isBookmarked;
-  const commentsCount = itemStats.commentsCount;
-
-  const { like, unlike } = useLikeManager();
-  const { bookmark, unbookmark } = useBookmarkManager();
+  const { like, unlike } = useLikeItemMutation();
+  const { bookmark, unbookmark } = useBookmarkItemMutation();
   const { currentUser } = useUser();
   const { mode } = useTheme();
 
@@ -59,9 +62,9 @@ const LinkCard = ({ item }: Props) => {
       return;
     }
     if (isLiked) {
-      unlike(id, itemStats);
+      unlike(id);
     } else {
-      like(id, itemStats);
+      like(id);
     }
   };
 
@@ -105,7 +108,7 @@ const LinkCard = ({ item }: Props) => {
                   thumbnail?.url ??
                   'https://img.mztrees.com/not-fount-image.svg'
                 }
-                alt={`${name} 썸네일 이미지`}
+                alt={`${title} 썸네일 이미지`}
                 title={title}
                 placeholder='blur'
                 blurDataURL={blurDataUrl}

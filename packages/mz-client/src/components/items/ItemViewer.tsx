@@ -2,12 +2,9 @@ import React, { useState } from 'react';
 import type { Item } from '@/types/db';
 import Image from 'next/image';
 import LikeButton from '../system/LikeButton';
-import { useLikeManager } from '@/hooks/useLikeManager';
 import { useOpenLoginDialog } from '@/hooks/useOpenLoginDialog';
-import { useItemOverrideById } from '@/hooks/stores/ItemOverrideStore';
 import { useDateDistance } from '@/hooks/useDateDistance';
 import BookmarkButton from '../system/BookmarkButton';
-import { useBookmarkManager } from '@/hooks/useBookmarkManager';
 import Link from 'next/link';
 import styles from '@/styles/ItemViewer.module.scss';
 import { Globe } from '@/components/vectors';
@@ -19,6 +16,8 @@ import { blurDataUrl } from '@/lib/const';
 import MoreVertButton from '../base/MoreVertButton';
 import PopperMenu, { PopperMenuItem } from '../system/PopperMenu';
 import Button from '../system/Button';
+import { useLikeItemMutation } from '@/hooks/mutation/useLikeItemMutation';
+import { useBookmarkItemMutation } from '@/hooks/mutation/useBookmarkItemMutation';
 import {
   AnimatePresence,
   MotionDiv,
@@ -32,20 +31,25 @@ interface Props {
 }
 
 const ItemViewer = ({ item, isMyItem, items }: Props) => {
-  const { id, thumbnail, title, body, author, createdAt, user, publisher } =
-    item;
-  const itemOverride = useItemOverrideById(id);
+  const {
+    id,
+    thumbnail,
+    title,
+    body,
+    author,
+    createdAt,
+    user,
+    publisher,
+    itemStats: { likes },
+    isLiked,
+    isBookmarked,
+  } = item;
   const dateDistance = useDateDistance(createdAt);
   const openLoginDialog = useOpenLoginDialog();
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
-  const itemStats = itemOverride?.itemStats ?? item.itemStats;
-  const likes = itemOverride?.itemStats?.likes ?? itemStats.likes;
-  const isLiked = itemOverride?.isLiked ?? item.isLiked;
-  const isBookmarked = itemOverride?.isBookmarked ?? item.isBookmarked;
-
-  const { like, unlike } = useLikeManager();
-  const { bookmark, unbookmark } = useBookmarkManager();
+  const { like, unlike } = useLikeItemMutation();
+  const { bookmark, unbookmark } = useBookmarkItemMutation();
   const { currentUser } = useUser();
   const { mode } = useTheme();
 
@@ -55,9 +59,9 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
       return;
     }
     if (isLiked) {
-      unlike(id, itemStats);
+      unlike(id);
     } else {
-      like(id, itemStats);
+      like(id);
     }
   };
 
