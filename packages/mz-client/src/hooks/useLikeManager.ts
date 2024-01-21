@@ -41,6 +41,10 @@ export const useLikeManager = () => {
             // token이 refresh되었을 때, 해당 item을 제외한 다른 item의 오직 isLike만 풀려버리는 문제가 있다.
             // token이 refresh되었으므로, 다시 시도
             await likeItem(itemId, controller);
+            set(itemId, {
+              itemStats: { ...initialStats, likes: initialStats.likes + 1 },
+              isLiked: true,
+            });
             // 성공해도 위에서 이미 set을 해줬으니 필요 x
           } catch (innerError) {
             // refresh token이 만료되었을 때

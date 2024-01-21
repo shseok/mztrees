@@ -1,6 +1,7 @@
-import { produce } from 'immer';
+import { immer } from 'zustand/middleware/immer';
 import { create } from 'zustand';
 import type { ItemStats } from '@/types/db';
+import { devtools } from 'zustand/middleware';
 
 interface OverridableItem {
   isLiked?: boolean;
@@ -9,24 +10,22 @@ interface OverridableItem {
 }
 
 interface ItemOverrideStore {
-  overrides: {
-    [key: number]: OverridableItem | undefined;
-  };
-  set: (itemId: number, overridableItem: OverridableItem) => void;
+  overrides: Record<number, OverridableItem | undefined>;
+  setOverrides: (itemId: number, overridableItem: OverridableItem) => void;
 }
 
-const useItemOverrideStore = create<ItemOverrideStore>((set) => ({
-  overrides: {},
-  set: (itemId, overridableItem) =>
-    set((store) =>
-      produce(store, (draft) => {
-        draft.overrides[itemId] = {
-          ...draft.overrides[itemId],
-          ...overridableItem,
-        };
-      })
-    ),
-}));
+const useItemOverrideStore = create<ItemOverrideStore>()(
+  immer(
+    devtools((set) => ({
+      overrides: {},
+      setOverrides: (itemId, overridableItem) => {
+        set((store) => {
+          store.overrides[itemId] = overridableItem;
+        });
+      },
+    }))
+  )
+);
 
 export const useItemOverrideById = (itemId: number) => {
   const overrides = useItemOverrideStore((store) => store.overrides);
@@ -34,5 +33,5 @@ export const useItemOverrideById = (itemId: number) => {
 };
 
 export const useItemOverrideSetter = () => {
-  return useItemOverrideStore((store) => store.set);
+  return useItemOverrideStore((store) => store.setOverrides);
 };

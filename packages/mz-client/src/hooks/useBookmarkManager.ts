@@ -2,11 +2,11 @@ import { useCallback, useRef } from 'react';
 import { useItemOverrideSetter } from './stores/ItemOverrideStore';
 import { createBookmark, deleteBookmark } from '@/lib/api/bookmark';
 import { useOpenLoginDialog } from './useOpenLoginDialog';
-import { extractNextError } from '@/lib/nextError';
+import { extractNextError, translateNextErrorMessage } from '@/lib/nextError';
 import { refreshToken } from '@/lib/api/auth';
 import { setClientCookie } from '@/lib/client';
+import { toast } from 'sonner';
 
-// TODO: refactor try catch
 export const useBookmarkManager = () => {
   const set = useItemOverrideSetter();
   const abortControllers = useRef(new Map<number, AbortController>()).current;
@@ -17,6 +17,7 @@ export const useBookmarkManager = () => {
       const prevController = abortControllers.get(itemId);
       const controller = new AbortController();
       try {
+        // 만약 이전에 진행중이던 요청이 있다면, 취소
         prevController?.abort();
         set(itemId, {
           isBookmarked: true,
@@ -25,6 +26,7 @@ export const useBookmarkManager = () => {
         await createBookmark(itemId, controller);
       } catch (e) {
         const error = extractNextError(e);
+        const erorrMessage = translateNextErrorMessage(error);
         const errorName = e instanceof Error && e.name;
         if (errorName === 'AbortError') return;
         if (error.name === 'Unauthorized' && error.payload?.isExpiredToken) {
@@ -46,9 +48,8 @@ export const useBookmarkManager = () => {
           set(itemId, {
             isBookmarked: false,
           });
+          toast.error(`북마크 추가 실패: ${erorrMessage}`);
         }
-        // TODO: fail api -> handle error (rollback state)
-        console.log('bookmark error', extractNextError(e));
       } finally {
         abortControllers.delete(itemId);
       }
@@ -61,6 +62,7 @@ export const useBookmarkManager = () => {
       const prevController = abortControllers.get(itemId);
       const controller = new AbortController();
       try {
+        // 만약 이전에 진행중이던 요청이 있다면, 취소
         prevController?.abort();
         set(itemId, {
           isBookmarked: false,
@@ -69,6 +71,7 @@ export const useBookmarkManager = () => {
         await deleteBookmark(itemId, controller);
       } catch (e) {
         const error = extractNextError(e);
+        const erorrMessage = translateNextErrorMessage(error);
         const errorName = e instanceof Error && e.name;
         if (errorName === 'AbortError') return;
         if (error.name === 'Unauthorized' && error.payload?.isExpiredToken) {
@@ -91,9 +94,8 @@ export const useBookmarkManager = () => {
           set(itemId, {
             isBookmarked: true,
           });
+          toast.error(`북마크 삭제 실패: ${erorrMessage}`);
         }
-        // TODO: fail api -> handle error (rollback state)
-        console.log('unbookmark error', extractNextError(e));
       } finally {
         abortControllers.delete(itemId);
       }
