@@ -145,17 +145,18 @@
     .publisher,
     .title,
     .body,
-    .likes_count,
-    .comments_count,
     .user_info {
       color: white;
     }
 
-    .footer {
-      .count_shower {
+    .count_shower {
+      .likes_count,
+      .comments_count {
         svg {
           color: white;
         }
+
+        color: white;
       }
     }
   }
