@@ -101,43 +101,33 @@
     flex: 1;
   }
 
-  .count_wrapper {
-    display: flex;
-    gap: 12px;
-
-    @include tablet {
-      height: 26px;
-    }
-
-    // 12*1.5+8(height: font-size*line-height+padding-bottom)
-    @mixin count-style {
-      font-size: 12px;
-      font-weight: 700;
-      color: $gray4;
-      line-height: 1.5;
-      height: 26px;
-      display: flex;
-      align-items: top;
-    }
-
-    .likescount {
-      @include count-style;
-    }
-
-    .commentscount {
-      @include count-style;
-    }
-  }
-
   .footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    .icon_buttons {
+    .count_shower {
       display: flex;
       align-items: center;
       gap: 8px;
+
+      .likes_count,
+      .comments_count {
+        svg {
+          width: 18px;
+          height: 18px;
+          color: $gray3;
+          margin-right: 6px;
+        }
+
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        font-weight: 700;
+        color: $gray4;
+        line-height: 1.5;
+        height: 26px;
+      }
     }
 
     .user_info {
@@ -155,10 +145,18 @@
     .publisher,
     .title,
     .body,
-    .likescount,
-    .commentscount,
+    .likes_count,
+    .comments_count,
     .user_info {
       color: white;
+    }
+
+    .footer {
+      .count_shower {
+        svg {
+          color: white;
+        }
+      }
     }
   }
 }
