@@ -36,7 +36,11 @@ export default function Item({ item }: Props) {
   const isMyItem = item ? item.user.id === currentUser?.id : false;
   const { data: comments, status } = useCommentsQuery(item.id);
   const {
-    data: { isBookmarked, isLiked } = { isBookmarked: false, isLiked: false },
+    data: { isBookmarked, isLiked, itemStats } = {
+      isBookmarked: false,
+      isLiked: false,
+      itemStats: item.itemStats,
+    },
   } = useItemQuery(item.id) || {}; // for like, bookmark update
 
   const openBottomSheetModal = useBottomSheetModalStore((store) => store.open);
@@ -100,7 +104,7 @@ export default function Item({ item }: Props) {
     }
   };
 
-  const updatedItem = { ...item, isBookmarked, isLiked };
+  const updatedItem = { ...item, isBookmarked, isLiked, itemStats };
 
   return (
     <BasicLayout

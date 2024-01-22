@@ -13,7 +13,7 @@ import ToastProviders from './toastProvider';
 
 function Providers({ children }: React.PropsWithChildren) {
   const [client] = useState(
-    new QueryClient({ defaultOptions: { queries: { staleTime: 1000 * 6 } } })
+    new QueryClient({ defaultOptions: { queries: { staleTime: 1000 * 60 } } })
   );
 
   return (
