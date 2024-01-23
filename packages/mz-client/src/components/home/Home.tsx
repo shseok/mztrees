@@ -1,83 +1,43 @@
 'use client';
 
+import type { ListMode, Tag } from '@/types/db';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styles from '@/styles/StyledTabLayout.module.scss';
-import {
-  useInfiniteQuery,
-  useQueryErrorResetBoundary,
-} from '@tanstack/react-query';
-import type { QueryKey } from '@tanstack/react-query';
-import type { GetItemsResult, ListMode, Tag } from '@/types/db';
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { useQueryErrorResetBoundary } from '@tanstack/react-query';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { useSearchParams } from 'next/navigation';
+import { getWeekRangeFromDate } from '@/lib/week';
+import { colors } from '@/lib/colors';
 import LinkCardList from '@/components/home/LinkCardList';
 import ListModeSelector from '@/components/home/ListModeSelector';
 import WeekSelector from '@/components/home/WeekSelector';
-import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
-import { useSearchParams } from 'next/navigation';
-import { getItems } from '@/lib/api/items';
-import { getWeekRangeFromDate } from '@/lib/week';
 import SkeletonUI from '@/components/system/SkeletonUI';
 import EmptyList from '../system/EmptyList';
 import TabLayout from '../layout/TabLayout';
 import TagSelector from './TagSelector';
 import ErrorShower from '@/app/error';
 import LoadingIndicator from '../system/LoadingIndicator';
-import { colors } from '@/lib/colors';
+import useGetHomeItemsQuery from '@/hooks/query/useGetHomeItemsQuery';
 
 export default function Home() {
-  const observerTargetEl = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
+  const { reset } = useQueryErrorResetBoundary();
+  const startDate = searchParams.get('start');
+  const endDate = searchParams.get('end');
+  const observerTargetEl = useRef<HTMLDivElement>(null);
+
   const [mode, setMode] = useState<ListMode>(
     (searchParams.get('mode') as ListMode | null) ?? 'trending'
   );
   const [tag, setTag] = useState<Tag | null>(
     searchParams.get('tag') as Tag | null
   );
-
   const defaultDateRange = useMemo(() => getWeekRangeFromDate(new Date()), []);
-  const startDate = searchParams.get('start');
-  const endDate = searchParams.get('end');
   const [dateRange, setDateRange] = useState(
     startDate && endDate ? [startDate, endDate] : defaultDateRange
   );
-  const { reset } = useQueryErrorResetBoundary();
-  const {
-    status,
-    data: infiniteData,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery<GetItemsResult, Error, GetItemsResult, QueryKey>(
-    ['Items', mode, tag, mode === 'past' ? dateRange : undefined].filter(
-      (item) => !!item
-    ),
-    ({ pageParam = undefined }: { pageParam?: number }) =>
-      getItems({
-        mode,
-        tag: tag ?? undefined,
-        cursor: pageParam,
-        ...(mode === 'past'
-          ? { startDate: dateRange[0], endDate: dateRange[1] }
-          : {}),
-      }),
-    {
-      getNextPageParam: (lastPage) => {
-        if (!lastPage.pageInfo.hasNextPage) return undefined;
-        return lastPage.pageInfo.endCursor;
-      },
-    }
-  );
-
-  const fetchNextData = useCallback(() => {
-    if (!hasNextPage) return;
-    fetchNextPage();
-  }, [hasNextPage, fetchNextPage]);
+  const { infiniteData, status, error, fetchNextData, isFetchingNextPage } =
+    useGetHomeItemsQuery({ mode, tag, dateRange });
 
   useInfiniteScroll(observerTargetEl, fetchNextData);
 
@@ -114,7 +74,7 @@ export default function Home() {
           // TODO: define error type
           <ErrorShower error={error as Error} reset={reset} />
         ) : items ? (
-          <LinkCardList items={items} /> // TODO: 과연 items를 여기서 넘겨주는게 맞는건가? 아니면 LinkCardList에서 직접 쿼리를 날려서 가져오는게 맞는건가? chatgpt에게 물어보기
+          <LinkCardList items={items} />
         ) : null}
         <div className={styles.loadMore} ref={observerTargetEl}>
           {isFetchingNextPage ? (

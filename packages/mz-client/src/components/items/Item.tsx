@@ -8,8 +8,8 @@ import CommentList from '@/components/items/CommentList';
 import MoreVertButton from '@/components/base/MoreVertButton';
 import Loading from '@/components/system/PostLoading';
 import FloatingActionButtonGroup from '@/components/system/FloatingActionButtonGroup';
-import { useCommentsQuery } from '@/hooks/query/useCommentsQuery';
-import { useItemQuery } from '@/hooks/query/useItemQuery';
+import { useGetCommentsQuery } from '@/hooks/query/useGetCommentsQuery';
+import { useGetItemQuery } from '@/hooks/query/useGetItemQuery';
 import { useUser } from '@/context/UserContext';
 import { useDialog } from '@/context/DialogContext';
 import { useBottomSheetModalStore } from '@/hooks/stores/useBottomSheetModalStore';
@@ -34,14 +34,14 @@ const CommentInputOverlay = dynamic(() => import('./CommentInputOverlay'), {
 export default function Item({ item }: Props) {
   const { currentUser } = useUser();
   const isMyItem = item ? item.user.id === currentUser?.id : false;
-  const { data: comments, status } = useCommentsQuery(item.id);
+  const { data: comments, status } = useGetCommentsQuery(item.id);
   const {
     data: { isBookmarked, isLiked, itemStats } = {
       isBookmarked: false,
       isLiked: false,
       itemStats: item.itemStats,
     },
-  } = useItemQuery(item.id) || {}; // for like, bookmark update
+  } = useGetItemQuery(item.id) || {}; // for like, bookmark update
 
   const openBottomSheetModal = useBottomSheetModalStore((store) => store.open);
   const { open: openDialog } = useDialog();

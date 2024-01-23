@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useItemId } from '../useItemId';
 import { useCallback } from 'react';
 import { deleteComment as removeComment } from '@/lib/api/items';
-import { useCommentsQuery } from '../query/useCommentsQuery';
+import { useGetCommentsQuery } from '../query/useGetCommentsQuery';
 import { produce } from 'immer';
 import type { Comment } from '@/types/db';
 import { extractNextError } from '@/lib/nextError';
@@ -20,7 +20,7 @@ export function useDeleteCommentMutation(commentId: number) {
   const { mutate: deleteComment } = useMutation(removeComment, {
     onSuccess: useCallback(() => {
       if (!itemId) return;
-      const queryKey = useCommentsQuery.extractKey(itemId);
+      const queryKey = useGetCommentsQuery.extractKey(itemId);
       // comments의 로컬 캐시 데이터 업데이트
       queryClient.setQueryData(
         queryKey,

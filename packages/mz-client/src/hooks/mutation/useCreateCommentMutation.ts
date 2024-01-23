@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createComment } from '@/lib/api/items';
-import { useCommentsQuery } from '../query/useCommentsQuery';
+import { useGetCommentsQuery } from '../query/useGetCommentsQuery';
 import { useItemId } from '../useItemId';
 import { useOpenLoginDialog } from '../useOpenLoginDialog';
 import { useCommentInputStore } from '../stores/useCommentInputStore';
@@ -50,7 +50,7 @@ export function useCreateCommentMutation(
         (data: Comment) => {
           if (!itemId) return;
           resetText();
-          const queryKey = useCommentsQuery.extractKey(itemId);
+          const queryKey = useGetCommentsQuery.extractKey(itemId);
           // comments의 로컬 캐시 데이터 업데이트
           queryClient.setQueryData(
             queryKey,

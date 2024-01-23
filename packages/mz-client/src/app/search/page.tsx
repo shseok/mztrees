@@ -6,20 +6,15 @@ import TabLayout from '@/components/layout/TabLayout';
 import SearchInput from '@/components/search/SearchInput';
 import SearchResultCardList from '@/components/search/SearchResultCardList';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
-import { searchItems } from '@/lib/api/search';
-import {
-  useInfiniteQuery,
-  useQueryErrorResetBoundary,
-} from '@tanstack/react-query';
-import type { QueryKey } from '@tanstack/react-query';
-import type { SearchItemsResult } from '@/types/db';
+import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { stringify } from 'qs';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import Loading from '@/components/system/PostLoading';
 import EmptyList from '@/components/system/EmptyList';
 import ErrorShower from '@/app/error';
+import useGetSearchItemsQuery from '@/hooks/query/useGetSearchItemsQuery';
 
 interface Props {
   searchParams: { [key: string]: string | undefined };
@@ -31,34 +26,12 @@ export default function Search({ searchParams }: Props) {
   const observerTargetEl = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { reset } = useQueryErrorResetBoundary();
-
-  const {
-    status,
-    data: infiniteData,
-    error,
-    fetchNextPage,
-    hasNextPage,
-  } = useInfiniteQuery<SearchItemsResult, Error, SearchItemsResult, QueryKey>(
-    ['searchItems', inputResult],
-    ({ pageParam = undefined }: { pageParam?: number }) =>
-      searchItems({ q: inputResult, offset: pageParam }),
-    {
-      enabled: inputResult.trim() !== '',
-      getNextPageParam: (lastPage) => {
-        if (!lastPage.pageInfo.hasNextPage) return undefined;
-        return lastPage.pageInfo.nextOffset;
-      },
-    }
-  );
-  const fetchNextData = useCallback(() => {
-    if (!hasNextPage) return;
-    fetchNextPage();
-  }, [hasNextPage, fetchNextPage]);
+  const { error, fetchNextData, infiniteData, status } =
+    useGetSearchItemsQuery(inputResult);
 
   useInfiniteScroll(observerTargetEl, fetchNextData);
 
   useEffect(() => {
-    // console.log("1router.push");
     const query = { q: inputResult };
     const url = `/search${stringify(query, {
       charset: 'utf-8',
@@ -70,7 +43,6 @@ export default function Search({ searchParams }: Props) {
 
   // render for desktop search
   useEffect(() => {
-    // console.log("2useEffect");
     setSearchText(searchParams?.['q'] ?? '');
   }, [searchParams]);
   const items = infiniteData?.pages.flatMap((page) => page.list);
@@ -92,8 +64,8 @@ export default function Search({ searchParams }: Props) {
         (status === 'loading' ? (
           <Loading />
         ) : status === 'error' ? (
-          // // TODO: define error type
-          <ErrorShower error={error} reset={reset} />
+          // TODO: define error type
+          <ErrorShower error={error as Error} reset={reset} />
         ) : items ? (
           items?.length === 0 ? (
             <EmptyList

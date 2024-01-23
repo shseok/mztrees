@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { likeItem, unlikeItem } from '@/lib/api/items';
-import { useItemQuery } from '../query/useItemQuery';
+import { useGetItemQuery } from '../query/useGetItemQuery';
 import type { Item } from '@/types/db';
 import { extractNextError } from '@/lib/nextError';
 import { refreshToken } from '@/lib/api/auth';
@@ -15,7 +15,7 @@ export function useLikeItemMutation() {
   const { mutate: like } = useMutation({
     mutationFn: likeItem,
     onMutate: async (variables) => {
-      const queryKey = useItemQuery.extractKey(variables);
+      const queryKey = useGetItemQuery.extractKey(variables);
       // 이전에 진행중이던 요청이 있다면, 취소
       await queryClient.cancelQueries(queryKey);
       // 이전 쿼리 값의 스냅샷
@@ -37,7 +37,7 @@ export function useLikeItemMutation() {
     },
     onError: async (err, varialbes, context) => {
       const error = extractNextError(err);
-      const queryKey = useItemQuery.extractKey(varialbes);
+      const queryKey = useGetItemQuery.extractKey(varialbes);
       if (error.name === 'Unauthorized' && error.payload?.isExpiredToken) {
         try {
           // token refresh
@@ -58,14 +58,14 @@ export function useLikeItemMutation() {
     },
     onSettled: (data, error, variables) => {
       // 성공, 실패 여부와 상관없이, 쿼리를 다시 fetch
-      queryClient.invalidateQueries(useItemQuery.extractKey(variables));
+      queryClient.invalidateQueries(useGetItemQuery.extractKey(variables));
     },
   });
 
   const { mutate: unlike } = useMutation({
     mutationFn: unlikeItem,
     onMutate: async (variables) => {
-      const queryKey = useItemQuery.extractKey(variables);
+      const queryKey = useGetItemQuery.extractKey(variables);
       // 이전에 진행중이던 요청이 있다면, 취소
       await queryClient.cancelQueries(queryKey);
       // 이전 쿼리 값의 스냅샷
@@ -87,7 +87,7 @@ export function useLikeItemMutation() {
     },
     onError: async (err, varialbes, context) => {
       const error = extractNextError(err);
-      const queryKey = useItemQuery.extractKey(varialbes);
+      const queryKey = useGetItemQuery.extractKey(varialbes);
       if (error.name === 'Unauthorized' && error.payload?.isExpiredToken) {
         try {
           // token refresh
@@ -108,7 +108,7 @@ export function useLikeItemMutation() {
     },
     onSettled: (data, error, variables) => {
       // 성공, 실패 여부와 상관없이, 쿼리를 다시 fetch
-      queryClient.invalidateQueries(useItemQuery.extractKey(variables));
+      queryClient.invalidateQueries(useGetItemQuery.extractKey(variables));
     },
   });
 

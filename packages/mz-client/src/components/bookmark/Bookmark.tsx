@@ -2,45 +2,18 @@
 
 import LinkCardList from '@/components/home/LinkCardList';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
-import { getBookmarks } from '@/lib/api/bookmark';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import type { QueryKey } from '@tanstack/react-query';
-import type { GetBookmarksResult } from '@/types/db';
-import { useCallback, useRef } from 'react';
+import { useRef } from 'react';
 import SkeletonUI from '@/components/system/SkeletonUI';
 import styles from '@/styles/StyledTabLayout.module.scss';
 import EmptyList from '../system/EmptyList';
+import useGetBookmarkItemsQuery from '@/hooks/query/useGetBookmarkItemsQuery';
 
 export default function Bookmark() {
   const observerTargetEl = useRef<HTMLDivElement>(null);
-
-  const { status, data, fetchNextPage, hasNextPage } = useInfiniteQuery<
-    GetBookmarksResult,
-    Error,
-    GetBookmarksResult,
-    QueryKey
-  >(
-    ['bookmarks'],
-    ({ pageParam = undefined }: { pageParam?: number }) =>
-      getBookmarks(pageParam),
-    {
-      getNextPageParam: (lastPage) => {
-        if (!lastPage.pageInfo.hasNextPage) return undefined;
-        return lastPage.pageInfo.endCursor;
-      },
-      suspense: true,
-      useErrorBoundary: true,
-    }
-  );
-
-  const fetchNextData = useCallback(() => {
-    if (!hasNextPage) return;
-    fetchNextPage();
-  }, [hasNextPage, fetchNextPage]);
-
+  const { status, infiniteData, fetchNextData } = useGetBookmarkItemsQuery();
   useInfiniteScroll(observerTargetEl, fetchNextData);
 
-  const items = data?.pages
+  const items = infiniteData?.pages
     .flatMap((page) => page.list)
     .map((page) => page.item);
 

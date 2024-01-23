@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 import { refreshToken } from '@/lib/api/auth';
 import { setClientCookie } from '@/lib/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useItemQuery } from '../query/useItemQuery';
+import { useGetItemQuery } from '../query/useGetItemQuery';
 import type { Item } from '@/types/db';
 import { extractNextError } from '@/lib/nextError';
 import { useOpenLoginDialog } from '../useOpenLoginDialog';
@@ -15,7 +15,7 @@ export function useBookmarkItemMutation() {
   const { mutate: bookmark } = useMutation({
     mutationFn: createBookmark,
     onMutate: async (variables) => {
-      const queryKey = useItemQuery.extractKey(variables);
+      const queryKey = useGetItemQuery.extractKey(variables);
       // 이전에 진행중이던 요청이 있다면, 취소
       await queryClient.cancelQueries(queryKey);
       // 이전 쿼리 값의 스냅샷
@@ -33,7 +33,7 @@ export function useBookmarkItemMutation() {
     },
     onError: async (err, varialbes, context) => {
       const error = extractNextError(err);
-      const queryKey = useItemQuery.extractKey(varialbes);
+      const queryKey = useGetItemQuery.extractKey(varialbes);
       if (error.name === 'Unauthorized' && error.payload?.isExpiredToken) {
         try {
           // token refresh
@@ -54,14 +54,14 @@ export function useBookmarkItemMutation() {
     },
     onSettled: (data, error, variables) => {
       // 성공, 실패 여부와 상관없이, 쿼리를 다시 fetch
-      queryClient.invalidateQueries(useItemQuery.extractKey(variables));
+      queryClient.invalidateQueries(useGetItemQuery.extractKey(variables));
     },
   });
 
   const { mutate: unbookmark } = useMutation({
     mutationFn: deleteBookmark,
     onMutate: async (variables) => {
-      const queryKey = useItemQuery.extractKey(variables);
+      const queryKey = useGetItemQuery.extractKey(variables);
       // 이전에 진행중이던 요청이 있다면, 취소
       await queryClient.cancelQueries(queryKey);
       // 이전 쿼리 값의 스냅샷
@@ -79,7 +79,7 @@ export function useBookmarkItemMutation() {
     },
     onError: async (err, varialbes, context) => {
       const error = extractNextError(err);
-      const queryKey = useItemQuery.extractKey(varialbes);
+      const queryKey = useGetItemQuery.extractKey(varialbes);
       if (error.name === 'Unauthorized' && error.payload?.isExpiredToken) {
         try {
           // token refresh
@@ -100,7 +100,7 @@ export function useBookmarkItemMutation() {
     },
     onSettled: (data, error, variables) => {
       // 성공, 실패 여부와 상관없이, 쿼리를 다시 fetch
-      queryClient.invalidateQueries(useItemQuery.extractKey(variables));
+      queryClient.invalidateQueries(useGetItemQuery.extractKey(variables));
     },
   });
 
