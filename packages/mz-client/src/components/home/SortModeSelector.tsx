@@ -11,6 +11,8 @@ import styles from '@/styles/SortModeSelector.module.scss';
 import { cn } from '@/utils/common';
 import { useTheme } from '@/context/ThemeContext';
 import Link from 'next/link';
+import { homeParameterStore } from '@/hooks/stores/HomeParameterStore';
+import { shallow } from 'zustand/shallow';
 
 const GAP = 16;
 
@@ -18,7 +20,11 @@ interface Props {
   mode: SortMode;
   tag: Tag | null;
 }
-const SortModeSelector = ({ mode, tag }: Props) => {
+const SortModeSelector = () => {
+  const { tag, mode } = homeParameterStore(
+    (state) => ({ tag: state.tag, mode: state.mode }),
+    shallow
+  );
   const [elementSizes, setElementSizes] = useState([0, 0, 0]);
   const setElementSizeOfIndex = useCallback((index: number, size: number) => {
     setElementSizes((prev) => {

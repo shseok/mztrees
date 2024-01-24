@@ -1,23 +1,23 @@
 'use client';
 
-import type { SortMode, Tag } from '@/types/db';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import type { SortMode } from '@/types/db';
+import React, { useEffect, useRef } from 'react';
 import styles from '@/styles/StyledTabLayout.module.scss';
 import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { useSearchParams } from 'next/navigation';
-import { getWeekRangeFromDate } from '@/lib/week';
 import { colors } from '@/lib/colors';
 import LinkCardList from '@/components/home/LinkCardList';
 import SortModeSelector from '@/components/home/SortModeSelector';
 import WeekSelector from '@/components/home/WeekSelector';
 import SkeletonUI from '@/components/system/SkeletonUI';
 import EmptyList from '../system/EmptyList';
-import TabLayout from '../layout/TabLayout';
-import TagSelector from './TagSelector';
 import ErrorShower from '@/app/error';
 import LoadingIndicator from '../system/LoadingIndicator';
 import useGetHomeItemsQuery from '@/hooks/query/useGetHomeItemsQuery';
+import TagSelector from './TagSelector';
+import { homeParameterStore } from '@/hooks/stores/HomeParameterStore';
+import { shallow } from 'zustand/shallow';
 
 export default function Home() {
   const searchParams = useSearchParams();
@@ -26,15 +26,16 @@ export default function Home() {
   const endDate = searchParams.get('end');
   const observerTargetEl = useRef<HTMLDivElement>(null);
 
-  const [mode, setMode] = useState<SortMode>(
-    (searchParams.get('mode') as SortMode | null) ?? 'trending'
-  );
-  const [tag, setTag] = useState<Tag | null>(
-    searchParams.get('tag') as Tag | null
-  );
-  const defaultDateRange = useMemo(() => getWeekRangeFromDate(new Date()), []);
-  const [dateRange, setDateRange] = useState(
-    startDate && endDate ? [startDate, endDate] : defaultDateRange
+  const { mode, tag, dateRange, setMode, setDateRange } = homeParameterStore(
+    (state) => ({
+      mode: state.mode,
+      tag: state.tag,
+      view: state.view,
+      dateRange: state.dateRange,
+      setMode: state.setMode,
+      setDateRange: state.setDateRange,
+    }),
+    shallow
   );
   const { infiniteData, status, error, fetchNextData, isFetchingNextPage } =
     useGetHomeItemsQuery({ mode, tag, dateRange });
@@ -49,24 +50,19 @@ export default function Home() {
   }, [searchParams, mode]);
 
   useEffect(() => {
+    if (!startDate || !endDate) return;
     if (mode === 'past') {
-      setDateRange(
-        startDate && endDate ? [startDate, endDate] : defaultDateRange
-      );
+      setDateRange([startDate, endDate]);
     }
-  }, [startDate, endDate, defaultDateRange, mode]);
+  }, [startDate, endDate, mode]);
 
   const items = infiniteData?.pages.flatMap((page) => page.list);
 
   return (
-    <TabLayout className='layout_padding'>
+    <>
       <div className={styles.content}>
-        <SortModeSelector mode={mode} tag={tag} />
-        <TagSelector
-          sortMode={mode}
-          selectedTag={tag}
-          setSelectedTag={setTag}
-        />
+        <SortModeSelector />
+        <TagSelector />
         {mode === 'past' && <WeekSelector dateRange={dateRange} />}
         {status === 'loading' ? (
           <SkeletonUI />
@@ -83,6 +79,6 @@ export default function Home() {
         </div>
       </div>
       {items?.length === 0 ? <EmptyList /> : null}
-    </TabLayout>
+    </>
   );
 }

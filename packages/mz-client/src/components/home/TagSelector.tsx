@@ -4,20 +4,24 @@ import { ChevronDown, ChevronUp, Close } from '../vectors';
 import { useTheme } from '@/context/ThemeContext';
 import { cn } from '@/utils/common';
 import TagMenu from './TagMenu';
-import type { SortMode, Tag } from '@/types/db';
+import type { Tag } from '@/types/db';
 import useSetSearchParams from '@/hooks/useSetSearchParams';
+import { homeParameterStore } from '@/hooks/stores/HomeParameterStore';
+import { shallow } from 'zustand/shallow';
 
-interface Props {
-  sortMode: SortMode;
-  selectedTag: Tag | null;
-  setSelectedTag: (tag: Tag | null) => void;
-}
-
-const TagSelector = ({ sortMode, selectedTag, setSelectedTag }: Props) => {
+const TagSelector = () => {
   const { mode } = useTheme();
   const [visible, setVisible] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const setSearchParams = useSetSearchParams();
+  const {
+    mode: selectedMode,
+    tag,
+    setTag,
+  } = homeParameterStore(
+    (state) => ({ mode: state.mode, tag: state.tag, setTag: state.setTag }),
+    shallow
+  );
   const onToggle = () => {
     setVisible(!visible);
   };
@@ -41,16 +45,16 @@ const TagSelector = ({ sortMode, selectedTag, setSelectedTag }: Props) => {
         <span>태그 목록</span>
         {visible ? <ChevronUp /> : <ChevronDown />}
       </button>
-      {selectedTag && (
+      {tag && (
         <div className={styles.current_tag}>
-          <span className={styles.tag_text}># {selectedTag}</span>
+          <span className={styles.tag_text}># {tag}</span>
           <button
             type='button'
             aria-label='선택한 태그 지우기'
             className={styles.close_btn}
             onClick={() => {
-              setSelectedTag(null);
-              setSearchParams({ mode: sortMode, tag: null });
+              setTag(null);
+              setSearchParams({ mode: selectedMode, tag: null });
             }}
           >
             <Close />
@@ -61,14 +65,14 @@ const TagSelector = ({ sortMode, selectedTag, setSelectedTag }: Props) => {
       <TagMenu
         visible={visible}
         onClose={onClose}
-        selected={selectedTag}
+        selected={tag}
         onSelect={(
           e: React.MouseEvent<HTMLLIElement, MouseEvent>,
           value: Tag
         ) => {
           e.preventDefault();
-          setSelectedTag(value);
-          setSearchParams({ mode: sortMode, tag: value });
+          setTag(value);
+          setSearchParams({ mode: selectedMode, tag: value });
         }}
       />
     </div>
