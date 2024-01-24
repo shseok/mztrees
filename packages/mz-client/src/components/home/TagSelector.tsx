@@ -4,16 +4,16 @@ import { ChevronDown, ChevronUp, Close } from '../vectors';
 import { useTheme } from '@/context/ThemeContext';
 import { cn } from '@/utils/common';
 import TagMenu from './TagMenu';
-import type { ListMode, Tag } from '@/types/db';
+import type { SortMode, Tag } from '@/types/db';
 import useSetSearchParams from '@/hooks/useSetSearchParams';
 
 interface Props {
-  listMode: ListMode;
+  sortMode: SortMode;
   selectedTag: Tag | null;
   setSelectedTag: (tag: Tag | null) => void;
 }
 
-const TagSelector = ({ listMode, selectedTag, setSelectedTag }: Props) => {
+const TagSelector = ({ sortMode, selectedTag, setSelectedTag }: Props) => {
   const { mode } = useTheme();
   const [visible, setVisible] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -50,7 +50,7 @@ const TagSelector = ({ listMode, selectedTag, setSelectedTag }: Props) => {
             className={styles.close_btn}
             onClick={() => {
               setSelectedTag(null);
-              setSearchParams({ mode: listMode, tag: null });
+              setSearchParams({ mode: sortMode, tag: null });
             }}
           >
             <Close />
@@ -68,7 +68,7 @@ const TagSelector = ({ listMode, selectedTag, setSelectedTag }: Props) => {
         ) => {
           e.preventDefault();
           setSelectedTag(value);
-          setSearchParams({ mode: listMode, tag: value });
+          setSearchParams({ mode: sortMode, tag: value });
         }}
       />
     </div>

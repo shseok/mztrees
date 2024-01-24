@@ -104,7 +104,7 @@ export interface Hightlight {
 
 export type SearchItemsResult = Pagination<SearchItemResult>;
 
-export type ListMode = 'recent' | 'trending' | 'past';
+export type SortMode = 'recent' | 'trending' | 'past';
 export type Size = 'small' | 'medium' | 'large';
 
 export interface Bookmark {

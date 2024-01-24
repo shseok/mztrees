@@ -8,7 +8,7 @@ import type {
   ItemForSitemap,
   LikeCommentResult,
   LikeItemResult,
-  ListMode,
+  SortMode,
   MutateItemParams,
   Tag,
   UnlikeCommentResult,
@@ -31,7 +31,7 @@ export async function getItems({
   startDate,
   endDate,
 }: {
-  mode: ListMode;
+  mode: SortMode;
   tag?: Tag;
   cursor?: number;
   startDate?: string;

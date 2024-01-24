@@ -1,11 +1,11 @@
-import type { GetItemsResult, ListMode, Tag } from '@/types/db';
+import type { GetItemsResult, SortMode, Tag } from '@/types/db';
 import type { QueryKey } from '@tanstack/react-query';
 import { getItems } from '@/lib/api/items';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useCallback } from 'react';
 
 interface useGetItemsQueryProps {
-  mode: ListMode;
+  mode: SortMode;
   tag: Tag | null;
   dateRange: string[];
 }

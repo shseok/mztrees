@@ -1,6 +1,6 @@
 'use client';
 
-import type { ListMode, Tag } from '@/types/db';
+import type { SortMode, Tag } from '@/types/db';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styles from '@/styles/StyledTabLayout.module.scss';
 import { useQueryErrorResetBoundary } from '@tanstack/react-query';
@@ -9,7 +9,7 @@ import { useSearchParams } from 'next/navigation';
 import { getWeekRangeFromDate } from '@/lib/week';
 import { colors } from '@/lib/colors';
 import LinkCardList from '@/components/home/LinkCardList';
-import ListModeSelector from '@/components/home/ListModeSelector';
+import SortModeSelector from '@/components/home/SortModeSelector';
 import WeekSelector from '@/components/home/WeekSelector';
 import SkeletonUI from '@/components/system/SkeletonUI';
 import EmptyList from '../system/EmptyList';
@@ -26,8 +26,8 @@ export default function Home() {
   const endDate = searchParams.get('end');
   const observerTargetEl = useRef<HTMLDivElement>(null);
 
-  const [mode, setMode] = useState<ListMode>(
-    (searchParams.get('mode') as ListMode | null) ?? 'trending'
+  const [mode, setMode] = useState<SortMode>(
+    (searchParams.get('mode') as SortMode | null) ?? 'trending'
   );
   const [tag, setTag] = useState<Tag | null>(
     searchParams.get('tag') as Tag | null
@@ -42,7 +42,7 @@ export default function Home() {
   useInfiniteScroll(observerTargetEl, fetchNextData);
 
   useEffect(() => {
-    const nextMode = (searchParams.get('mode') as ListMode) ?? 'trending';
+    const nextMode = (searchParams.get('mode') as SortMode) ?? 'trending';
     if (nextMode !== mode) {
       setMode(nextMode);
     }
@@ -61,9 +61,9 @@ export default function Home() {
   return (
     <TabLayout className='layout_padding'>
       <div className={styles.content}>
-        <ListModeSelector mode={mode} tag={tag} />
+        <SortModeSelector mode={mode} tag={tag} />
         <TagSelector
-          listMode={mode}
+          sortMode={mode}
           selectedTag={tag}
           setSelectedTag={setTag}
         />

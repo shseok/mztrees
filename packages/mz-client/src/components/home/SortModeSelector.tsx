@@ -5,9 +5,9 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import type { ListMode, Tag } from '@/types/db';
+import type { SortMode, Tag } from '@/types/db';
 import { Trending, History, Calendar } from '@/components/vectors';
-import styles from '@/styles/ListModeSelector.module.scss';
+import styles from '@/styles/SortModeSelector.module.scss';
 import { cn } from '@/utils/common';
 import { useTheme } from '@/context/ThemeContext';
 import Link from 'next/link';
@@ -15,10 +15,10 @@ import Link from 'next/link';
 const GAP = 16;
 
 interface Props {
-  mode: ListMode;
+  mode: SortMode;
   tag: Tag | null;
 }
-const ListModeSelector = ({ mode, tag }: Props) => {
+const SortModeSelector = ({ mode, tag }: Props) => {
   const [elementSizes, setElementSizes] = useState([0, 0, 0]);
   const setElementSizeOfIndex = useCallback((index: number, size: number) => {
     setElementSizes((prev) => {
@@ -92,7 +92,7 @@ const ListModeItem = ({
 }: Props & {
   name: string;
   icon: React.ReactNode;
-  currentMode: ListMode;
+  currentMode: SortMode;
   index: number;
   onUpdateSize(index: number, size: number): void;
 }) => {
@@ -120,4 +120,4 @@ const ListModeItem = ({
   );
 };
 
-export default ListModeSelector;
+export default SortModeSelector;
