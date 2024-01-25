@@ -40,12 +40,14 @@ const TagMenu = ({ onClose, visible, selected, onSelect }: Props) => {
             >
               <ul className={styles.tag_list}>
                 {tagList.map((item, idx) => (
-                  <li key={idx}>
+                  <li
+                    key={idx}
+                    className={cn(
+                      styles.tag,
+                      selected === item && styles.selected
+                    )}
+                  >
                     <button
-                      className={cn(
-                        styles.tag,
-                        selected === item && styles.selected
-                      )}
                       onClick={(e) => {
                         onSelect(e, item);
                         onClose();

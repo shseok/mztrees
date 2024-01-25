@@ -6,7 +6,6 @@
   top: 48px;
   left: 0;
   max-width: 491px;
-  width: 100%;
   min-height: 200px;
   border-radius: 8px;
   padding: 24px;
@@ -27,13 +26,19 @@
     row-gap: 3px;
 
     .tag {
-      background: #fff;
       padding: 5px 10px;
-      cursor: pointer;
+      width: 80px;
+      height: 30px;
+      background: #fff;
       transition: all 0.2s ease;
-      font-weight: 700;
       border-radius: 8px;
-      color: $gray4;
+
+      button {
+        width: 100%;
+        font-weight: 700;
+        color: $gray4;
+        cursor: pointer;
+      }
 
       &:hover {
         background: $gray0;
@@ -41,7 +46,10 @@
 
       &.selected {
         background: #017a5ae4;
-        color: white;
+
+        button {
+          color: white;
+        }
       }
     }
   }
