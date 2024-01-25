@@ -32,3 +32,6 @@ export { default as Announcement } from '../../../public/assets/announcement.svg
 export { default as Download } from '../../../public/assets/download.svg';
 export { default as Discord } from '../../../public/assets/discord.svg';
 export { default as Chat } from '../../../public/assets/chat.svg';
+export { default as ListView } from '../../../public/assets/list.svg';
+export { default as CardView } from '../../../public/assets/card.svg';
+export { default as gridView } from '../../../public/assets/grid.svg';

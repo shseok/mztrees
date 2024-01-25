@@ -1,0 +1,11 @@
+@import 'module';
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  @include tablet {
+    gap: 32px;
+  }
+}
