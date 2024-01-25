@@ -40,7 +40,7 @@ const TagMenu = ({ onClose, visible, selected, onSelect }: Props) => {
             >
               <ul className={styles.tag_list}>
                 {tagList.map((item, idx) => (
-                  <li>
+                  <li key={idx}>
                     <button
                       className={cn(
                         styles.tag,
@@ -50,7 +50,6 @@ const TagMenu = ({ onClose, visible, selected, onSelect }: Props) => {
                         onSelect(e, item);
                         onClose();
                       }}
-                      key={idx}
                       role='menuitem'
                     >
                       {item}
