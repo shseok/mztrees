@@ -29,7 +29,7 @@ export const pretendard = localFont({
 
 // The reason this font is used is because hinting is not applied to the pretendard font. (if font-size <= 15px, use this font)
 export const roboto = Roboto({
-  display: 'swap',
   subsets: ['latin'],
   weight: '400',
+  display: 'swap',
 });

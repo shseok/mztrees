@@ -67,7 +67,7 @@ const TagSelector = () => {
         onClose={onClose}
         selected={tag}
         onSelect={(
-          e: React.MouseEvent<HTMLLIElement, MouseEvent>,
+          e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
           value: Tag
         ) => {
           e.preventDefault();

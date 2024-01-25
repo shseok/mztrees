@@ -1,0 +1,36 @@
+@import 'var';
+
+.menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $gray01;
+  height: 27px;
+  border-radius: 27px;
+
+  .menu_item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 52px;
+    height: 26px;
+    border-radius: 27px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      color: $gray2;
+    }
+
+    &.active {
+      border: 1px solid $primary;
+      background: white;
+
+      svg {
+        color: $primary;
+      }
+    }
+  }
+}

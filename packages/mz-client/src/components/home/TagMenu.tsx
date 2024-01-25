@@ -15,7 +15,10 @@ interface Props {
   visible: boolean;
   selected: Tag | null;
   onClose: (e?: Event) => void;
-  onSelect: (e: React.MouseEvent<HTMLLIElement, MouseEvent>, item: Tag) => void;
+  onSelect: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    item: Tag
+  ) => void;
 }
 
 const TagMenu = ({ onClose, visible, selected, onSelect }: Props) => {
@@ -37,19 +40,21 @@ const TagMenu = ({ onClose, visible, selected, onSelect }: Props) => {
             >
               <ul className={styles.tag_list}>
                 {tagList.map((item, idx) => (
-                  <li
-                    className={cn(
-                      styles.tag,
-                      selected === item && styles.selected
-                    )}
-                    onClick={(e) => {
-                      onSelect(e, item);
-                      onClose();
-                    }}
-                    key={idx}
-                    role='menuitem'
-                  >
-                    {item}
+                  <li>
+                    <button
+                      className={cn(
+                        styles.tag,
+                        selected === item && styles.selected
+                      )}
+                      onClick={(e) => {
+                        onSelect(e, item);
+                        onClose();
+                      }}
+                      key={idx}
+                      role='menuitem'
+                    >
+                      {item}
+                    </button>
                   </li>
                 ))}
               </ul>

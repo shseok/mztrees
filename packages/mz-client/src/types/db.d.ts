@@ -132,3 +132,5 @@ export type TagList = Tag[];
 type TagType = {
   tags: TagList;
 };
+
+export type View = 'list' | 'card';

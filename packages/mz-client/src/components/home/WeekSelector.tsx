@@ -5,14 +5,16 @@ import styles from '@/styles/WeekSelector.module.scss';
 import useSetSearchParams from '@/hooks/useSetSearchParams';
 import { useTheme } from '@/context/ThemeContext';
 import { cn } from '@/utils/common';
-
-interface Props {
-  dateRange: string[];
-}
+import { homeParameterStore } from '@/hooks/stores/HomeParameterStore';
+import { shallow } from 'zustand/shallow';
 
 const SERVICE_START_DATE = new Date('2023-04-01');
 
-const WeekSelector = ({ dateRange }: Props) => {
+const WeekSelector = () => {
+  const { dateRange } = homeParameterStore(
+    (state) => ({ dateRange: state.dateRange }),
+    shallow
+  );
   const [startDate, endDate] = useMemo(() => {
     const [startDate, endDate] = dateRange;
     const start = format(new Date(startDate), 'yyy년 MM월 dd일');

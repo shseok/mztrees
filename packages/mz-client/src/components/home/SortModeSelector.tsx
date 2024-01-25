@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import type { SortMode, Tag } from '@/types/db';
+import type { SortMode, Tag, View } from '@/types/db';
 import { Trending, History, Calendar } from '@/components/vectors';
 import styles from '@/styles/SortModeSelector.module.scss';
 import { cn } from '@/utils/common';
@@ -19,10 +19,11 @@ const GAP = 16;
 interface Props {
   mode: SortMode;
   tag: Tag | null;
+  view: View;
 }
 const SortModeSelector = () => {
-  const { tag, mode } = homeParameterStore(
-    (state) => ({ tag: state.tag, mode: state.mode }),
+  const { tag, mode, view } = homeParameterStore(
+    (state) => ({ tag: state.tag, mode: state.mode, view: state.view }),
     shallow
   );
   const [elementSizes, setElementSizes] = useState([0, 0, 0]);
@@ -73,6 +74,7 @@ const SortModeSelector = () => {
         <ListModeItem
           currentMode={mode}
           tag={tag}
+          view={view}
           key={modeInfo.name}
           index={index}
           onUpdateSize={setElementSizeOfIndex}
@@ -92,6 +94,7 @@ const ListModeItem = ({
   name,
   icon,
   tag,
+  view,
   currentMode,
   onUpdateSize,
   index,
@@ -104,7 +107,10 @@ const ListModeItem = ({
 }) => {
   const { mode: themeMode } = useTheme();
   const ref = useRef<HTMLAnchorElement>(null);
-  const link = tag ? `/?mode=${mode}&tag=${tag}` : `/?mode=${mode}`;
+  const link = tag
+    ? `/?mode=${mode}&tag=${tag}&view=${view}`
+    : `/?mode=${mode}&view=${view}`;
+
   useEffect(() => {
     if (!ref.current) return;
     onUpdateSize(index, ref.current.clientWidth);
