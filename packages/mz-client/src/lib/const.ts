@@ -1,8 +1,10 @@
-import { HomeProps } from '@/types/custom';
+import type { HomeProps } from '@/types/custom';
 import type { Item } from '@/types/db';
 import type { OpenGraphType } from 'next/dist/lib/metadata/types/opengraph-types';
 import { getWeekRangeFromDate } from '@/lib/week';
 import { format } from 'date-fns';
+
+export const INITIAL_ITEM_LIMIT = 6;
 
 export const tagList = [
   '요리',

@@ -1,47 +1,32 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import styles from '@/styles/StyledTabLayout.module.scss';
-import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
-import { colors } from '@/lib/colors';
 import LinkCardList from '@/components/home/LinkCardList';
-import SkeletonUI from '@/components/system/SkeletonUI';
 import EmptyList from '../system/EmptyList';
-import ErrorShower from '@/app/error';
-import LoadingIndicator from '../system/LoadingIndicator';
-import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
-import useGetHomeItemsQuery from '@/hooks/query/useGetHomeItemsQuery';
 import { homeParameterStore } from '@/hooks/stores/HomeParameterStore';
 import { shallow } from 'zustand/shallow';
 import Selectors from './Selectors';
 import LinkRowList from './LinkRowList';
-import { SortMode, View } from '@/types/db';
+import { GetItemsResult, SortMode, View } from '@/types/db';
+import LoadMore from './LoadMore';
 
-export default function Home() {
+export default function Home({ items }: { items: GetItemsResult }) {
   const searchParams = useSearchParams();
-  const { reset } = useQueryErrorResetBoundary();
   const startDate = searchParams.get('start');
   const endDate = searchParams.get('end');
-  const observerTargetEl = useRef<HTMLDivElement>(null);
 
-  const { mode, tag, view, dateRange, setMode, setView, setDateRange } =
-    homeParameterStore(
-      (state) => ({
-        mode: state.mode,
-        tag: state.tag,
-        view: state.view,
-        dateRange: state.dateRange,
-        setMode: state.setMode,
-        setView: state.setView,
-        setDateRange: state.setDateRange,
-      }),
-      shallow
-    );
-  const { infiniteData, status, error, fetchNextData, isFetchingNextPage } =
-    useGetHomeItemsQuery({ mode, tag, dateRange });
-
-  useInfiniteScroll(observerTargetEl, fetchNextData);
+  const { mode, view, setMode, setView, setDateRange } = homeParameterStore(
+    (state) => ({
+      mode: state.mode,
+      view: state.view,
+      setMode: state.setMode,
+      setView: state.setView,
+      setDateRange: state.setDateRange,
+    }),
+    shallow
+  );
 
   useEffect(() => {
     // link로 접근할 수 있는 mode에 대한 처리
@@ -64,41 +49,31 @@ export default function Home() {
     }
   }, [startDate, endDate, mode]);
 
-  const items = infiniteData?.pages.flatMap((page) => page.list);
-
-  const getContent = () => {
-    if (status === 'loading') {
-      return <SkeletonUI />;
-    }
-
-    if (status === 'error') {
-      // TODO: define error type
-      return <ErrorShower error={error as Error} reset={reset} />;
-    }
-
-    if (items) {
-      return view === 'card' ? (
-        <LinkCardList items={items} />
-      ) : (
-        <LinkRowList items={items} />
-      );
-    }
-
-    return null;
-  };
+  // console.log(items);
+  // throw new Error();
+  const remainingItemCount = items.totalCount - items.list.length;
 
   return (
     <>
       <div className={styles.content}>
         <Selectors mode={mode} />
-        {getContent()}
-        <div className={styles.loadMore} ref={observerTargetEl}>
-          {isFetchingNextPage ? (
-            <LoadingIndicator color={colors.primary} />
-          ) : null}
-        </div>
+        {items.list.length > 0 ? (
+          view === 'card' ? (
+            <LinkCardList items={items.list} />
+          ) : (
+            <LinkRowList items={items.list} />
+          )
+        ) : (
+          <EmptyList />
+        )}
+        {/* TODO: refactor about props drilling (endItemId) */}
+        {remainingItemCount > 0 && (
+          <LoadMore
+            moreItemCount={remainingItemCount}
+            endItemId={items.pageInfo.endCursor ?? undefined}
+          />
+        )}
       </div>
-      {items?.length === 0 ? <EmptyList /> : null}
     </>
   );
 }

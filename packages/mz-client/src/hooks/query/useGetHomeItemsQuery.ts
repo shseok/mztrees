@@ -8,12 +8,14 @@ interface useGetItemsQueryProps {
   mode: SortMode;
   tag: Tag | null;
   dateRange: string[];
+  initialCursor?: number;
 }
 
 export default function useGetHomeItemsQuery({
   mode,
   tag,
   dateRange,
+  initialCursor,
 }: useGetItemsQueryProps) {
   const {
     status,
@@ -26,7 +28,7 @@ export default function useGetHomeItemsQuery({
     ['Items', mode, tag, mode === 'past' ? dateRange : undefined].filter(
       (item) => !!item
     ),
-    ({ pageParam = undefined }: { pageParam?: number }) =>
+    ({ pageParam = initialCursor }: { pageParam?: number }) =>
       getItems({
         mode,
         tag: tag ?? undefined,
