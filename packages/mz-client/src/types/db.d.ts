@@ -107,6 +107,15 @@ export type SearchItemsResult = Pagination<SearchItemResult>;
 export type SortMode = 'recent' | 'trending' | 'past';
 export type Size = 'small' | 'medium' | 'large';
 
+export interface GetItemsParams {
+  mode: SortMode;
+  tag?: Tag;
+  cursor?: number;
+  startDate?: string;
+  endDate?: string;
+  limit?: number;
+}
+
 export interface Bookmark {
   id: number;
   createdAt: string;

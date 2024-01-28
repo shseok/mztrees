@@ -93,8 +93,15 @@ export interface User {
   is_verified: boolean;
 }
 
+type HomeSearchParams = {
+  mode?: SortMode;
+  tag?: Tag;
+  start?: string;
+  end?: string;
+};
+
 export type HomeProps = {
-  searchParams: { [key: string]: string | undefined };
+  searchParams: HomePageSearchParams;
 };
 
 export type MutationProps = () => void;

@@ -8,10 +8,9 @@ import type {
   ItemForSitemap,
   LikeCommentResult,
   LikeItemResult,
-  SortMode,
   MutateItemParams,
-  Tag,
   UnlikeCommentResult,
+  GetItemsParams,
 } from '@/types/db';
 
 export async function createItem(params: MutateItemParams) {
@@ -30,15 +29,10 @@ export async function getItems({
   cursor,
   startDate,
   endDate,
-}: {
-  mode: SortMode;
-  tag?: Tag;
-  cursor?: number;
-  startDate?: string;
-  endDate?: string;
-}) {
+  limit,
+}: GetItemsParams) {
   const query = stringify(
-    { mode, cursor, tag, startDate, endDate },
+    { mode, cursor, tag, startDate, endDate, limit },
     { addQueryPrefix: true } //  tags > arrayFormat: "repeat"
   );
   const resonse = await fetchClient.get<GetItemsResult>(
