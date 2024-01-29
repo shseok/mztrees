@@ -322,7 +322,21 @@ const itemService = {
     // })
 
     const [totalCount, list] = await Promise.all([
-      db.item.count(),
+      db.item.count({
+        where: {
+          ...(tag && {
+            itemsTags: {
+              some: {
+                tag: {
+                  name: {
+                    equals: tag, // 같은 태그의 item을 가져옴
+                  },
+                },
+              },
+            },
+          }),
+        },
+      }),
       db.item.findMany({
         orderBy: {
           id: 'desc',
@@ -411,6 +425,17 @@ const itemService = {
             gte: startedAt,
             lte: endedAt,
           },
+          ...(tag && {
+            itemsTags: {
+              some: {
+                tag: {
+                  name: {
+                    equals: tag, // 같은 태그의 item을 가져옴
+                  },
+                },
+              },
+            },
+          }),
         },
       }),
       db.item.findMany({
@@ -502,11 +527,32 @@ const itemService = {
     tag?: string
   }) {
     // TODO: 당장 많은 데이터를 트렌딩으로 보여주는게 아니므로 몇 점이상 부터 노출시킬지는 나중에 정하자
-    const totalCount = await db.itemStats.count({
+    // const totalCount = await db.itemStats.count({
+    //   where: {
+    //     score: {
+    //       gte: 0.001,
+    //     },
+    //   },
+    // })
+
+    const totalCount = await db.item.count({
       where: {
-        score: {
-          gte: 0.001,
+        itemStats: {
+          score: {
+            gte: 0.001,
+          },
         },
+        ...(tag && {
+          itemsTags: {
+            some: {
+              tag: {
+                name: {
+                  equals: tag, // 같은 태그의 item을 가져옴
+                },
+              },
+            },
+          },
+        }),
       },
     })
 
