@@ -364,6 +364,7 @@ const itemService = {
           publisher: true,
           itemStats: true,
           thumbnail: true,
+          itemsTags: true,
           itemLikes: userId ? { where: { userId } } : false,
           bookmarks: userId ? { where: { userId } } : false,
         },
@@ -483,6 +484,7 @@ const itemService = {
           publisher: true,
           itemStats: true,
           thumbnail: true,
+          itemsTags: true,
           itemLikes: userId ? { where: { userId } } : false,
           bookmarks: userId ? { where: { userId } } : false,
         },
@@ -615,6 +617,7 @@ const itemService = {
         publisher: true,
         itemStats: true,
         thumbnail: true,
+        itemsTags: true,
         itemLikes: userId ? { where: { userId } } : false,
         bookmarks: userId ? { where: { userId } } : false,
       },
@@ -691,7 +694,8 @@ const itemService = {
     const serializedListWithTags = await Promise.all(
       serializedList.map(async (item) => ({
         ...item,
-        tag: await this.getTagsForItem(item.id),
+        tags:
+          item.itemsTags.length > 0 ? await this.getTagsForItem(item.id) : [],
       })),
     )
     return createPagination({
