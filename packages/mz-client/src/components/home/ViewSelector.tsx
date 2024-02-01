@@ -24,18 +24,20 @@ export default function ViewSelector() {
 
   return (
     <ul role='menu' className={styles.menu}>
-      <li>
+      <li role='menuitem'>
         <button
-          role='menuitem'
+          type='button'
+          aria-label='카드 뷰로 보기'
           className={cn(styles.menu_item, view === 'card' && styles.active)}
           onClick={() => handleClick('card')}
         >
           <CardView />
         </button>
       </li>
-      <li>
+      <li role='menuitem'>
         <button
-          role='menuitem'
+          type='button'
+          aria-label='리스트 뷰로 보기'
           className={cn(styles.menu_item, view === 'list' && styles.active)}
           onClick={() => handleClick('list')}
         >
