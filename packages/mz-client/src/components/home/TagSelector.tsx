@@ -5,7 +5,6 @@ import { useTheme } from '@/context/ThemeContext';
 import { cn } from '@/utils/common';
 import TagMenu from './TagMenu';
 import type { Tag } from '@/types/db';
-import useSetSearchParams from '@/hooks/useSetSearchParams';
 import { homeParameterStore } from '@/hooks/stores/HomeParameterStore';
 import { shallow } from 'zustand/shallow';
 
@@ -13,13 +12,8 @@ const TagSelector = () => {
   const { mode } = useTheme();
   const [visible, setVisible] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const setSearchParams = useSetSearchParams();
-  const {
-    mode: selectedMode,
-    tag,
-    setTag,
-  } = homeParameterStore(
-    (state) => ({ mode: state.mode, tag: state.tag, setTag: state.setTag }),
+  const { tag, setTag } = homeParameterStore(
+    (state) => ({ tag: state.tag, setTag: state.setTag }),
     shallow
   );
   const onToggle = () => {
@@ -30,9 +24,17 @@ const TagSelector = () => {
     const isButton =
       buttonEl === e?.target || buttonEl?.contains(e?.target as Node);
     if (isButton) return;
-
     setVisible(false);
   };
+
+  const onSelect = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    value: Tag
+  ) => {
+    e.preventDefault();
+    setTag(value);
+  };
+  // TODO: button Button으로 refactor
   return (
     <div className={cn(styles.container, mode === 'dark' && styles.dark)}>
       <button
@@ -54,26 +56,17 @@ const TagSelector = () => {
             className={styles.close_btn}
             onClick={() => {
               setTag(null);
-              setSearchParams({ mode: selectedMode, tag: null });
             }}
           >
             <Close />
           </button>
         </div>
       )}
-
       <TagMenu
         visible={visible}
         onClose={onClose}
         selected={tag}
-        onSelect={(
-          e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-          value: Tag
-        ) => {
-          e.preventDefault();
-          setTag(value);
-          setSearchParams({ mode: selectedMode, tag: value });
-        }}
+        onSelect={onSelect}
       />
     </div>
   );
