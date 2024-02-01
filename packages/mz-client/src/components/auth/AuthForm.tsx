@@ -18,7 +18,6 @@ import {
 import { useUser } from '@/context/UserContext';
 import { cn } from '@/utils/common';
 import { useTheme } from '@/context/ThemeContext';
-import { useQueryClient } from '@tanstack/react-query';
 import LoadingIndicator from '../system/LoadingIndicator';
 
 interface Props {
@@ -70,11 +69,9 @@ const AuthForm = ({ mode }: Props) => {
   const next = searchParams.get('next');
   const [error, setError] = useState<NextAppError | undefined>();
   const { setCurrentUser: set } = useUser();
-  const queryClient = useQueryClient();
 
   const onSubmit: SubmitHandler<Inputs> = async (data: Inputs, event) => {
     event?.preventDefault();
-    queryClient.invalidateQueries(['Items', 'trending']);
     try {
       if (mode === 'register') {
         const result = await userRegister(data);

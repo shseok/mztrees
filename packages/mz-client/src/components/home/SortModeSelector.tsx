@@ -123,7 +123,7 @@ const ListModeItem = ({
         themeMode === 'dark' && styles.dark
       )}
       href={link}
-      prefetch={mode !== 'past'}
+      prefetch={false}
       ref={ref}
     >
       {icon}
