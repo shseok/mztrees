@@ -5,9 +5,12 @@ export function getWeekRangeFromDate(d: Date) {
   const day = d.getDay();
   const startDate = d.getDate() - day;
 
-  const start = format(new Date(d.setDate(startDate)), 'yyyy-MM-dd');
+  const start = format(
+    new Date(d.getFullYear(), d.getMonth(), startDate),
+    'yyyy-MM-dd'
+  );
   const end = format(
-    new Date(new Date(start).setDate(startDate + 6)),
+    new Date(d.getFullYear(), d.getMonth(), startDate + 6),
     'yyyy-MM-dd'
   );
   return [start, end];
