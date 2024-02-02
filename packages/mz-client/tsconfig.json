@@ -27,6 +27,7 @@
   "include": [
     "src/types/custom.d.ts",
     "src/types/global.d.ts",
+    "src/types/editor.d.ts",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
