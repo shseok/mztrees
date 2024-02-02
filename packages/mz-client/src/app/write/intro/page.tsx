@@ -4,6 +4,8 @@ import BasicLayout from '@/components/layout/BasicLayout';
 import LabelInput from '@/components/system/LabelInput';
 import LabelTextArea from '@/components/system/LabelTextArea';
 import TagInput from '@/components/system/TagInput';
+import Editor from '@/components/write/Editor';
+import PreviewRenderer from '@/components/write/PreviewRenderer';
 import WriteFormTemplate from '@/components/write/WriteFormTemplate';
 import { useWriteContext } from '@/context/WriteContext';
 import { useOpenLoginDialog } from '@/hooks/useOpenLoginDialog';
@@ -85,7 +87,8 @@ export default function Intro() {
       console.log(error);
     }
   };
-
+  const [data, setData] = useState();
+  console.log(data);
   return (
     <BasicLayout title='웹사이트 소개' hasBackButton>
       <WriteFormTemplate
@@ -115,6 +118,10 @@ export default function Intro() {
           ) : null}
         </div>
       </WriteFormTemplate>
+      <div style={{ width: '100%', display: 'flex' }}>
+        <Editor data={data} onChange={setData} />
+        <PreviewRenderer data={data} />
+      </div>
     </BasicLayout>
   );
 }
