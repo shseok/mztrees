@@ -59,8 +59,8 @@ export async function extractPageInfo(
     url: validatedUrl,
     publisher: data.publisher ?? domain,
     author: processedAuthor !== data.publisher ? processedAuthor : null,
-    favicon: data.logo,
-    thumbnail: data.image,
+    favicon: data.logo ?? null,
+    thumbnail: data.image ?? null,
     domain,
   }
 }

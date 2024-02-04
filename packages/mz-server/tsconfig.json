@@ -13,5 +13,6 @@
     "esModuleInterop": true,
     "sourceMap": true
   },
+  "include": ["src/types.d.ts"],
   "exclude": ["prisma", "dist", "node_modules"]
 }
