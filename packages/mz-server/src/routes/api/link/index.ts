@@ -10,4 +10,14 @@ export const linkRoute: FastifyPluginAsyncTypebox = async (fastify) => {
     )) as any
     return result
   })
+
+  fastify.post(
+    '/upload',
+    // { schema: linkRouteSchema.GetImageData },
+    async (request) => {
+      const data = await request.file()
+      const result = await linkService.getImageData(data)
+      return result
+    },
+  )
 }
