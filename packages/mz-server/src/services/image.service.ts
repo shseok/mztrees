@@ -4,7 +4,7 @@ import mimeTypes from 'mime-types'
 import { nanoid } from 'nanoid'
 
 interface CreateFileKeyParams {
-  type: 'item' | 'publisher'
+  type: 'item' | 'publisher' | 'public'
   id: number
   extension: string
 }

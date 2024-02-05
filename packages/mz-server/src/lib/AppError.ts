@@ -37,6 +37,10 @@ const errors = {
     statusCode: 422,
     message: 'Invalid URL',
   },
+  InvalidFile: {
+    statusCode: 422,
+    message: 'Invalid file',
+  },
   Unknown: {
     statusCode: 500,
     message: 'Unknown error',

@@ -7,6 +7,7 @@ import 'dotenv/config'
 import { authPlugin } from './plugins/authPlugin.js'
 import fastifyCookie from '@fastify/cookie'
 import cors from '@fastify/cors'
+import multipart from '@fastify/multipart'
 import { isAppError } from './lib/AppError.js'
 import packageJson from './lib/packageJsonInfo.js'
 
@@ -36,6 +37,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 server.register(fastifyCookie)
+server.register(multipart)
 
 server.setErrorHandler(async (error, request, reply) => {
   // Fastify에서는 기본적으로 HTTP 응답 코드로 200 (OK)을 사용하므로
