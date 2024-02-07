@@ -3,7 +3,7 @@
 import { createContext, useContext, useMemo, useState } from 'react';
 import { NextAppError } from '@/lib/nextError';
 import { produce } from 'immer';
-import type { TagList } from '@/types/db';
+import type { FormType, TagList } from '@/types/db';
 
 type ThumbnailType = {
   extracted: string[];
@@ -11,14 +11,7 @@ type ThumbnailType = {
 };
 
 interface WriteContextState {
-  form: {
-    link: string;
-    title: string;
-    body: string;
-    thumbnail: ThumbnailType;
-    id?: string;
-    tags: TagList;
-  };
+  form: FormType;
   error?: NextAppError;
 }
 
