@@ -1,7 +1,5 @@
 import type { Tag, TagList } from '@/types/db';
 import styles from '@/styles/TagInput.module.scss';
-import { useTheme } from '@/context/ThemeContext';
-import { cn } from '@/utils/common';
 import { useState } from 'react';
 import Button from './Button';
 import OptionSelector from './OptionSelector';
@@ -15,39 +13,19 @@ const TagInput = () => {
       form: { tags },
     },
   } = useWriteContext();
-  const [focused, setFocused] = useState(false);
   const [visible, setVisible] = useState(false);
   const [selectedTags, setSelectedTags] = useState<TagList>(tags);
-  const { mode } = useTheme();
-
-  const onFocus = () => {
-    setFocused(true);
-  };
-
-  const onBlur = () => {
-    setFocused(false);
-  };
 
   const openTagSelector = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
     setVisible(true);
-    onFocus();
   };
   return (
     <>
       <div className={styles.block}>
         <div className={styles.top_wrapper}>
-          <label
-            className={cn(
-              styles.label,
-              focused && styles.focused,
-              mode === 'dark' && styles.dark
-            )}
-          >
-            태그
-          </label>
           <Button
             type='button'
             aria-label='태그 추가'
@@ -68,9 +46,7 @@ const TagInput = () => {
                 </div>
               ))}
             </div>
-          ) : (
-            <span className={styles.placeholder}>태그를 입력해주세요.</span>
-          )}
+          ) : null}
         </div>
       </div>
       {/* Refactor: 아마 form안에 있어서 form 버튼까지 버블링되는 것 같다. 물론 preventDefault로 일일이 막아주었지만.. 최대한 전역으로 빼자 (Dialog처럼.) */}
@@ -97,12 +73,10 @@ const TagInput = () => {
           }
           actions.change('tags', selectedTags);
           setVisible(false);
-          onBlur();
           // buttonRef.current?.focus();
         }}
         onClose={() => {
           setVisible(false);
-          onBlur();
         }}
         confirmText='선택'
         cancelText='취소'

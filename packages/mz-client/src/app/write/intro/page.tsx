@@ -1,36 +1,48 @@
 'use client';
 
+import type { OutputData } from '@editorjs/editorjs';
 import BasicLayout from '@/components/layout/BasicLayout';
 import LabelInput from '@/components/system/LabelInput';
 import LabelTextArea from '@/components/system/LabelTextArea';
 import TagInput from '@/components/system/TagInput';
 import Editor from '@/components/write/Editor';
-import PreviewRenderer from '@/components/write/PreviewRenderer';
 import WriteFormTemplate from '@/components/write/WriteFormTemplate';
 import { useWriteContext } from '@/context/WriteContext';
 import { useOpenLoginDialog } from '@/hooks/useOpenLoginDialog';
-import { refreshToken } from '@/lib/api/auth';
-import { createItem } from '@/lib/api/items';
-import { setClientCookie } from '@/lib/client';
-import { extractNextError } from '@/lib/nextError';
 import styles from '@/styles/WriteIntro.module.scss';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import Content from '@/components/write/Content';
+import type { FormType } from '@/types/db';
+import TextareaAutosize from 'react-textarea-autosize';
+import { useCreateItemMutation } from '@/hooks/mutation/useCreateItemMutation';
 
+// TODO: 임시저장 만들기
 export default function Intro() {
   const {
     state: { form },
     actions,
   } = useWriteContext();
+  const ItemInfo = {
+    title: form.title,
+    body: form.body,
+    link: form.link,
+    thumbnail: form.thumbnail.selected,
+    tags: form.tags,
+  };
   const {
+    register,
     handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<typeof form>();
-  const openLoginDialog = useOpenLoginDialog();
+    formState: { isSubmitting, errors },
+  } = useForm<FormType>({
+    defaultValues: ItemInfo,
+  });
   const [errorMessage] = useState<string | null>(null);
-  const router = useRouter();
+  const [data, setData] = useState<OutputData>();
+  const _titleRef = useRef<HTMLTextAreaElement>(null);
+  const { ref: titleRef, ...rest } = register('title');
+  const creactItem = useCreateItemMutation();
 
   const onChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -40,8 +52,10 @@ export default function Intro() {
     actions.change(key, value);
   };
 
-  const onSubmit: SubmitHandler<typeof form> = async (data, e) => {
+  const onSubmit: SubmitHandler<FormType> = async (data, e) => {
     e?.preventDefault();
+    const { title, body } = data;
+
     if (form.title === '' || form.body === '') {
       toast.error('제목과 내용을 모두 입력해주세요.');
       return;
@@ -55,39 +69,17 @@ export default function Intro() {
     //   router.back();
     //   router.refresh();
     // }
-    const ItemInfo = {
-      title: form.title,
-      body: form.body,
-      link: form.link,
-      thumbnail: form.thumbnail.selected,
-      tags: form.tags,
-    };
     // request & error
-    try {
-      const item = await createItem(ItemInfo);
-      router.push(`/items/${item.id}`);
-    } catch (e) {
-      const error = extractNextError(e);
-      if (error.name === 'Unauthorized' && error.payload?.isExpiredToken) {
-        try {
-          const tokens = await refreshToken();
-          setClientCookie(`access_token=${tokens.accessToken}`);
-
-          const item = await createItem(ItemInfo);
-          router.push(`/items/${item.id}`);
-        } catch (innerError) {
-          // expire refresh
-          openLoginDialog('sessionOut');
-        }
-      } else if (error.statusCode === 422) {
-        router.back();
-        router.back();
-        actions.setError(error);
-      }
-      console.log(error);
-    }
+    creactItem(ItemInfo);
   };
-  const [data, setData] = useState();
+
+  useEffect(() => {
+    if (Object.keys(errors).length) {
+      for (const [_key, value] of Object.entries(errors)) {
+        toast.error('제목, 내용, 태그를 모두 입력해주세요');
+      }
+    }
+  }, [errors]);
   console.log(data);
   return (
     <BasicLayout title='웹사이트 소개' hasBackButton>
@@ -98,7 +90,7 @@ export default function Intro() {
         isLoading={isSubmitting}
       >
         <div className={styles.group}>
-          <TagInput />
+          {/* <TagInput />
           <LabelInput
             label='제목'
             name='title'
@@ -112,16 +104,35 @@ export default function Intro() {
             value={form.body}
             onChange={onChange}
             rows={8}
+          /> */}
+          <TextareaAutosize
+            ref={(e) => {
+              titleRef(e);
+              // @ts-ignore
+              _titleRef.current = e;
+            }}
+            {...rest}
+            placeholder='제목을 입력하세요'
+            className={styles.title}
           />
+          <TagInput />
+          <Editor
+            data={data}
+            onChange={setData}
+            titleRef={_titleRef}
+            register={register}
+          />
+          {/* <div style={{ minHeight: '500px', flex: 1 }}>
+            {data &&
+              data.blocks?.map((block) => (
+                <Content block={block} key={block.id} />
+              ))}
+          </div> */}
           {errorMessage ? (
             <div className={styles.message}>{errorMessage}</div>
           ) : null}
         </div>
       </WriteFormTemplate>
-      <div style={{ width: '100%', display: 'flex' }}>
-        <Editor data={data} onChange={setData} />
-        <PreviewRenderer data={data} />
-      </div>
     </BasicLayout>
   );
 }

@@ -1,24 +1,47 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  RefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import type EditorJS from '@editorjs/editorjs';
-import TextareaAutosize from 'react-textarea-autosize';
+import type { OutputData } from '@editorjs/editorjs';
+import type { UseFormRegister } from 'react-hook-form';
+import styles from '@/styles/Editor.module.scss';
+import type { FormType } from '@/types/db';
 
 export default function Editor({
   data,
   onChange,
+  register,
+  titleRef,
 }: {
-  data: any;
-  onChange: any;
+  data?: OutputData;
+  onChange: (data: OutputData) => void;
+  register: UseFormRegister<FormType>;
+  titleRef: RefObject<HTMLTextAreaElement>;
 }) {
   const ref = useRef<EditorJS>();
-  const _titleRef = useRef<HTMLTextAreaElement>(null);
   const [isMounted, setIsMounted] = useState(false);
 
   const initializeEditor = useCallback(async () => {
     const EditorJS = (await import('@editorjs/editorjs')).default;
     const Header = (await import('@editorjs/header')).default;
-    const Embed = (await import('@editorjs/embed')).default;
-    const Table = (await import('@editorjs/table')).default;
+    const Paragraph = (await import('@editorjs/paragraph')).default;
+    const Alert = (await import('editorjs-alert')).default;
     const List = (await import('@editorjs/list')).default;
+    const Embed = (await import('@editorjs/embed')).default;
+    const Underline = (await import('@editorjs/underline')).default;
+    const ChangeCase = (await import('editorjs-change-case')).default;
+    const Strikethrough = (await import('@sotaproject/strikethrough')).default;
+    const CheckList = (await import('@editorjs/checklist')).default;
+    // const SimpleImage = (await import('@editorjs/simple-image')).default;
+    const Marker = (await import('@editorjs/marker')).default;
+    const ColorPlugin = (await import('editorjs-text-color-plugin')).default;
+    const AlignmentBlockTune = (
+      await import('editorjs-text-alignment-blocktune')
+    ).default;
     const Code = (await import('@editorjs/code')).default;
     const LinkTool = (await import('@editorjs/link')).default;
     const InlineCode = (await import('@editorjs/inline-code')).default;
@@ -30,49 +53,107 @@ export default function Editor({
         onReady() {
           ref.current = editor;
         },
-        placeholder: 'Type here to write your post...',
-        inlineToolbar: true,
+        placeholder: '게시물을 작성하려면 여기에 입력하세요',
+        // inlineToolbar: true,
         // data: { blocks: [] },
         data,
         async onChange(api, event) {
           // console.log("Editor data has changed", api.blocks);
+          // TODO: 이게 어떻게 되는건가?
+          // const data = await editor.save();
           const data = await api.saver.save();
           onChange(data);
         },
         tools: {
-          header: Header,
-          // linkTool: LinkTool,
+          textAlignment: {
+            class: AlignmentBlockTune,
+            config: {
+              default: 'left',
+              blocks: {
+                header: 'center',
+                list: 'left',
+                paragraph: 'left',
+              },
+            },
+          },
+          header: {
+            class: Header,
+            inlineToolbar: true,
+            tunes: ['textAlignment'],
+            config: {
+              // placeholder: '제목을 입력하세요',
+              levels: [1, 2, 3, 4, 5],
+              defaultLevel: 2,
+            },
+          },
+          paragraph: {
+            class: Paragraph,
+            tunes: ['textAlignment'],
+          },
+          alert: {
+            class: Alert,
+            config: {
+              defaultType: 'primary',
+              messagePlaceholder: '내용을 입력하세요',
+            },
+          },
+          list: {
+            class: List,
+            config: {
+              defaultStyle: 'unordered',
+            },
+          },
           linkTool: {
             class: LinkTool,
             config: {
-              endpoint: `${process.env
-                .NEXT_PUBLIC_LOCAL_API_BASE_URL!}/api/link`,
+              endpoint: `/api/link`,
+              headers: {
+                'Content-Type': 'application/json',
+              },
             },
           },
-          // image: {
-          //   class: ImageTool,
-          //   config: {
-          //     uploader: {
-          //       async uploadByFile(file: File) {
-          //         // upload to uploadthing
-          //         // const [res] = await uploadFiles([file], 'imageUploader');
-
-          //         return {
-          //           success: 1,
-          //           file: {
-          //             url: res.fileUrl,
-          //           },
-          //         };
-          //       },
-          //     },
-          //   },
-          // },
-          image: ImageTool,
-          list: List,
+          image: {
+            class: ImageTool,
+            config: {
+              endpoints: {
+                byFile: `/api/link/upload`, // 이미지 주소를 복사하면 해당 endpoints로 요청하여 simpleImage를 적용이 안됨..
+              },
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            },
+          },
+          // simpleImage: SimpleImage, // 적용이 안되는 버그
+          checkList: CheckList,
+          underline: Underline,
+          strikethrough: Strikethrough,
+          marker: Marker,
+          changeCase: ChangeCase,
           code: Code,
           inlineCode: InlineCode,
-          table: Table,
           embed: Embed,
+          Color: {
+            class: ColorPlugin,
+            config: {
+              colorCollections: [
+                // 적용이 안되는 버그
+                '#EC7878',
+                '#9C27B0',
+                '#673AB7',
+                '#3F51B5',
+                '#0070FF',
+                '#03A9F4',
+                '#00BCD4',
+                '#4CAF50',
+                '#8BC34A',
+                '#CDDC39',
+                '#FFF',
+              ],
+              defaultColor: '#017A59',
+              type: 'text',
+              customPicker: true,
+            },
+          },
         },
       });
     }
@@ -83,7 +164,7 @@ export default function Editor({
       await initializeEditor();
       // editorjs가 초기화되면 title에 포커스를 준다.
       setTimeout(() => {
-        _titleRef?.current?.focus();
+        titleRef?.current?.focus();
       }, 0);
     };
     if (!isMounted) return;
@@ -102,5 +183,9 @@ export default function Editor({
     }
   }, []);
 
-  return <div id='editor' style={{ minHeight: '500px', flex: 1 }} />;
+  if (!isMounted) {
+    return null;
+  }
+
+  return <div id='editor' className={styles.editor} {...register('body')} />;
 }

@@ -143,3 +143,12 @@ type TagType = {
 };
 
 export type View = 'list' | 'card';
+
+export type FormType = {
+  link: string;
+  title: string;
+  body: string;
+  thumbnail: ThumbnailType;
+  id?: string;
+  tags: TagList;
+};
