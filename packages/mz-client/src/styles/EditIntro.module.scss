@@ -1,3 +1,5 @@
+@import 'var';
+
 .group {
   display: flex;
   flex-direction: column;
@@ -12,3 +14,17 @@
 //   color: red;
 //   text-align: center;
 // }
+
+.title {
+  width: 100%;
+  resize: none;
+  appearance: none;
+  overflow: hidden;
+  background: transparent;
+  font-size: 32px;
+  font-weight: bold;
+  border: none;
+  outline: none;
+  height: 54px;
+  color: $gray5;
+}

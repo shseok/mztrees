@@ -1,29 +1,31 @@
 'use client';
 
 import BasicLayout from '@/components/layout/BasicLayout';
-import React, { useState } from 'react';
 import styles from '@/styles/EditIntro.module.scss';
-import { useRouter } from 'next/navigation';
-import { updateItem } from '@/lib/api/items';
-import { extractNextError } from '@/lib/nextError';
-import { refreshToken } from '@/lib/api/auth';
-import { setClientCookie } from '@/lib/client';
-import { useOpenLoginDialog } from '@/hooks/useOpenLoginDialog';
 import WriteFormTemplate from '@/components/write/WriteFormTemplate';
-import LabelInput from '@/components/system/LabelInput';
-import LabelTextArea from '@/components/system/LabelTextArea';
+import TextareaAutosize from 'react-textarea-autosize';
 import { useWriteContext } from '@/context/WriteContext';
 import TagInput from '@/components/system/TagInput';
 import { toast } from 'sonner';
+import { useEditItemMutation } from '@/hooks/mutation/useEditItemMutation';
+import { useRef, useState } from 'react';
+import type { OutputData } from '@editorjs/editorjs';
+import dynamic from 'next/dynamic';
+import Button from '@/components/system/Button';
+
+const Editor = dynamic(() => import('@/components/write/Editor'), {
+  ssr: false,
+});
 
 export default function EditIntro() {
   const {
     state: { form },
     actions,
   } = useWriteContext();
-  const openLoginDialog = useOpenLoginDialog();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter();
+
+  const [bodyData, setBodyData] = useState<OutputData>();
+  const _titleRef = useRef<HTMLTextAreaElement>(null);
+  const { mutateEditItem, isLoading } = useEditItemMutation();
 
   const onChange: React.ChangeEventHandler<
     HTMLTextAreaElement | HTMLInputElement
@@ -35,51 +37,47 @@ export default function EditIntro() {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (form.title === '' || form.body === '') {
-      toast.error('제목과 내용을 모두 입력해주세요.');
+    const {
+      id,
+      title,
+      body,
+      tags,
+      link,
+      thumbnail: { selected },
+    } = form;
+    if (
+      title === '' ||
+      !(bodyData?.blocks.length ?? body?.blocks.length) ||
+      tags.length === 0
+    ) {
+      toast.error('제목, 내용, 태그를 모두 입력해주세요');
       return;
     }
-    if (!form.tags.length) {
-      toast.error('해당 웹사이트의 태그를 입력해 주세요');
-      return;
-    }
+    localStorage.removeItem('writeData');
+    if (!id) return;
+    mutateEditItem({
+      itemId: parseInt(id),
+      params: {
+        title,
+        body: JSON.stringify(bodyData ?? body),
+        tags,
+        link,
+        thumbnail: selected,
+      },
+    });
+  };
 
-    if (!form.id) return;
-    const ItemInfo = {
-      title: form.title,
-      body: form.body,
-      link: form.link,
-      thumbnail: form.thumbnail.selected,
-      tags: form.tags,
-    };
-
-    try {
-      setIsSubmitting(true);
-      await updateItem(parseInt(form.id), ItemInfo);
-      router.push(`/items/${form.id}`);
-      router.refresh();
-    } catch (e) {
-      // TODO: refactor erorr like "getMyAccountWithRefresh"
-      const error = extractNextError(e);
-      // access token expired
-      if (error.name === 'Unauthorized' && error.payload?.isExpiredToken) {
-        try {
-          const tokens = await refreshToken();
-          setClientCookie(`access_token=${tokens.accessToken}`);
-
-          await updateItem(parseInt(form.id), ItemInfo);
-          router.back();
-        } catch (innerError) {
-          openLoginDialog('edit');
-        }
-      } else {
-        openLoginDialog('edit');
-      }
-      console.log(extractNextError(e));
-    } finally {
-      setIsSubmitting(false);
-    }
+  // 임시저장 with localStorage
+  const onSave = () => {
+    localStorage.setItem(
+      'writeData',
+      JSON.stringify({
+        title: form.title,
+        body: bodyData,
+        tags: form.tags,
+      })
+    );
+    toast.success('임시 저장되었습니다');
   };
 
   return (
@@ -87,24 +85,34 @@ export default function EditIntro() {
       <WriteFormTemplate
         buttonText='수정하기'
         onSubmit={onSubmit}
-        isLoading={isSubmitting}
+        isLoading={isLoading}
       >
         <div className={styles.group}>
-          <TagInput />
-          <LabelInput
-            label='제목'
-            name='title'
+          <TextareaAutosize
+            ref={(e) => {
+              // @ts-expect-error NOTE: current는 읽기 전용속성 타입이므로 ts-expect-error 를 사용한다.
+              _titleRef.current = e;
+            }}
             onChange={onChange}
             value={form.title}
+            placeholder='제목을 입력하세요'
+            className={styles.title}
           />
-          <LabelTextArea
-            className='styled_label_textarea'
-            label='내용'
-            name='body'
-            value={form.body}
-            onChange={onChange}
-            rows={8}
+          <TagInput />
+          <Editor
+            data={bodyData ?? form.body}
+            onChange={setBodyData}
+            titleRef={_titleRef}
           />
+          <Button
+            type='button'
+            aria-label='임시 저장'
+            layoutmode='fullWidth'
+            variant='secondary'
+            onClick={onSave}
+          >
+            임시저장
+          </Button>
         </div>
       </WriteFormTemplate>
     </BasicLayout>

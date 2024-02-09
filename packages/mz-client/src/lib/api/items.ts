@@ -50,8 +50,17 @@ export async function deleteItem(itemId: number) {
   return fetchClient.delete(`/api/items/${itemId}`);
 }
 
-export async function updateItem(itemId: number, params: MutateItemParams) {
-  const response = await fetchClient.patch(`/api/items/${itemId}`, params);
+export async function updateItem({
+  itemId,
+  params,
+}: {
+  itemId: number;
+  params: MutateItemParams;
+}) {
+  const response = await fetchClient.patch<Item>(
+    `/api/items/${itemId}`,
+    params
+  );
   return response;
 }
 

@@ -144,10 +144,15 @@ type TagType = {
 
 export type View = 'list' | 'card';
 
+type ThumbnailType = {
+  extracted: string[];
+  selected?: string;
+};
+
 export type FormType = {
   link: string;
   title: string;
-  body: string;
+  body: OutputData | null;
   thumbnail: ThumbnailType;
   id?: string;
   tags: TagList;

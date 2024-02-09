@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 export function useCreateItemMutation() {
   const router = useRouter();
   const openLoginDialog = useOpenLoginDialog();
-  const { mutate: mutateCreateItem } = useMutation(createItem, {
+  const { mutate: mutateCreateItem, isLoading } = useMutation(createItem, {
     onSuccess: (data) => {
       router.push(`/items/${data.id}`);
     },
@@ -33,9 +33,9 @@ export function useCreateItemMutation() {
         // actions.setError(error);
         toast.error(error.message);
       }
-      console.log(error);
+      toast.error(error.message);
     },
   });
 
-  return mutateCreateItem;
+  return { mutateCreateItem, isLoading };
 }

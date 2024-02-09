@@ -15,12 +15,13 @@
   gap: 16px;
 }
 
-.message {
-  color: red;
-  font-size: 14px;
-  margin-top: 8px;
-  text-align: center;
-}
+// .message {
+//   color: red;
+//   font-size: 14px;
+//   margin-top: 8px;
+//   text-align: center;
+// }
+
 .title {
   width: 100%;
   resize: none;
@@ -29,11 +30,8 @@
   background: transparent;
   font-size: 32px;
   font-weight: bold;
-  // border-radius: 4px;
-  // border: 1px solid $gray2;
   border: none;
   outline: none;
   height: 54px;
-  // padding: 8px 16px;
   color: $gray5;
 }
