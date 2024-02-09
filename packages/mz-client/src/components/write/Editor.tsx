@@ -7,24 +7,19 @@ import React, {
 } from 'react';
 import type EditorJS from '@editorjs/editorjs';
 import type { OutputData } from '@editorjs/editorjs';
-import type { UseFormRegister } from 'react-hook-form';
 import styles from '@/styles/Editor.module.scss';
-import type { FormType } from '@/types/db';
 
 export default function Editor({
   data,
   onChange,
-  register,
   titleRef,
 }: {
   data?: OutputData;
   onChange: (data: OutputData) => void;
-  register: UseFormRegister<FormType>;
   titleRef: RefObject<HTMLTextAreaElement>;
 }) {
   const ref = useRef<EditorJS>();
   const [isMounted, setIsMounted] = useState(false);
-
   const initializeEditor = useCallback(async () => {
     const EditorJS = (await import('@editorjs/editorjs')).default;
     const Header = (await import('@editorjs/header')).default;
@@ -57,8 +52,7 @@ export default function Editor({
         // inlineToolbar: true,
         // data: { blocks: [] },
         data,
-        async onChange(api, event) {
-          // console.log("Editor data has changed", api.blocks);
+        async onChange(api) {
           // TODO: 이게 어떻게 되는건가?
           // const data = await editor.save();
           const data = await api.saver.save();
@@ -106,7 +100,8 @@ export default function Editor({
           linkTool: {
             class: LinkTool,
             config: {
-              endpoint: `/api/link`,
+              endpoint: `${process.env
+                .NEXT_PUBLIC_LOCAL_API_BASE_URL!}/api/link`,
               headers: {
                 'Content-Type': 'application/json',
               },
@@ -116,7 +111,8 @@ export default function Editor({
             class: ImageTool,
             config: {
               endpoints: {
-                byFile: `/api/link/upload`, // 이미지 주소를 복사하면 해당 endpoints로 요청하여 simpleImage를 적용이 안됨..
+                byFile: `${process.env
+                  .NEXT_PUBLIC_LOCAL_API_BASE_URL!}/api/link/upload`, // 이미지 주소를 복사하면 해당 endpoints로 요청하여 simpleImage를 적용이 안됨..
               },
               headers: {
                 'Content-Type': 'multipart/form-data',
@@ -187,5 +183,5 @@ export default function Editor({
     return null;
   }
 
-  return <div id='editor' className={styles.editor} {...register('body')} />;
+  return <div id='editor' className={styles.editor} />;
 }

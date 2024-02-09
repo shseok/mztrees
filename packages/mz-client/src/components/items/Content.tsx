@@ -12,20 +12,22 @@ export default function Content({ block }: Props) {
   let listItems = '';
   let caption;
   switch (block.type) {
-    case 'paragraph':
+    case 'paragraph': {
       console.log('paragraph', block);
       text = block.data.text;
       align = block.tunes?.textAlignment?.alignment;
       content = `<div class="ce-block__content"><p style="text-align: ${align}">${text}</p></div>`;
       break;
-    case 'header':
+    }
+    case 'header': {
       console.log('header', block);
       const level = block.data.level;
       text = block.data.text;
       align = block.tunes?.textAlignment?.alignment;
       content = `<div class="ce-block__content"><h${level} style="text-align: ${align}">${text}</h${level}></div>`;
       break;
-    case 'alert':
+    }
+    case 'alert': {
       console.log('alert', block);
       const type = block.data.type;
       text = block.data.message || '빈 내용입니다';
@@ -33,7 +35,8 @@ export default function Content({ block }: Props) {
       // TODO: cdx- 이렇게 붙여주고 있는데, 따로 컴포넌트로 만들어서 붙여주는게 좋을듯
       content = `<div class="ce-block__content"><div class="cdx-alert cdx-alert-${type}" style="text-align: ${align}">${text}</div></div>`;
       break;
-    case 'list':
+    }
+    case 'list': {
       console.log('list', block);
       const style = block.data.style;
       block.data.items.map((item: string) => {
@@ -43,6 +46,7 @@ export default function Content({ block }: Props) {
         ? (content = `<ul class="cdx-block cdx-list cdx-list--unordered">${listItems}</ul>`)
         : (content = `<ol class="cdx-block cdx-list cdx-list--ordered">${listItems}</ol>`);
       break;
+    }
     // return (
     //   <ul>
     //     {content.split('\n').map((item, index) => (
@@ -50,7 +54,7 @@ export default function Content({ block }: Props) {
     //     ))}
     //   </ul>
     // );
-    case 'checkList':
+    case 'checkList': {
       console.log('checklist', block);
       block.data.items.map((item: { text: string; checked: boolean }) => {
         listItems += `<div class="cdx-checklist__item ${
@@ -70,6 +74,7 @@ export default function Content({ block }: Props) {
         </div>
       </div>`;
       break;
+    }
     // return (
     //   <ul>
     //     {content.split('\n').map((item, index) => (
@@ -80,7 +85,7 @@ export default function Content({ block }: Props) {
     //     ))}
     //   </ul>
     // );
-    case 'image':
+    case 'image': {
       console.log('image', block);
       caption = block.data.caption;
       const {
@@ -108,7 +113,8 @@ export default function Content({ block }: Props) {
         </div>
       </div>`;
       break;
-    case 'embed':
+    }
+    case 'embed': {
       console.log('embed', block);
       const { embed, height } = block.data;
       caption = block.data.caption;
@@ -119,7 +125,8 @@ src="${embed}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
 `;
       content = `<div class="ce-block__content"><div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">${embedTag}</div></div>`;
       break;
-    case 'linkTool':
+    }
+    case 'linkTool': {
       const {
         link,
         meta: { title, description, image },
@@ -138,8 +145,11 @@ src="${embed}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
           </div>
         </div>
       </div>`;
-    default:
       break;
+    }
+    default: {
+      break;
+    }
   }
   return <div dangerouslySetInnerHTML={{ __html: content }} />;
 }

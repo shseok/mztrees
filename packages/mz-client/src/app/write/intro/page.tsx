@@ -1,67 +1,55 @@
 'use client';
 
 import type { OutputData } from '@editorjs/editorjs';
+import type { FormType } from '@/types/db';
+import styles from '@/styles/WriteIntro.module.scss';
 import BasicLayout from '@/components/layout/BasicLayout';
-import LabelInput from '@/components/system/LabelInput';
-import LabelTextArea from '@/components/system/LabelTextArea';
 import TagInput from '@/components/system/TagInput';
-import Editor from '@/components/write/Editor';
 import WriteFormTemplate from '@/components/write/WriteFormTemplate';
 import { useWriteContext } from '@/context/WriteContext';
-import { useOpenLoginDialog } from '@/hooks/useOpenLoginDialog';
-import styles from '@/styles/WriteIntro.module.scss';
 import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import Content from '@/components/write/Content';
-import type { FormType } from '@/types/db';
-import TextareaAutosize from 'react-textarea-autosize';
 import { useCreateItemMutation } from '@/hooks/mutation/useCreateItemMutation';
+import TextareaAutosize from 'react-textarea-autosize';
+import Button from '@/components/system/Button';
+import dynamic from 'next/dynamic';
 
-// TODO: 임시저장 만들기
+type FormValue = Pick<FormType, 'title'>;
+const Editor = dynamic(() => import('@/components/write/Editor'), {
+  ssr: false,
+});
+
 export default function Intro() {
   const {
     state: { form },
-    actions,
   } = useWriteContext();
-  const ItemInfo = {
-    title: form.title,
-    body: form.body,
-    link: form.link,
-    thumbnail: form.thumbnail.selected,
-    tags: form.tags,
-  };
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting, errors },
-  } = useForm<FormType>({
-    defaultValues: ItemInfo,
+  const { register, watch, setValue, handleSubmit } = useForm<FormValue>({
+    defaultValues: { title: form.title },
   });
-  const [errorMessage] = useState<string | null>(null);
-  const [data, setData] = useState<OutputData>();
+
+  // const [errorMessage] = useState<string | null>(null);
+  const [bodyData, setBodyData] = useState<OutputData>();
   const _titleRef = useRef<HTMLTextAreaElement>(null);
   const { ref: titleRef, ...rest } = register('title');
-  const creactItem = useCreateItemMutation();
+  const { mutateCreateItem, isLoading } = useCreateItemMutation();
+  const watchedTitle = watch('title');
 
-  const onChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const key = e.target.name as 'title' | 'body';
-    const { value } = e.target;
-    actions.change(key, value);
-  };
-
-  const onSubmit: SubmitHandler<FormType> = async (data, e) => {
+  const onSubmit: SubmitHandler<FormValue> = async (data, e) => {
     e?.preventDefault();
-    const { title, body } = data;
-
-    if (form.title === '' || form.body === '') {
-      toast.error('제목과 내용을 모두 입력해주세요.');
-      return;
-    }
-    if (!form.tags.length) {
-      toast.error('해당 웹사이트의 태그를 입력해 주세요');
+    const { title } = data;
+    const {
+      tags,
+      link,
+      body,
+      thumbnail: { selected },
+    } = form;
+    if (
+      !title ||
+      !(bodyData?.blocks.length ?? body?.blocks.length) ||
+      tags.length === 0
+    ) {
+      toast.error('제목, 내용, 태그를 모두 입력해주세요');
       return;
     }
     // if (form.thumbnail.extracted.length > 1 && !form.thumbnail.selected) {
@@ -69,68 +57,67 @@ export default function Intro() {
     //   router.back();
     //   router.refresh();
     // }
-    // request & error
-    creactItem(ItemInfo);
+    localStorage.removeItem('writeData');
+    mutateCreateItem({
+      title,
+      body: JSON.stringify(bodyData ?? body),
+      link,
+      thumbnail: selected,
+      tags,
+    });
+  };
+  // 임시저장 with localStorage
+  const onSave = () => {
+    localStorage.setItem(
+      'writeData',
+      JSON.stringify({
+        title: watchedTitle,
+        body: bodyData,
+        tags: form.tags,
+      })
+    );
+    toast.success('임시 저장되었습니다');
   };
 
   useEffect(() => {
-    if (Object.keys(errors).length) {
-      for (const [_key, value] of Object.entries(errors)) {
-        toast.error('제목, 내용, 태그를 모두 입력해주세요');
-      }
-    }
-  }, [errors]);
-  console.log(data);
+    setValue('title', form.title);
+  }, [form.title]);
+
   return (
     <BasicLayout title='웹사이트 소개' hasBackButton>
       <WriteFormTemplate
         description='공유할 웹사이트를 소개하세요'
         buttonText='등록하기'
         onSubmit={handleSubmit(onSubmit)}
-        isLoading={isSubmitting}
+        isLoading={isLoading}
       >
         <div className={styles.group}>
-          {/* <TagInput />
-          <LabelInput
-            label='제목'
-            name='title'
-            value={form.title}
-            onChange={onChange}
-          ></LabelInput>
-          <LabelTextArea
-            className='styled_label_textarea'
-            label='내용'
-            name='body'
-            value={form.body}
-            onChange={onChange}
-            rows={8}
-          /> */}
           <TextareaAutosize
             ref={(e) => {
               titleRef(e);
-              // @ts-ignore
+              // @ts-expect-error NOTE: current는 읽기 전용속성 타입이므로 ts-expect-error 를 사용한다.
               _titleRef.current = e;
             }}
             {...rest}
+            value={watchedTitle}
             placeholder='제목을 입력하세요'
             className={styles.title}
           />
           <TagInput />
           <Editor
-            data={data}
-            onChange={setData}
+            data={bodyData ?? form.body}
+            onChange={setBodyData}
             titleRef={_titleRef}
-            register={register}
           />
-          {/* <div style={{ minHeight: '500px', flex: 1 }}>
-            {data &&
-              data.blocks?.map((block) => (
-                <Content block={block} key={block.id} />
-              ))}
-          </div> */}
-          {errorMessage ? (
-            <div className={styles.message}>{errorMessage}</div>
-          ) : null}
+          <Button
+            type='button'
+            aria-label='임시 저장'
+            layoutmode='fullWidth'
+            variant='secondary'
+            onClick={onSave}
+          >
+            임시저장
+          </Button>
         </div>
       </WriteFormTemplate>
     </BasicLayout>
