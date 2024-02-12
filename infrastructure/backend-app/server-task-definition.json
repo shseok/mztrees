@@ -1,18 +1,18 @@
 {
-  "family": "mztrees-backend-task-family",
-  "executionRoleArn": "arn:aws:iam::350743031177:role/mztrees-backend-execution-role",
+  "family": "mztrees2-backend-task-family",
+  "executionRoleArn": "arn:aws:iam::350743031177:role/mztrees2-backend-execution-role",
   "networkMode": "awsvpc",
   "containerDefinitions": [
     {
-      "name": "mztrees-backend-app",
-      "image": "350743031177.dkr.ecr.ap-northeast-2.amazonaws.com/mztrees-backend/runner:latest",
+      "name": "mztrees2-backend-app",
+      "image": "350743031177.dkr.ecr.ap-northeast-2.amazonaws.com/mztrees2-backend/runner:latest",
       "essential": true,
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "mztrees-backend-log-group",
+          "awslogs-group": "mztrees2-backend-log-group",
           "awslogs-region": "ap-northeast-2",
-          "awslogs-stream-prefix": "mztrees-backend-service"
+          "awslogs-stream-prefix": "mztrees2-backend-service"
         }
       },
       "portMappings": [
@@ -53,27 +53,27 @@
         }
       ],
       "mountPoints": [],
-      "memory": 2048,
+      "memory": 512,
       "secrets": [
         {
           "name": "DATABASE_URL",
-          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees-backend/database_url/v5-io8g1K"
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees2-backend/database_url/v6-io8g1K"
         },
         {
           "name": "JWT_SECRET",
-          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees-backend/jwt_secret/v5-sMr3BU"
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees2-backend/jwt_secret/v6-sMr3BU"
         },
         {
           "name": "ALGOLIA_ADMIN_KEY",
-          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees-backend/algolia_admin_key/v5-uZtk8x"
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees2-backend/algolia_admin_key/v6-uZtk8x"
         },
         {
           "name": "CF_ACCESS_KEY_SECRET",
-          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees-backend/cf_access_key_secret/v5-sMr3BU"
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees2-backend/cf_access_key_secret/v6-sMr3BU"
         },
         {
           "name": "PUBLIC_S3_BUCKET_NAME",
-          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees-backend/public_s3_bucket_name/v5-JQSJ3t"
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees2-backend/public_s3_bucket_name/v6-JQSJ3t"
         }
       ],
       "volumesFrom": []
@@ -81,5 +81,5 @@
   ],
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "256",
-  "memory": "2048"
+  "memory": "512"
 }

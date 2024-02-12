@@ -61,7 +61,7 @@ jobs:
         working-directory: ./packages/mz-server
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: mztrees-backend/runner
+          ECR_REPOSITORY: mztrees2-backend/runner
           IMAGE_TAG: ${{ github.sha }}
         run: |
           # Build a docker container and
@@ -76,7 +76,7 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: infrastructure/backend-app/server-task-definition.json
-          container-name: mztrees-backend-app
+          container-name: mztrees2-backend-app
           image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
@@ -84,6 +84,6 @@ jobs:
         with:
           # task-definition: task-definition.json
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: mztrees-backend-service
-          cluster: mztrees-backend-cluster
+          service: mztrees2-backend-service
+          cluster: mztrees2-backend-cluster
           wait-for-service-stability: true

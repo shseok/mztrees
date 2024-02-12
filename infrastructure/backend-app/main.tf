@@ -17,7 +17,7 @@ provider "aws" {
 
 variable "prefix" {
   description = "prefix prepended to names of all resources created"
-  default     = "mztrees-backend"
+  default     = "mztrees2-backend"
 }
 
 # change port
@@ -96,7 +96,7 @@ variable "public_s3_bucket_name" {
 # Error: creating Secrets Manager Secret: InvalidRequestException: You can't create this secret because a secret with this name is already scheduled for deletion.
 # TODO: name = "/${var.prefix}/database/password/v{'number'}"
 resource "aws_secretsmanager_secret" "database_url" {
-  name = "/${var.prefix}/database_url/v5"
+  name = "/${var.prefix}/database_url/v6"
 }
 
 resource "aws_secretsmanager_secret_version" "database_url_version" {
@@ -106,7 +106,7 @@ resource "aws_secretsmanager_secret_version" "database_url_version" {
 
 
 resource "aws_secretsmanager_secret" "jwt_secret" {
-  name = "/${var.prefix}/jwt_secret/v5"
+  name = "/${var.prefix}/jwt_secret/v6"
 }
 
 resource "aws_secretsmanager_secret_version" "jwt_secret_version" {
@@ -115,7 +115,7 @@ resource "aws_secretsmanager_secret_version" "jwt_secret_version" {
 }
 
 resource "aws_secretsmanager_secret" "algolia_admin_key" {
-  name = "/${var.prefix}/algolia_admin_key/v5"
+  name = "/${var.prefix}/algolia_admin_key/v6"
 }
 
 resource "aws_secretsmanager_secret_version" "algolia_admin_key_version" {
@@ -124,7 +124,7 @@ resource "aws_secretsmanager_secret_version" "algolia_admin_key_version" {
 }
 
 resource "aws_secretsmanager_secret" "cf_access_key_secret" {
-  name = "/${var.prefix}/cf_access_key_secret/v5"
+  name = "/${var.prefix}/cf_access_key_secret/v6"
 }
 
 resource "aws_secretsmanager_secret_version" "cf_access_key_secret_version" {
@@ -133,7 +133,7 @@ resource "aws_secretsmanager_secret_version" "cf_access_key_secret_version" {
 }
 
 resource "aws_secretsmanager_secret" "public_s3_bucket_name" {
-  name = "/${var.prefix}/public_s3_bucket_name/v5"
+  name = "/${var.prefix}/public_s3_bucket_name/v6"
 }
 
 resource "aws_secretsmanager_secret_version" "public_s3_bucket_name_version" {
