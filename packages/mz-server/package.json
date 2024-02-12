@@ -53,7 +53,7 @@
     "worker:ranking:dev": "cross-env NODE_ENV=development cross-env NODE_ENV=production tsx ./src/workers/ranking.ts",
     "dev": "cross-env NODE_ENV=development nodemon --watch ./src --exec \"tsx ./src/main.ts | pino-pretty\" -e ts",
     "build": "tsc",
-    "start:pm2": "yarn pm2-runtime --interpreter ecosystem.config.mjs"
+    "start:pm2": "pm2-runtime ecosystem.config.json"
   },
   "prisma": {
     "seed": "node --loader tsx prisma/seed.ts"

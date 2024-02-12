@@ -57,23 +57,23 @@
       "secrets": [
         {
           "name": "DATABASE_URL",
-          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees2-backend/database_url/v6-io8g1K"
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees2-backend/database_url/v6-eano3t"
         },
         {
           "name": "JWT_SECRET",
-          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees2-backend/jwt_secret/v6-sMr3BU"
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees2-backend/jwt_secret/v6-liKx9v"
         },
         {
           "name": "ALGOLIA_ADMIN_KEY",
-          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees2-backend/algolia_admin_key/v6-uZtk8x"
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees2-backend/algolia_admin_key/v6-298Xiq"
         },
         {
           "name": "CF_ACCESS_KEY_SECRET",
-          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees2-backend/cf_access_key_secret/v6-sMr3BU"
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees2-backend/cf_access_key_secret/v6-Y87jds"
         },
         {
           "name": "PUBLIC_S3_BUCKET_NAME",
-          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees2-backend/public_s3_bucket_name/v6-JQSJ3t"
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:350743031177:secret:/mztrees2-backend/public_s3_bucket_name/v6-Y87jds"
         }
       ],
       "volumesFrom": []
