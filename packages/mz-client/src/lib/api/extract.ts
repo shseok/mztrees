@@ -1,15 +1,10 @@
-import { FetchError, _cookie } from '../client';
+import { FetchError, _cookie, fetchClient } from '../client';
 
 export async function extractUrlsWithProgress(
   link: string,
   throttleUpdateProgress: (value: number) => void
 ) {
-  const baseUrl =
-    process.env.NODE_ENV === 'development'
-      ? process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL!
-      : process.env.NEXT_PUBLIC_API_BASE_URL!;
-
-  const result = await fetch(`${baseUrl}/api/items/urls`, {
+  const result = await fetch(`${fetchClient.baseUrl}/api/items/urls`, {
     method: 'POST',
     credentials: 'include',
     headers: {

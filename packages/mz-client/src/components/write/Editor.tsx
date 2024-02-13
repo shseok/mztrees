@@ -8,6 +8,7 @@ import React, {
 import type EditorJS from '@editorjs/editorjs';
 import type { OutputData } from '@editorjs/editorjs';
 import styles from '@/styles/Editor.module.scss';
+import { uploader } from '@/lib/api/link';
 
 export default function Editor({
   data,
@@ -100,8 +101,7 @@ export default function Editor({
           linkTool: {
             class: LinkTool,
             config: {
-              endpoint: `${process.env
-                .NEXT_PUBLIC_LOCAL_API_BASE_URL!}/api/link`,
+              endpoint: `/api/link`, // nextjs server api: ``credentials: 'include'``을 사용할 수 없기 때문
               headers: {
                 'Content-Type': 'application/json',
               },
@@ -110,13 +110,7 @@ export default function Editor({
           image: {
             class: ImageTool,
             config: {
-              endpoints: {
-                byFile: `${process.env
-                  .NEXT_PUBLIC_LOCAL_API_BASE_URL!}/api/link/upload`, // 이미지 주소를 복사하면 해당 endpoints로 요청하여 simpleImage를 적용이 안됨..
-              },
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
+              uploader, // client api
             },
           },
           // simpleImage: SimpleImage, // 적용이 안되는 버그
