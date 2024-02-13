@@ -2,6 +2,7 @@ import axios from 'axios'
 import AppError from '../lib/AppError.js'
 import metascraper from 'metascraper'
 import descriptionRule from 'metascraper-description'
+import imageRule from 'metascraper-image'
 import imageService from './image.service.js'
 import sharp from 'sharp'
 import type { MultipartFile } from '@fastify/multipart'
@@ -10,7 +11,7 @@ import { nanoid } from 'nanoid'
 export const linkService = {
   async getLinkData(requestUrl: string) {
     try {
-      const scraper = metascraper([descriptionRule()])
+      const scraper = metascraper([descriptionRule(), imageRule()])
       const { data } = await axios.get(requestUrl, {
         timeout: 8000,
       })
@@ -18,14 +19,10 @@ export const linkService = {
       // Parse the HTML using regular expressions
       const titleMatch = data.match(/<title>(.*?)<\/title>/)
       const title = titleMatch ? titleMatch[1] : ''
-
-      const { description } = await scraper({
+      const { description, image } = await scraper({
         html: data,
         url: requestUrl,
       })
-
-      const imageMatch = data.match(/<meta property="og:image" content="(.*?)"/)
-      const imageUrl = imageMatch ? imageMatch[1] : ''
 
       return {
         success: 1,
@@ -33,7 +30,7 @@ export const linkService = {
           title,
           description,
           image: {
-            url: imageUrl,
+            url: image,
           },
         },
       }
