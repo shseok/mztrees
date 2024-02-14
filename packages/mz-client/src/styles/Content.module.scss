@@ -1,0 +1,155 @@
+.block {
+  position: relative;
+  max-width: 650px;
+  margin: 0 auto;
+
+  .paragraph {
+    padding: 0.4em 0;
+
+    &.center {
+      text-align: center;
+    }
+
+    &.right {
+      text-align: right;
+    }
+
+    &.left {
+      text-align: left;
+    }
+  }
+
+  .header {
+    display: block;
+    font-weight: bold;
+
+    &.h1 {
+      font-size: 2em;
+    }
+
+    &.h2 {
+      font-size: 1.5em;
+    }
+
+    &.h3 {
+      font-size: 1.17em;
+    }
+
+    &.h4 {
+      font-size: 1em;
+    }
+
+    &.h5 {
+      font-size: 0.83em;
+    }
+
+    &.center {
+      text-align: center;
+    }
+
+    &.right {
+      text-align: right;
+    }
+
+    &.left {
+      text-align: left;
+    }
+  }
+
+  .alert {
+    position: relative;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+
+    &.alert-primary {
+      background-color: #ebf8ff;
+      border: 1px solid #4299e1;
+      color: #2b6cb0;
+    }
+
+    &.alert-secondary {
+      background-color: #f7fafc;
+      border: 1px solid #cbd5e0;
+      color: #222731;
+    }
+
+    &.alert-info {
+      background-color: #e6fdff;
+      border: 1px solid #4cd4ce;
+      color: #00727c;
+    }
+
+    &.alert-success {
+      background-color: #f0fff4;
+      border: 1px solid #68d391;
+      color: #2f855a;
+    }
+
+    &.alert-warning {
+      background-color: #fffaf0;
+      border: 1px solid #ed8936;
+      color: #c05621;
+    }
+
+    &.alert-danger {
+      background-color: #fff5f5;
+      border: 1px solid #fc8181;
+      color: #c53030;
+    }
+
+    &.alert-light {
+      background-color: #fff;
+      border: 1px solid #edf2f7;
+      color: #1a202c;
+    }
+
+    &.alert-dark {
+      background-color: #2d3748;
+      border: 1px solid #1a202c;
+      color: #d3d3d3;
+    }
+
+    &.center {
+      text-align: center;
+    }
+
+    &.right {
+      text-align: right;
+    }
+
+    &.left {
+      text-align: left;
+    }
+  }
+
+  .list {
+    margin: 0;
+    padding-left: 40px;
+    outline: none;
+    padding: 0.4em 0;
+    list-style: decimal;
+
+    &.unordered {
+      list-style: disc;
+    }
+
+    li {
+      padding: 5.5px 0 5.5px 3px;
+      line-height: 1.6em;
+    }
+  }
+
+  // .checkList {
+  //   padding: 0.4em 0;
+  //   gap: 6px;
+  //   display: flex;
+  //   flex-direction: column;
+
+  //   .item {
+  //     display: flex;
+  //     box-sizing: content-box;
+  //     align-items: flex-start;
+  //   }
+  // }
+}
