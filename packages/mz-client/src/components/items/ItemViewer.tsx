@@ -23,8 +23,6 @@ import {
   LazyMotion,
   loadFeature,
 } from '@/utils/dynamic';
-import Content from './Content';
-import type { OutputData } from '@editorjs/editorjs';
 interface Props {
   item: Item;
   items: PopperMenuItem[];
@@ -54,7 +52,7 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
   const { currentUser } = useUser();
   const { mode } = useTheme();
 
-  const bodyObj = JSON.parse(body) as OutputData;
+  // const bodyObj = JSON.parse(body) as OutputData;
 
   const toggleLike = () => {
     if (!currentUser) {
@@ -142,10 +140,11 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
           </Button>
         </div>
         <div className={styles.body}>
-          {bodyObj &&
+          {/* {bodyObj &&
             bodyObj.blocks?.map((block) => (
               <Content block={block} key={block.id} />
-            ))}
+            ))} */}
+          {body}
         </div>
         <div className={styles.tag_container}>
           <h4 className={styles.tag_title}>태그</h4>

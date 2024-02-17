@@ -78,9 +78,7 @@ export default function Edit({ params: { id } }: Params) {
   useEffect(() => {
     async function fetchItemData() {
       try {
-        const { title, body, link, thumbnail, tags } = await getItem(
-          parseInt(id)
-        );
+        const { title, link, thumbnail, tags } = await getItem(parseInt(id));
         setCurrentLink(link);
         actions.change('title', title);
         // actions.change('body', body); // for test
