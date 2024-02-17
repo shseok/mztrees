@@ -11,7 +11,6 @@ import { Globe } from '@/components/vectors';
 import { useUser } from '@/context/UserContext';
 import { useTheme } from '@/context/ThemeContext';
 import { cn } from '@/utils/common';
-import { roboto } from '@/lib/fonts';
 import { blurDataUrl } from '@/lib/const';
 import MoreVertButton from '../base/MoreVertButton';
 import PopperMenu, { PopperMenuItem } from '../system/PopperMenu';
@@ -24,6 +23,8 @@ import {
   LazyMotion,
   loadFeature,
 } from '@/utils/dynamic';
+import Content from './Content';
+import type { OutputData } from '@editorjs/editorjs';
 interface Props {
   item: Item;
   items: PopperMenuItem[];
@@ -52,6 +53,8 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
   const { bookmark, unbookmark } = useBookmarkItemMutation();
   const { currentUser } = useUser();
   const { mode } = useTheme();
+
+  const bodyObj = JSON.parse(body) as OutputData;
 
   const toggleLike = () => {
     if (!currentUser) {
@@ -138,7 +141,12 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
             방문
           </Button>
         </div>
-        <p className={cn(styles.body, roboto.className)}>{body}</p>
+        <div className={styles.body}>
+          {bodyObj &&
+            bodyObj.blocks?.map((block) => (
+              <Content block={block} key={block.id} />
+            ))}
+        </div>
         <div className={styles.tag_container}>
           <h4 className={styles.tag_title}>태그</h4>
           <div>

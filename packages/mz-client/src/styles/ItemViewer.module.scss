@@ -76,16 +76,9 @@
   }
 
   .body {
-    line-height: 1.5;
-    font-size: 14px;
-    margin-top: 0;
+    min-height: '500px';
+    flex: 1;
     margin-bottom: 32px;
-    color: $gray4;
-    white-space: pre-wrap;
-
-    // word-break: keep-all;
-    // word-break: break-all;
-    overflow-wrap: break-word;
   }
 
   .tag_container {

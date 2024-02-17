@@ -83,7 +83,7 @@ export default function Edit({ params: { id } }: Params) {
         );
         setCurrentLink(link);
         actions.change('title', title);
-        actions.change('body', body);
+        // actions.change('body', body); // for test
         actions.change('link', link);
         actions.change('thumbnail', {
           extracted: [],
