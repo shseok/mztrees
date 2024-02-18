@@ -10,6 +10,7 @@ import { cn } from '@/utils/common';
 import { roboto } from '@/lib/fonts';
 import { blurDataUrl } from '@/lib/const';
 import type { OutputData } from '@editorjs/editorjs';
+import DOMPurify from 'dompurify';
 
 interface Props {
   item: Item;
@@ -34,11 +35,16 @@ const LinkCard = ({ item }: Props) => {
     searchParams.get('mode') ?? 'trending'
   }`;
 
+  const sanitizedHTML = (html: string) => {
+    const config = { USE_PROFILES: { html: true } };
+    return DOMPurify.sanitize(html, config);
+  };
+
   const bodyObj = JSON.parse(body) as OutputData;
   const bodyText =
     bodyObj.blocks
       ?.filter((block) => block.type === 'paragraph')
-      ?.map((block) => block.data.text)
+      ?.map((block) => sanitizedHTML(block.data.text))
       .join('') ?? '';
 
   return (
@@ -77,7 +83,10 @@ const LinkCard = ({ item }: Props) => {
           {publisher.name}
         </div>
         <h3 className={styles.title}>{item.title}</h3>
-        <p className={cn(styles.body, roboto.className)}>{bodyText}</p>
+        <p
+          className={cn(styles.body, roboto.className)}
+          dangerouslySetInnerHTML={{ __html: bodyText }}
+        ></p>
       </Link>
       <div className={styles.spacer} />
       <div className={styles.footer}>
