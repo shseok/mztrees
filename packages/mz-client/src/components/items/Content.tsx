@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import type { OutputBlockData } from '@editorjs/editorjs';
 import { extractDomain } from '@/utils/extractDomain';
 import styles from '@/styles/Content.module.scss';
@@ -9,37 +9,74 @@ interface Props {
 }
 export default function Content({ block }: Props) {
   let content;
-  let text;
   let align;
   let caption;
+  const [sanitizedHTML, setSanitizedHTML] = useState('');
+
+  useEffect(() => {
+    async function sanitizeHTML(html: string) {
+      try {
+        // Dynamically import DOMPurify
+        const DOMPurify = await import('dompurify');
+
+        // Your sanitization logic
+        const config = { USE_PROFILES: { html: true } };
+        const sanitizedContent = DOMPurify.sanitize(html, config);
+        setSanitizedHTML(sanitizedContent);
+      } catch (error) {
+        console.error('Error loading DOMPurify:', error);
+        // Handle the error, perhaps fallback to a different sanitization approach
+        setSanitizedHTML(html); // Or return some sanitized version without DOMPurify
+      }
+    }
+    switch (block.type) {
+      case 'paragraph': {
+        sanitizeHTML(block.data.text);
+        break;
+      }
+      case 'header': {
+        sanitizeHTML(block.data.text);
+        break;
+      }
+      case 'alert': {
+        sanitizeHTML(block.data.message || '빈 내용입니다');
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }, [block]);
   switch (block.type) {
     case 'paragraph': {
-      text = block.data.text;
       align = block.tunes?.textAlignment?.alignment;
-      content = <p className={cn(styles.paragraph, styles[align])}>{text}</p>;
+      content = (
+        <p
+          className={cn(styles.paragraph, styles[align])}
+          dangerouslySetInnerHTML={{ __html: sanitizedHTML }}
+        ></p>
+      );
       break;
     }
     case 'header': {
       const level = block.data.level;
-      text = block.data.text;
       align = block.tunes?.textAlignment?.alignment;
       content = (
-        <p className={cn(styles.header, styles[`h${level}`], styles[align])}>
-          {text}
-        </p>
+        <p
+          className={cn(styles.header, styles[`h${level}`], styles[align])}
+          dangerouslySetInnerHTML={{ __html: sanitizedHTML }}
+        ></p>
       );
       break;
     }
     case 'alert': {
       const type = block.data.type;
-      text = block.data.message || '빈 내용입니다';
       align = block.data.align;
       content = (
         <div
           className={cn(styles.alert, styles[`alert-${type}`], styles[align])}
-        >
-          {text}
-        </div>
+          dangerouslySetInnerHTML={{ __html: sanitizedHTML }}
+        ></div>
       );
       break;
     }

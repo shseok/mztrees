@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { Item } from '@/types/db';
+import type { OutputData } from '@editorjs/editorjs';
 import Image from 'next/image';
 import LikeButton from '../system/LikeButton';
 import { useOpenLoginDialog } from '@/hooks/useOpenLoginDialog';
@@ -15,6 +16,7 @@ import { blurDataUrl } from '@/lib/const';
 import MoreVertButton from '../base/MoreVertButton';
 import PopperMenu, { PopperMenuItem } from '../system/PopperMenu';
 import Button from '../system/Button';
+import Content from './Content';
 import { useLikeItemMutation } from '@/hooks/mutation/useLikeItemMutation';
 import { useBookmarkItemMutation } from '@/hooks/mutation/useBookmarkItemMutation';
 import {
@@ -52,7 +54,7 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
   const { currentUser } = useUser();
   const { mode } = useTheme();
 
-  // const bodyObj = JSON.parse(body) as OutputData;
+  const bodyObj = JSON.parse(body) as OutputData;
 
   const toggleLike = () => {
     if (!currentUser) {
@@ -140,11 +142,10 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
           </Button>
         </div>
         <div className={styles.body}>
-          {/* {bodyObj &&
+          {bodyObj &&
             bodyObj.blocks?.map((block) => (
               <Content block={block} key={block.id} />
-            ))} */}
-          {body}
+            ))}
         </div>
         <div className={styles.tag_container}>
           <h4 className={styles.tag_title}>태그</h4>

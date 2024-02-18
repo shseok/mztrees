@@ -9,6 +9,7 @@ import { useTheme } from '@/context/ThemeContext';
 import { cn } from '@/utils/common';
 import { roboto } from '@/lib/fonts';
 import { blurDataUrl } from '@/lib/const';
+import type { OutputData } from '@editorjs/editorjs';
 
 interface Props {
   item: Item;
@@ -32,6 +33,13 @@ const LinkCard = ({ item }: Props) => {
   const link = `/items/${item.id}?mode=${
     searchParams.get('mode') ?? 'trending'
   }`;
+
+  const bodyObj = JSON.parse(body) as OutputData;
+  const bodyText =
+    bodyObj.blocks
+      ?.filter((block) => block.type === 'paragraph')
+      ?.map((block) => block.data.text)
+      .join('') ?? '';
 
   return (
     <div className={cn(styles.block, mode === 'dark' && styles.dark)}>
@@ -69,7 +77,7 @@ const LinkCard = ({ item }: Props) => {
           {publisher.name}
         </div>
         <h3 className={styles.title}>{item.title}</h3>
-        <p className={cn(styles.body, roboto.className)}>{body}</p>
+        <p className={cn(styles.body, roboto.className)}>{bodyText}</p>
       </Link>
       <div className={styles.spacer} />
       <div className={styles.footer}>
