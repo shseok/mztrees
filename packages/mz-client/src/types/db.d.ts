@@ -157,3 +157,5 @@ export type FormType = {
   id?: string;
   tags: TagList;
 };
+
+export type FormValue = Pick<FormType, 'title'>;

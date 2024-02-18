@@ -12,6 +12,8 @@ import { useRef, useState } from 'react';
 import type { OutputData } from '@editorjs/editorjs';
 import dynamic from 'next/dynamic';
 import Button from '@/components/system/Button';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { FormValue } from '@/types/db';
 
 const Editor = dynamic(() => import('@/components/write/Editor'), {
   ssr: false,
@@ -20,33 +22,29 @@ const Editor = dynamic(() => import('@/components/write/Editor'), {
 export default function EditIntro() {
   const {
     state: { form },
-    actions,
   } = useWriteContext();
+  const { register, watch, handleSubmit } = useForm<FormValue>({
+    defaultValues: { title: form.title },
+  });
 
   const [bodyData, setBodyData] = useState<OutputData>();
   const _titleRef = useRef<HTMLTextAreaElement>(null);
   const { mutateEditItem, isLoading } = useEditItemMutation();
+  const { ref: titleRef, ...rest } = register('title');
+  const watchedTitle = watch('title');
 
-  const onChange: React.ChangeEventHandler<
-    HTMLTextAreaElement | HTMLInputElement
-  > = (e) => {
-    const key = e.target.name as 'title' | 'body';
-    const { value } = e.target;
-    actions.change(key, value);
-  };
-
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit: SubmitHandler<FormValue> = async (data, e) => {
+    e?.preventDefault();
+    const { title } = data;
     const {
       id,
-      title,
       body,
       tags,
       link,
       thumbnail: { selected },
     } = form;
     if (
-      title === '' ||
+      !title ||
       !(bodyData?.blocks.length ?? body?.blocks.length) ||
       tags.length === 0
     ) {
@@ -84,17 +82,18 @@ export default function EditIntro() {
     <BasicLayout title='수정' hasBackButton>
       <WriteFormTemplate
         buttonText='수정하기'
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         isLoading={isLoading}
       >
         <div className={styles.group}>
           <TextareaAutosize
             ref={(e) => {
+              titleRef(e);
               // @ts-expect-error NOTE: current는 읽기 전용속성 타입이므로 ts-expect-error 를 사용한다.
               _titleRef.current = e;
             }}
-            onChange={onChange}
-            value={form.title}
+            {...rest}
+            value={watchedTitle}
             placeholder='제목을 입력하세요'
             className={styles.title}
           />

@@ -1,7 +1,7 @@
 'use client';
 
 import type { OutputData } from '@editorjs/editorjs';
-import type { FormType } from '@/types/db';
+import type { FormValue } from '@/types/db';
 import styles from '@/styles/WriteIntro.module.scss';
 import BasicLayout from '@/components/layout/BasicLayout';
 import TagInput from '@/components/system/TagInput';
@@ -15,7 +15,6 @@ import TextareaAutosize from 'react-textarea-autosize';
 import Button from '@/components/system/Button';
 import dynamic from 'next/dynamic';
 
-type FormValue = Pick<FormType, 'title'>;
 const Editor = dynamic(() => import('@/components/write/Editor'), {
   ssr: false,
 });
