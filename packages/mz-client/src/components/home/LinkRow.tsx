@@ -9,6 +9,7 @@ import { blurDataUrl } from '@/lib/const';
 import { cn } from '@/utils/common';
 import { Chat, Globe, LikeFill } from '../vectors';
 import { roboto } from '@/lib/fonts';
+import getCardText from '@/utils/getCardText';
 
 interface Props {
   item: Item;
@@ -32,6 +33,7 @@ export default function LinkRow({ item }: Props) {
   const link = `/items/${item.id}?mode=${
     searchParams.get('mode') ?? 'trending'
   }`;
+
   return (
     <div className={cn(styles.block, mode === 'dark' && styles.dark)}>
       <Link href={link} className={styles.styled_link} tabIndex={-1}>
@@ -54,7 +56,10 @@ export default function LinkRow({ item }: Props) {
             {author ? `${author} · ` : ''}
             {publisher.name}
           </div>
-          <p className={cn(styles.body, roboto.className)}>{body}</p>
+          <p
+            className={cn(styles.body, roboto.className)}
+            dangerouslySetInnerHTML={{ __html: getCardText(body) }}
+          ></p>
         </div>
         <div className={styles.thumbnail_wrapper}>
           <Image
