@@ -9,7 +9,7 @@ import { useTheme } from '@/context/ThemeContext';
 import { cn } from '@/utils/common';
 import { roboto } from '@/lib/fonts';
 import { blurDataUrl } from '@/lib/const';
-import getCardText from '@/utils/getCardText';
+import { useGetLinkItemText } from '@/hooks/useGetLinkItemText';
 
 interface Props {
   item: Item;
@@ -28,6 +28,7 @@ const LinkCard = ({ item }: Props) => {
   } = item;
   const dateDistance = useDateDistance(createdAt);
   const searchParams = useSearchParams();
+  const bodyText = useGetLinkItemText(body);
   const { mode } = useTheme();
 
   const link = `/items/${item.id}?mode=${
@@ -72,7 +73,7 @@ const LinkCard = ({ item }: Props) => {
         <h3 className={styles.title}>{item.title}</h3>
         <p
           className={cn(styles.body, roboto.className)}
-          dangerouslySetInnerHTML={{ __html: getCardText(body) }}
+          dangerouslySetInnerHTML={{ __html: bodyText }}
         ></p>
       </Link>
       <div className={styles.spacer} />

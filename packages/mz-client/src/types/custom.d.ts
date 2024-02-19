@@ -1,3 +1,5 @@
+import { View } from './db';
+
 declare module '*.svg' {
   import React from 'react';
   const svg: React.FC<React.SVGProps<SVGSVGElement>>;
@@ -98,10 +100,11 @@ type HomeSearchParams = {
   tag?: Tag;
   start?: string;
   end?: string;
+  view?: View;
 };
 
 export type HomeProps = {
-  searchParams: HomePageSearchParams;
+  searchParams: HomeSearchParams;
 };
 
 export type MutationProps = () => void;
