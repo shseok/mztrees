@@ -1,6 +1,8 @@
 import Home from '@/components/home/Home';
 import TabLayout from '@/components/layout/TabLayout';
-import { siteConfig } from '@/lib/const';
+import { getItems } from '@/lib/api/items';
+import { INITIAL_ITEM_LIMIT, siteConfig } from '@/lib/const';
+import { getWeekRangeFromDate } from '@/lib/week';
 import type { HomeProps } from '@/types/custom';
 
 export function generateMetadata({ searchParams }: HomeProps) {
@@ -27,10 +29,23 @@ export function generateMetadata({ searchParams }: HomeProps) {
   };
 }
 
-export default async function HomePage() {
+export default async function HomePage({ searchParams }: HomeProps) {
+  const { mode, start, end } = searchParams;
+
+  const itemsResult = await getItems({
+    mode,
+    limit: INITIAL_ITEM_LIMIT,
+    ...(mode === 'past'
+      ? {
+          startDate: start ?? getWeekRangeFromDate(new Date())[0],
+          endDate: end ?? getWeekRangeFromDate(new Date())[1],
+        }
+      : {}),
+  });
+
   return (
     <TabLayout className='layout_padding'>
-      <Home />
+      <Home initItemsResult={itemsResult} />
     </TabLayout>
   );
 }

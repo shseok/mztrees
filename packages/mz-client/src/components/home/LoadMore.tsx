@@ -7,7 +7,7 @@ import LoadingIndicator from '../system/LoadingIndicator';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { homeParameterStore } from '@/hooks/stores/HomeParameterStore';
-import { useGetNextHomeItemsQuery } from '@/hooks/query/useGetHomeItemsQuery';
+import { useGetNextHomeItemsQuery } from '@/hooks/query/useGetNextHomeItemsQuery';
 import { shallow } from 'zustand/shallow';
 import LinkCardList from './LinkCardList';
 import LinkRowList from './LinkRowList';

@@ -1,6 +1,14 @@
-.tag_view_row {
+@import 'module';
+
+.row {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   margin-bottom: 24px;
+  gap: 16px;
+
+  @include mobile {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
