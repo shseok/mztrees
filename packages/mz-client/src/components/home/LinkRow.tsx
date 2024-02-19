@@ -9,7 +9,7 @@ import { blurDataUrl } from '@/lib/const';
 import { cn } from '@/utils/common';
 import { Chat, Globe, LikeFill } from '../vectors';
 import { roboto } from '@/lib/fonts';
-import getCardText from '@/utils/getCardText';
+import { useGetLinkItemText } from '@/hooks/useGetLinkItemText';
 
 interface Props {
   item: Item;
@@ -28,6 +28,7 @@ export default function LinkRow({ item }: Props) {
   } = item;
   const dateDistance = useDateDistance(createdAt);
   const searchParams = useSearchParams();
+  const bodyText = useGetLinkItemText(body);
   const { mode } = useTheme();
 
   const link = `/items/${item.id}?mode=${
@@ -58,7 +59,7 @@ export default function LinkRow({ item }: Props) {
           </div>
           <p
             className={cn(styles.body, roboto.className)}
-            dangerouslySetInnerHTML={{ __html: getCardText(body) }}
+            dangerouslySetInnerHTML={{ __html: bodyText }}
           ></p>
         </div>
         <div className={styles.thumbnail_wrapper}>
