@@ -2,7 +2,6 @@ import styles from '@/styles/Selectors.module.scss';
 import ViewSelector from './ViewSelector';
 import SortModeSelector from './SortModeSelector';
 import WeekSelector from './WeekSelector';
-import TagSelector from './TagSelector';
 import type { SortMode } from '@/types/db';
 
 interface Props {
@@ -12,9 +11,8 @@ interface Props {
 export default function Selectors({ mode }: Props) {
   return (
     <>
-      <SortModeSelector />
-      <div className={styles.tag_view_row}>
-        <TagSelector />
+      <div className={styles.row}>
+        <SortModeSelector />
         <ViewSelector />
       </div>
       {mode === 'past' && <WeekSelector />}
