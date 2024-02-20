@@ -4,7 +4,7 @@ import DesktopHeader from '@/components/base/DesktopHeader';
 import MobileHeader from '@/components/base/MobileHeader';
 import TabLayout from '@/components/layout/TabLayout';
 import SearchInput from '@/components/search/SearchInput';
-import SearchResultCardList from '@/components/search/SearchResultCardList';
+import SearchCardList from '@/components/search/SearchCardList';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -72,7 +72,7 @@ export default function Search({ searchParams }: Props) {
               message={`"${searchText}"에 대한 검색결과가 없어요.\n 다른 검색어로 검색을 해보시겠어요?`}
             />
           ) : (
-            <SearchResultCardList items={items} searchText={searchText} />
+            <SearchCardList items={items} searchText={searchText} />
           )
         ) : null)}
       <div ref={observerTargetEl} />

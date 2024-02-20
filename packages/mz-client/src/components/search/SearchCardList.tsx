@@ -1,13 +1,13 @@
 import type { SearchItemResult } from '@/types/db';
-import SearchResultCard from './SearchResultCard';
-import styles from '@/styles/SearchResultCardList.module.scss';
+import SearchCard from './SearchCard';
+import styles from '@/styles/SearchCardList.module.scss';
 
 interface Props {
   items: SearchItemResult[];
   searchText: string;
 }
 
-const SearchResultCardList = ({ items, searchText }: Props) => {
+const SearchCardList = ({ items, searchText }: Props) => {
   return (
     <div className={styles.block}>
       <div className={styles.header}>
@@ -17,9 +17,9 @@ const SearchResultCardList = ({ items, searchText }: Props) => {
         </p>
       </div>
       {items.map((item) => (
-        <SearchResultCard item={item} key={item.id} />
+        <SearchCard item={item} key={item.id} />
       ))}
     </div>
   );
 };
-export default SearchResultCardList;
+export default SearchCardList;

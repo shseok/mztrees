@@ -1,17 +1,18 @@
 import type { SearchItemResult } from '@/types/db';
 import Image from 'next/image';
-import styles from '@/styles/SearchResultCard.module.scss';
+import styles from '@/styles/SearchCard.module.scss';
 import DOMPurify from 'dompurify';
 import { Globe } from '@/components/vectors';
 import Link from 'next/link';
 import { useTheme } from '@/context/ThemeContext';
 import { cn } from '@/utils/common';
+import { useGetLinkItemText } from '@/hooks/useGetLinkItemText';
 
 interface Props {
   item: SearchItemResult;
 }
 
-const SearchResultCard = ({ item }: Props) => {
+const SearchCard = ({ item }: Props) => {
   const {
     publisher: { favicon, name },
     author,
@@ -22,6 +23,7 @@ const SearchResultCard = ({ item }: Props) => {
   const { mode } = useTheme();
   const sanitizer = DOMPurify.sanitize;
   const link = `/items/${item.id}`;
+  const bodyText = useGetLinkItemText(body);
 
   return (
     <Link
@@ -52,10 +54,17 @@ const SearchResultCard = ({ item }: Props) => {
       />
       <p
         className={styles.body}
-        dangerouslySetInnerHTML={{ __html: sanitizer(body) }}
+        dangerouslySetInnerHTML={{ __html: bodyText }}
       />
+      {/* <div className={styles.tag_container}>
+        {item.tags.map((tag, index) => (
+          <div className={styles.tag} key={index}>
+            # {tag}
+          </div>
+        ))}
+      </div> */}
       <div className={styles.likescount}>좋아요 {likes.toLocaleString()}개</div>
     </Link>
   );
 };
-export default SearchResultCard;
+export default SearchCard;

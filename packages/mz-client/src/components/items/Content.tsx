@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
 import type { OutputBlockData } from '@editorjs/editorjs';
 import { extractDomain } from '@/utils/extractDomain';
 import styles from '@/styles/Content.module.scss';
 import { cn } from '@/utils/common';
+import { useSanitizeContent } from '@/hooks/useSanitizeContent';
 
 interface Props {
   block: OutputBlockData<string, any>;
@@ -11,42 +11,9 @@ export default function Content({ block }: Props) {
   let content;
   let align;
   let caption;
-  const [sanitizedHTML, setSanitizedHTML] = useState('');
 
-  useEffect(() => {
-    async function sanitizeHTML(html: string) {
-      try {
-        // Dynamically import DOMPurify
-        const DOMPurify = await import('dompurify');
+  const { sanitizedHTML, sanitizedHTMLs } = useSanitizeContent(block);
 
-        // Your sanitization logic
-        const config = { USE_PROFILES: { html: true } };
-        const sanitizedContent = DOMPurify.sanitize(html, config);
-        setSanitizedHTML(sanitizedContent);
-      } catch (error) {
-        console.error('Error loading DOMPurify:', error);
-        // Handle the error, perhaps fallback to a different sanitization approach
-        setSanitizedHTML(html); // Or return some sanitized version without DOMPurify
-      }
-    }
-    switch (block.type) {
-      case 'paragraph': {
-        sanitizeHTML(block.data.text);
-        break;
-      }
-      case 'header': {
-        sanitizeHTML(block.data.text);
-        break;
-      }
-      case 'alert': {
-        sanitizeHTML(block.data.message || '빈 내용입니다');
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-  }, [block]);
   switch (block.type) {
     case 'paragraph': {
       align = block.tunes?.textAlignment?.alignment;
@@ -86,8 +53,8 @@ export default function Content({ block }: Props) {
         <ul
           className={cn(styles.list, style === 'unordered' && styles.unordered)}
         >
-          {block.data.items.map((item: string, index: number) => (
-            <li key={index}>{item}</li>
+          {sanitizedHTMLs.map((item: string, index: number) => (
+            <li key={index} dangerouslySetInnerHTML={{ __html: item }}></li>
           ))}
         </ul>
       );
@@ -96,7 +63,7 @@ export default function Content({ block }: Props) {
     case 'checkList': {
       content = (
         <div className={styles.check_list}>
-          {block.data.items.map(
+          {sanitizedHTMLs.map(
             (
               { text, checked }: { text: string; checked: boolean },
               index: number
@@ -124,7 +91,10 @@ export default function Content({ block }: Props) {
                     </svg>
                   </span>
                 </div>
-                <p className={styles.text}>{text}</p>
+                <p
+                  className={styles.text}
+                  dangerouslySetInnerHTML={{ __html: text }}
+                ></p>
               </div>
             )
           )}
