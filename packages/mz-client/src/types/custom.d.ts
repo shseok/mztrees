@@ -1,4 +1,4 @@
-import { View } from './db';
+import { View, Tag, SortMode } from './db';
 
 declare module '*.svg' {
   import React from 'react';

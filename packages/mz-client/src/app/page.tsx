@@ -33,7 +33,7 @@ export default async function HomePage({ searchParams }: HomeProps) {
   const { mode, start, end } = searchParams;
 
   const itemsResult = await getItems({
-    mode,
+    mode: mode ?? 'trending',
     limit: INITIAL_ITEM_LIMIT,
     ...(mode === 'past'
       ? {
