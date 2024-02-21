@@ -741,6 +741,11 @@ const itemService = {
     return itemMap
   },
 
+  async hasTagByName(name: string) {
+    const hasTag = await db.tag.findUnique({ where: { name } })
+    return !!hasTag
+  },
+
   async updateItem(
     userId: number,
     itemId: number,

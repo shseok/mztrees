@@ -1,6 +1,6 @@
 // AuthProvider와 다른 방법으로 작성
 
-import SearchModal from '@/components/system/SearchModal';
+import SearchModal from '@/components/system/Modal/SearchModal';
 import React, {
   createContext,
   Dispatch,
