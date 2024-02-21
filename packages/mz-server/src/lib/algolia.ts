@@ -38,7 +38,6 @@ const algolia = {
       offset,
       length,
     })
-    // console.log(result)
 
     const hasNextPage = offset + length < result.nbHits
 
@@ -80,6 +79,7 @@ interface ItemSchemaForAlgolia {
   thumbnail: string | null
   username: string
   publisher: Publisher
+  tags: string[]
 }
 
 export default algolia

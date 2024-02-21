@@ -32,4 +32,16 @@
     width: 768px;
     margin: 0 auto;
   }
+
+  &.dark {
+    .header {
+      .title {
+        color: white;
+      }
+
+      .count {
+        color: white;
+      }
+    }
+  }
 }

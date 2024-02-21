@@ -15,6 +15,7 @@ const SearchSchema = Type.Object({
   likes: Type.Integer(),
   title: Type.String(),
   body: Type.String(),
+  tags: Type.Array(Type.String()),
   hightlight: Type.Object({
     title: Type.String(),
     body: Type.String(),

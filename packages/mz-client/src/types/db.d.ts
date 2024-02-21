@@ -94,6 +94,7 @@ export interface SearchItemResult {
   likes: number;
   title: string;
   body: string;
+  tags: string[];
   hightlight: Hightlight;
 }
 

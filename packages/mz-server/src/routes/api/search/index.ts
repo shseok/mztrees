@@ -3,7 +3,7 @@ import algolia from '../../../lib/algolia.js'
 import itemService from '../../../services/item.service.js'
 // import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox'
 import { FastifyPluginAsyncTypebox } from '../../../lib/types.js'
-
+// TODO: 태그 추가하고 받아와서 클라에 전달하기
 export const searchRoute: FastifyPluginAsyncTypebox = async (fastify) => {
   fastify.get('/', { schema: SearchRouteSchema }, async (request) => {
     const { q, limit, offset } = request.query
@@ -12,7 +12,6 @@ export const searchRoute: FastifyPluginAsyncTypebox = async (fastify) => {
       hits.list.map((item) => item.id),
       request.user?.id,
     )
-    // console.log(items)
     // TODO: move to search service (class -> object)
     // 데이터베이스에서 작업을 하기 위해 service에서 해왔지만, 검색은 데이터베이스가 아닌곳에 추가적인 로직이 있으므로 service에서 구현하는게 맞는가?라는 의미
     // 하지만, service를 만들면 좋긴하겠다. 그렇게한다면 serchService에서 함수만 호출하면 되기때문.
@@ -31,13 +30,13 @@ export const searchRoute: FastifyPluginAsyncTypebox = async (fastify) => {
           likes: item.itemStats?.likes ?? 0,
           title: item.title,
           body: item.body,
+          tags: hit.tags ?? [],
           hightlight: {
             title: hit._highlightResult?.title?.value ?? '',
             body: (hit._highlightResult?.body?.value ?? '') as string,
           },
         }
       })
-    console.log(serializedList)
     return { ...hits, list: serializedList }
   })
 }

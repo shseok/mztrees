@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useTheme } from '@/context/ThemeContext';
 import { cn } from '@/utils/common';
 import { useGetLinkItemText } from '@/hooks/useGetLinkItemText';
+import TagList from '../system/Tag/TagList';
 
 interface Props {
   item: SearchItemResult;
@@ -56,13 +57,7 @@ const SearchCard = ({ item }: Props) => {
         className={styles.body}
         dangerouslySetInnerHTML={{ __html: bodyText }}
       />
-      {/* <div className={styles.tag_container}>
-        {item.tags.map((tag, index) => (
-          <div className={styles.tag} key={index}>
-            # {tag}
-          </div>
-        ))}
-      </div> */}
+      <TagList tags={item.tags} />
       <div className={styles.likescount}>좋아요 {likes.toLocaleString()}개</div>
     </Link>
   );

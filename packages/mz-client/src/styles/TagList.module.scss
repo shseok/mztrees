@@ -1,0 +1,19 @@
+@import 'var';
+
+.tag {
+  background: $gray0;
+  display: inline-block;
+  padding: 5px 15px;
+  color: $primary;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 15px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+
+  &.dark {
+    background: white;
+    color: $primary;
+    border: 1px solid $primary;
+  }
+}

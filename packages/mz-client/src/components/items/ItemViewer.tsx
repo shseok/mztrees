@@ -6,6 +6,7 @@ import LikeButton from '../system/LikeButton';
 import { useOpenLoginDialog } from '@/hooks/useOpenLoginDialog';
 import { useDateDistance } from '@/hooks/useDateDistance';
 import BookmarkButton from '../system/BookmarkButton';
+import TagList from '../system/Tag/TagList';
 import Link from 'next/link';
 import styles from '@/styles/ItemViewer.module.scss';
 import { Globe } from '@/components/vectors';
@@ -149,13 +150,7 @@ const ItemViewer = ({ item, isMyItem, items }: Props) => {
         </div>
         <div className={styles.tag_container}>
           <h4 className={styles.tag_title}>태그</h4>
-          <div>
-            {item.tags.map((tag, index) => (
-              <div className={styles.tag} key={index}>
-                # {tag}
-              </div>
-            ))}
-          </div>
+          <TagList tags={item.tags} />
         </div>
         <AnimatePresence initial={false}>
           {likes === 0 ? null : (

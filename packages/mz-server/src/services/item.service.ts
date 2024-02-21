@@ -3,6 +3,7 @@ import {
   Item,
   ItemLike,
   ItemStats,
+  ItemsTags,
   Publisher,
   Thumbnail,
   User,
@@ -87,7 +88,7 @@ const itemService = {
           tagId: tag.id,
         },
       })
-
+      // @ts-ignore
       createdTags.push(tag.name)
     }
 
@@ -191,6 +192,7 @@ const itemService = {
       include: {
         user: true,
         publisher: true,
+        itemsTags: true,
       },
     })
     const createdTags =
@@ -232,7 +234,7 @@ const itemService = {
     } catch (e) {
       console.log(e)
     }
-    // TODO: add tags
+    const itemTags = await this.getTagsForItem(item.id)
     algolia
       .sync({
         id: item.id,
@@ -243,6 +245,7 @@ const itemService = {
         thumbnail: thumbnailInfo?.url ?? refUrl ?? null,
         username: item.user.username,
         publisher: item.publisher,
+        tags: itemTags,
       })
       .catch(console.error)
 
@@ -761,6 +764,7 @@ const itemService = {
         publisher: true,
         itemStats: true,
         thumbnail: true,
+        itemsTags: true,
         itemLikes: userId ? { where: { userId } } : false,
         bookmarks: userId ? { where: { userId } } : false,
       },
@@ -836,7 +840,7 @@ const itemService = {
         console.error(e)
       }
     }
-    // TODO: add tags
+    const itemTags = await this.getTagsForItem(item.id)
     algolia
       .update({
         id: item.id,
@@ -847,6 +851,7 @@ const itemService = {
         thumbnail: thumbnailInfo?.url ?? item.thumbnail?.url ?? refUrl ?? null,
         username: item.user.username,
         publisher: item.publisher,
+        tags: itemTags,
       })
       .catch(console.error)
 
