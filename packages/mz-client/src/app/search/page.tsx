@@ -21,7 +21,9 @@ interface Props {
 }
 
 export default function Search({ searchParams }: Props) {
-  const [searchText, setSearchText] = useState(searchParams?.['q'] ?? '');
+  const { q, type } = searchParams;
+  const search = (type === 'tag' ? `#${q}` : q) ?? '';
+  const [searchText, setSearchText] = useState(search);
   const [inputResult] = useDebounce(searchText, 300);
   const observerTargetEl = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -32,7 +34,9 @@ export default function Search({ searchParams }: Props) {
   useInfiniteScroll(observerTargetEl, fetchNextData);
 
   useEffect(() => {
-    const query = { q: inputResult };
+    const query = {
+      q: inputResult,
+    };
     const url = `/search${stringify(query, {
       charset: 'utf-8',
       encodeValuesOnly: true,
@@ -43,7 +47,7 @@ export default function Search({ searchParams }: Props) {
 
   // render for desktop search
   useEffect(() => {
-    setSearchText(searchParams?.['q'] ?? '');
+    setSearchText(search);
   }, [searchParams]);
   const items = infiniteData?.pages.flatMap((page) => page.list);
   return (

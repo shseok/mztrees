@@ -7,6 +7,33 @@ import { FastifyPluginAsyncTypebox } from '../../../lib/types.js'
 export const searchRoute: FastifyPluginAsyncTypebox = async (fastify) => {
   fastify.get('/', { schema: SearchRouteSchema }, async (request) => {
     const { q, limit, offset } = request.query
+    // tag 검색이라면 tag 검색을 먼저하고, 아니라면 algolia 검색을 한다.
+    const isTag = q.startsWith('#')
+    if (isTag) {
+      const tag = q.slice(1)
+      const hasTag = await itemService.hasTagByName(tag)
+      if (!hasTag) {
+        return { list: [], totalCount: 0, pageInfo: { hasNextPage: false } }
+      }
+      const item = await itemService.getItems({
+        mode: 'recent',
+        tag,
+        limit,
+        cursor: offset,
+      })
+
+      return {
+        ...item,
+        list: item.list.map((item) => ({
+          ...item,
+          likes: item.itemStats.likes ?? 0,
+          hightlight: {
+            title: item.title,
+            body: item.body,
+          },
+        })),
+      }
+    }
     const hits = await algolia.search(q, { length: limit, offset })
     const items = await itemService.getItemsByIds(
       hits.list.map((item) => item.id),
