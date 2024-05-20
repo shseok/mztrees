@@ -4,7 +4,7 @@
 
 안녕하세요. Mztrees는 개성있거나 유용한 사이트를 누구나 공유하고 확인할 수 있는 웹 사이트입니다.
 
-[URL](https://www.mztrees.com)
+[🔗Service](https://www.mztrees.com) | [📝Wiki](https://github.com/shseok/mztrees/wiki)
 
 ![](https://img.mztrees.com/og-image.png)
 

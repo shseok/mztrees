@@ -4,7 +4,7 @@
 
 Mztrees is a website where anyone can share and check out unique or useful sites.
 
-[URL](https://www.mztrees.com)
+[🔗Service](https://www.mztrees.com) | [📝Wiki](https://github.com/shseok/mztrees/wiki)
 
 ![](https://img.mztrees.com/og-image.png)
 
